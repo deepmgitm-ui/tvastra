@@ -14,8 +14,8 @@
       "settings": {
         "page_title_style": "style-2",
         "show_full_width": false,
-        "show_banner_image": true,
-        "hide_breadcrumb": true,
+        "show_banner_image": false,
+        "hide_breadcrumb": false,
         "enable_parallax": false,
         "title_uppercase": false,
         "show_description": false,
