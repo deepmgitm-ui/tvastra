@@ -1027,3 +1027,119 @@ body.sticky-active .chat-support-whatsapp-wrapper {
 /*************************************************************
 ** Tvastra - Hongo 1.4 UI, review, overflow and speed fixes END
 *************************************************************/
+
+
+/*************************************************************
+** Tvastra - Navbar slim-down, "Shop" dropdown fix & polish
+** Added 2026-07-01. Self-contained; revert by deleting this
+** whole block. Maps to Task 1 (navbar), Task 2 (dropdown),
+** Task 4 (polish). Values are exposed as variables below so
+** they can be fine-tuned after visual testing.
+*************************************************************/
+
+:root {
+  --tv-navlink-py: 16px;          /* Task 1: desktop nav-link top/bottom padding (theme default 25px) */
+  --tv-navlink-py-sticky: 12px;   /* Task 1: sticky/fixed header state (theme default 20px)           */
+  --tv-logo-width-desktop: 150px; /* Task 1: slightly smaller than the current 170px logo width        */
+  --tv-logo-max-height: 48px;     /* Task 1: hard height cap so the logo can't re-inflate the bar      */
+}
+
+/* =========================================================
+** TASK 1 - Slimmer navbar. Desktop only, so the mobile
+** off-canvas menu keeps its larger, finger-friendly tap
+** targets. Header height is driven by the nav-link vertical
+** padding, so trimming that shrinks the whole bar.
+** ========================================================= */
+@media (min-width: 1200px) {
+  .navbar .navbar-nav .nav-item .nav-link {
+    padding-top: var(--tv-navlink-py) !important;    /* was 25px */
+    padding-bottom: var(--tv-navlink-py) !important; /* was 25px */
+  }
+
+  .sticky-active .navbar.responsive-fixed .navbar-nav .nav-item .nav-link {
+    padding-top: var(--tv-navlink-py-sticky) !important;    /* was 20px */
+    padding-bottom: var(--tv-navlink-py-sticky) !important; /* was 20px */
+  }
+
+  /* Logo: trim width a touch and cap height so it matches the
+     new, shorter bar regardless of the logo's aspect ratio.
+     (Overrides the earlier 170px --main-logo-width rule.) */
+  header .navbar-brand {
+    --main-logo-width: var(--tv-logo-width-desktop) !important;
+  }
+  header .navbar-brand img {
+    width: auto !important;                          /* let the height cap drive size, keep ratio */
+    max-height: var(--tv-logo-max-height) !important;
+    object-fit: contain !important;
+  }
+}
+
+/* Task 1 (mobile) - the earlier custom rule forced the logo to 170px wide on
+   phones too (overriding the theme's 50px mobile setting), making the mobile
+   bar bulky. Cap it to a compact, sleeker size. Tunable below. */
+@media (max-width: 1199px) {
+  header .navbar-brand {
+    --main-logo-width: 120px !important;   /* was 170px on mobile */
+  }
+  header .navbar-brand img {
+    width: auto !important;
+    max-height: 40px !important;           /* height driver for the mobile bar */
+    object-fit: contain !important;
+  }
+}
+
+/* =========================================================
+** TASK 2 - "Shop" is a MEGAMENU block. All of its sub-options
+** were not showing on hover because:
+**   (a) base `.megamenu` uses `overflow:hidden` + a
+**       `max-height: calc(100vh - --top-space)` cap, and
+**   (b) the earlier custom fix sets the column row to
+**       `flex-wrap:nowrap`.
+** Together, any column/row past the menu's box gets clipped.
+** Fix: size to content, wrap columns instead of clipping, and
+** lift the menu above sibling sections. Store's menu is small,
+** so removing the height cap is safe (no giant scroll list).
+** ========================================================= */
+@media (min-width: 1200px) {
+  .navbar .navbar-nav .megamenu,
+  .dropdown-menu.megamenu {
+    max-height: none !important;   /* was calc(100vh - var(--top-space)) */
+    overflow: visible !important;  /* was overflow:hidden / overflow-y:auto */
+    z-index: 999 !important;       /* was 99 - removes any stacking clip   */
+  }
+
+  /* Let columns wrap to a new line instead of being cut off on
+     the right when they exceed the menu width. */
+  .dropdown-menu.megamenu .row {
+    flex-wrap: wrap !important;    /* was nowrap */
+    row-gap: 24px;
+  }
+}
+
+/* =========================================================
+** TASK 4 - General polish. Safe, self-contained defaults that
+** read as "designed" rather than stock theme behaviour.
+** ========================================================= */
+
+/* Consistent, intentional transitions on interactive elements. */
+.btn,
+.navbar .navbar-nav .nav-item .nav-link,
+.megamenu a:not(.btn) {
+  transition: color .2s ease, background-color .2s ease,
+              border-color .2s ease, opacity .2s ease, transform .2s ease;
+}
+
+/* Subtle, deliberate button hover lift. */
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Accessible, consistent keyboard focus ring (shows only for
+   keyboard users; a professional touch most themes omit). */
+a:focus-visible,
+.btn:focus-visible,
+button:focus-visible,
+.nav-link:focus-visible {
+  outline: 2px solid var(--base-color, #d0af29) !important;
+  outline-offset: 2px !important;
+}

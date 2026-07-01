@@ -11,6 +11,14 @@
   if _siblings != blank and _siblings.size > 0
     assign _show = true
   endif
+
+  # Task 3 (2026-07-01): suppress swatches for these two products only.
+  # Hides the UI regardless of their metafields; no product data is changed.
+  # Remove a handle from this list to bring its swatch back.
+  assign _tv_hidden_swatches = 'black-crop-top-gym-wear,olive-crop-top-gym-wear' | split: ','
+  if _tv_hidden_swatches contains _p.handle
+    assign _show = false
+  endif
 -%}
 
 {%- if _show -%}
