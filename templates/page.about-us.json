@@ -21,7 +21,7 @@
         "show_description": false,
         "border_top": false,
         "border_bottom": false,
-        "banner_title_size": "h-4",
+        "banner_title_size": "h-3",
         "breadcrumb_position": "on-collection-banner",
         "banner_height": "very-small-screen",
         "content_alignment": "center",
