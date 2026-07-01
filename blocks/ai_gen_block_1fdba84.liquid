@@ -1,0 +1,505 @@
+{% doc %}
+  @prompt
+    Full-width background image (large hero image).
+    
+    Centered content overlay:
+    
+    Large bold title text.
+    
+    Two call-to-action buttons side by side.
+    
+    Style should feel modern, premium, outdoor adventure / hiking brand.
+    
+    Add slight dark overlay on image for text readability.
+    
+    Use clean typography with strong visual hierarchy.
+    
+    Desktop layout:
+    
+    Hero height: about 80–90vh.
+    
+    Title centered horizontally and vertically in upper-middle area.
+    
+    Two buttons aligned horizontally below the title with spacing.
+    
+    Buttons should be bold, rounded corners, hover effect.
+    
+    Background image fills entire section (cover).
+    
+    Mobile layout:
+    
+    Adjust height to ~60–70vh.
+    
+    Title centered and readable (responsive font size).
+    
+    Buttons stacked vertically or two small buttons side-by-side if space allows.
+    
+    Maintain good spacing and touch-friendly buttons.
+    
+    Ensure text remains clearly visible over image.
+    
+    Content settings (editable):
+    
+    Background image picker.
+    
+    Title text field.
+    
+    Button 1 text + link.
+    
+    Button 2 text + link.
+    
+    Option for overlay opacity control.
+    
+    Text alignment (center).
+    
+    Design style:
+    
+    Clean ecommerce aesthetic.
+    
+    Outdoor / hiking vibe.
+    
+    Smooth transitions and subtle animations.
+    
+    No clutter — focus on image, title, and buttons.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-hero-adventure-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: 85vh;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .ai-hero-adventure-bg-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .ai-hero-adventure-bg-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-hero-adventure-bg-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 40px;
+  }
+
+  .ai-hero-adventure-empty-state-{{ ai_gen_id }} {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    padding: 16px 24px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+  }
+
+  .ai-hero-adventure-overlay-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, {{ block.settings.overlay_opacity }});
+    z-index: 2;
+  }
+
+  .ai-hero-adventure-content-{{ ai_gen_id }} {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    max-width: 900px;
+    padding: 0 20px;
+    animation: ai-hero-fade-in-{{ ai_gen_id }} 0.8s ease-out;
+  }
+
+  @keyframes ai-hero-fade-in-{{ ai_gen_id }} {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .ai-hero-adventure-title-{{ ai_gen_id }} {
+    color: {{ block.settings.title_color }};
+    font-size: {{ block.settings.title_size }}px;
+    line-height: 1.2;
+    font-weight: 700;
+    margin: 0 0 40px;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .ai-hero-adventure-buttons-{{ ai_gen_id }} {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .ai-hero-adventure-btn-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 36px;
+    font-size: {{ block.settings.button_font_size }}px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    min-width: 160px;
+  }
+
+  .ai-hero-adventure-btn-primary-{{ ai_gen_id }} {
+    background-color: {{ block.settings.button_primary_bg }};
+    color: {{ block.settings.button_primary_color }};
+    border: 2px solid {{ block.settings.button_primary_bg }};
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .ai-hero-adventure-btn-primary-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_primary_hover_bg }};
+    color: {{ block.settings.button_primary_hover_color }};
+    border-color: {{ block.settings.button_primary_hover_bg }};
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  }
+
+  .ai-hero-adventure-btn-secondary-{{ ai_gen_id }} {
+    background-color: {{ block.settings.button_secondary_bg }};
+    color: {{ block.settings.button_secondary_color }};
+    border: 2px solid {{ block.settings.button_secondary_border }};
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .ai-hero-adventure-btn-secondary-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_secondary_hover_bg }};
+    color: {{ block.settings.button_secondary_hover_color }};
+    border-color: {{ block.settings.button_secondary_hover_border }};
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-hero-adventure-{{ ai_gen_id }} {
+      height: {{ block.settings.mobile_height }}vh;
+      min-height: 400px;
+    }
+
+    .ai-hero-adventure-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.6 }}px;
+      margin-bottom: 30px;
+    }
+
+    .ai-hero-adventure-buttons-{{ ai_gen_id }} {
+      gap: 15px;
+    }
+
+    .ai-hero-adventure-btn-{{ ai_gen_id }} {
+      padding: 14px 28px;
+      font-size: {{ block.settings.button_font_size | minus: 2 }}px;
+      min-width: 140px;
+    }
+
+    {% if block.settings.mobile_button_layout == 'stacked' %}
+      .ai-hero-adventure-buttons-{{ ai_gen_id }} {
+        flex-direction: column;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+      }
+
+      .ai-hero-adventure-btn-{{ ai_gen_id }} {
+        width: 100%;
+      }
+    {% endif %}
+  }
+
+  @media screen and (max-width: 480px) {
+    .ai-hero-adventure-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.5 }}px;
+    }
+
+    .ai-hero-adventure-btn-{{ ai_gen_id }} {
+      padding: 12px 24px;
+      font-size: {{ block.settings.button_font_size | minus: 3 }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-hero-adventure-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-hero-adventure-bg-{{ ai_gen_id }}">
+    {% if block.settings.background_image %}
+      <img
+        src="{{ block.settings.background_image | image_url: width: 2400 }}"
+        alt="{{ block.settings.background_image.alt | escape }}"
+        loading="eager"
+        width="{{ block.settings.background_image.width }}"
+        height="{{ block.settings.background_image.height }}"
+      >
+    {% else %}
+      <div class="ai-hero-adventure-bg-placeholder-{{ ai_gen_id }}">
+        <div class="ai-hero-adventure-empty-state-{{ ai_gen_id }}">
+          Add a background image to get started
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="ai-hero-adventure-overlay-{{ ai_gen_id }}"></div>
+
+  <div class="ai-hero-adventure-content-{{ ai_gen_id }}">
+    {% if block.settings.title != blank %}
+      <h1 class="ai-hero-adventure-title-{{ ai_gen_id }}">
+        {{ block.settings.title }}
+      </h1>
+    {% endif %}
+
+    <div class="ai-hero-adventure-buttons-{{ ai_gen_id }}">
+      {% if block.settings.button_primary_text != blank %}
+        <a
+          href="{{ block.settings.button_primary_link }}"
+          class="ai-hero-adventure-btn-{{ ai_gen_id }} ai-hero-adventure-btn-primary-{{ ai_gen_id }}"
+        >
+          {{ block.settings.button_primary_text }}
+        </a>
+      {% endif %}
+
+      {% if block.settings.button_secondary_text != blank %}
+        <a
+          href="{{ block.settings.button_secondary_link }}"
+          class="ai-hero-adventure-btn-{{ ai_gen_id }} ai-hero-adventure-btn-secondary-{{ ai_gen_id }}"
+        >
+          {{ block.settings.button_secondary_text }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Adventure hero",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.4
+    },
+    {
+      "type": "header",
+      "content": "Title"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Explore the Great Outdoors"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 30,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Button 1"
+    },
+    {
+      "type": "text",
+      "id": "button_primary_text",
+      "label": "Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_primary_link",
+      "label": "Link"
+    },
+    {
+      "type": "color",
+      "id": "button_primary_bg",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_primary_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_primary_hover_bg",
+      "label": "Hover background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_primary_hover_color",
+      "label": "Hover text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Button 2"
+    },
+    {
+      "type": "text",
+      "id": "button_secondary_text",
+      "label": "Text",
+      "default": "Learn More"
+    },
+    {
+      "type": "url",
+      "id": "button_secondary_link",
+      "label": "Link"
+    },
+    {
+      "type": "color",
+      "id": "button_secondary_bg",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "button_secondary_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_secondary_border",
+      "label": "Border color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_secondary_hover_bg",
+      "label": "Hover background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_secondary_hover_color",
+      "label": "Hover text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_secondary_hover_border",
+      "label": "Hover border color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Button style"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "label": "Font size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "label": "Mobile height",
+      "min": 50,
+      "max": 80,
+      "step": 5,
+      "unit": "vh",
+      "default": 65
+    },
+    {
+      "type": "select",
+      "id": "mobile_button_layout",
+      "label": "Mobile button layout",
+      "options": [
+        {
+          "value": "inline",
+          "label": "Side by side"
+        },
+        {
+          "value": "stacked",
+          "label": "Stacked"
+        }
+      ],
+      "default": "stacked"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Adventure hero"
+    }
+  ]
+}
+{% endschema %}

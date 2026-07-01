@@ -1,0 +1,74 @@
+<!-- INTERNAL SCRIPTS -->
+<script>  
+  {%- capture variant_options_image -%} 
+    {%- for i in (1..50) -%}
+      {%- liquid 
+        assign variant_option_parameter_name_key = 'variant_option_parameter_name' | append: i 
+        assign variant_option_parameter_image_key = 'variant_option_parameter_image' | append: i
+        assign variant_option_parameter_name = settings[variant_option_parameter_name_key]
+        assign variant_option_parameter_image = settings[variant_option_parameter_image_key]
+      -%}
+      {%- if variant_option_parameter_name != '' and variant_option_parameter_image != null and variant_option_parameter_image != blank -%}
+        {{- variant_option_parameter_name | json -}}: {{- variant_option_parameter_image | json -}},
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- assign variant_options_image = variant_options_image | strip_html | strip_newlines | strip -%}
+  window.money_format = '{{ shop.money_format }}';
+  window.routes = {
+    shop_url: '{{ shop.url }}',
+    root_url: '{{ routes.root_url }}',
+    cart_url: '{{ routes.cart_url }}',
+    cart_add_url: '{{ routes.cart_add_url }}',
+    cart_change_url: '{{ routes.cart_change_url }}',
+    cart_update_url: '{{ routes.cart_update_url }}'
+  }
+  window.cartStrings = {
+    error: `{{ 'sections.cart.cart_error' | t }}`,
+    quantityError: `{{ 'sections.cart.cart_quantity_error_html' | t }}`
+  }
+  window.variantStrings = {
+    addToCart: `<i class="feather-shopping-bag"></i><span>{{ 'products.product.add_to_cart' | t }}</span>`,
+    preOrder: `<i class="feather-shopping-bag"></i><span>Pre-Order</span>`,
+    addingToCart: 'Adding...',
+    soldOut: `{{ 'products.product.sold_out' | t }}`,
+    unavailable: `{{ 'products.product.unavailable' | t }}`,
+  }
+  window.wishlistStrings = {
+    add: `{{ 'general.wishlist.add' | t }}`,
+    remove: `{{ 'general.wishlist.remove' | t }}`
+  }
+  window.variantOptionsImage = { {{ variant_options_image }} };
+  window.GOOGLE_MAP_API_KEY = '{{ settings.map_api_key }}';
+  window.freeShippingConfig = {
+    'enable': {% if settings.show_freeshipping_goal %}1{% else %}0{% endif %},
+    'goal_amt': "{{ settings.freeshipping_goal_amount | times: 1 }}",
+    'goal_amt_msg_1': "{{ settings.freeshipping_goal_msg_1 }}",
+    'goal_amt_msg_2': "{{ settings.freeshipping_goal_msg_2 }}",
+    'cart_total': "{{ cart.total_price }}",
+    'template': "{{ template }}"
+  }
+  {{ settings.custom_js }}
+</script>
+<!-- END -->
+{%- comment -%} If cart has only gift wrap item then remove it. {%- endcomment -%}
+{%- liquid
+  assign giftwraps_in_cart = 0
+  if settings.enable_giftwrap
+    assign giftwrap_product = all_products[settings.giftwrap_product]
+    assign giftwrap_product_id = giftwrap_product.selected_or_first_available_variant.id
+    for item in cart.items
+      if item.id == giftwrap_product_id
+        assign giftwraps_in_cart = item.quantity
+      endif
+    endfor
+    if giftwraps_in_cart > 0 and cart.items.size == 1
+    endif
+  endif
+-%}
+<script type="text/javascript">
+  Shopify.GiftWrap = Shopify.GiftWrap || {};
+  Shopify.GiftWrap.enabled = {{ settings.enable_giftwrap }};
+  Shopify.GiftWrap.product = '{{ settings.giftwrap_product }}';
+  Shopify.GiftWrap.checkbox_label = '{{ settings.checkbox_label }}';
+</script>

@@ -1,0 +1,209 @@
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": {{ shop.name | json }},
+  {%- if settings.logo -%}
+    {%- assign image_size = settings.logo.width -%}
+    "logo": {{ settings.logo | image_url: width: image_size | prepend: "https:" | json }},
+  {%- endif -%}
+  "sameAs": [
+    {{ settings.social_twitter_link | json }},
+    {{ settings.social_facebook_link | json }},
+    {{ settings.social_pinterest_link | json }},
+    {{ settings.social_instagram_link | json }},
+    {{ settings.social_tumblr_link | json }},
+    {{ settings.social_snapchat_link | json }},
+    {{ settings.social_youtube_link | json }},
+    {{ settings.social_vimeo_link | json }}
+  ],
+  "url": {{ shop.url | append: page.url | json }}
+}
+</script>
+{%- if request.page_type == 'index' -%}
+  {%- assign potential_action_target = shop.url | append: routes.search_url | append: "?q={search_term_string}" -%}
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": {{ shop.name | json }},
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {{ potential_action_target | json }},
+        "query-input": "required name=search_term_string"
+      },
+      "url": {{ shop.url | append: page.url | json }}
+    }
+  </script>
+{%- endif -%}
+{%- liquid
+  assign purchase_btn = false 
+  if settings.enable_login_price == true and customer and  settings.enable_catalog_mode == false
+    assign purchase_btn = true
+  elsif  settings.enable_login_price == false and settings.enable_catalog_mode == false
+    assign purchase_btn = true
+  elsif settings.enable_catalog_mode == true and settings.enable_login_price == false
+    assign purchase_btn = false
+  elsif settings.enable_login_price == true  and  customer and  settings.enable_catalog_mode == true
+    assign purchase_btn = false
+  elsif settings.enable_login_price == true  and settings.enable_catalog_mode == true
+    assign purchase_btn = false
+  endif
+-%}
+
+<header id="hongo-header" class="header-layout-{{ settings.header_layout }}">
+  <nav class="navbar navbar-expand-lg navbar-light tvastra-single-header{% if settings.header_style == "center-logo" %} menu-logo-center{% endif %}{% if settings.fixed_header_enable == true %} {{ settings.fixed_header_type }}{% else %} disable-fixed{% endif %} {% if settings.show_alt_font %}alt-font{% endif %} {{ settings.header_style }} {% if settings.header_layout == 'style-2' %}flex-column{% endif %}">
+      {%- if settings.header_layout == 'style-1' -%}
+        <div class="{{ settings.container_type }} justify-content-lg-between">
+          {%- if settings.header_style == "center-logo" -%}
+            <div class="col col-xl-2 px-lg-0 px-lg-0 menu-logo">
+              {%- render 'logo' -%}
+            </div>
+            <div class="col col-xl-5 menu-column">          
+              {%- liquid
+                section 'header'
+              -%}
+            </div>
+            <div class="col col-xl-5">
+              <div class="d-flex justify-content-end align-items-center navbar-right {% if settings.show_icon == true %}only-icon{% endif %}">
+                {%- if settings.menu_search -%}
+                  {%- render 'search-bar' -%}
+                {%- endif -%}
+                {%- if settings.menu_account -%}
+                  {%- render 'my-account' -%}
+                {%- endif -%}
+                {%- if settings.menu_wishlist -%}
+                  {%- render 'wishlist' -%}
+                {%- endif -%}
+                {%- unless purchase_btn == false -%}
+                  {%- if settings.menu_cart -%}
+                    {%- render 'mini-cart' -%}
+                  {%- endif -%}
+                {%- endunless -%}
+              </div>
+            </div> 
+          {%- elsif settings.header_style == "center-navigation" -%}
+           <div class="col col-xl-3 px-lg-0 px-lg-0 menu-logo">
+              {%- render 'logo' -%}
+            </div>
+            <div class="col col-xl-6 menu-column">          
+              {%- liquid
+                section 'header'
+              -%}
+            </div>
+            <div class="col col-xl-3">
+              <div class="d-flex justify-content-end align-items-center navbar-right {% if settings.show_icon == true %}only-icon{% endif %}">
+                {%- if settings.menu_search -%}
+                  {%- render 'search-bar' -%}
+                {%- endif -%}
+                {%- if settings.menu_account -%}
+                  {%- render 'my-account' -%}
+                {%- endif -%}
+                {%- if settings.menu_wishlist -%}
+                  {%- render 'wishlist' -%}
+                {%- endif -%}
+                {%- unless purchase_btn == false -%}
+                  {%- if settings.menu_cart -%}
+                    {%- render 'mini-cart' -%}
+                  {%- endif -%}
+                {%- endunless -%}
+              </div>
+            </div> 
+          {%- else -%}  
+            <div class="col col-xl-auto menu-logo">
+              {%- render 'logo' -%}
+            </div>
+            <div class="col col-xl-auto menu-column">
+              {%- liquid
+                section 'header'
+              -%}
+            </div>
+            <div class="col col-xl-auto ms-auto">
+              <div class="d-flex justify-content-end align-items-center navbar-right {% if settings.show_icon == true %}only-icon{% endif %}">
+                {%- if settings.menu_search -%}
+                  {%- render 'search-bar' -%}
+                {%- endif -%}
+                {%- if settings.menu_account -%}
+                  {%- render 'my-account' -%}
+                {%- endif -%}
+                {%- if settings.menu_wishlist -%}
+                  {%- render 'wishlist' -%}
+                {%- endif -%}
+                {%- unless purchase_btn == false -%}
+                  {%- if settings.menu_cart -%}
+                    {%- render 'mini-cart' -%}
+                  {%- endif -%}
+                {%- endunless -%}
+              </div>
+            </div> 
+          {%- endif -%}
+        </div>
+      {%- elsif settings.header_layout == 'style-2' -%}
+        <div class="header-top-bar position-relative w-100">
+          <div class="{{ settings.container_type }}"> 
+            <div class="row align-items-center">
+              <div class="toggler-wrapper d-block d-xl-none">
+                <button class="navbar-toggler toggle-mobile" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" name="navbar-toggler" role="button" aria-label="button">
+                  <span class="navbar-toggler-line"></span> 
+                  <span class="navbar-toggler-line"></span> 
+                  <span class="navbar-toggler-line"></span>
+                  <span class="navbar-toggler-line"></span>
+                </button>
+              </div>
+              <div class="col-auto col-md-6 col-xl-2 logo text-center text-xl-start">
+                {%- render 'logo' -%}
+              </div>
+              <div class="col flex-grow-1 header-search">
+                {%- if settings.menu_search -%}
+                  {%- render 'search-bar-2' -%}
+                {%- endif -%}
+              </div>
+              <div class="col-auto header-top-right">
+                <div class="d-flex justify-content-end align-items-center navbar-right {% if settings.show_icon == true %}only-icon{% endif %}">
+                  {%- render 'header-mobile-number' -%}
+                  {%- if settings.menu_wishlist -%}
+                    {%- render 'wishlist' -%}
+                  {%- endif -%}
+                  {%- if settings.menu_account -%}
+                    {%- render 'my-account' -%}
+                  {%- endif -%}
+                  {%- unless purchase_btn == false -%}
+                    {%- if settings.menu_cart -%}
+                      {%- render 'mini-cart' -%}
+                    {%- endif -%}
+                  {%- endunless -%}
+                </div>
+              </div>
+            </div>            
+          </div>
+        </div>
+        <div class="header-bottom w-100">
+          <div class="{{ settings.container_type }}">
+            <div class="row align-items-center">
+              {%- if settings.show_vertical_menu != false -%}
+                <div class="col col-xl-2 position-relative vertical-menu-column d-none d-xl-block">      
+                {%- liquid
+                      section 'vertical-menu'
+                    -%}
+                </div>
+              {%- endif -%}
+              <div class="col flex-grow-1 menu-column">   
+                {%- liquid
+                  section 'header'
+                -%}
+              </div>
+              {%- if settings.header_info != blank -%}
+                <div class="col-auto header-right-info d-none d-xl-flex align-items-center"> 
+                  {{ settings.header_info }}
+                </div>
+              {%- endif -%}
+            </div>
+          </div> 
+        </div>
+      {%- endif -%}
+    <div class="menu-overlay"></div>
+  </nav>
+</header>
+{%- if template != 'cart' -%}
+  {%- render 'cart-notification' -%}
+{%- endif -%}

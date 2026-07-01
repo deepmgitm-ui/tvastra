@@ -1,0 +1,205 @@
+{%- comment -%}
+  Renders a product card
+  Accepts:
+  - product_card_product: {Object} Product Liquid object (optional)
+  - media_size: {String} Size of the product image card. Values are "square" and "portrait". Default is "square" (optional)
+  - show_secondary_image: {Boolean} Show the secondary image on hover. Default: false (optional)
+  - add_image_padding: {Boolean} Enables padding on the image to space out the grid
+  - show_vendor: {Boolean} Show the product vendor. Default: false
+  Usage:
+  {% render 'product-card', show_vendor: section.settings.show_vendor %}
+{%- endcomment -%}
+{%- liquid
+  assign purchase_btn = false 
+  assign login_to_see = false
+  if settings.enable_login_price == true and customer and  settings.enable_catalog_mode == false
+    assign purchase_btn = true
+    assign login_to_see = true
+  elsif  settings.enable_login_price == false and settings.enable_catalog_mode == false
+    assign purchase_btn = true
+    assign login_to_see = true 
+  elsif settings.enable_catalog_mode == true and settings.enable_login_price == false
+    assign purchase_btn = false
+    assign login_to_see = true
+  elsif settings.enable_login_price == true  and  customer and  settings.enable_catalog_mode == true
+    assign purchase_btn = false
+    assign login_to_see = true
+  elsif settings.enable_login_price == true  and settings.enable_catalog_mode == true
+    assign purchase_btn = false
+    assign login_to_see = false
+  endif
+-%}
+<div class="box-inner">
+  <div class="product-image position-relative">
+    <div class="image-inner position-relative overflow-hidden">
+      {%- if show_image_slider == true -%}
+        <div class="swiper product-image-slider" {%- if slider_options -%}data-slider-options='{{ slider_options }}'{%- endif -%}>
+          <div class="swiper-wrapper">
+            {%- for media in product_card_product.media -%}
+              <div class="swiper-slide" data-meida-img-id="{{ media.id }}" image-index="{{ forloop.index }}">
+                <a style="{{ style | strip | strip_newlines }} " aria-label="link">
+                  {% case media.media_type %}
+                    {% when 'image' %}
+                      {%- render 'responsive-image', image: media, placeholder_type: 'product-image', image_ratio: settings.product_image_ratio -%}
+                  {% endcase %}
+                </a>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- else -%}
+        <a
+          href="{{ product_card_product.url | default: '#' | within: collection }}"
+          class="d-block"
+          aria-label="link"
+        >
+          {%- if product_card_product.media -%}
+            {%- render 'responsive-image', image_width: image_width, media: product_card_product.media, type: 'product', placeholder_type: 'product-image', image_ratio: settings.product_image_ratio, show_secondary_image: show_secondary_image -%}
+          {%- endif -%}
+        </a>
+      {%- endif -%}
+    </div>
+    {%- render 'product-badge', product_for_badge: product_card_product -%}
+    <div class="btn-action">
+      {%- if show_wishlist == true -%}
+          {%- render 'button-wishlist', product: product_card_product, tooltip_position: 'left', product_card_style: product_card_style, class: 'btn-animation' -%}
+      {%- endif -%}
+      {%- if show_quickview == true -%} 
+          <a href="#" rel="nofollow noopener" data-handle="{{ product_card_product.handle }}" class="position-relative hongo-quick-view btn-animation" data-trigger="quickview" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="{{ 'general.product_card_comman.quick_view' | t }}" data-bs-trigger="hover" aria-label="quickview">
+              <span class="btn-icon"><i class="feather-eye"></i></span>
+          </a>
+      {%- endif -%}
+      {%- if  show_compare == true -%}
+          <a href="#" rel="nofollow noopener" class="position-relative btn-animation" data-compare="add" data-handle="{{ product_card_product.id }}" {% if product_card_style != 'shop-simple' %}data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Add to compare" data-bs-trigger="hover"{% endif %} aria-label="product">
+              <span class="btn-icon"><i class="feather-layers"></i></span>
+          </a>
+      {%- endif -%}
+    </div>
+  </div>
+  <div class="product-footer">
+    <div class="product-buttons-wrap d-block d-xl-none">
+      {%- if product_card_product -%}
+      {%- assign selected_variant = product_card_product.selected_or_first_available_variant -%}
+        {%- if selected_variant.available == false -%}
+          <a class="cart-btn alt-font d-inline-flex justify-content-center align-items-center position-relative sold-btn position-relative" data-trigger="quickview" data-handle="{{ product_card_product.handle }}" href="{{ product_card_product.url | default: '#' | within: collection }}"  class="btn-animation" aria-label="btn">
+            <i class="feather-shopping-bag"></i>
+            <span class="btn-text">{{ 'products.product.Sold_btn' | t }}</span>
+          </a>
+        {%- else -%}
+          <a type="submit" name="add" class="cart-btn alt-font d-inline-flex justify-content-center align-items-center position-relative" href="/cart/add?id={{ selected_variant.id }}" data-qty="1"  class="btn-animation" data-trigger="addtocart" data-variant="{{ selected_variant.id }}" aria-label="btn">
+            <i class="feather-shopping-bag"></i>
+            <span class="btn-text">{{ 'products.product.Add_btn' | t }}</span>
+          </a>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+    <div class="product-vendor alt-font">
+      <a href="/collections/all?filter.v.price.gte=&filter.v.price.lte=&filter.p.product_type={{ product_card_product.type | replace:' ','+'}}&sort_by=title-ascending" aria-label="vendor">{{ product_card_product.type }}</a>
+    </div>
+    <a
+      href="{{ product_card_product.url | default: '#' | within: collection }}"
+      class="product-title alt-font" aria-label="product">
+      {{ product_card_product.title | escape }}
+    </a>
+    {%- if settings.show_product_rating == true or force_show_ratings == true -%}
+      <div class="product-rating">
+        <span class="shopify-product-reviews-badge" data-id="{{ product_card_product.id }}">
+          <span class="spr-badge">
+            <span class="spr-starrating spr-badge-starrating"
+              ><i class="spr-icon spr-icon-star-empty"></i><i class="spr-icon spr-icon-star-empty"></i
+              ><i class="spr-icon spr-icon-star-empty"></i><i class="spr-icon spr-icon-star-empty"></i
+              ><i class="spr-icon spr-icon-star-empty"></i
+            ></span>
+          </span>
+        </span>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} ✨ CARD SWATCHES (Makkhan V3) ✨ {%- endcomment -%}
+    {%- if product_card_product.metafields.custom.swatch_color != blank
+        or product_card_product.metafields.custom.sibling_products != blank -%}
+      <div class="custom-swatch-wrapper">
+        {%- render 'global-swatches', product: product_card_product -%}
+      </div>
+    {%- endif -%}
+
+    {%- unless login_to_see == false -%}
+      <product-form class="product-card-form{% if product_card_product.selected_or_first_available_variant.available  == false %} sold-product{% endif %}"> 
+        {%- form 'product', product_card_product, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%} 
+          <input type="hidden" name="id" value="{{ product_card_product.selected_or_first_available_variant.id }}" />
+          {%- if product_card_product.selected_or_first_available_variant.available -%}
+            {%- if product_card_product.selected_or_first_available_variant.incoming and product_card_product.selected_or_first_available_variant.inventory_quantity < 1 -%}
+              <input type="hidden" name="properties[_isPreorder]" value="Yes" autocomplete="off" readonly />
+            {%- endif -%} 
+            {%- liquid
+              assign main_current_variant = product_card_product.selected_or_first_available_variant
+              assign product_card_product_available = product_card_product.variants | where: 'available'
+              if product_card_product.available == false
+              continue
+              endif
+            -%}    
+          {%- endif -%}
+            <div class="variant-qty-wrapper d-flex alt-font flex-wrap">
+              {%- if product_card_product.variants.size > 1 -%}
+                <div class="variant-select">
+                  <select
+                    name="items[][id]"
+                    class="product-card-variant-option"
+                  >
+                    {%- for variants in product_card_product_available -%}
+                      {%- liquid
+                        assign selected = false
+                      -%}
+                      {%- if variants.id == product_card_product.selected_or_first_available_variant.id -%}
+                        {% assign selected = true %}
+                      {%- endif -%}
+                      <option
+                        value="{{ variants.id }}"
+                        data-image="{{ variants.featured_image | default: image | img_url: '350x' }}"
+                        data-price="{{ variants.price | money }}"
+                        {% if selected %}
+                          selected="true"
+                        {% endif %}
+                      >
+                        {{ variants.title }}
+                      </option>
+                    {%- endfor -%}
+                    {%- if product_card_product.selected_or_first_available_variant.available  == false -%}
+                      <option>{{ 'products.product.sold_out_text' | t }}</option>
+                    {%- endif -%}
+                  </select>
+                </div>
+              {%- endif -%}
+              <div class="quantity">
+                <quantity-input class="quantity">
+                  <button class="quantity-button quantity-minus feather-minus" name="minus" type="button" aria-label="minus"><span class="visually-hidden">-</span></button>
+                  <input id="quantity-box-{{ product_card_product.id }}" class="quantity-input" type="number" name="quantity" id="Quantity-{{ product_card_product.id }}" min="1" value="1" form="product-form-{{ product_card_product.id }}" /> 
+                   <label for="quantity-box-{{ product_card_product.id }}" class="visually-hidden"></label>
+                  <button class="quantity-button quantity-plus feather-plus" name="plus" type="button" aria-label="plus"><span class="visually-hidden">+</span></button>
+                </quantity-input>
+              </div>
+            </div>
+            <div class="d-flex align-items-center price-box-wrapper">
+              {%- render 'price', product: product_card_product, price_class: '', product_grid_style: product_card_style -%} 
+              <div class="product-buttons-wrap d-none d-xl-block">
+                {%- if product_card_product -%}
+                {%- assign selected_variant = product_card_product.selected_or_first_available_variant -%}
+                  {%- if selected_variant.available == false -%}
+                    <a class="sold-btn cart-btn alt-font d-inline-flex justify-content-center align-items-center position-relative" data-trigger="quickview" data-handle="{{ product_card_product.handle }}" href="{{ product_card_product.url | default: '#' | within: collection }}"  class="btn-animation" aria-label="btn">
+                      <i class="feather-shopping-bag"></i>
+                      <span class="btn-text">SOLD</span>
+                    </a>
+                  {%- else -%}
+                    <a type="submit" name="add" class="cart-btn alt-font d-inline-flex justify-content-center align-items-center position-relative" href="/cart/add?id={{ selected_variant.id }}" data-qty="1"  class="btn-animation" data-trigger="addtocart" data-variant="{{ selected_variant.id }}" aria-label="btn">
+                      <i class="feather-shopping-bag"></i>
+                      <span class="btn-text">ADD</span>
+                    </a>
+                  {%- endif -%}
+                {%- endif -%}
+              </div>
+          </div> 
+        {%- endform -%}
+      </product-form>
+    {%- endunless -%}
+  </div>
+</div>

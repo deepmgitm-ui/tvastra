@@ -1,0 +1,91 @@
+{%- comment -%}
+  Renders a product thumbnail with a modal-opener
+  Accepts:
+  - media: {Object} Product Media object
+  - position: {String} Position of the media. Used for accessible label.
+  - loop: {Boolean} Enable video looping (optional)
+  - modal_id: {String} The product modal that will be shown by clicking the thumbnail
+  Usage:
+  {% render 'product-thumbnail',
+    media: media,
+    position: forloop.index,
+    loop: section.settings.enable_video_looping,
+    modal_id: section.id
+  %}
+{%- endcomment -%}
+{%- if type == 'thumb' -%}
+  <div
+    class="product-media overflow-hidden media-{{ media.media_type }}"
+    data-media-id="{{ media.id }}"
+    style="{{ border_style }}"
+  >
+    {%- if media.media_type == 'model' -%}
+      <span class="media-icon"><i class="bi bi-box"></i></span>
+    {%- elsif media.media_type == 'external_video' or media.media_type == 'video' -%}
+      <span class="media-icon"><i class="bi bi-camera-video"></i></span>
+    {%- endif -%}
+    <img
+      srcset="{{ media.preview_image | image_url }}"
+      src="{{ media | image_url }}"
+      alt="image"
+      width="576"
+      height="{{ 576 | divided_by: media.preview_image.aspect_ratio | ceil }}"        
+      {% if gellery_type == 'grid-2-columns' or gellery_type == 'grid-1-columns' or section.settings.product_gellery == 'combined-grid' %}
+        sizes="(min-width: 1200px) calc((1200px - 10rem) / 2), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw - 4rem)"
+        loading="lazy"
+        data-master-image="{{ media | image_url }}"
+        data-master-image-width="{{ media.preview_image.width }}"
+        data-master-image-height="{{ media.preview_image.height }}"
+        data-caption="{{ media.alt }}"
+      {% endif -%}
+    >    
+  </div>
+{%- else -%}
+  {%- case media.media_type -%}
+    {%- when 'image' -%}
+      <div class="product-media overflow-hidden media-image h-100" style="{{ border_style }}">
+        {%- if gellery_type == 'grid-2-columns' or gellery_type == 'grid-1-columns' or section.settings.product_gellery == 'combined-grid' -%}
+          <a
+            href="#"
+            class="product-gallery-photoswipe__trigger product-img-btn"
+            data-original-title="Zoom"
+            data-placement="left"
+            aria-label="link"
+          >
+            <span class="bi bi-arrows-fullscreen"></span>
+          </a>
+        {%- endif -%}
+        {%- render 'responsive-image', image: media, zoom_image: true, include_srcset: include_srcset -%}        
+      </div>
+    {%- when 'external_video' -%}
+      <div class="product-media overflow-hidden media-video" data-media-id="{{ media.id }}">
+        {%- assign video_id = 'video-' | append: media.id -%}
+        <div class="plyr-external-video" id="{{ video_id }}">{{ media | external_video_tag }}</div>
+      </div>
+    {%- when 'video' -%}
+      <div class="product-media overflow-hidden media-video local-video" data-media-id="{{ media.id }}">
+        {%- assign video_id = 'video-' | append: media.id -%}
+        {{
+          media
+          | video_tag:
+            controls: true,
+            preload: 'none',
+            loop: true,
+            muted: true,
+            image_size: '535x',
+            class: 'no-control',
+            id: video_id
+        }}
+      </div>
+    {%- when 'model' -%}
+      <div class="product-media overflow-hidden media-model" data-media-id="{{ media.id }}">
+        <div class="shopify-model-viewer-ui">
+          {{ media | media_tag: toggleable: true }}
+        </div>
+      </div>
+    {%- else -%}
+      <div class="product-media media-fall-back h-100" data-media-id="{{ media.id }}">
+        {{ media | media_tag }}
+      </div>
+  {%- endcase -%}
+{%- endif -%}

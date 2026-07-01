@@ -1,0 +1,25 @@
+{%- if settings.show_freeshipping_goal and settings.freeshipping_goal_amount > 0 -%}
+  {%- assign goal_amt = settings.freeshipping_goal_amount -%}
+  {%- if goal_amt > 0 -%}
+    {%- liquid
+      assign goal_amt = goal_amt | times: 1
+      assign goal_amt_msg_1 = settings.freeshipping_goal_msg_1
+      assign goal_amt_msg_2 = settings.freeshipping_goal_msg_2
+      assign cart_total = cart.total_price
+    -%}
+    <div
+      data-item="freeshipping-goal"
+      data-goal="{{ goal_amt }}"
+      data-subtotal="{{ cart_total }}"
+      class="cart-goal d-none"
+    >
+      <div class="cart-goal-msg msg-1 d-none alt-font">{{ goal_amt_msg_1 }}</div>
+      <div class="cart-goal-msg msg-2 d-none">{{ goal_amt_msg_2 }}</div>
+      <div class="cart-goal__inner" style="--progress: 0%;">
+        <div class="cart-goal__bar">
+          <span><span class="goal-badge" data-progress="0%"></span></span>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+{%- endif -%}

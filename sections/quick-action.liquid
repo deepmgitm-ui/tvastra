@@ -1,0 +1,346 @@
+<section
+  id="{{ section.settings.section_id }}"
+  class="section-{{ section.id }} {% if section.settings.section_show == false %}d-none{% endif %} {{ section.settings.section_class_name }} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }} d-md-block {% if section.settings.quick_image != blank %}cover-background{% endif %}"
+  style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}"
+>
+  <div class="{{ section.settings.container_type }}">
+    <div class="{% if section.settings.section_bg_image != blank %}{{ section.settings.background_position }}{% endif %}" {% if section.settings.section_bg_image != blank %}style="background-image: url({{ section.settings.section_bg_image | image_url }});{% endif %}">
+      {%- if section.settings.quick_content != blank -%}
+        <div class="row justify-content-center">
+          <div class="col-12 quick-action alt-font text-{{ section.settings.content_alignment }}">
+              <div class="d-inline-block">
+                {%- if section.settings.quick_content != blank -%}{{ section.settings.quick_content }}{%- endif -%}
+                {%- render 'button-settings',
+                  btn_style: section.settings.button_style,
+                  btn_size: section.settings.button_size,
+                  btn_text: section.settings.btn_text,
+                  btn_link: section.settings.btn_link,
+                  btn_radius: section.settings.btn_radius,
+                  btn_border_width: section.settings.btn_border_width,
+                  btn_icon_class: section.settings.btn_icon_class,
+                  icon_position: section.settings.icon_position
+                -%}
+              </div>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+<style>
+  {%- if section.settings.quick_content_color != blank -%}
+    .section-{{ section.id }} .quick-action p, .section-{{ section.id }} .quick-action p a {
+      color: {{ section.settings.quick_content_color }};
+    }
+  {%- endif -%}
+</style>
+{% schema %}
+{
+  "name": "Quick action",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "richtext",
+      "id": "quick_content",
+      "label": "Quick action content",
+      "default": "<p>Have you any question?</p>"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment ",
+      "default": "center",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "default": "btn-black",
+      "options": [
+        {
+          "value": "btn-black",
+          "label": "Solid button black"
+        },
+        {
+          "value": "btn-white",
+          "label": "Solid button white"
+        },
+        {
+          "value": "btn-base-color",
+          "label": "Solid button base"
+        },
+        {
+          "value": "btn-black-border",
+          "label": "Border button black"
+        },
+        {
+          "value": "btn-white-border",
+          "label": "Border button white"
+        },
+        {
+          "value": "btn-base-color-border",
+          "label": "Border button base"
+        },
+        {
+          "value": "btn-white-border border-opacity",
+          "label": "Border opacity button white"
+        },
+        {
+          "value": "btn-black-border border-opacity",
+          "label": "Border opacity button black"
+        },
+        {
+          "value": "btn-link btn-link-black",
+          "label": "Underlined button black"
+        },
+        {
+          "value": "btn-link btn-link-white",
+          "label": "Underlined button white"
+        },
+        {
+          "value": "btn-link btn-link-base-color",
+          "label": "Underlined button base"
+        },
+        {
+          "value": "btn-custom",
+          "label": "Custom button"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Button size",
+      "default": "btn-medium",
+      "options": [
+        {
+          "value": "btn-extra-large",
+          "label": "Extra Large"
+        },
+        {
+          "value": "btn-large",
+          "label": "Large"
+        },
+        {
+          "value": "btn-medium",
+          "label": "Medium"
+        },
+        {
+          "value": "btn-small",
+          "label": "Small"
+        },
+        {
+          "value": "btn-very-small",
+          "label": "Very Small"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "btn_radius",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Button radius",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "btn_border_width",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Button border width",
+      "default": 1
+    },
+    {
+      "type": "text",
+      "id": "btn_icon_class",
+      "label": "Enter icon class",
+      "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+    },
+    {
+      "type": "select",
+      "id": "icon_position",
+      "label": "Icon position",
+      "default": "right-icon",
+      "options": [
+        {
+          "value": "left-icon",
+          "label": "Left"
+        },
+        {
+          "value": "right-icon",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button text",
+      "default": "Ask question"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": "small-section-top",
+      "options": [
+        {
+          "value": "large-section-top",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-top",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-top",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-top",
+          "label": "Very small section"
+        },
+        {
+          "value": "pt-0",
+          "label": "No padding top"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": "small-section-bottom",
+      "options": [
+        {
+          "value": "large-section-bottom",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-bottom",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-bottom",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-bottom",
+          "label": "Very small section"
+        },
+        {
+          "value": "pb-0",
+          "label": "No padding bottom"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "section_show",
+      "label": "Show section in mobile",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "section_bg_image",
+      "label": "Section background image",
+      "info": "Recommended size 1920x1080"
+    },
+    {
+      "type": "select",
+      "id": "background_position",
+      "label": "Background position",
+      "options": [
+        {
+          "value": "cover-background",
+          "label": "Cover"
+        },
+        {
+          "value": "fixed-background",
+          "label": "Fixed"
+        }
+      ],
+      "default": "cover-background"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color"
+    },
+    {
+      "type": "color",
+      "id": "quick_content_color",
+      "label": "Quick content color"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "section_class_name",
+      "label": "Section class name"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Quick action",
+      "blocks": [
+
+      ]
+    }
+  ]
+}
+{% endschema %}

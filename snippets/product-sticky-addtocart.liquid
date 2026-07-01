@@ -1,0 +1,153 @@
+{%- liquid
+  assign first_product = product.selected_or_first_available_variant
+  assign btn-text = 'products.product.add_to_cart' | t
+  if first_product.available == true
+    if first_product.incoming == true and first_product.inventory_quantity < 1
+      assign btn-text = 'general.product_information.pre_order' | t
+    endif
+  else
+    assign btn-text = 'products.product.sold_out' | t
+  endif
+-%}
+<div class="sticky-addtocart {% if section.settings.sticky_cart_desktop == true and section.settings.sticky_cart_mobile == false %}d-none d-md-block{% elsif section.settings.sticky_cart_desktop == false and section.settings.sticky_cart_mobile == true %}d-md-none {% elsif section.settings.sticky_cart_desktop == false and section.settings.sticky_cart_mobile == false %}d-none{% endif %}">
+  <div class="container sticky-addtocart-inner">
+    {%- assign product_form_id = 'sticky-product-form-' | append: section.id -%}
+    <product-form class="row sticky-product-form">
+      <div class="col-12">
+        {%- form 'product',
+          product,
+          id: product_form_id,
+          class: 'form sticky-addtocart-form d-flex align-items-center w-100',
+          novalidate: 'novalidate',
+          data-type: 'add-to-cart-form'
+        -%}
+          {%- if product.has_only_default_variant -%}
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          {%- endif -%}
+          <div class="sticky-product flex-shrink-0 d-none d-md-flex align-items-center me-auto">
+            <div class="product-img"><img src="{{ product.featured_image | img_url: '60x80_crop_center' }}" alt="" width="auto" height="auto" loading="lazy"></div>
+            <div class="product-info">
+              <div class="sticky-product-title alt-font">{{ product.title }}</div>
+              {%- render 'main-price', product: product, use_variant: true, price_class: 'sticky-addtocart-price' -%}
+            </div>
+          </div>
+          {%- unless product.has_only_default_variant -%}
+            <div class="sticky-product-variants">
+              {%- assign sticky_variant_json = '{' -%}
+              {%- assign options_html = '' -%}
+              {%- for sticky_variant in product.variants -%}
+                {%- liquid
+                  assign selected = false
+                  if sticky_variant.id == product.selected_or_first_available_variant.id
+                    assign selected = true
+                  endif
+                  assign availability_text = 'in_stock'
+                  if sticky_variant.available == true
+                    if sticky_variant.incoming == true and sticky_variant.inventory_quantity < 1
+                      assign availability_text = 'pre_order'
+                    endif
+                  else
+                    assign availability_text = 'out_of_stock'
+                  endif
+                  assign sticky_variant_price = sticky_variant.price | money
+                  assign sticky_variant_compare_at_price = sticky_variant.compare_at_price | money
+                  assign sticky_variant_withoutMoney_price = sticky_variant.price
+                  assign sticky_variant_withoutMoney_compare_at_price = sticky_variant.compare_at_price
+                  assign sticky_variant_img_url = sticky_variant.featured_image | image_url: width: 60
+                  assign sticky_variant_json = sticky_variant_json | append: '"' | append: sticky_variant.id | append: '"'
+                  assign sticky_variant_json = sticky_variant_json | append: ':{'
+                  assign sticky_variant_json = sticky_variant_json | append: '"availability_text":"' | append: availability_text | append: '",'
+                  assign sticky_variant_json = sticky_variant_json | append: '"price":"' | append: sticky_variant_price | append: '",'
+                  assign sticky_variant_json = sticky_variant_json | append: '"compare_price":"' | append: sticky_variant_compare_at_price | append: '",'
+                  assign sticky_variant_json = sticky_variant_json | append: '"wihtoutMoney_price":"' | append: sticky_variant_withoutMoney_price | append: '",'
+                  assign sticky_variant_json = sticky_variant_json | append: '"wihtoutMoney_compare_price":"' | append: sticky_variant_withoutMoney_compare_at_price | append: '",'
+                  assign sticky_variant_json = sticky_variant_json | append: '"image":"' | append: sticky_variant_img_url | append: '"'
+                  assign sticky_variant_json = sticky_variant_json | append: '},'
+                -%}
+                {%- capture option_html -%}
+                    <option value="{{ sticky_variant.id }}" {% if selected %}selected="true"{% endif %}>{{ sticky_variant.title }}</option>
+                  {%- endcapture -%}
+                {%- assign options_html = options_html | append: option_html | strip -%}
+              {%- endfor -%}
+              <select
+                class="product-variants-dd mb-0"
+                name="id"
+                form="{{ product_form_id }}"
+                autocomplete="off"
+                data-sticky-variant-dd
+              >
+                {{- options_html -}}
+              </select>
+              {%- assign sticky_variant_json = sticky_variant_json | append: '}' -%}
+              <script type="text/javascript">
+                window.stickyVariantConfig = {{ sticky_variant_json }};
+              </script>
+            </div>
+          {%- endunless -%}
+          <div class="product-form-buttons d-flex align-items-center">
+            <quantity-input class="quantity">
+              <button
+                class="quantity-button quantity-minus feather-minus"
+                name="minus"
+                type="button"
+                aria-label="minus"
+              ><span class="visually-hidden">-</span></button>
+              <input
+                class="quantity-input"
+                type="number"
+                name="quantity"
+                id="Sticky-Quantity-{{ section.id }}"
+                min="1"
+                value="1"
+                form="{{ product_form_id }}"
+                autocomplete="off"
+                id="quantity-input"
+                aria-label="quantity"
+              >
+              <label for="quantity-input" class="visually-hidden"></label> 
+              <button
+                id="quantity-input"
+                class="quantity-button quantity-plus feather-plus"
+                name="plus"
+                type="button"
+                aria-label="plus"
+              ><span class="visually-hidden">+</span></button>
+            </quantity-input>
+            <button
+              type="submit"
+              name="add"
+              class="btn btn-black btn-medium"
+              {% if first_product.available == false %}
+                disabled
+              {% endif %}
+            >
+              <span>{{ btn-text }}</span>
+            </button>
+            {%- if section.settings.show_dynamic_checkout_btn -%}
+              {{ form | payment_button }}
+            {%- endif -%}
+            {%- if section.settings.show_sticky_wishlist -%}
+              {%- render 'button-wishlist', product: product, tooltip_position: 'top' -%}
+            {%- endif -%}
+            {%- if section.settings.show_compare == true -%}
+              <a
+                href="#"
+                rel="nofollow noopener"
+                class="btn compare-btn position-relative d-flex align-items-center justify-content-center"
+                data-compare="add"
+                data-handle="{{ product.id }}"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                data-bs-original-title="Add to compare"
+                data-bs-trigger="hover"
+                aria-label="compare"
+              >
+                <i class="feather-repeat"></i>
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endform -%}
+      </div>
+    </product-form>
+  </div>
+</div>

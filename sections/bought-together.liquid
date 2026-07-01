@@ -1,0 +1,480 @@
+{%- if product.metafields.custom.select_for_product_bundle_item != blank -%}
+	<section
+	  id="{{ section.settings.section_id }}"
+	  class="section-{{ section.id }} {% if section.settings.section_show == false %}d-none{% endif %}{{ section.settings.section_class_name }} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }} d-md-block"
+	  style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}">
+	  <div class="{{ section.settings.container_type }}">
+	    {%- if section.settings.heading != blank
+	      or section.settings.sub_heading != blank
+	      or section.settings.description != blank
+	    -%}
+	      <div class="row heading-wrapper title-{{ section.settings.title_style }} align-items-{% if section.settings.description != blank %}start{% else %}center{% endif %} text-center text-lg-start">
+	        {%- render 'section-title-style', heading_alignment: section.settings.heading_alignment -%}
+	      </div>
+	    {%- endif -%}
+	    <div class="row">
+	    	{%- liquid
+				  assign main_product = product
+				  assign main_current_variant = main_product.selected_or_first_available_variant
+				  assign main_productImage = main_current_variant.featured_image | default: product.featured_image
+				  assign main_product_available = main_product.variants | where: 'available'
+				  if main_product.available == false
+				  continue
+				  endif
+				-%}
+	    	<div class="bought-together col-12 p-0"> 
+				  <div class="{% if section.settings.fullwidth %}container-fluid{% else %}container-lg{% endif %}">
+				    <div class="row">
+				      <div class="col-lg-9 product-list d-flex flex-wrap">
+		          	{%- form 'product',
+				          product,
+				          class: 'form',
+				          id: 'bought-together-form',
+				          novalidate: 'novalidate',
+				          data-type: 'add-to-cart-form'
+				        -%}
+				          	<div class="row">
+					            <div class="col product-item">
+					              <div class="image">
+					                <img
+					                  src="{{ main_productImage | img_url: 'master' }}" 
+					                  loading="lazy"
+					                  alt=""
+					                  width="{{ main_productImage.width }}"
+					                  height="{{ main_productImage.height }}"
+					                />
+					              </div>
+					              <div class="product-desc">
+					                <div class="d-flex align-items-center product-option main-product">
+					                  <label>
+					                    <input type="checkbox" class="d-none" name="check" checked>
+					                    <span class="checkmark position-relative"></span>
+					                  </label>
+					                  {%- if main_product.variants.size > 1 -%}
+						                  <select
+						                    name="items[][id]"
+								                class="bought-together-varinat-option"
+								                data-compare-price="{{ main_product.compare_at_price | default: main_product.price | money_without_currency }}"
+								                data-price="{{ main_product.price | money_without_currency }}"
+								                data-id="{{ main_current_variant.id }}"
+								                data-final-price="{{ main_product.price | money_without_currency }}"
+						                  >
+						                    {%- for variants in main_product_available -%}
+							                  {%- liquid
+							                    assign selected = false
+							                  -%}
+							                  {%- if variants.id == main_product.selected_or_first_available_variant.id -%}
+							                    {% assign selected = true %}
+							                  {%- endif -%}
+							                  <option
+							                    value="{{ variants.id }}"
+							                    {% if selected %}
+							                      selected="true"
+							                    {% endif %}
+							                    data-image="{{ variants.featured_image | default: image | img_url: 'master' }}"
+							                    data-compare-price="{{ variants.compare_at_price | default: variants.price | money_without_currency }}"
+							                    data-price="{{ variants.price | money_without_currency }}"
+							                  >
+							                    {{ variants.title }}
+							                  </option>
+							                {%- endfor -%} 
+						                  </select>
+						                  {%- else -%}
+						                  	<input
+								                  type="hidden"
+								                  class="bought-together-varinat-option"
+								                  name="items[][id]"
+								                  value="{{ product.selected_or_first_available_variant.id }}"
+								                  data-compare-price="{{ product.compare_at_price | default: product.price | money_without_currency }}"
+								                  data-price="{{ product.price | money_without_currency }}"
+								                  data-final-price="{{ product.price | money_without_currency }}"
+								                >
+					                  {%- endif -%}
+					                </div>
+					                <a href="#" class="alt-font" aria-label="title">{{ main_product.title }}</a>
+					                <div class="price-wrapper bundel-price-wrapper alt-font">  
+					                	{%- render 'price', product: main_product -%}
+					              	</div>
+					              </div>
+					            </div>
+					            <div class="col-auto plus-icon px-0">
+					              <span><i class="bi bi-plus"></i></span>
+					            </div>
+					            {%- assign boughtTogetherCollection = collections[product.metafields.custom.select_for_product_bundle_item] -%}
+					            {%- assign boughtTogether = boughtTogetherCollection.products -%}
+					            {%- for product in boughtTogether -%}
+					              {%- liquid
+									        assign current_variant = product.selected_or_first_available_variant
+									        assign productImage = current_variant.featured_image | default: product.featured_image
+									        assign product_available = product.variants | where: 'available'
+									        if product.available == false
+									        continue
+									        endif
+									      -%}
+									      {%- unless product.id == main_product.id -%}
+							            <div class="col product-item">
+							              <div class="image">
+							                <img
+							                  src="{{ productImage | img_url: 'master' }}" 
+							                  loading="lazy"
+							                  alt=""
+							             			width="{{ productImage.width }}"
+					                  		height="{{ productImage.height }}"
+							                />
+							              </div>
+							              <div class="product-desc">
+							                <div class="d-flex align-items-center product-option">
+							                  <label>
+							                    <input type="checkbox" class="d-none itemcheckbox" name="itemcheckbox" checked>
+							                    <span class="checkmark position-relative"></span>
+							                  </label>
+																{%- if product.variants.size > 1 -%}
+									                <select
+									                  name="items[][id]"
+									                  class="bought-together-varinat-option"
+									                  data-compare-price="{{ product.compare_at_price | default: product.price }}"
+									                  data-price="{{ product.price | money_without_currency }}"
+									                  data-id="{{ current_variant.id }}"
+									                  data-final-price="{{ product.price | money_without_currency }}"
+									                >
+									                  {%- for variant in product_available -%}
+									                    {%- liquid
+									                      assign selected = false
+									                    -%}
+									                    {%- if variant.id == product.selected_or_first_available_variant.id -%}
+									                      {% assign selected = true %}
+									                    {%- endif -%}
+									                    <option
+									                      value="{{ variant.id }}"
+									                      {% if selected %}
+									                        selected="true"
+									                      {% endif %}
+									                      data-image="{{ variant.featured_image | default: image | img_url: 'master' }}"
+									                      data-compare-price="{{ variant.compare_at_price | default: variant.price | money_without_currency }}"
+									                      data-price="{{ variant.price | money_without_currency }}"
+									                      data-final-price="{{ product.price | money_without_currency }}"
+									                    >
+									                      {{ variant.title }}
+									                    </option>
+									                  {%- endfor -%}
+									                </select>
+									              {%- else -%}
+									                <input
+									                  type="hidden"
+									                  class="bought-together-varinat-option"
+									                  name="items[][id]"
+									                  value="{{ product.selected_or_first_available_variant.id }}"
+									                  data-compare-price="{{ product.compare_at_price | default: product.price | money_without_currency }}"
+									                  data-price="{{ product.price | money_without_currency }}"
+									                  data-final-price="{{ product.price | money_without_currency }}"
+									                >
+									              {%- endif -%}
+							                </div>
+							                <a href="{{ product.url }}" class="alt-font" aria-label="title">{{ product.title }}</a>
+							                <div class="price-wrapper bundel-price-wrapper alt-font">        
+							                  {%- render 'price', product: product -%}
+							                </div>
+							              </div>
+							            </div>
+						           	{%- endunless -%}
+						          {%- endfor -%}
+				          	</div>
+					        {%- endform -%}
+				        </div>
+				        <div class="col-lg-3 product-total" data-discount="{{ product.metafields.custom.bundle_discount_rate }}">
+								  <label class="alt-font">{{ 'general.bought_together.buy_label' | t }}</label>
+								  <div class="price-wrapper">
+								    <span class="price-item special-price final-price" data-subtotal=""><span class="price">{{ cart.total_price | money }}</span></span>
+								    {%- if product.metafields.custom.bundle_discount_rate != blank and product.metafields.custom.bundle_discount_rate != 0  -%}
+								        <span class="price-item old-price discount-price" data-discountTotal=""><span class="price"><s>
+								     </s></span></span>
+									{%- endif -%}
+								  </div>
+								  {%- if product.metafields.custom.bundle_discount_rate != blank and product.metafields.custom.bundle_discount_rate != 0  -%}
+								      <div class="save-price">
+								        <label>{{ 'general.bought_together.save_label' | t }}</label>
+								        <span class="different-price"></span>
+								      </div>
+								  {%- endif -%}
+								  <a class="btn bought-submit-btn btn-black btn-medium" aria-label="btn">{{ 'general.bought_together.add-button-text' | t }}</a>
+								  {%- if product.metafields.custom.bundle_discount_rate != blank and product.metafields.custom.bundle_discount_rate != 0 and section.settings.discount_description != blank -%}
+								  	<div class="info-text">{{ section.settings.discount_description }}</div>
+									{%- endif -%}
+								</div>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+	    </div>
+	</section> 
+{%- endif -%}
+<style>
+  {%- unless section.settings.use_default_section_typography == true -%}
+    .section-{{ section.id }} .section-heading {
+      font-size: {{ section.settings.section_heading_size }}px;
+      line-height: {{ section.settings.heading_line_height }}px;
+    }
+    .section-{{ section.id }} .section-sub-heading {
+      font-size: {{ section.settings.sub_heading_size }}px;
+      letter-spacing: {{ section.settings.subheading_letter_spacing }}px;
+      line-height: {{ section.settings.sub_heading_line_height }}px;
+    }
+  {%- endunless -%}
+  {%- if section.settings.section_heading_color != blank -%}
+    .section-{{ section.id }} .section-heading {
+      color: {{ section.settings.section_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_sub_heading_color != blank -%}
+    .section-{{ section.id }} .section-sub-heading {
+      color: {{ section.settings.section_sub_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_description_color != blank -%}
+    .section-{{ section.id }} .section-description {
+      color: {{ section.settings.section_description_color }};
+    }
+  {%- endif -%}
+</style>
+{% schema %}
+  {
+    "name": "Bought together",
+    "settings": [
+    	{
+	      "type": "select",
+	      "id": "container_type",
+	      "label": "Container type",
+	      "default": "container",
+	      "options": [
+	        {
+	          "value": "container-fluid",
+	          "label": "Container fluid"
+	        },
+	        {
+	          "value": "w-100 overflow-hidden",
+	          "label": "Full width"
+	        },
+	        {
+	          "value": "container",
+	          "label": "Container"
+	        }
+	      ]
+	    },
+	    {
+	      "type": "text",
+	      "id": "heading",
+	      "label": "Heading",
+	      "info": "Wrap word in square bracket for stylish word. e.g. [Hello] World"
+	    },
+	    {
+	      "type": "textarea",
+	      "id": "sub_heading",
+	      "label": "Sub heading"
+	    },
+	    {
+	      "type": "richtext",
+	      "id": "description",
+	      "label": "Description"
+	    },
+	    {
+	      "type": "select",
+	      "id": "title_style",
+	      "label": "Title style",
+	      "default": "style-1",
+	      "options": [
+	        {
+	          "value": "style-1",
+	          "label": "Style-1"
+	        },
+	        {
+	          "value": "style-2",
+	          "label": "Style-2"
+	        },
+	        {
+	          "value": "style-3",
+	          "label": "Style-3"
+	        }
+	      ]
+	    },
+     	{
+        "type": "liquid",
+        "id": "discount_description",
+        "label": "Discount description"
+      },
+    	{
+	      "type": "header",
+	      "content": "Section Settings"
+	    },
+	    {
+	      "type": "checkbox",
+	      "id": "use_default_section_typography",
+	      "label": "Use section typography from theme settings",
+	      "info": "By default section typography values will be used from theme settings. Uncheck this checkbox to use below values.",
+	      "default": true
+	    },
+	    {
+	      "type": "range",
+	      "id": "section_heading_size",
+	      "min": 20,
+	      "max": 100,
+	      "step": 1,
+	      "unit": "px",
+	      "label": "Heading size",
+	      "default": 45
+	    },
+	    {
+	      "type": "range",
+	      "id": "heading_line_height",
+	      "label": "Heading line height",
+	      "unit": "px",
+	      "min": 26,
+	      "max": 120,
+	      "step": 1,
+	      "default": 55
+	    },
+	    {
+	      "type": "range",
+	      "id": "sub_heading_size",
+	      "min": 12,
+	      "max": 50,
+	      "step": 1,
+	      "unit": "px",
+	      "label": "Sub heading size",
+	      "default": 24
+	    },
+	    {
+	      "type": "range",
+	      "id": "sub_heading_line_height",
+	      "label": "Sub heading line height",
+	      "unit": "px",
+	      "min": 24,
+	      "max": 60,
+	      "step": 1,
+	      "default": 30
+	    },
+	    {
+	      "type": "range",
+	      "id": "subheading_letter_spacing",
+	      "min": 0,
+	      "max": 10,
+	      "step": 0.5,
+	      "unit": "px",
+	      "label": "Sub heading letter spacing",
+	      "default": 0
+	    },
+	    {
+	      "type": "select",
+	      "id": "padding_top",
+	      "label": "Padding top",
+	      "default": "small-section-top",
+	      "options": [
+	        {
+	          "value": "large-section-top",
+	          "label": "Large section"
+	        },
+	        {
+	          "value": "medium-section-top",
+	          "label": "Medium section"
+	        },
+	        {
+	          "value": "small-section-top",
+	          "label": "Small section"
+	        },
+	        {
+	          "value": "very-small-section-top",
+	          "label": "Very small section"
+	        },
+	        {
+	          "value": "pt-0",
+	          "label": "No padding top"
+	        }
+	      ]
+	    },
+	    {
+	      "type": "select",
+	      "id": "padding_bottom",
+	      "label": "Padding bottom",
+	      "default": "small-section-bottom",
+	      "options": [
+	        {
+	          "value": "large-section-bottom",
+	          "label": "Large section"
+	        },
+	        {
+	          "value": "medium-section-bottom",
+	          "label": "Medium section"
+	        },
+	        {
+	          "value": "small-section-bottom",
+	          "label": "Small section"
+	        },
+	        {
+	          "value": "very-small-section-bottom",
+	          "label": "Very small section"
+	        },
+	        {
+	          "value": "pb-0",
+	          "label": "No padding button"
+	        }
+	      ]
+	    },
+	    {
+	      "type": "select",
+	      "id": "heading_alignment",
+	      "label": "Heading alignment ",
+	      "default": "center",
+	      "info": "Not applicable in title style-2",
+	      "options": [
+	        {
+	          "value": "start",
+	          "label": "Left"
+	        },
+	        {
+	          "value": "center",
+	          "label": "Center"
+	        },
+	        {
+	          "value": "end",
+	          "label": "Right"
+	        }
+	      ]
+	    },
+	    {
+	      "type": "checkbox",
+	      "id": "section_show",
+	      "label": "Show section in mobile",
+	      "default": true
+	    },
+	    {
+	      "type": "color",
+	      "id": "section_bg_color",
+	      "label": "Section background color"
+	    },
+	    {
+	      "type": "color",
+	      "id": "section_heading_color",
+	      "label": "Section heading color"
+	    },
+	    {
+	      "type": "color",
+	      "id": "section_sub_heading_color",
+	      "label": "Section sub heading color"
+	    },
+	    {
+	      "type": "color",
+	      "id": "section_description_color",
+	      "label": "Section description color"
+	    },
+	    {
+	      "type": "text",
+	      "id": "section_id",
+	      "label": "Section ID"
+	    },
+	    {
+	      "type": "text",
+	      "id": "section_class_name",
+	      "label": "Section class name"
+	    }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,1029 @@
+/*************************************************************
+** Judgeme review css
+*************************************************************/
+
+.jm-text.jm-review-widget-minimal-header__title {
+	font-size: var(--font_size_plus12) !important;
+	line-height: var(--font_size_plus16) !important;
+	text-align: center !important;
+    font-family: var(--alt-font) !important;
+    font-weight: var(--heading-font-weight) !important;
+    display: block !important;
+    width: 100% !important;
+}
+
+.jm-review-widget--minimal-header {
+    padding-top: 0 !important;
+}
+
+.jm-cluster .jm-stack:has(.jm-text.jm-review-widget-minimal-header__title) {
+    width: 100% !important;
+    display: block !important;
+}
+
+@media (min-width: 750px) {
+	.jm-text.jm-review-widget-minimal-header__title {
+		font-size: var(--section-heading-size) !important;
+    	line-height: var(--section-heading-line-height) !important;
+	}
+}
+
+/*************************************************************
+** Judgeme review css END
+*************************************************************/
+
+
+
+
+/*************************************************************
+** Policy pages css
+*************************************************************/
+
+.shopify-policy__container {
+    max-width: var(--container, 1280px);
+    padding-block: 30px;
+}
+
+.shopify-policy__container h1 {
+    font-size: var(--font_size_plus17);
+    line-height: var(--font_size_plus17);
+    font-weight: var(--heading-font-weight);
+}
+
+.shopify-policy__container h2 {
+    font-size: 24px;
+    margin-top: 15px;
+}
+
+.shopify-policy__container ul {
+    margin-left: 15px;
+}
+
+@media (min-width: 768px) {
+    .shopify-policy__container h1 {
+        font-size: var(--h2-font-size);
+        line-height: var(--h2-line-height);
+    }
+
+    .shopify-policy__container h2 {
+        font-size: 30px;
+    }
+}
+
+/*************************************************************
+** Policy pages css END
+*************************************************************/
+
+
+
+/*************************************************************
+** Whatsapp floating css
+*************************************************************/
+
+.chat-support-whatsapp-wrapper {
+    right: 20px;
+    bottom: 20px;
+    z-index: 11;
+    position: fixed;
+    padding-bottom: 0;
+    transition: all 0.5s;
+}
+
+@media (max-width: 767px) {
+  .chat-support-whatsapp-wrapper {
+    padding-bottom: 56px;
+  }
+}
+
+[data-current-template="template--product"] .chat-support-whatsapp-wrapper {
+  padding-bottom: var(--sticky-addtocart-space);
+}
+
+.chat-support-whatsapp-wrapper .btn {
+    width: 60px;
+    height: 60px;
+    background-color: #25d366;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px #0003;
+    transition: all .3s ease;
+}
+
+.chat-support-whatsapp-wrapper .btn svg {
+  width: 35px;
+  height: 35px;
+}
+
+.chat-support-whatsapp-wrapper .btn:hover {
+  transform: scale(1.05);
+}
+
+/*************************************************************
+** Whatsapp floating css END
+*************************************************************/
+
+
+
+/*************************************************************
+** Wishlist hero css
+*************************************************************/
+
+.wishlist-hero-items-count {
+    font-size: 11px;
+    font-weight: var(--font-weight-500);
+    color: var(--count-number-color);
+    position: absolute !important;
+    left: 9px;
+    width: 20px !important;
+    /* display: flex !important; */
+    justify-content: center;
+    background-color: var(--count-bg-color);
+    top: -4px;
+    height: 20px !important;
+    border-radius: 100%;
+    align-items: center;
+}
+
+#wishlisthero-product-page-button-container {
+    padding-top: 0 !important;
+}
+
+#wishlisthero-product-page-button-container button {
+    color: var(--dark-color) !important;
+    flex: 0 0 52px !important;
+    width: 52px !important;
+    height: 50px !important;
+    border: 1px solid var(--extra-medium-gray) !important;
+    margin-left: 0 !important;
+    border-radius: 4px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    opacity: 1 !important;
+}
+
+#wishlisthero-product-page-button-container button:hover {
+    border-color: var(--dark-color) !important;
+}
+
+.wishlist-hero-custom-button.wishlisthero-floating[data-wlh-view="Collection"] button {
+    background-color: var(--white-color) !important;
+    color: var(--dark-color) !important;
+    height: 38px !important;
+    width: 38px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    font-size: 14px !important;
+    border-radius: 100% !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .2) !important;
+    margin-bottom: 8px !important;
+    opacity: 1 !important;
+}
+
+@media (min-width: 768px) {
+    #wishlisthero-product-page-button-container button {
+        margin-left: 15px !important;
+    }
+}
+
+/****************************************
+** Wishlist page CSS
+****************************************/
+
+.wishlist-hero-page-header {
+  text-align: center !important;
+  padding-block: 50px !important;
+}
+
+.wishlist-hero-page-header svg, .wishlist-hero-list-header svg {
+  display: none !important;
+}
+
+.wishlist-hero-list-card .MuiCard-root {
+  display: flex;
+  flex-direction: column;
+}
+
+.MuiLink-underlineHover:has(.wishlist-hero-list-card-product-image) {
+  order: -1;
+}
+
+.wishlist-hero-list-card-header-product-name {
+  min-height: unset !important;
+}
+
+.wishlist-hero-list-card-header {
+  padding-top: 8px !important;
+  padding-bottom: 0 !important;
+}
+
+.wishlist-hero-list-card-product-price {
+  padding-block: 5px !important;
+}
+
+.wishlist-hero-price-update {
+  text-align: left !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+}
+
+.MuiCardHeader-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.MuiCardHeader-content .MuiCardHeader-subheader {
+  order: -1;
+}
+
+.MuiCardHeader-content .MuiCardHeader-subheader .wishlist-hero-list-card-header-added-on {
+  font-size: 12px !important;
+}
+
+.wishlist-hero-list-card-footer-add-to-cart {
+  width: 100% !important;
+}
+
+.wishlist-hero-list-card-product-image {
+  padding-top: 100% !important;
+}
+
+.wishlist-hero-list-card-footer-delete-all, .wishlist-hero-list-card-footer-add-all-to-cart-dialog {
+  border: 1px solid #1c1c1c !important;
+}
+
+.wishlist-hero-list-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+#wishlist-hero-shared-list-view {
+    padding-bottom: 50px;
+}
+
+.wishlist-hero-list-header, .wishlist-hero-list-header-login {
+    font-size: 16px !important;
+}
+
+/****************************************
+** Wishlist page CSS END
+****************************************/
+
+/*************************************************************
+** Wishlist hero css END
+*************************************************************/
+/* Tvastrafit Professional Megamenu Fix */
+
+/* 1. Main row ko Flexbox banakar columns ko side-by-side lana */
+.dropdown-menu.megamenu .row {
+  display: flex !important;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  gap: 40px; /* Columns ke beech ka gap */
+  padding: 20px;
+}
+
+/* 2. Har column (By Collection, Women, Men) ki setting */
+.megamenu .level1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 150px; /* Minimum width har column ke liye */
+}
+
+/* Main heading (Level 1) ka style */
+.megamenu .level1 > .child-link-title {
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #eaeaea;
+  padding-bottom: 5px;
+  width: 100%;
+}
+
+/* 3. Level 2 (The Basic Edit, Tank tops etc.) ki setting */
+.megamenu ul.submenu {
+  padding-left: 0;
+  list-style-type: none;
+  width: 100%;
+}
+
+.megamenu .level2 {
+  margin-bottom: 12px;
+}
+
+.megamenu .level2 > a {
+  font-weight: 600;
+  font-size: 15px;
+  color: #333;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* 4. Level 3 (Deeply nested items) ki setting */
+.megamenu .level3 {
+  margin-bottom: 6px;
+}
+
+.megamenu .level3 > a {
+  font-weight: 400;
+  font-size: 14px;
+  color: #666;
+  transition: color 0.3s ease;
+  padding-left: 5px;
+}
+
+.megamenu .level3 > a:hover {
+  color: #000; /* Hover karne par text dark ho jayega */
+}
+
+/* Mobile view ko protect karne ke liye (Taki wahan bikhre na) */
+@media (max-width: 1199px) {
+  .dropdown-menu.megamenu .row {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
+
+/*************************************************************
+** Tvastra - Product card spacing fix
+*************************************************************/
+
+.product-footer {
+  padding: 6px 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+}
+
+.product-footer .product-title {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.product-footer .price,
+.product-footer [class*="price"] {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.2 !important;
+}
+
+.product-footer .product-card-options {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Grid gap fix */
+.collection-grid-section .row {
+  --bs-gutter-x: 8px !important;
+  --bs-gutter-y: 8px !important;
+}
+
+.collection-grid-section [class*="col-"] {
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+  margin-bottom: 8px !important;
+}
+
+/*************************************************************
+** Tvastra - Product card spacing fix END
+*************************************************************/
+/* Force 4 columns desktop - override Hongo JS */
+@media (min-width: 992px) {
+  #main-collection-product-grid.row {
+    --bs-columns: 4 !important;
+  }
+  #main-collection-product-grid.row > .col {
+    flex: 0 0 auto !important;
+    width: 25% !important;
+  }
+}
+
+/* AGGRESSIVE space fix - product cards */
+#main-collection-product-grid .col {
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+#main-collection-product-grid .product-box {
+  padding: 0 3px !important;
+  margin: 0 !important;
+}
+
+#main-collection-product-grid .box-inner {
+  margin: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+#main-collection-product-grid .product-hover {
+  display: none !important;
+}
+
+#main-collection-product-grid.row {
+  --bs-gutter-y: 4px !important;
+  --bs-gutter-x: 6px !important;
+  row-gap: 4px !important;
+}
+
+@media (max-width: 767px) {
+  #main-collection-product-grid.row {
+    --bs-gutter-y: 4px !important;
+    --bs-gutter-x: 6px !important;
+    row-gap: 4px !important;
+  }
+}
+
+
+/*************************************************************
+** Filter Drawer Overlap Fix (Navbar ke upar laane ke liye)
+*************************************************************/
+.off-canvas-filter,
+.product-sidebar {
+    z-index: 999999 !important; /* Isse filter hamesha navbar aur baaki elements ke upar khulega */
+}
+
+.product-sidebar-overlay {
+    z-index: 999998 !important; /* Ye background dark overlay ke liye hai */
+}
+
+/*************************************************************
+** Sorter Wrapper (Filter button & Product count) Alignment Fix
+*************************************************************/
+.sorter-wrapper {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin-bottom: 20px !important;
+}
+
+.sorter-wrapper .filter-btn {
+    margin: 0 !important;
+    flex-shrink: 0;
+}
+
+.sorter-wrapper .swich-wrapper {
+    margin: 0 auto !important; /* Text ko center me rakhne ke liye */
+}
+
+.sorter-wrapper .filter-select {
+    margin-left: auto !important; /* Sort dropdown ko right side me dhakelne ke liye */
+}
+
+/* Mobile view ke liye adjustment */
+@media (max-width: 767px) {
+    .sorter-wrapper {
+        flex-wrap: wrap !important;
+        gap: 10px; /* Mobile me thoda space dene ke liye */
+    }
+    
+    .sorter-wrapper .swich-wrapper {
+        order: 2; /* Mobile me showing text ko niche karne ke liye */
+        width: 100%;
+        margin-top: 10px !important;
+    }
+}
+
+/* Showing products wale text ko hide karne ke liye */
+.sorter-wrapper .swich-wrapper,
+.product-count,
+.collection-product-count {
+    display: none !important;
+}
+
+/* =========================================================
+   Collection Page Product Card - Aesthetic & Professional Look
+   ========================================================= */
+
+.product-box {
+    background: #ffffff !important; /* Card ka clean white background */
+    border-radius: 12px !important; /* Corners ko thoda smooth (round) karne ke liye */
+    padding: 15px !important; /* Card ke andar thodi space dene ke liye */
+    transition: all 0.3s ease-in-out !important; /* Smooth animation ke liye */
+    border: 1px solid rgba(0, 0, 0, 0.03) !important; /* Ekdam light, invisible border */
+    margin-bottom: 20px !important; 
+}
+
+/* Hover effect: Jab mouse product ke upar jayega */
+.product-box:hover {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08) !important; /* Premium soft shadow */
+    transform: translateY(-6px) !important; /* Product ko halke se upar uthane ke liye */
+    border-color: rgba(0, 0, 0, 0.08) !important; /* Border thodi si dark hogi */
+    z-index: 10;
+}
+
+/* Product ke andar ki image ko bhi round karne ke liye */
+.product-box .product-image {
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+
+/* =========================================================
+   100% SAFE LEFT ALIGNMENT + THODA BOLD PRICE
+   ========================================================= */
+.product-box .product-footer,
+.product-box .product-title-wrapper,
+.product-box .product-title,
+.product-box .swatch-label-v2 {
+    text-align: left !important;
+}
+
+/* Alignment ke liye */
+.product-box .price,
+.product-box .price-wrapper,
+.product-box .swatch-flex-v2 {
+    justify-content: flex-start !important;
+    margin-left: 0 !important;
+}
+
+/* Sirf Price ko thoda bold karne ke liye */
+.product-box .price,
+.product-box .price-wrapper,
+.product-box .price * {
+    font-weight: 600 !important; 
+}
+
+/*************************************************************
+** Tvastra - Hongo 1.4 UI, review, overflow and speed fixes
+*************************************************************/
+
+html,
+body {
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+body {
+  position: relative;
+}
+
+#MainContent,
+.content-for-layout,
+.collection-wrap,
+.main-product-page {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+#MainContent .container,
+#MainContent .container-fluid,
+#MainContent .page-width {
+  box-sizing: border-box;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+#MainContent .container {
+  max-width: var(--container, 1280px) !important;
+}
+
+#MainContent .container-fluid {
+  max-width: var(--container-fluid, 1920px);
+}
+
+@media (min-width: 992px) {
+  .collection-wrap > .container,
+  .collection-wrap > .container-fluid,
+  .main-product-page > .container,
+  .main-product-page > .container-fluid {
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+
+  .collection-wrap .product-content-left-part,
+  .collection-wrap .product-content-right-part,
+  .collection-wrap #CollectionProductGrid,
+  .main-product-page .product-summary {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+
+  .main-product-page .product.row,
+  .collection-wrap > .container > .row,
+  .collection-wrap > .container-fluid > .row {
+    justify-content: center;
+  }
+}
+
+@media (min-width: 1200px) {
+  .collection-wrap > .container,
+  .main-product-page > .container {
+    max-width: var(--container, 1280px) !important;
+  }
+}
+
+.product-box {
+  padding: 8px !important;
+  margin-bottom: 14px !important;
+  border-radius: 8px !important;
+}
+
+.product-box:hover {
+  transform: translateY(-3px) !important;
+}
+
+.product-box .product-image {
+  border-radius: 6px !important;
+}
+
+.product-box .product-footer {
+  padding-top: 6px !important;
+  padding-bottom: 0 !important;
+  gap: 1px !important;
+}
+
+.product-box .product-title {
+  font-size: var(--font_size_minus1) !important;
+  line-height: 1.25 !important;
+}
+
+.product-box .price,
+.product-box .price-wrapper,
+.product-box .price * {
+  font-size: var(--font_size_minus1) !important;
+  line-height: 1.25 !important;
+}
+
+.product-box .custom-swatch-wrapper,
+.product-box .custom-card-swatch-dots,
+.product-box .color-swatch-box-v2,
+.product-box .product-variants,
+.product-box .product-option {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.product-box .custom-swatch-wrapper > *,
+.product-box .custom-card-swatch-dots {
+  margin-top: 2px !important;
+}
+
+.product-box .swatch-label-v2 {
+  margin-top: 0 !important;
+  margin-bottom: 4px !important;
+}
+
+.product-box .swatch-flex-v2,
+.product-box .product-variants fieldset {
+  gap: 6px !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.jdgm-preview-badge,
+.jdgm-widget,
+.jdgm-star,
+.jdgm-prev-badge__stars {
+  line-height: 1 !important;
+}
+
+.jdgm-star {
+  display: inline-block !important;
+  width: auto !important;
+  height: auto !important;
+  color: #f5a623 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 14px !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  text-rendering: auto !important;
+}
+
+.jdgm-star:before {
+  content: "\2605" !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+.jdgm-star.jdgm--off:before {
+  content: "\2606" !important;
+}
+
+.jdgm-star.jdgm--half:before {
+  content: "\2605" !important;
+}
+
+.jdgm-prev-badge__text {
+  margin-left: 5px !important;
+}
+
+.spr-starrating .spr-icon,
+.spr-badge-starrating .spr-icon {
+  color: #f5a623 !important;
+  font-family: "Font Awesome 6 Free" !important;
+  font-weight: 900 !important;
+}
+
+.spr-icon-star:before,
+.spr-icon-star-empty:before {
+  content: "\f005" !important;
+}
+
+.product-box .product-rating,
+.product-box .jdgm-preview-badge,
+.product-box .jdgm-widget,
+.product-box .shopify-product-reviews-badge,
+.product-box .spr-badge,
+.product-box .spr-starrating {
+  display: none !important;
+}
+
+header .navbar-brand {
+  --main-logo-width: 170px !important;
+  width: var(--main-logo-width) !important;
+  max-width: var(--main-logo-width) !important;
+  flex: 0 0 auto;
+}
+
+header .navbar-brand img {
+  width: var(--main-logo-width) !important;
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+.site-footer .footer-logo,
+.site-footer .copy-right-logo,
+.site-footer .copy-right-logo a {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+  width: 100%;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.site-footer .footer-logo img,
+.site-footer .copy-right-logo img {
+  display: block !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.site-footer .logo-content,
+.site-footer .text-block-content {
+  text-align: center !important;
+}
+
+/*************************************************************
+** Tvastra - single clean white header
+*************************************************************/
+
+#hongo-header,
+#hongo-header .navbar.tvastra-single-header,
+body.sticky-active #hongo-header .navbar.tvastra-single-header,
+body.sticky #hongo-header .navbar.tvastra-single-header {
+  background: var(--header-bg-color, #fff) !important;
+  background-color: var(--header-bg-color, #fff) !important;
+}
+
+#hongo-header .navbar.tvastra-single-header,
+body.sticky-active #hongo-header .navbar.tvastra-single-header,
+body.sticky #hongo-header .navbar.tvastra-single-header {
+  min-height: 58px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  box-shadow: none !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+#hongo-header .navbar.tvastra-single-header > .container,
+#hongo-header .navbar.tvastra-single-header > .container-fluid {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 58px !important;
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  position: relative !important;
+}
+
+#hongo-header .navbar.tvastra-single-header .navbar-brand {
+  --main-logo-width: 145px !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  position: static !important;
+  transform: none !important;
+  margin: 0 !important;
+}
+
+#hongo-header .navbar.tvastra-single-header .navbar-brand .default-logo,
+body.sticky-active #hongo-header .navbar.tvastra-single-header .navbar-brand .default-logo {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: var(--main-logo-width) !important;
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+#hongo-header .navbar.tvastra-single-header .navbar-brand .alt-logo,
+body.sticky-active #hongo-header .navbar.tvastra-single-header .navbar-brand .alt-logo {
+  display: block !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  max-width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
+@media (min-width: 1200px) {
+  #hongo-header .navbar.tvastra-single-header .menu-logo,
+  #hongo-header .navbar.tvastra-single-header .logo {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: translate(-50%, -50%) !important;
+    width: auto !important;
+    max-width: none !important;
+    z-index: 4 !important;
+    text-align: center !important;
+    pointer-events: none !important;
+  }
+
+  #hongo-header .navbar.tvastra-single-header .menu-logo .navbar-brand,
+  #hongo-header .navbar.tvastra-single-header .logo .navbar-brand {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    pointer-events: auto !important;
+  }
+
+  #hongo-header .navbar.tvastra-single-header .menu-column,
+  #hongo-header .navbar.tvastra-single-header .navbar-right,
+  #hongo-header .navbar.tvastra-single-header > .container > .col:last-child,
+  #hongo-header .navbar.tvastra-single-header > .container-fluid > .col:last-child {
+    position: relative !important;
+    z-index: 5 !important;
+  }
+
+  #hongo-header .navbar.tvastra-single-header .menu-column {
+    flex: 0 1 auto !important;
+    width: auto !important;
+    max-width: none !important;
+    padding-left: 0 !important;
+  }
+
+  #hongo-header .navbar.tvastra-single-header .navbar-nav {
+    justify-content: flex-start !important;
+  }
+
+  #hongo-header .navbar.tvastra-single-header .navbar-nav .nav-item .nav-link {
+    padding-top: 18px !important;
+    padding-bottom: 18px !important;
+  }
+
+  #hongo-header .navbar.tvastra-single-header .navbar-right > div,
+  #hongo-header .navbar.tvastra-single-header .navbar-right > div > a {
+    min-height: 58px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+}
+
+@media (max-width: 1199px) {
+  #hongo-header .navbar.tvastra-single-header {
+    min-height: 56px !important;
+  }
+
+  #hongo-header .navbar.tvastra-single-header > .container,
+  #hongo-header .navbar.tvastra-single-header > .container-fluid {
+    min-height: 56px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    position: relative !important;
+  }
+
+  #hongo-header .navbar.tvastra-single-header .navbar-brand {
+    --main-logo-width: 112px !important;
+  }
+
+  #hongo-header .navbar.tvastra-single-header .menu-logo,
+  #hongo-header .navbar.tvastra-single-header .logo {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: translate(-50%, -50%) !important;
+    width: auto !important;
+    max-width: none !important;
+    z-index: 4 !important;
+    pointer-events: none !important;
+  }
+
+  #hongo-header .navbar.tvastra-single-header .menu-logo .navbar-brand,
+  #hongo-header .navbar.tvastra-single-header .logo .navbar-brand {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    pointer-events: auto !important;
+  }
+
+  #hongo-header .navbar.tvastra-single-header .navbar-toggler,
+  #hongo-header .navbar.tvastra-single-header .navbar-right,
+  #hongo-header .navbar.tvastra-single-header .search {
+    position: relative !important;
+    z-index: 5 !important;
+  }
+
+  #hongo-header .navbar.tvastra-single-header .collapse.navbar-collapse {
+    background-color: var(--header-bg-color, #fff) !important;
+  }
+}
+
+.chat-support-whatsapp-wrapper {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: translateY(12px);
+}
+
+body.hongo-header-scrolled .chat-support-whatsapp-wrapper,
+body.sticky-active .chat-support-whatsapp-wrapper {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transform: translateY(0);
+}
+
+/*************************************************************
+** Tvastra - separate selling price and compare-at/MRP styling
+*************************************************************/
+
+/* Change these values to tune price colors/shading globally. */
+:root {
+  --tvastra-selling-price-color: #292929ff; /* Selling price color */
+  --tvastra-selling-price-weight: 700; /* Selling price boldness: 600, 700, 800 */
+  --tvastra-compare-price-color: #000000ff; /* MRP / compare-at muted grey */
+  --tvastra-compare-price-opacity: 0.75; /* MRP shading: lower = lighter */
+  --tvastra-compare-strike-color: #000000ff; /* Strikethrough line color */s
+}
+
+/* Product cards: normal selling price when item is not on sale. */
+.product-box .price-box .price-item.regular-price .price {
+  color: var(--tvastra-selling-price-color) !important;
+  font-weight: var(--tvastra-selling-price-weight) !important;
+}
+
+/* Product cards: selling price when compare-at/MRP exists. */
+.product-box .price-box .price-item.special-price .price {
+  color: var(--tvastra-selling-price-color) !important;
+  font-weight: var(--tvastra-selling-price-weight) !important;
+}
+
+/* Product cards: compare-at price / MRP. */
+.product-box .price-box .price-item.old-price,
+.product-box .price-box .price-item.old-price .price,
+.product-box .price-box .price-item.old-price s {
+  color: var(--tvastra-compare-price-color) !important;
+  opacity: var(--tvastra-compare-price-opacity) !important;
+  font-weight: 400 !important;
+  text-decoration: line-through !important;
+  text-decoration-color: var(--tvastra-compare-strike-color) !important;
+  text-decoration-thickness: 1px !important;
+}
+
+/* Main product page: normal selling price when product is not on sale. */
+.product-summary .price .price__regular .price-item--regular {
+  color: var(--tvastra-selling-price-color) !important;
+  font-weight: var(--tvastra-selling-price-weight) !important;
+}
+
+/* Main product page: selling price when compare-at/MRP exists. */
+.product-summary .price.price--on-sale .price__sale .price-item--sale,
+.product-summary .price.price--on-sale .price__sale .product-price {
+  color: var(--tvastra-selling-price-color) !important;
+  font-weight: var(--tvastra-selling-price-weight) !important;
+}
+
+/* Main product page: compare-at price / MRP. */
+.product-summary .price .price__compare,
+.product-summary .price .price__compare .price-item,
+.product-summary .price .price__compare .product-sale {
+  color: var(--tvastra-compare-price-color) !important;
+  opacity: var(--tvastra-compare-price-opacity) !important;
+  font-weight: 400 !important;
+}
+
+.product-summary .price .price__compare s,
+.product-summary .price .price__compare .product-sale {
+  text-decoration: line-through !important;
+  text-decoration-color: var(--tvastra-compare-strike-color) !important;
+  text-decoration-thickness: 1px !important;
+}
+
+/*************************************************************
+** Tvastra - Hongo 1.4 UI, review, overflow and speed fixes END
+*************************************************************/

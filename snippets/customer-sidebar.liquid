@@ -1,0 +1,16 @@
+<div class="customer-nav">
+  <ul>
+    <li class="{% if request.path == routes.account_url %}active{% endif %}">
+      <a href="{{ routes.account_url }}" aria-label="dashboard">{{ 'sections.customer_sidebar.dashboard' | t }}</a>
+    </li>
+    <li class="{% if request.path == routes.account_addresses_url %} active {% endif %}">
+      <a href="{{ routes.account_addresses_url }}" aria-label="address">{{ 'sections.customer_sidebar.address' | t }}</a>
+    </li>
+    <li>
+      <a href="{{ pages[settings.wishlist_page].url }}" aria-label="wishlist">{{ 'sections.customer_sidebar.wishlist' | t }}</a>
+    </li>
+    <li>
+      <a href="{{ routes.account_logout_url }}" aria-label="logout">{{ 'sections.customer_sidebar.logout' | t }}</a>
+    </li>
+  </ul>
+</div>

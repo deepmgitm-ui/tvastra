@@ -1,0 +1,22 @@
+{%- if settings.header_layout == 'style-1' -%}
+	<div class="cart {{ settings.menu_text_case }}">
+	  <a {% if settings.enable_cart_drawer = true %} cart-icon-bubble {% endif %} class="icon-bubble position-relative{% if cart.item_count == 0 %} no-count{% endif %}" href="{% if template == 'cart' %}{{ routes.cart_url }}{% elsif settings.enable_cart_drawer == false %}{{ routes.cart_url }}{% else %}#{% endif %}" rel="noopener nofollow" aria-label="cart">
+	  <i class="feather-shopping-bag"></i><span data-cart-count class="count {% if cart.item_count == 0 %}d-none{% endif %}">{{ cart.item_count }}</span>
+	  {%- if settings.show_icon == false -%}<span class="{% if settings.header_style == "center-navigation" %}d-none d-xxl-inline-block{% else %}d-none d-xl-inline-block{% endif %}">{{ 'sections.header.cart' | t }}</span>{%- endif -%}
+	  </a>
+	</div>
+{%- else -%}
+	<div class="cart alt-font {{ settings.menu_text_case }}">
+	  <a {% if settings.enable_cart_drawer = true %} cart-icon-bubble {% endif %} class="icon-bubble position-relative{% if cart.item_count == 0 %} no-count{% endif %}" href="{% if template == 'cart' %}{{ routes.cart_url }}{% elsif settings.enable_cart_drawer == false %}{{ routes.cart_url }}{% else %}#{% endif %}" rel="noopener nofollow" aria-label="cart">
+	  	<div class="cart-icon">
+	  		<i class="bi bi-bag-plus"></i><span data-cart-count class="count {% if cart.item_count == 0 %}d-none{% endif %}">{{ cart.item_count }}</span>
+	  	</div>
+	  	{%- if settings.show_icon == false -%}
+		  	<div class="cart-text">
+		  		{%- if settings.show_icon == false -%}<span class="{% if settings.header_style == "center-navigation" %}d-none d-xxl-block{% else %}d-none d-xl-block{% endif %} addon-title">{{ 'sections.header.cart' | t }}</span>{%- endif -%}
+		  		<span class="cart-total-header d-none d-xl-block">{{ cart.total_price | money}}</span>
+		  	</div>
+	  	{%- endif  -%}
+	  </a>
+	</div>
+{%- endif -%}

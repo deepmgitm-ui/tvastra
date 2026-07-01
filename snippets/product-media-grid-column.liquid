@@ -1,0 +1,75 @@
+{%- if section_settings.product_page_style == 'style-2' -%}
+  {%- capture sliderOptions -%}
+    "loop": true,
+    "centeredSlides": true,
+    "direction":"horizontal",  
+    "navigation":{
+        "nextEl":".section-{{ section.id }} .swiper-button-next",
+        "prevEl":".section-{{ section.id }} .swiper-button-prev"
+    },
+    "keyboard":{
+        "enabled":true,
+        "onlyInViewport":true 
+    },
+    "spaceBetween": 20,
+    "slidesPerView": 4,
+    "breakpoints": { 
+      "320": { "slidesPerView": 1 },
+      "768": { "slidesPerView": 2 },
+      "992": { "slidesPerView": 4 }
+    }
+  {%- endcapture -%} 
+{%- endif -%}
+{%- capture border-style -%}
+  {%- if section.settings.show_border == true -%}
+    border: 1px solid var(--extra-medium-gray);
+  {%- endif -%}
+  border-radius: {{ section.settings.image_border_radius }}px;
+{%- endcapture -%}
+<div class="badge-wrapper" id="badge-{{ section_id }}">
+  {%- render 'product-badge', product_for_badge: product -%}
+</div> 
+<div {% unless section_settings.product_page_style == 'style-2' %}id="product-swipe"{% endunless %} class="product w-100 {% unless section_settings.product_page_style == 'style-2' %} row{% if section_settings.product_gellery == 'grid-2-columns' or section_settings.product_gellery == 'combined-grid' %} row-cols-2{% elsif section_settings.product_gellery  == 'grid-1-columns' %} row-cols-1{% endif %} {% endunless %} product-gallery-slider {%  unless section_settings.product_page_style == 'style-2' %}{{ section_settings.gutter_size }} grid-style{%  endunless %} {% if section_settings.gutter_size == 'gutter-none' %} g-0{% endif %} align-items-start{% if section_settings.product_page_style == 'style-2' %} product-{{ section_settings.product_page_style }}{% else%} product-image-main{% endif %}">
+  {%- if section_settings.product_page_style == 'style-2' -%}
+    <div class="{% if section_settings.product_page_style == 'style-2' %}product-style-2-main-img product-{{ section_settings.product_page_style }}{% endif %} swiper product-image-thumb" data-slider-options='{ {{ sliderOptions }} }'>
+      <div class="swiper-wrapper">
+  {%- endif -%}
+  {%- assign image_shown = false -%} 
+  {%- for media in product.media -%} 
+    {%- liquid
+      assign can_show = false 
+      assign variant_img_added = false
+      assign media_alt = media.alt | downcase
+      if group_image == true
+        if product_options_downcased contains media_alt
+          assign can_show = true
+          assign variant_img_added = true
+        endif
+      else
+        assign can_show = true
+      endif
+    -%}
+    {%- if can_show -%}
+      <div class="{% if section_settings.product_page_style == 'style-2' %}swiper-slide{% endif %} gallary-item product__media-item" data-index="{{ forloop.index }}" data-media-id="{{ section_id }}-{{ media.id }}-main" data-media-type="{{ media.media_type }}" variant_img_added="{{ variant_img_added }}">
+        {%- render 'product-thumbnail', gellery_type: section_settings.product_gellery, media: media, position: forloop.index, loop: section_settings.enable_video_looping, modal_id: section_id, border_style: border-style -%}
+      </div>
+    {%- assign image_shown = true -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- unless image_shown -%}
+    {%- for media in product.media -%}
+      <div class="{% if section_settings.product_page_style == 'style-2' %}swiper-slide{% endif %} gallary-item product__media-item" data-index="{{ forloop.index }}"  data-media-id="{{ section_id }}-{{ media.id }}-main" data-media-type="{{ media.media_type }}" variant_img_added="{{ variant_img_added }}">
+        {%- render 'product-thumbnail', gellery_type: section_settings.product_gellery, media: media, position: forloop.index, loop: section_settings.enable_video_looping, modal_id: section_id, border_style: border-style -%}
+      </div>
+    {%- endfor -%}
+  {%- endunless -%}
+  {%- if section_settings.product_page_style == 'style-2' -%}  
+      </div>
+    </div>
+    <div class="swiper-button-next"><i class="feather-arrow-right"></i></div>
+    <div class="swiper-button-prev"><i class="feather-arrow-left"></i></div>   
+  {% endif %}
+</div>
+{%- if section.settings.product_gellery == 'grid-2-columns' or section.settings.product_gellery == 'grid-1-columns' or section.settings.product_gellery == 'combined-grid' -%}
+  <div class="product-swiper-pagination d-flex d-lg-none justify-content-center"></div>
+{%- endif -%}

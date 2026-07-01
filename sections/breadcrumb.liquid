@@ -1,0 +1,139 @@
+<section class="{% if section.settings.show_mobile == false %}d-none{% endif %} {% if section.settings.border_top == true %}border-tp {% endif %} {% if section.settings.border_bottom == true %}border-bt {% endif %}d-md-block breadcrumb-alt alt-font">
+  <div class="{{ section.settings.container_type }}">
+    <div class="row justify-content-{{ section.settings.content_alignment }}">
+      <div class="col-12 d-flex flex-column text-{{ section.settings.content_alignment }} align-items-{{ section.settings.content_alignment }} page-title">
+        {%- if section.settings.show_pagetitle != blank -%}
+          {%- liquid
+            case template
+              when 'customers/addresses'
+                assign page_title = 'customer.addresses.title' | t
+              when 'customers/account'
+                assign page_title = 'customer.account.title' | t
+              when 'customers/order'
+                assign page_title = 'customer.order.page_heading' | t
+              when 'customers/login'
+                assign page_title = 'customer.log_in' | t
+              when 'customers/register'
+                assign page_title = 'customer.register.title' | t
+              when 'cart'
+                assign page_title = 'sections.cart.title' | t
+            endcase
+          -%}
+          <h1 class="{{ section.settings.banner_title_size }} {% if section.settings.title_uppercase %}text-uppercase{% endif %} mb-0 alt-font">
+            {{ page_title }}
+          </h1>
+        {%- endif -%}
+        {%- render 'breadcrumb' -%}
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Breadcrumb",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "banner_title_size",
+      "label": "Banner title size",
+      "default": "h-3",
+      "options": [
+        {
+          "value": "h-1",
+          "label": "Heading extra large"
+        },
+        {
+          "value": "h-2",
+          "label": "Heading large"
+        },
+        {
+          "value": "h-3",
+          "label": "Heading extra medium"
+        },
+        {
+          "value": "h-4",
+          "label": "Heading medium"
+        },
+        {
+          "value": "h-5",
+          "label": "Heading extra small"
+        },
+        {
+          "value": "h-6",
+          "label": "Heading small"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagetitle",
+      "label": "Show page title",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "title_uppercase",
+      "label": "Title uppercase",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "border_top",
+      "label": "Show border top",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "border_bottom",
+      "label": "Show border bottom",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mobile",
+      "label": "Show section in mobile",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,22 @@
+{%- liquid
+  case placeholder_type
+    when 'product-image'
+      assign counter = 6 | minus: 1
+      assign random_number = "now" | date: "%N" | modulo: counter | plus: 1
+      echo 'product-' | append: random_number | placeholder_svg_tag: 'svg-placeholder'
+    else
+    when 'collection-image'
+      assign counter = 6 | minus: 1
+      assign random_number = "now" | date: "%N" | modulo: counter | plus: 1
+      echo 'collection-' | append: random_number | placeholder_svg_tag: 'svg-placeholder'
+    else
+    when 'simple-image'
+      echo 'image' | placeholder_svg_tag: 'svg-placeholder'
+    else
+    when 'lifestyle-image'
+      assign counter = 2 | minus: 1
+      assign random_number = "now" | date: "%N" | modulo: counter | plus: 1
+      echo 'lifestyle-' | append: random_number | placeholder_svg_tag: 'svg-placeholder'
+    else
+  endcase
+-%}

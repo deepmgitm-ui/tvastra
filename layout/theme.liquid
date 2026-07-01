@@ -1,0 +1,359 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}"> 
+  <head>
+    <meta name="facebook-domain-verification" content="d0cizjy2j428b7lgod9qds2a44s777" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{% if settings.mobile_browser_color != blank %}{{ settings.mobile_browser_color }}{% endif %}">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="facebook-domain-verification" content="3vmsz2dcovc10iuzz4vly7hjr1mo7u" />
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="dns-prefetch" href="https://cdn.shopify.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.shopifycdn.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.google.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    {%- render 'seo-title' -%}
+    {%- render 'meta-tags' -%} 
+    <link rel="preload" as="style" href="{{ 'base.min.css' | asset_url }}">
+    <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
+
+    {{ content_for_header }}
+    {%- render 'header-content' -%}
+    {%- unless settings.use_body_google_font == true or settings.alt_google_fonts == true -%}
+      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    {%- endunless -%}
+    {%- if settings.use_body_google_font == true or settings.alt_google_fonts == true -%}
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    {%- endif -%}
+    {%- if settings.body_google_fonts == settings.alt_google_fonts -%}
+      <link href="https://fonts.googleapis.com/css?family={{ settings.body_google_fonts }}:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    {%- else -%}
+      {%- if settings.use_body_google_font == true -%} 
+        <link href="https://fonts.googleapis.com/css?family={{ settings.body_google_fonts }}:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+      {%- endif -%}
+      {%- if settings.use_alt_google_font == true -%}
+        <link href="https://fonts.googleapis.com/css?family={{ settings.alt_google_fonts }}:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+      {%- endif -%}
+    {%- endif -%}
+    {% if settings.enable_loading_img and settings.image_loading != blank %}
+      {%- style -%}
+        [data-image-loading]:before {
+          background-image: url({{ settings.image_loading | image_url: width: 100, height: 100 }});
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: 80px;
+        }
+      {%- endstyle -%}
+    {% endif %}
+    {{ 'critical.min.css' | asset_url | stylesheet_tag }}
+    {%- if request.path contains 'account' -%}
+      {{ 'customer.min.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
+    {%- if template.name == 'product' -%}
+      {{ 'product-photoswipe.min.css' | asset_url | stylesheet_tag }}
+      {{ 'product-plyr.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
+    {{ 'font-awesome-icon.min.css' | asset_url | stylesheet_tag }}
+    {%- if settings.bootstrap_icon == true -%}
+      {{ 'bootstrap-icons.min.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
+    {%- if settings.feather_icon == true -%}
+      {{ 'feather-icon.min.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
+    {{ 'theme-vendor.min.css' | asset_url | stylesheet_tag }}
+    {%- render 'css-variables' -%}
+    {%- if settings.enable_promotion == true -%}
+      {%- if settings.promotion_banner_style == 'style-1' -%}
+        {{ 'promotion-style-1.min.css' | asset_url | stylesheet_tag }}
+      {%- else -%}
+        {{ 'promotion-style-2.min.css' | asset_url | stylesheet_tag }}
+      {%- endif -%}
+    {%- endif -%}
+    {{ 'base.min.css' | asset_url | stylesheet_tag }}
+    {%- if settings.header_layout == 'style-2' -%}
+      {{ 'header-style-2.min.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
+    {{ 'responsive.min.css' | asset_url | stylesheet_tag }}
+    {{ 'custom.css' | asset_url | stylesheet_tag }}
+    <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');    
+    </script>
+    <style>
+  @font-face {
+    font-family: 'FuturaCustom'; /* Ye hamara secret naam hai */
+    src: url('https://cdn.shopify.com/s/files/1/0641/9395/3905/files/Futura_PT.woff2?v=1781949181') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+</style>
+  </head>
+  {%- liquid
+    assign purchase_btn = false
+    if settings.enable_login_price == true and customer and settings.enable_catalog_mode == false
+      assign purchase_btn = true
+    elsif  settings.enable_login_price == false and settings.enable_catalog_mode == false 
+      assign purchase_btn = true
+    elsif settings.enable_catalog_mode == true and customer and settings.enable_login_price == false
+      assign purchase_btn = true
+    elsif settings.enable_catalog_mode == true and settings.enable_login_price == false
+      assign purchase_btn = false
+    elsif settings.enable_login_price == true and customer and settings.enable_catalog_mode == true 
+      assign purchase_btn = true
+    elsif settings.enable_login_price == true and settings.enable_catalog_mode == true
+      assign purchase_btn = false
+    endif
+  -%}
+  <body class="{% if purchase_btn == false %}purchase-off {% endif %}{% unless settings.show_variant_option %}product-box-no-variant {% endunless %}"{% if settings.enable_ajex_data == true  %}data-ajex="{{ settings.enable_ajex_data }}"{% endif %} {%- if settings.body_bg_image != blank -%} style="background-image: url('{{ settings.body_bg_image | image_url }}');background-repeat: {%- if settings.repeat_bg_image == true -%}repeat;{%- else -%}no-repeat;{%- endif -%}"{%- endif -%}>
+    {%- if settings.enable_box_layout == true -%}
+      <div class="box-layout">
+    {%- endif -%}
+      <a class="skip-to-content-link button visually-hidden" href="#MainContent">
+        {{ "accessibility.skip_to_text" | t }}
+      </a>
+      {%- section 'mini-header' -%}
+        {%- render 'header' -%}
+      <main id="MainContent" class="content-for-layout focus-none {% if template == 'product' %}product-page{% endif %}" role="main" tabindex="-1">
+        {{ content_for_layout }}
+      </main>
+      {%- liquid
+        if settings.footer_style == "style-1"
+          section 'footer'
+        elsif settings.footer_style == "style-2" 
+          section 'footer-with-USP'
+        else
+          section 'footer-3'
+        endif
+      -%}
+      {%- section 'mobile-sticky-menu' -%}
+      {%- section 'static-advertising' -%}
+      <ul hidden>
+        <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>
+      </ul>      
+      {%- if settings.social_visible == 'index' -%}
+        {%- if template == 'index' -%}
+          <div class="social-wrapper"> 
+            {%- render 'social-follow', style_class: settings.social_type, social_mode: settings.social_style -%}
+          </div>
+        {%- endif -%}
+      {%- elsif settings.social_visible == 'all-page' -%}
+        <div class="social-wrapper"> 
+          {%- render 'social-follow', style_class: settings.social_type, social_mode: settings.social_style -%}
+        </div>
+      {%- endif -%}
+      {%- liquid
+        assign should_newsletter_enable = settings.enable_popup_newsletter
+        if should_newsletter_enable == true and settings.enable_newsletter_design_mode != true and request.design_mode == true
+          assign should_newsletter_enable = false
+        endif
+        if should_newsletter_enable == true
+          render 'newsletter-model'
+        endif
+
+        assign should_promotion_enable = settings.enable_promotion
+        if should_promotion_enable == true and settings.enable_promotion_design_mode != true and request.design_mode == true
+          assign should_promotion_enable = false
+        endif
+        if should_promotion_enable == true
+          render 'promotion-model'
+        endif
+        
+        assign should_enable = settings.enable_cookie_consent
+        if should_enable == true and settings.enable_design_mode != true and request.design_mode == true
+          assign should_enable = false
+        endif
+        if should_enable == true
+          render 'cookie-consent'
+        endif
+      -%}
+        <script type="text/javascript">   
+          window.Hongo = {
+            shop: '{{ shop.permanent_domain }}',
+            {% comment %} design_mode: {{ request.design_mode | json }}, {% endcomment %}
+            {%- if request.design_mode == true -%}
+              purchase_code: '{{ settings.purchase_code }}',
+              purchase_action: '{{ settings.purchase_action }}',
+              shop_info: {
+                id: {{ shop.id | json }},
+                domain: {{ shop.domain | json }},
+                name: {{ shop.name | json }},
+                shop_owner: {{ shop.shop_owner | json }},
+                email: {{ shop.email | json }},
+                phone: {{ shop.phone | json }},
+                country_code: {{ shop.country_code | json }},
+                country_name: {{ shop.country_name | json }},
+                plan_name: {{ shop.plan_name | json }}
+              },
+            {%- endif -%}
+          }
+        </script>
+      <script src="{{ 'jquery.min.js' | asset_url }}"></script>
+      <script src="{{ 'variants.js' | asset_url }}" defer="defer"></script>
+      <script src="{{ 'theme-vendors.min.js' | asset_url }}" defer="defer"></script>
+      {%- if settings.enable_popup_newsletter == true or settings.enable_promotion == true or settings.enable_cookie_consent == true -%}
+        <script src="{{ 'cookie.js' | asset_url }}" defer="defer"></script>
+      {%- endif -%}
+      {%- if template.name == 'product' -%}
+        <script src="{{ 'product-photoswipe-lib.min.js' | asset_url }}" defer="defer"></script>
+        <script src="{{ 'plyr.min.js' | asset_url }}" defer="defer"></script>
+      {%- endif -%}
+      <script src="{{ 'lazy-images.js' | asset_url }}" async></script>      
+      {%- if should_newsletter_enable == true -%}
+        <script src="{{ 'newsletter.js' | asset_url }}" defer="defer"></script>
+      {%- endif -%}
+      <script src="{{ 'main.min.js' | asset_url }}" defer="defer"></script>
+      <script src="{{ 'cart-notification.js' | asset_url }}" defer="defer"></script>
+      <script src="{{ 'compare.js' | asset_url }}" defer="defer"></script>
+      <script src="{{ 'product-detail.js' | asset_url }}" defer="defer"></script>
+      {%- if should_promotion_enable == true -%}
+        <script src="{{ 'promotion.js' | asset_url }}" defer="defer"></script>
+      {%- endif -%} 
+      {%- liquid
+        render 'custom-cursor'
+        if settings.scroll_to_top
+          render 'scroll-progress'
+        endif
+        render 'internal-style'
+        render 'internal-script'
+      -%}
+    {%- if settings.enable_box_layout == true -%}
+      </div>
+    {%- endif -%}
+    {%- render 'form-info' -%}
+    {%- if settings.show_promotion_btn == true -%}
+      {%- render 'promotion-button' -%}
+    {%- endif -%}
+    {%- render 'loader',main-loader:true -%}
+    {% unless request.path contains 'return_prime' %}
+    <script src="{{ 'jsloader.js' | asset_url }}" defer="defer"></script>
+    {% endunless %}
+    {%- render 'whatsapp-floating' -%}
+
+    {% render 'razorpay-magic-checkout' %}
+
+
+    <style>
+  /* =========================================
+     1. WISHLIST ICON & HEADER FIX (100% Safe)
+  ========================================= */
+  a[href*="wishlist"] {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  a[href*="wishlist"] svg, 
+  a[href*="wishlist"] i {
+    width: 24px !important; 
+    height: 24px !important;
+    max-width: 24px !important;
+    max-height: 24px !important;
+    margin: 0 !important;
+    transform: translateY(-2px) !important; 
+  }
+  a[href*="wishlist"] svg path {
+    stroke-width: 1.5 !important; 
+  }
+  sticky-header, .header-wrapper, .header-section, header, #shopify-section-header, .shopify-section-header {
+      z-index: 99999 !important;
+      position: relative;
+  }
+
+  /* =========================================
+     2. THUMBNAILS OVERLAP & TOP SPACE FIX
+  ========================================= */
+  .product-gallery.slider-horizontal { 
+      position: relative !important; 
+      padding-top: 0 !important; 
+      padding-bottom: 0 !important; 
+  }
+  
+  /* Container se upar ka faltu space hatane ke liye */
+  .product-gallery.slider-horizontal .mobille-media-slider { 
+      position: relative !important; 
+      display: block !important; 
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+      top: 0 !important;
+  }
+  
+  .product-gallery.slider-horizontal .product-main-slider { 
+      width: 100% !important; 
+      max-width: 100% !important; 
+      margin-top: 0 !important;
+      margin-bottom: 0 !important; 
+  }
+
+  /* YE WAPAS NORMAL KIYA: Taaki image wapas dikhne lage */
+  .product-gallery.slider-horizontal .product-main-slider .swiper-slide {
+      display: block !important; 
+      height: 100% !important; 
+  }
+  
+  /* IMAGE KO TOP PAR CHIPKANE KA SAFE TAREEKA */
+  .product-gallery.slider-horizontal .product-main-slider img {
+      object-position: top center !important; /* Ye image ko hamesha upar rakhega */
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+  }
+  
+  /* Chhote boxes image ke andar overlap karenge */
+  .product-gallery.slider-horizontal .product-thumb-wrap {
+      position: absolute !important;
+      bottom: 20px !important; 
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      width: 100% !important;
+      max-width: 500px !important; 
+      z-index: 99 !important;
+      margin: 0 !important;
+      padding: 0 10px !important;
+      pointer-events: auto !important; 
+  }
+
+  .product-gallery.slider-horizontal .product-image-thumb .swiper-wrapper {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: center !important;
+  }
+
+  .product-gallery.slider-horizontal .product-image-thumb .swiper-slide {
+      width: 60px !important;
+      height: auto !important;
+      opacity: 0.6 !important;
+      transition: all 0.3s ease !important;
+      border-radius: 6px !important;
+      cursor: pointer !important;
+      border: 2px solid transparent !important;
+      box-shadow: 0px 4px 6px rgba(0,0,0,0.3) !important;
+  }
+  
+  .product-gallery.slider-horizontal .product-image-thumb .swiper-slide:hover,
+  .product-gallery.slider-horizontal .product-image-thumb .swiper-slide-thumb-active,
+  .product-gallery.slider-horizontal .product-image-thumb .swiper-slide.swiper-slide-active {
+      opacity: 1 !important;
+      border: 2px solid #fff !important; 
+      transform: scale(1.05); 
+  }
+  
+  .product-gallery.slider-horizontal .product-image-thumb .swiper-slide img { 
+      border-radius: 4px !important; 
+      display: block !important; 
+  }
+
+  /* =========================================
+     3. GLOBAL SWATCH BUTTONS 
+  ========================================= */
+  .color-swatch-box-v2 { margin: 20px 0 !important; padding: 5px 0 !important; }
+  .swatch-label-v2 { display: block !important; margin-bottom: 8px !important; font-weight: 700 !important; font-size: 14px !important; color: #000 !important; }
+  .swatch-flex-v2 { display: flex !important; gap: 12px !important; align-items: center !important; flex-wrap: wrap !important; }
+  .gol-button-final { width: 32px !important; height: 32px !important; border-radius: 50% !important; display: block !important; border: 2px solid #ccc !important; cursor: pointer !important; transition: all 0.2s ease !important; box-sizing: border-box !important; box-shadow: 0px 2px 4px rgba(0,0,0,0.1) !important; }
+  .gol-button-final:hover { transform: scale(1.15) !important; border-color: #000 !important; box-shadow: 0px 3px 6px rgba(0,0,0,0.2) !important; }
+</style>
+
+     <script src="{{ 'scroll-logo.js' | asset_url }}" defer></script>
+
+    
+  </body>
+</html>

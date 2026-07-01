@@ -1,0 +1,165 @@
+.blog-sidebar .blog-recent-post .article-author,
+.blog-sidebar .blog-recent-post .tag-cloud .tag,
+.blog-sidebar .blog-recent-post ul li .title,
+.blog-sidebar .sidebar-block-title {
+	color: var(--dark-color);
+	font-weight: var(--font-weight-500)
+}
+
+.view-all-btn {
+	margin-top: 50px
+}
+
+.blogs-pagination {
+	margin: 40px 0 0
+}
+.blog-placeholder h6 {
+	font-size: var(--font_size_plus2);
+}
+.blog-sidebar .blog-sidebar-item:not(:last-child) {
+	margin-bottom: 40px
+}
+
+.blog-sidebar .blog-sidebar-item.banner {
+	border: none;
+	padding: 0
+}
+
+.blog-sidebar ul li {
+	list-style: none;
+	font-size: var(--font_size_minus1)
+}
+
+.blog-article .sidebar-inner {
+	top: 100px
+}
+
+.blog-sidebar {
+	padding-left: 40px;
+	margin-bottom: 60px
+}
+
+.blog-sidebar .sidebar-block-title {
+	font-size: var(--font_size_plus1);
+	line-height: var(--font_size_plus1);
+	margin-bottom: 20px
+}
+
+.blog-sidebar .blog-sidebar-item.tag-cloud a {
+	font-size: var(--font_size_minus3);
+	line-height: normal;
+	border: 1px solid var(--extra-medium-gray);
+	border-radius: 3px;
+	padding: 4px 15px;
+	margin: 0 6px 6px 0;
+	display: inline-block
+}
+
+.blog-sidebar .blog-sidebar-item.tag-cloud a:hover {
+	background-color: var(--dark-color);
+	color: var(--white-color);
+	border-color: var(--dark-color)
+}
+
+.blog-sidebar .insta-items .insta-hover i {
+	font-size: var(--font_size_plus3)
+}
+
+.blog-sidebar .blog-recent-post ul li .title:hover,
+.blog-sidebar ul li a:hover {
+	color: var(--dark-color)
+}
+
+.blog-sidebar .blog-recent-post ul li {
+	grid-template-columns: 100px auto;
+	display: grid;
+	column-gap: 25px;
+	margin-bottom: 25px
+}
+
+.blog-sidebar .blog-recent-post ul li:last-child {
+	margin-bottom: 0
+}
+
+.blog-sidebar .blog-recent-post ul {
+	display: inline-block;
+	margin-top: 5px
+}
+
+.blog-sidebar .blog-recent-post ul li .title {
+	font-size: var(--font_size);
+	line-height: var(--font_size_plus7);
+	display: inline-block;
+	margin-bottom: 5px
+}
+
+.blog-article .blog-sidebar ul {
+	padding-left: 0
+}
+
+.blog-sidebar .blog-recent-post .author-wrap,
+.blog-sidebar .blog-recent-post ul li p {
+	font-size: var(--font_size_minus2)
+}
+
+.blog-sidebar .blog-recent-post .tag-cloud .tag {
+	font-size: var(--font_size_minus5);
+	text-transform: uppercase
+}
+
+.blog-sidebar .blog-recent-post .tag-cloud {
+	font-weight: var(--font-weight-500);
+	margin-bottom: 10px
+}
+
+.blog-sidebar .blog-recent-post .author-wrap div:first-child {
+	margin-right: 10px
+}
+
+.blog-sidebar .blog-recent-post p {
+	margin-bottom: 15px
+}
+
+.blog-sidebar .blog-sidebar-item.instagram .insta-items {
+	padding: 5px
+}
+.blog-sidebar .blog-sidebar-item.instagram .insta-items a {
+	transform: none
+}
+
+.blog-sidebar .blog-sidebar-item.instagram .row {
+	margin: 0 -5px
+}
+
+.blog-search-resultblog-search-result .blog-item:nth-child(n+4) {
+	margin-top: 30px
+}
+
+@media (max-width:991px) {
+	.blog-content-left {
+		margin-bottom: 50px
+	}
+
+	.blog-sidebar,
+	.blog-sidebar .blog-sidebar-item:last-child {
+		margin-bottom: 0
+	}
+
+	.blog-sidebar {
+		padding-left: 15px
+	}
+
+	.blog-sidebar .blog-sidebar-item.banner {
+		text-align: center
+	}
+}
+
+@media (max-width:767px) {
+	.blog-content-left {
+		margin-bottom: 45px
+	}
+
+	.blog .blog-post-category a {
+		font-size: var(--font_size_minus5)
+	}
+}

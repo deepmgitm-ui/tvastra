@@ -1,0 +1,128 @@
+{%- comment -%}
+  Renders a set of links for paginated results. Must be used within paginate tags.
+  Usage:
+  {% paginate results by 2 %}
+    {% render 'pagination', paginate: paginate, anchor: '#yourID' %}
+  {% endpaginate %}
+  Accepts:
+  - paginate: {Object}
+  - anchor: {String} (optional) This can be added so that on page reload it takes you to wherever you've placed your anchor tag.
+  - class: {String} (optional) Appended to container element's class attribute
+{%- endcomment -%}
+{%- assign itemsOnCurrentPage = paginate.items | minus: paginate.current_offset -%}
+{%- if section.settings.pagination_style == 'infinite-scroll' -%}
+  {%- assign infinite = true -%}
+  {%- if paginate.next.is_link -%}
+    <div
+      class="text-center pegi-product-count"
+      infinite-scroll="{{ infinite }}"
+      current-item="{{ paginate.current_offset | plus: paginate.page_size }}"
+      total-item="{{ paginate.items }}"
+    >
+      {{ 'general.pagination.showing' | t }} {{ paginate.current_offset | plus: paginate.page_size }} {{ 'general.pagination.of' | t }} {{ paginate.items }} {{ 'general.pagination.product' | t }}
+    </div>
+  {%- else -%}
+    <div
+      class="text-center pegi-product-count"
+      infinite-scroll="{{ infinite }}"
+      current-item="{{ paginate.current_offset | plus: itemsOnCurrentPage }}"
+      total-item="{{ paginate.items }}"
+    >
+      {{ 'general.pagination.showing' | t }} {{ paginate.current_offset | plus: itemsOnCurrentPage }} {{ 'general.pagination.of' | t }} {{ paginate.items }} {{ 'general.pagination.product' | t }}
+    </div>
+  {%- endif -%}
+  <div class="pagi-progress mx-auto">
+    <span class="progress-percent" data-percent=""></span>
+  </div>
+  {%- if paginate.parts.size > 0 -%}
+    <div class="pagi-click ">
+      <span class="pagi-percent" data-percent="" style=""></span>
+    </div>
+    <div id="infinite-scroll-btn" class="text-center">
+      {%- if paginate.next -%}
+        <a href="{{ paginate.next.url }}" class="btn btn-black-border border-opacity btn-small" aria-label="paginate">
+          {{- 'general.pagination.loading_label' | t -}}
+        </a>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+{%- elsif section.settings.pagination_style == 'load-more' -%}
+  {%- assign infinite = false -%}
+  {%- if paginate.next.is_link -%}
+    <div
+      class="text-center pegi-product-count"
+      infinite-scroll="{{ infinite }}"
+      current-item="{{ paginate.current_offset | plus: paginate.page_size }}"
+      total-item="{{ paginate.items }}"
+    >
+      {{ 'general.pagination.showing' | t }} {{ paginate.current_offset | plus: paginate.page_size }} {{ 'general.pagination.of' | t }} {{ paginate.items }} {{ 'general.pagination.product' | t }}
+    </div>
+  {%- else -%}
+    <div
+      class="text-center pegi-product-count"
+      infinite-scroll="{{ infinite }}"
+      current-item="{{ paginate.current_offset | plus: itemsOnCurrentPage }}"
+      total-item="{{ paginate.items }}"
+    >
+      {{ 'general.pagination.showing' | t }} {{ paginate.current_offset | plus: itemsOnCurrentPage }} {{ 'general.pagination.of' | t }} {{ paginate.items }} {{ 'general.pagination.product' | t }}
+    </div>
+  {%- endif -%}
+  <div class="pagi-progress mx-auto">
+    <span class="progress-percent" data-percent=""></span>
+  </div>
+  {%- if paginate.parts.size > 0 -%}
+    <div id="load-more-btn" class="text-center">
+      {% if paginate.next %}
+        <a href="{{ paginate.next.url }}" class="btn btn-black-border border-opacity btn-small" aria-label="paginate">
+          {{- 'general.pagination.loadmore_label' | t -}}
+        </a>
+      {% endif %}
+    </div>
+  {%- endif -%}
+{%- else -%}
+  {%- if paginate.parts.size > 0 -%}
+    <div class="{{ class | default: 'pagination-wrapper' }} pagination d-flex w-100 justify-content-center align-items-center ">
+      {%- if paginate.previous -%}
+        <a
+          href="{{ paginate.previous.url }}{{ anchor }}"
+          class="prev page-numbers"
+          aria-label="{{ 'general.pagination.previous' | t }}"
+        >
+          <i class="feather-chevron-left"></i>
+        </a>
+      {%- endif -%}
+      {%- for part in paginate.parts -%}
+        {%- if part.is_link -%}
+          <a
+            href="{{ part.url }}{{ anchor }}"
+            class="page-numbers"
+            aria-label="{{ 'general.pagination.page' | t: number: part.title }}"
+          >
+            {{- part.title -}}
+          </a>
+        {%- else -%}
+          {%- if part.title == paginate.current_page -%}
+            <span
+              class="page-numbers current"
+              aria-current="page"
+              aria-label="{{ 'general.pagination.page' | t: number: part.title }}"
+            >
+              {{- part.title -}}
+            </span>
+          {%- else -%}
+            <span class="page-numbers">{{ part.title }}</span>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if paginate.next -%}
+        <a
+          href="{{ paginate.next.url }}{{ anchor }}"
+          class="next page-numbers"
+          aria-label="{{ 'general.pagination.next' | t }}"
+        >
+          <i class="feather-chevron-right"></i>
+        </a>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+{% endif %}

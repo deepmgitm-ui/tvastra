@@ -1,0 +1,2894 @@
+{%- if template.suffix == "main_submenu" and template.name == 'search' and settings.enable_ajex_data == true -%}
+  {%- render 'main-submenu-import',section:section -%}  
+{%- endif -%}
+<span class="d-none">[devide]</span>
+<div class="collapse navbar-collapse" id="navbarNav">
+  {%- comment -%} Menu Main Heading {%- endcomment -%}
+  <div class="navbar-collapse-header align-items-center d-xl-none d-flex">
+    <span class="horizontal-menu-list active">
+      {{ "general.navigation.close" | t }}
+    </span>
+    {%- if settings.show_vertical_menu != false and settings.header_layout == 'style-2'-%}
+      <span class="vertical-menu-list">
+        {{ 'sections.header.categories' | t }}
+      </span>
+    {%- endif -%}
+    <span class="back-wrapper menu-close"></span>
+  </div>
+  <ul class="navbar-nav navbar-left {% if settings.header_style == "left-nav-logo" and settings.border_logo_navigation == true %}separator {% endif %}justify-content-xl-{% if settings.header_style == "center-navigation" %}center{%else%}start{% endif %} w-100">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign parants_label_count = block.settings.text | downcase | split: '[label' | last | split: ']' | first
+        assign parants_label = "text_lable" | append: parants_label_count
+        assign parants_bgColor = "bg_color_lable" | append: parants_label_count
+        assign parants_color = "color_lable" | append: parants_label_count
+      -%}
+      {%- case block.type -%}
+        {%- when 'link' -%}
+          <li class="nav-item nav-type-link">
+            <a class="nav-link {% if block.settings.url == request.path %}active{% endif %} {{ settings.menu_text_case }}" href="{%- if template != 'index' and  block.settings.url contains "#" -%}{{ shop.url }}/{%- endif -%}{{ block.settings.url }}" aria-label="link">{{ block.settings.text | escape | split: '[' | first }}</a>{%- if block.settings.text contains '[' -%}<span class="menu-lable parent-lable" style=" background-color: {{ settings[parants_bgColor] }}; color: {{ settings[parants_color] }}; ">{{ settings[parants_label] }}</span>{%- endif -%}
+          </li>
+        {%- when 'megamenu' -%}
+          {%- comment -%} for mega menu column {%- endcomment -%}
+          {%- capture megamenu-content -%}
+            {%- for i in (1..6) -%}
+              {%- liquid
+                assign column_type_key = 'column_type' | append: i | strip
+                assign column_type = block.settings[column_type_key]
+                assign column_width_key = 'column_width' | append: i | strip 
+                assign column_width_handle = block.settings[column_width_key]
+              -%}
+              {%- if column_type == 'image' -%}
+                {%- liquid
+                  assign banner_image_key = 'banner_image' | append: i | strip
+                  assign banner_image = block.settings[banner_image_key]
+                  assign btn_link_key = 'btn_link' | append: i | strip
+                  assign btn_link = block.settings[btn_link_key]
+                  assign button_style_key = 'button_style' | append: i | strip
+                  assign button_style = block.settings[button_style_key]
+                  assign button_size_key = 'button_size' | append: i | strip
+                  assign button_size = block.settings[button_size_key]
+                  assign btn_text_key = 'btn_text' | append: i | strip
+                  assign btn_text = block.settings[btn_text_key]
+                  assign btn_radius_key = 'btn_radius' | append: i | strip
+                  assign btn_radius = block.settings[btn_radius_key]
+                -%}
+                {%- if banner_image != null and banner_image != blank -%}
+                  <li class="col-{{ column_width_handle }} d-xl-block d-none position-relative menu-image-banner">
+                    <a href="{{ btn_link | default: '#' }}" title="" aria-label="btn">
+                      <img src="{{ banner_image | image_url }}" alt="" width="{{ banner_image.width }}" height="{{ banner_image.height }}" loading="lazy" />
+                    </a>
+                    {%- if btn_text != blank -%}
+                      <div class="banner-button">
+                        {%- render 'button-settings',
+                          btn_style: button_style,
+                          btn_size: button_size,
+                          btn_text: btn_text,
+                          btn_link: btn_link,
+                          btn_radius: btn_radius,
+                          btn_border_width: false,
+                          btn_icon_class: false,
+                          icon_position: false 
+                        -%}
+                      </div>
+                    {%- endif -%}
+                  </li>
+                {%- endif -%}
+              {%- endif -%} 
+              {%- if column_type == 'menu' or column_type == 'image-menu' and block.settings.image_position == 'top' -%}
+                {%- liquid
+                  assign menu_key = 'menu' | append: i | strip
+                  assign menu_handle = block.settings[menu_key]
+                  assign menu = linklists[menu_handle]
+                -%}
+                {%- if menu != null and menu != blank -%}
+                  <li class="col-{{ column_width_handle }} {{ column_type }} level1">
+                    {%- if column_type == 'image-menu' -%}
+                      {%- liquid
+                        assign banner_image_key = 'banner_image' | append: i | strip
+                        assign banner_image = block.settings[banner_image_key]
+                        assign banner_url_key = 'btn_link' | append: i | strip
+                        assign banner_url = block.settings[banner_url_key]
+                      -%}
+                      {%- if banner_image != blank -%}
+                        <a href="{{ banner_url | default: '#' }}" class="d-none d-xl-block" title="" aria-label="link">
+                          <img src="{{ banner_image | image_url }}" alt="" width="{{ banner_image.width }}" height="{{ banner_image.height }}" loading="lazy" />
+                        </a>
+                      {%- endif -%}
+                    {%- endif -%}
+                    {%- for link in menu.links -%}
+                      {%- liquid
+                        assign childlinks = link.links
+                        assign child_label_count = link.title | downcase | split: '[label' | last | split: ']' | first
+                        assign child_label = "text_lable" | append: child_label_count
+                        assign child_bgColor = "bg_color_lable" | append: child_label_count
+                        assign child_color = "color_lable" | append: child_label_count 
+                      -%}
+                      <a href="{{ link.url | default: '#' }}" class="child-link-title{% if link.active == true or link.child_active == true %} active{% endif %}" aria-label="link">{{ link.title | escape | split: '[' | first }}{%- if link.title contains '[' -%}<span class="menu-lable" style=" background-color: {{ settings[child_bgColor] }}; color: {{ settings[child_color] }}; ">{{ settings[child_label] }}</span>{%- endif -%}{% if childlinks.size > 0 %}<span class="feather-chevron-right parent d-flex align-items-center d-xl-none"></span>{% endif %}</a>
+                      {%- if childlinks.size > 0 -%}
+                        <ul class="submenu sub-menu">
+                          {%- comment -%} Menu Back {%- endcomment -%}
+                          <li class="back-wrapper d-xl-none d-block">{{ link.title | escape | split: '[' | first }}</li>                          
+                          {%- for childlink in childlinks -%}
+                            <li class="level2">
+                              {%- liquid
+                                assign secondlevellinks = childlink.links
+                                assign subchild_label_count = childlink.title | downcase | split: '[label' | last | split: ']' | first
+                                assign subchild_label = "text_lable" | append: subchild_label_count
+                                assign subchild_bgColor = "bg_color_lable" | append: subchild_label_count
+                                assign subchild_color = "color_lable" | append: subchild_label_count
+                              -%}
+                              <a href="{{ childlink.url | default: '#' }}" class="{% if childlink.active == true or childlink.child_active == true %}active{% endif %}" aria-label="link">{{ childlink.title | escape | split: '[' | first }}
+                              {%- if childlink.title contains '[' -%}<span class="menu-lable" style=" background-color: {{ settings[subchild_bgColor] }}; color: {{ settings[subchild_color] }}; ">{{ settings[subchild_label] }}</span>{%- endif -%}</a>
+                              {%- if secondlevellinks.size > 0 -%}
+                                <ul class="submenu sub-menu">
+                                  {%- for secondlevellink in secondlevellinks -%}
+                                    <li class="level3">
+                                      <a href="{{ secondlevellink.url | default: '#' }}" class="{% if secondlevellink.active == true or secondlevellink.child_active == true %} active{% endif %}" aria-label="link">{{ secondlevellink.title | escape }}</a>
+                                    </li>
+                                  {%- endfor -%}
+                                </ul>
+                              {%- endif- %}
+                            </li>
+                          {%- endfor -%}
+                        </ul>   
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </li>
+                {%- endif -%}
+              {%- elsif column_type == 'image-menu' and block.settings.image_position == 'left' -%}
+                {%- liquid
+                  assign menu_key = 'menu' | append: i | strip
+                  assign menu_handle = block.settings[menu_key]
+                  assign menu = linklists[menu_handle]
+                -%}
+                {%- if menu != null and menu != blank -%}
+                  <li class="col-{{ column_width_handle }} image-left d-flex align-items-center level1">
+                    {%- if column_type == 'image-menu' -%}
+                      {%- liquid
+                        assign banner_image_key = 'banner_image' | append: i | strip
+                        assign banner_image = block.settings[banner_image_key]
+                        assign banner_url_key = 'btn_link' | append: i | strip
+                        assign banner_url = block.settings[banner_url_key]
+                      -%}
+                      <a href="{{ banner_url | default: '#' }}" class="image-wrapper d-none d-xl-block" title="" aria-label="banner">
+                        <img src="{{ banner_image | image_url }}" alt="" width="{{ banner_image.width }}" height="{{ banner_image.height }}" loading="lazy" />
+                      </a>
+                    {%- endif -%}
+                    {%- for link in menu.links -%}
+                      {%- liquid
+                        assign childlinks = link.links
+                        assign child_label_count = link.title | downcase | split: '[label' | last | split: ']' | first
+                        assign child_label = "text_lable" | append: child_label_count
+                        assign child_bgColor = "bg_color_lable" | append: child_label_count
+                        assign child_color = "color_lable" | append: child_label_count
+                      -%}
+                      <div class="inner-menu">
+                        <a href="{{ link.url | default: '#' }}" class="child-link-title{% if link.active == true or link.child_active == true %} active{% endif %}" aria-label="link">{{ link.title | escape | split: '[' | first }}{% if link.title contains '[' %}<span class="child-lable-{{ child_label }}" style=" background-color: {{ settings[child_bgColor] }}; color: {{ settings[child_color] }}; ">{{ settings[child_label] }}</span>{% endif %}{% if childlinks.size > 0 %}<span class="feather-chevron-right parent d-flex align-items-center d-xl-none"></span>{% endif %}</a>
+                        {%- if childlinks.size > 0 -%}
+                          <ul class="submenu sub-menu">
+                            {%- comment -%} Menu Back {%- endcomment -%}
+                            <li class="back-wrapper d-xl-none d-block">{{ link.title | escape | split: '[' | first }}</li>                              
+                            {%- for childlink in childlinks -%}
+                              <li class="level2">
+                                {%- liquid
+                                  assign secondlevellinks = childlink.links
+                                  assign subchild_label_count = childlink.title | downcase | split: '[label' | last | split: ']' | first
+                                  assign subchild_label = "text_lable" | append: subchild_label_count
+                                  assign subchild_bgColor = "bg_color_lable" | append: subchild_label_count
+                                  assign subchild_color = "color_lable" | append: subchild_label_count
+                                -%}
+                                <a href="{{ childlink.url | default: '#' }}" class="{% if childlink.active == true or childlink.child_active == true %}active{% endif %}" aria-label="link">{{ childlink.title | escape | split: '[' | first }}{% if childlink.title contains '[' %}<span class="subchild-lable-{{ subchild_label }}" style=" background-color: {{ settings[subchild_bgColor] }}; color: {{ settings[subchild_color] }}; ">{{ settings[subchild_label] }}</span>{% endif %}</a>
+                                {%- if secondlevellinks.size > 0 -%}
+                                  <ul class="submenu sub-menu">
+                                    {%- for secondlevellink in secondlevellinks -%}
+                                      <li class="level3">
+                                        <a href="{{ secondlevellink.url | default: '#' }}" class="{% if secondlevellink.active == true or secondlevellink.child_active == true %} active{% endif %}" aria-label="link">{{ secondlevellink.title | escape }}</a>
+                                      </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                {%- endif- %}
+                              </li>
+                            {%- endfor -%}
+                          </ul>   
+                        {%- endif -%}
+                      </div>
+                    {%- endfor -%}
+                  </li>
+                {%- endif -%}
+              {%- endif -%}
+              {%- if column_type == 'collection' -%}
+                {%- liquid
+                  assign collection_key = 'collection' | append: i | strip
+                  assign collection_handle = block.settings[collection_key]
+                  assign products = collection_handle.products
+                  assign slider_title_key = 'slider_title' | append: i | strip
+                  assign slider_title_handle = block.settings[slider_title_key]
+                  assign slide_per_view_desktop_key = 'slide_per_view_desktop' | append: i | strip
+                  assign slide_per_view_desktop_handle = block.settings[slide_per_view_desktop_key]
+                  assign slide_per_view_mini_desktop_key = 'slide_per_view_mini_desktop' | append: i | strip
+                  assign slide_per_view_mini_desktop_handle = block.settings[slide_per_view_mini_desktop_key]
+                  assign slide_per_view_ipad_key = 'slide_per_view_ipad' | append: i | strip
+                  assign slide_per_view_ipad_handle = block.settings[slide_per_view_ipad_key]
+                  assign slide_per_view_mobile_key = 'slide_per_view_mobile' | append: i | strip
+                  assign slide_per_view_mobile_handle = block.settings[slide_per_view_mobile_key]
+                -%}
+                <li class="col-{{ column_width_handle }} {{ collection_key }} product-menu text-center">
+                  <div class="product-slider-wrap position-relative">
+                    <div class="navigation-btn d-flex justify-content-end align-items-center">
+                      <h6 class="mb-0 me-auto">{{ slider_title_handle }}</h6>
+                      <div class="swiper-button-prev rounded-circle"><i class="bi bi-arrow-left"></i></div>
+                      <div class="swiper-button-next rounded-circle"><i class="bi bi-arrow-right"></i></div>
+                    </div>
+                    <div class="swiper" data-slider-options='{"loop":true,"autoplay":{"delay":2500,"disableOnInteraction":false},"direction":"horizontal","navigation":{"nextEl":".{{ collection_key }} .swiper-button-next","prevEl":".{{collection_key}} .swiper-button-prev"},"keyboard":{"enabled":true,"onlyInViewport":true},"speed":500,"spaceBetween":15,"breakpoints":{"320":{"slidesPerView":{{ slide_per_view_mobile_handle }}},"768":{"slidesPerView":{{ slide_per_view_ipad_handle }}},"992":{"slidesPerView":{{ slide_per_view_mini_desktop_handle }}},"1200":{"slidesPerView":{{ slide_per_view_desktop_handle }}}}}'>
+                      <div class="swiper-wrapper">
+                        {%- if collection_handle != blank -%}
+                          {%- for product in products -%}                                 
+                            <div class="swiper-slide text-center product-box">
+                               {%- render 'product-simple-card', product_card_product: product -%}
+                            </div>
+                          {%- endfor -%}
+                        {%- else -%}
+                          {%- for i in (1..5) -%}
+                            <div class="swiper-slide text-center product-box">
+                              {%- render 'placeholder-images', placeholder_type: 'product-image' -%}
+                              <div class="product-footer text-center placeholder-product">
+                                <span class="product-title alt-font">{{ 'onboarding.product_title' | t }}</span>
+                                <div class="price">{{ 5000 | money }}</div>
+                              </div>
+                            </div>
+                          {%- endfor -%}
+                        {%- endif -%}
+                      </div>                                
+                    </div>
+                  </div>
+                </li>
+              {%- endif -%}                       
+            {%- endfor -%} 
+          {%- endcapture -%}
+          {%- comment -%} for mega menu bottom banner {%- endcomment -%}
+          {%- capture bottom-banner-content -%}
+            {%- for i in (1..6) -%}
+              {%- liquid
+                assign banner_column_width_key = 'bottom_column_width' | append: i | strip
+                assign banner_column_width = block.settings[banner_column_width_key]
+                assign banner_bm_key = 'banner_bm_url' | append: i | strip
+                assign banner_bm = block.settings[banner_bm_key]
+                assign banner_image_bm_key = 'banner_image_bm' | append: i | strip
+                assign banner_image_bm = block.settings[banner_image_bm_key]
+              -%}
+              {%- if banner_image_bm != blank -%}
+                <div class="col-{{ banner_column_width }}">
+                  <a href="{{ banner_bm | default: '#' }}" aria-label="banner">
+                    {{
+                      banner_image_bm
+                      | image_url: width: 3840
+                      | image_tag:
+                        height: banner_image_bm.height,
+                        width: banner_image_bm.width,
+                        sizes: '100vw',
+                        widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840',
+                        loading: 'lazy'
+                    }}
+                  </a>
+                </div> 
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endcapture -%}
+          {%- assign megamenu-content = megamenu-content | strip -%}
+          {%- assign bottom-banner-content = bottom-banner-content | strip -%}
+          <li class="nav-item megamenu-item nav-type-megamenu" data-searchUrl="{{routes.search_url}}?q={{block.id}}&view=main_submenu">
+            <a class="nav-link {% if block.settings.url == request.path %} active{% endif %} {{ settings.menu_text_case }}" href="{{ block.settings.url }}" aria-label="link">{{ block.settings.text | escape | split: '[' | first }}<span class="feather-chevron-right parent d-flex align-items-center d-xl-none"></span></a>{%- if block.settings.text contains '[' -%}<span class="menu-lable parent-lable" style=" background-color: {{ settings[parants_bgColor] }}; color: {{ settings[parants_color] }}; ">{{ settings[parants_label] }}</span>{%- endif -%}
+            {%- if megamenu-content != blank or bottom-banner-content != blank -%}
+              <div class="dropdown-menu sub-menu megamenu">
+                {%- unless settings.enable_ajex_data == true -%}
+                  <div class="{% if block.settings.megamenu_fullwidth == true %}container-fluid{% else %}container{% endif %}">
+                    {%- if megamenu-content != blank -%}
+                      {%- comment -%} Menu Back {%- endcomment -%}
+                      <div class="back-wrapper d-xl-none d-block">{{ block.settings.text | escape | split: '[' | first }}</div>
+                      <ul class="row justify-content-center align-items-start">
+                        {%- comment -%} Mega Menu Content {%- endcomment -%}
+                        {{ megamenu-content }}
+                      </ul>
+                    {%- endif -%}
+                    {%- if bottom-banner-content != blank -%}
+                      <div class="row justify-content-center menu-bottom-banner d-none d-xl-flex">
+                        {%- if block.settings.show_border_top == true -%}
+                          <div class="menus-separator"></div>
+                        {%- endif -%}
+                        {{ bottom-banner-content }}
+                      </div>
+                    {%- endif -%}
+                  </div>
+                {%- else -%}
+                  {%- render 'loader',mainMenu: true -%}
+                  <div class="sub-menu-wrapper"></div>
+                {%- endunless -%}
+              </div>
+            {%- endif -%}
+          </li>
+        {%- when 'simple-dropdown' -%}
+          <li class="nav-item nav-type-dropdown">
+            {%- assign sublinks = linklists[block.settings.simple_menu].links -%}
+            <a class="nav-link{% if block.settings.url == request.path %} active{% endif %} {{ settings.menu_text_case }} " href="{{ block.settings.url }}" aria-label="link">{{ block.settings.text | escape | split: '[' | first }}{% if sublinks.size > 0 %}<span class="feather-chevron-right parent d-flex align-items-center d-xl-none"></span>{% endif %}</a>{%- if block.settings.text contains '[' -%}<span class="menu-lable parent-lable" style=" background-color: {{ settings[parants_bgColor] }}; color: {{ settings[parants_color] }};">{{ settings[parants_label] }}</span>{%- endif -%}
+            {%- if sublinks.size > 0 -%}
+              <ul class="simple-dropdown sub-menu">
+                {%- comment -%} Menu Back {%- endcomment -%}
+                <li class="back-wrapper d-xl-none d-block">{{ block.settings.text | escape | split: '[' | first }}</li>                  
+                {%- for link in sublinks -%}
+                  {%- assign sublinkschild = link.links -%}
+                  <li>
+                    {%- liquid
+                      assign child_label_count = link.title | downcase | split: '[label' | last | split: ']' | first
+                      assign child_label = "text_lable" | append: child_label_count
+                      assign child_bgColor = "bg_color_lable" | append: child_label_count
+                      assign child_color = "color_lable" | append: child_label_count
+                    -%}
+                    <a href="{{ link.url }}" class="{% if link.active == true or link.child_active == true %}active{% endif %}" aria-label="link">{{ link.title | escape | split: '[' | first }}{%- if link.title contains '[' -%}<span class="menu-lable" style=" background-color: {{ settings[child_bgColor] }}; color: {{ settings[child_color] }}; ">{{ settings[child_label] }}</span>{%- endif -%}{% if sublinkschild.size > 0 %}<span class="feather-chevron-right parent d-flex align-items-center d-xl-none"></span>{% endif %}</a>
+                    {%- if sublinkschild != blank -%}
+                      <ul class="simple-dropdown sub-menu">
+                        {%- comment -%} Menu Back {%- endcomment -%}
+                        <li class="back-wrapper d-xl-none d-block">
+                          {{ link.title | escape | split: '[' | first }}
+                        </li>                          
+                        {%- for childlink in link.links -%}
+                          {%- liquid
+                            assign subchild_label_count = childlink.title | downcase | split: '[label' | last | split: ']' | first
+                            assign subchild_label = "text_lable" | append: subchild_label_count
+                            assign subchild_bgColor = "bg_color_lable" | append: subchild_label_count
+                            assign subchild_color = "color_lable" | append: subchild_label_count
+                          -%} 
+                          <li>
+                            <a href="{{ childlink.url }}" class="{% if childlink.active == true or childlink.child_active == true %}active{% endif %}" aria-label="link">{{ childlink.title | escape | split: '[' | first }}{%- if childlink.title contains '[' -%}<span class="menu-lable" style=" background-color: {{ settings[subchild_bgColor] }}; color: {{ settings[subchild_color] }}; ">{{ settings[subchild_label] }}</span>{%- endif -%}</a>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    {%- endif -%}
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </li>
+        {%- when 'collection-menu' -%}
+          {%- capture collection-menu -%}
+            {%- for i in (1..6) -%}
+              {%- liquid
+                assign collection_img_key = 'collection_img' | append: i | strip
+                assign collection_img = block.settings[collection_img_key]
+                assign collection_url_key = 'collection_url' | append: i | strip
+                assign collection_url = block.settings[collection_url_key]
+                assign collection_name_key = 'collection_name' | append: i | strip
+                assign collection_name = block.settings[collection_name_key]
+              -%}
+              {%- if collection_img != blank or collection_name != blank -%}
+                <li class="col d-lg-flex flex-column justify-content-center align-items-center text-center collection-box">
+                  {%- if collection_img != null and collection_img != blank -%}
+                    <div class="collection-img-wrap">
+                      <a href="{{ collection_url | default: '#' }}" class="d-none d-xl-block" aria-label="collection">
+                        {{
+                          collection_img
+                          | image_url: width: 3840
+                          | image_tag:
+                            height: collection_img.height,
+                            width: collection_img.width,
+                            sizes: '100vw',
+                            widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840',
+                            loading: 'lazy'
+                        }}
+                      </a>                             
+                    </div>
+                  {%- endif -%}
+                  {%- if collection_name != blank -%}
+                    <a class="collection-name" href="{{ collection_url | default: '#' }}" aria-label="collection">{{ collection_name }}</a>
+                  {%- endif -%}
+                </li>
+              {%- endif -%}
+            {%- endfor -%} 
+          {%- endcapture -%}
+          {%- assign collection-menu = collection-menu | strip -%}
+          <li class="nav-item megamenu-item nav-type-collection" data-searchUrl="{{routes.search_url}}?q={{block.id}}&view=main_submenu">
+            <a class="nav-link{% if block.settings.url == request.path %} active{% endif %} {{ settings.menu_text_case }}" href="{{ block.settings.url }}" aria-label="link">{{ block.settings.text | escape | split: '[' | first }}<span class="feather-chevron-right parent d-flex align-items-center d-xl-none"></span></a>{%- if block.settings.text contains '[' -%}<span class="menu-lable parent-lable" style=" background-color: {{ settings[parants_bgColor] }}; color: {{ settings[parants_color] }}; ">{{ settings[parants_label] }}</span>{%- endif -%}
+            {%- if collection-menu != blank -%}
+              <div class="dropdown-menu sub-menu megamenu collection-menu">
+                {%- unless settings.enable_ajex_data == true -%}
+                  <div class="{% if block.settings.megamenu_fullwidth == true %}container-fluid{% else %}container{% endif %}">
+                    {%- comment -%} Menu Back {%- endcomment -%}
+                    <div class="back-wrapper d-xl-none d-block">{{ block.settings.text | escape | split: '[' | first }}</div>
+                    <ul class="row">                    
+                      {%- comment -%} Collection Menu Content {%- endcomment -%}
+                      {{ collection-menu }}
+                    </ul>
+                  </div>
+                {%- else -%}
+                  {%- render 'loader',mainMenu: true -%}
+                  <div class="sub-menu-wrapper"></div>
+                {%- endunless -%}
+              </div>
+            {%- endif -%}
+          </li>
+        {%- when 'custom-html' -%}
+          <li class="nav-item custom-html megamenu-item">
+            <a class="nav-link{% if block.settings.url == request.path %} active{% endif %} {{ settings.menu_text_case }}" href="{{ block.settings.url }}" aria-label="link">{{ block.settings.text | escape | split: '[' | first }}{% if block.settings.menu_custom_html != blank %}<span class="feather-chevron-right parent d-flex align-items-center d-xl-none"></span>{% endif %}</a>{% if block.settings.text contains '[' %}<span class="menu-lable parent-lable" style=" background-color: {{ settings[parants_bgColor] }}; color: {{ settings[parants_color] }}; ">{{ settings[parants_label] }}</span>{% endif %}
+            {%- if block.settings.menu_custom_html != blank -%}
+              <div class="dropdown-menu sub-menu megamenu">
+                <div class="{% if block.settings.megamenu_fullwidth == true %}container-fluid{% else %}container{% endif %}">
+                  {%- comment -%} Menu Back {%- endcomment -%}
+                  <div class="back-wrapper d-xl-none d-block">{{ block.settings.text | escape | split: '[' | first }}</div>
+                  {{ block.settings.menu_custom_html }}
+                </div>
+              </div>
+            {%- endif -%}
+          </li>
+        {%- when 'mobile-custom-html' -%}
+          <div class="d-flex d-xl-none w-100 mobile-custom-html">
+            {{ block.settings['widget-html'] }}
+          </div>
+      {%- endcase -%}
+    {%- endfor -%}
+  </ul>
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+      {%- when 'language-currency' -%}
+        <div class="mobile-language-currency d-flex d-xl-none">  
+          {%- if block.settings.show_language != false and localization.available_languages.size > 1 -%}
+            <label class="label-title">{{ 'sections.header.language' | t }}</label>
+            {%- form 'localization', id: 'language-switcher', class: 'language-form' -%}
+              <div class="switcher-dropdown position-relative">
+                <div class="label">
+                  {{ localization.language.endonym_name -}}
+                  <i class="fas fa-chevron-down"></i>
+                </div>
+                <ul name="country_code" data-language>
+                  {%- for language in localization.available_languages -%}
+                    <li>
+                      <a class="language {%- if language.iso_code == localization.language.iso_code %} active{% endif %}" href="#" data-value="{{ language.iso_code }}" aria-label="language">
+                        {{- language.endonym_name -}}
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+                <input type="hidden" name="locale_code" id="language_code" value="{{ localization.language.iso_code }}">
+              </div>
+            {%- endform -%}
+          {%- endif -%}
+          {%- if block.settings.show_currency != false and localization.available_countries.size > 1 -%}
+            <label class="label-title">{{ 'sections.header.currency' | t }}</label>
+            {%- form 'localization', id: 'currency-switcher', class: 'currency-form' -%}
+              <div class="switcher-dropdown position-relative">
+                <div class="label">
+                  {{ localization.country.currency.iso_code -}}
+                  <i class="fas fa-chevron-down"></i>
+                </div>
+                <ul name="country_code" data-currency>
+                  {%- for country in localization.available_countries -%}
+                    <li>
+                      <a class="currency {% if country.iso_code == localization.country.iso_code %}active{% endif %}" href="#" data-value="{{ country.iso_code }}" aria-label="link">
+                        {{- country.currency.iso_code -}}
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+                <input type="hidden" name="country_code" id="country_code" value="{{ localization.country.iso_code }}">
+              </div>
+            {%- endform -%}
+          {%- endif -%}
+        </div>
+    {%- endcase -%}
+  {%- endfor -%}  
+</div>
+<button class="navbar-toggler toggle-mobile" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" name="navbar-toggler" role="button" aria-label="button">
+  <span class="navbar-toggler-line"></span> 
+  <span class="navbar-toggler-line"></span> 
+  <span class="navbar-toggler-line"></span>
+  <span class="navbar-toggler-line"></span>
+</button>
+{%- if settings.menu_search -%} 
+  <div class="search d-inline-block d-xl-none {{ settings.menu_text_case }} {% if settings.header_layout == 'style-2' %}d-none{% endif %}" data-mfp-src="#minisearch-popup" data-minisearch-trigger>
+    <i class="feather-search"></i>{%- if settings.show_icon == false -%}<span class="{% if settings.header_style == "center-navigation" %}d-none d-xxl-inline-block{% else %}d-none d-xl-inline-block{% endif %}">{{ 'sections.header.search' | t }}</span>{%- endif -%}
+  </div>  
+{%- endif -%}
+<style type="text/css">
+  /* --- CUSTOM FONTS LOAD --- */
+  {%- if section.settings.main_menu_font != blank -%}
+    {{ section.settings.main_menu_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- if section.settings.submenu_font != blank -%}
+    {{ section.settings.submenu_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- if section.settings.mega_title_font != blank -%}
+    {{ section.settings.mega_title_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+
+  /* --- MAIN MENU LINKS --- */
+  .navbar .navbar-nav .nav-item > .nav-link {
+    {%- if section.settings.main_menu_font != blank -%}
+      font-family: {{ section.settings.main_menu_font.family }}, {{ section.settings.main_menu_font.fallback_families }} !important;
+      font-weight: {{ section.settings.main_menu_font.weight }} !important;
+      font-style: {{ section.settings.main_menu_font.style }} !important;
+    {%- endif -%}
+    font-size: {{ section.settings.main_menu_size }}px !important;
+    {%- if section.settings.main_menu_color != blank -%}
+      color: {{ section.settings.main_menu_color }} !important;
+    {%- endif -%}
+  }
+  {%- if section.settings.main_menu_hover_color != blank -%}
+  .navbar .navbar-nav .nav-item > .nav-link:hover,
+  .navbar .navbar-nav .nav-item > .nav-link.active {
+    color: {{ section.settings.main_menu_hover_color }} !important;
+  }
+  {%- endif -%}
+
+  /* --- SUBMENU LINKS --- */
+  .megamenu ul li a:not(.btn),
+  .navbar .navbar-nav .simple-dropdown a {
+    {%- if section.settings.submenu_font != blank -%}
+      font-family: {{ section.settings.submenu_font.family }}, {{ section.settings.submenu_font.fallback_families }} !important;
+      font-weight: {{ section.settings.submenu_font.weight }} !important;
+      font-style: {{ section.settings.submenu_font.style }} !important;
+    {%- endif -%}
+    font-size: {{ section.settings.submenu_size }}px !important;
+    {%- if section.settings.submenu_color != blank -%}
+      color: {{ section.settings.submenu_color }} !important;
+    {%- endif -%}
+  }
+  {%- if section.settings.submenu_hover_color != blank -%}
+  .megamenu ul li a:not(.btn):hover,
+  .navbar .navbar-nav .simple-dropdown a:hover {
+    color: {{ section.settings.submenu_hover_color }} !important;
+  }
+  {%- endif -%}
+
+  /* --- MEGA MENU TITLES --- */
+  .megamenu ul li a.child-link-title, 
+  .megamenu .product-menu .navigation-btn h6, 
+  .megamenu.collection-menu .collection-name {
+    {%- if section.settings.mega_title_font != blank -%}
+      font-family: {{ section.settings.mega_title_font.family }}, {{ section.settings.mega_title_font.fallback_families }} !important;
+      font-weight: {{ section.settings.mega_title_font.weight }} !important;
+      font-style: {{ section.settings.mega_title_font.style }} !important;
+    {%- endif -%}
+    font-size: {{ section.settings.mega_title_size }}px !important;
+    {%- if section.settings.mega_title_color != blank -%}
+      color: {{ section.settings.mega_title_color }} !important;
+    {%- endif -%}
+  }  
+
+  /* --- MENU BANNERS / IMAGES SHAPE --- */
+  .menu-image-banner img, 
+  .collection-img-wrap img,
+  .menu-bottom-banner img {
+    border-radius: {{ section.settings.image_border_radius }}px !important;
+  }
+
+  /* --- DEFAULT OVERRIDES (Fallback to Theme Settings) --- */
+  .navbar .navbar-nav .nav-item .nav-link, .back-wrapper, header .navbar-right > div, .navbar-collapse-header {
+    line-height: {{ settings.menu_line_height }}px;
+    letter-spacing: {{ settings.menu_character_spacing }}px;
+  }
+  .megamenu ul li a:not(.btn),
+  .navbar .navbar-nav .simple-dropdown a {
+    line-height: {{ settings.mm_line_height }}px;
+    letter-spacing: {{ settings.mm_character_spacing }}px;
+  }
+  .megamenu ul li a.child-link-title, .megamenu .product-menu .navigation-btn h6, .megamenu.collection-menu .collection-name {
+    line-height: {{ settings.label_line_height }}px;
+    letter-spacing: {{ settings.label_character_spacing }}px;
+  }  
+  @media (max-width: 1199px) {
+    .navbar .navbar-nav .nav-item .nav-link, 
+    header .navbar-right > div, 
+    .megamenu ul li a:not(.btn), 
+    .navbar .navbar-nav .simple-dropdown a,
+    .megamenu.collection-menu .collection-name {
+      line-height: normal;
+    }
+    .collection-menu .collection-name {        
+      width: 100%;
+      text-align: left;
+      padding: 15px;
+    }
+  }
+</style>
+<span class="d-none">[devide]</span>
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "header",
+      "content": "✨ Master Menu Typography"
+    },
+    {
+      "type": "font_picker",
+      "id": "main_menu_font",
+      "label": "Main Menu Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "range",
+      "id": "main_menu_size",
+      "min": 10, "max": 30, "step": 1, "unit": "px",
+      "label": "Main Menu Font Size", "default": 14
+    },
+    {
+      "type": "color",
+      "id": "main_menu_color",
+      "label": "Main Menu Color"
+    },
+    {
+      "type": "color",
+      "id": "main_menu_hover_color",
+      "label": "Main Menu Hover/Active Color"
+    },
+    {
+      "type": "header",
+      "content": "✨ Submenu Typography"
+    },
+    {
+      "type": "font_picker",
+      "id": "submenu_font",
+      "label": "Submenu Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "range",
+      "id": "submenu_size",
+      "min": 10, "max": 30, "step": 1, "unit": "px",
+      "label": "Submenu Font Size", "default": 13
+    },
+    {
+      "type": "color",
+      "id": "submenu_color",
+      "label": "Submenu Color"
+    },
+    {
+      "type": "color",
+      "id": "submenu_hover_color",
+      "label": "Submenu Hover Color"
+    },
+    {
+      "type": "header",
+      "content": "✨ Megamenu Title Typography"
+    },
+    {
+      "type": "font_picker",
+      "id": "mega_title_font",
+      "label": "Megamenu Title Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "range",
+      "id": "mega_title_size",
+      "min": 10, "max": 40, "step": 1, "unit": "px",
+      "label": "Megamenu Title Size", "default": 14
+    },
+    {
+      "type": "color",
+      "id": "mega_title_color",
+      "label": "Megamenu Title Color"
+    },
+    {
+      "type": "header",
+      "content": "✨ Banners & Collections Shape"
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "min": 0, "max": 100, "step": 1, "unit": "px",
+      "label": "Image Shape (Border Radius)", "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Menu link text"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link url"
+        }
+      ]
+    },
+    {
+      "type": "megamenu",
+      "name": "Megamenu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Menu link text"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link url"
+        },
+        {
+          "type": "select",
+          "id": "image_position",
+          "label": "Image position",
+          "info": "Only applicable when column type is Image with menu",
+          "options": [
+            {
+              "value": "top",
+              "label": "Top"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "megamenu_fullwidth",
+          "label": "Full width",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Megamenu column 1"
+        },
+        {
+          "type": "select",
+          "id": "column_type1",
+          "label": "Column type",
+          "default": "menu",
+          "options": [
+            {
+              "value": "menu",
+              "label": "Menu"
+            },
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "collection",
+              "label": "Product slider"
+            },
+            {
+              "value": "image-menu",
+              "label": "Image with menu"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "column_width1",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column - 1/12"
+            },
+            {
+              "value": "2",
+              "label": "2 columns - 1/6"
+            },
+            {
+              "value": "3",
+              "label": "3 columns - 1/4"
+            },
+            {
+              "value": "4",
+              "label": "4 columns - 1/3"
+            },
+            {
+              "value": "5",
+              "label": "5 columns - 5/12"
+            },
+            {
+              "value": "6",
+              "label": "6 columns - 1/2"
+            },
+            {
+              "value": "7",
+              "label": "7 columns - 7/12"
+            },
+            {
+              "value": "8",
+              "label": "8 columns - 2/3"
+            },
+            {
+              "value": "9",
+              "label": "9 columns - 3/4"
+            },
+            {
+              "value": "10",
+              "label": "10 columns - 5/6"
+            },
+            {
+              "value": "11",
+              "label": "11 columns - 11/12"
+            },
+            {
+              "value": "12",
+              "label": "12 columns - 1/1"
+            }
+          ]
+        },
+        {
+          "type": "link_list",
+          "id": "menu1",
+          "label": "Select menu"
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image1",
+          "label": "Banner image",
+          "info": "Recommended size 275x330"
+        },
+        {
+          "type": "select",
+          "id": "button_style1",
+          "label": "Button style",
+          "default": "btn-black",
+          "options": [
+            {
+              "value": "btn-black",
+              "label": "Solid button black"
+            },
+            {
+              "value": "btn-white",
+              "label": "Solid button white"
+            },
+            {
+              "value": "btn-base-color",
+              "label": "Solid button base"
+            },
+            {
+              "value": "btn-black-border",
+              "label": "Border button black"
+            },
+            {
+              "value": "btn-white-border",
+              "label": "Border button white"
+            },
+            {
+              "value": "btn-base-color-border",
+              "label": "Border button base"
+            },
+            {
+              "value": "btn-white-border border-opacity",
+              "label": "Border opacity button white"
+            },
+            {
+              "value": "btn-black-border border-opacity",
+              "label": "Border opacity button black"
+            },
+            {
+              "value": "btn-link btn-link-black",
+              "label": "Underlined button black"
+            },
+            {
+              "value": "btn-link btn-link-white",
+              "label": "Underlined button white"
+            },
+            {
+              "value": "btn-link btn-link-base-color",
+              "label": "Underlined button base"
+            },
+            {
+              "value": "btn-custom",
+              "label": "Custom button"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size1",
+          "label": "Button size",
+          "default": "btn-medium",
+          "options": [
+            {
+              "value": "btn-extra-large",
+              "label": "Extra Large"
+            },
+            {
+              "value": "btn-large",
+              "label": "Large"
+            },
+            {
+              "value": "btn-medium",
+              "label": "Medium"
+            },
+            {
+              "value": "btn-small",
+              "label": "Small"
+            },
+            {
+              "value": "btn-very-small",
+              "label": "Very Small"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "btn_radius1",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Button radius",
+          "default": 0
+        },
+        {
+          "type": "text",
+          "id": "btn_text1",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "btn_link1",
+          "label": "Button link"
+        },
+        {
+          "type": "collection",
+          "id": "collection1",
+          "label": "Select collection for product slider"
+        },
+        {
+          "type": "text",
+          "id": "slider_title1",
+          "label": "Slider top text",
+          "default": "lorem ipsum dummy text"
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_desktop1",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view desktop",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_mini_desktop1",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view mini desktop",
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_ipad1",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view tablet",
+          "default": 2
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_mobile1",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view mobile",
+          "default": 1
+        },
+        {
+          "type": "header",
+          "content": "Megamenu column 2"
+        },
+        {
+          "type": "select",
+          "id": "column_type2",
+          "label": "Column type",
+          "default": "menu",
+          "options": [
+            {
+              "value": "menu",
+              "label": "Menu"
+            },
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "collection",
+              "label": "Product slider"
+            },
+            {
+              "value": "image-menu",
+              "label": "Image with menu"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "column_width2",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column - 1/12"
+            },
+            {
+              "value": "2",
+              "label": "2 columns - 1/6"
+            },
+            {
+              "value": "3",
+              "label": "3 columns - 1/4"
+            },
+            {
+              "value": "4",
+              "label": "4 columns - 1/3"
+            },
+            {
+              "value": "5",
+              "label": "5 columns - 5/12"
+            },
+            {
+              "value": "6",
+              "label": "6 columns - 1/2"
+            },
+            {
+              "value": "7",
+              "label": "7 columns - 7/12"
+            },
+            {
+              "value": "8",
+              "label": "8 columns - 2/3"
+            },
+            {
+              "value": "9",
+              "label": "9 columns - 3/4"
+            },
+            {
+              "value": "10",
+              "label": "10 columns - 5/6"
+            },
+            {
+              "value": "11",
+              "label": "11 columns - 11/12"
+            },
+            {
+              "value": "12",
+              "label": "12 columns - 1/1"
+            }
+          ]
+        },
+        {
+          "type": "link_list",
+          "id": "menu2",
+          "label": "Select menu"
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image2",
+          "label": "Banner image",
+          "info": "Recommended size 275x330"
+        },
+        {
+          "type": "select",
+          "id": "button_style2",
+          "label": "Button style",
+          "default": "btn-black",
+          "options": [
+            {
+              "value": "btn-black",
+              "label": "Solid button black"
+            },
+            {
+              "value": "btn-white",
+              "label": "Solid button white"
+            },
+            {
+              "value": "btn-base-color",
+              "label": "Solid button base"
+            },
+            {
+              "value": "btn-black-border",
+              "label": "Border button black"
+            },
+            {
+              "value": "btn-white-border",
+              "label": "Border button white"
+            },
+            {
+              "value": "btn-base-color-border",
+              "label": "Border button base"
+            },
+            {
+              "value": "btn-white-border border-opacity",
+              "label": "Border opacity button white"
+            },
+            {
+              "value": "btn-black-border border-opacity",
+              "label": "Border opacity button black"
+            },
+            {
+              "value": "btn-link btn-link-black",
+              "label": "Underlined button black"
+            },
+            {
+              "value": "btn-link btn-link-white",
+              "label": "Underlined button white"
+            },
+            {
+              "value": "btn-link btn-link-base-color",
+              "label": "Underlined button base"
+            },
+            {
+              "value": "btn-custom",
+              "label": "Custom button"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size2",
+          "label": "Button size",
+          "default": "btn-medium",
+          "options": [
+            {
+              "value": "btn-extra-large",
+              "label": "Extra Large"
+            },
+            {
+              "value": "btn-large",
+              "label": "Large"
+            },
+            {
+              "value": "btn-medium",
+              "label": "Medium"
+            },
+            {
+              "value": "btn-small",
+              "label": "Small"
+            },
+            {
+              "value": "btn-very-small",
+              "label": "Very Small"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "btn_radius2",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Button radius",
+          "default": 0
+        },
+        {
+          "type": "text",
+          "id": "btn_text2",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "btn_link2",
+          "label": "Button link"
+        },
+        {
+          "type": "collection",
+          "id": "collection2",
+          "label": "Select collection for product slider"
+        },
+        {
+          "type": "text",
+          "id": "slider_title2",
+          "label": "Slider top text",
+          "default": "lorem ipsum dummy text"
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_desktop2",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view desktop",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_mini_desktop2",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view mini desktop",
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_ipad2",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view tablet",
+          "default": 2
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_mobile2",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view mobile",
+          "default": 1
+        },
+        {
+          "type": "header",
+          "content": "Megamenu column 3"
+        },
+        {
+          "type": "select",
+          "id": "column_type3",
+          "label": "Column type",
+          "default": "menu",
+          "options": [
+            {
+              "value": "menu",
+              "label": "Menu"
+            },
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "collection",
+              "label": "Product slider"
+            },
+            {
+              "value": "image-menu",
+              "label": "Image with menu"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "column_width3",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column - 1/12"
+            },
+            {
+              "value": "2",
+              "label": "2 columns - 1/6"
+            },
+            {
+              "value": "3",
+              "label": "3 columns - 1/4"
+            },
+            {
+              "value": "4",
+              "label": "4 columns - 1/3"
+            },
+            {
+              "value": "5",
+              "label": "5 columns - 5/12"
+            },
+            {
+              "value": "6",
+              "label": "6 columns - 1/2"
+            },
+            {
+              "value": "7",
+              "label": "7 columns - 7/12"
+            },
+            {
+              "value": "8",
+              "label": "8 columns - 2/3"
+            },
+            {
+              "value": "9",
+              "label": "9 columns - 3/4"
+            },
+            {
+              "value": "10",
+              "label": "10 columns - 5/6"
+            },
+            {
+              "value": "11",
+              "label": "11 columns - 11/12"
+            },
+            {
+              "value": "12",
+              "label": "12 columns - 1/1"
+            }
+          ]
+        },
+        {
+          "type": "link_list",
+          "id": "menu3",
+          "label": "Select menu"
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image3",
+          "label": "Banner image",
+          "info": "Recommended size 275x330"
+        },
+        {
+          "type": "select",
+          "id": "button_style3",
+          "label": "Button style",
+          "default": "btn-black",
+          "options": [
+            {
+              "value": "btn-black",
+              "label": "Solid button black"
+            },
+            {
+              "value": "btn-white",
+              "label": "Solid button white"
+            },
+            {
+              "value": "btn-base-color",
+              "label": "Solid button base"
+            },
+            {
+              "value": "btn-black-border",
+              "label": "Border button black"
+            },
+            {
+              "value": "btn-white-border",
+              "label": "Border button white"
+            },
+            {
+              "value": "btn-base-color-border",
+              "label": "Border button base"
+            },
+            {
+              "value": "btn-white-border border-opacity",
+              "label": "Border opacity button white"
+            },
+            {
+              "value": "btn-black-border border-opacity",
+              "label": "Border opacity button black"
+            },
+            {
+              "value": "btn-link btn-link-black",
+              "label": "Underlined button black"
+            },
+            {
+              "value": "btn-link btn-link-white",
+              "label": "Underlined button white"
+            },
+            {
+              "value": "btn-link btn-link-base-color",
+              "label": "Underlined button base"
+            },
+            {
+              "value": "btn-custom",
+              "label": "Custom button"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size3",
+          "label": "Button size",
+          "default": "btn-medium",
+          "options": [
+            {
+              "value": "btn-extra-large",
+              "label": "Extra Large"
+            },
+            {
+              "value": "btn-large",
+              "label": "Large"
+            },
+            {
+              "value": "btn-medium",
+              "label": "Medium"
+            },
+            {
+              "value": "btn-small",
+              "label": "Small"
+            },
+            {
+              "value": "btn-very-small",
+              "label": "Very Small"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "btn_radius3",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Button radius",
+          "default": 0
+        },
+        {
+          "type": "text",
+          "id": "btn_text3",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "btn_link3",
+          "label": "Button link"
+        },
+        {
+          "type": "collection",
+          "id": "collection3",
+          "label": "Select collection for product slider"
+        },
+        {
+          "type": "text",
+          "id": "slider_title3",
+          "label": "Slider top text",
+          "default": "lorem ipsum dummy text"
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_desktop3",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view desktop",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_mini_desktop3",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view mini desktop",
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_ipad3",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view tablet",
+          "default": 2
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_mobile3",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view mobile",
+          "default": 1
+        },
+        {
+          "type": "header",
+          "content": "Megamenu column 4"
+        },
+        {
+          "type": "select",
+          "id": "column_type4",
+          "label": "Column type",
+          "default": "menu",
+          "options": [
+            {
+              "value": "menu",
+              "label": "Menu"
+            },
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "collection",
+              "label": "Product slider"
+            },
+            {
+              "value": "image-menu",
+              "label": "Image with menu"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "column_width4",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column - 1/12"
+            },
+            {
+              "value": "2",
+              "label": "2 columns - 1/6"
+            },
+            {
+              "value": "3",
+              "label": "3 columns - 1/4"
+            },
+            {
+              "value": "4",
+              "label": "4 columns - 1/3"
+            },
+            {
+              "value": "5",
+              "label": "5 columns - 5/12"
+            },
+            {
+              "value": "6",
+              "label": "6 columns - 1/2"
+            },
+            {
+              "value": "7",
+              "label": "7 columns - 7/12"
+            },
+            {
+              "value": "8",
+              "label": "8 columns - 2/3"
+            },
+            {
+              "value": "9",
+              "label": "9 columns - 3/4"
+            },
+            {
+              "value": "10",
+              "label": "10 columns - 5/6"
+            },
+            {
+              "value": "11",
+              "label": "11 columns - 11/12"
+            },
+            {
+              "value": "12",
+              "label": "12 columns - 1/1"
+            }
+          ]
+        },
+        {
+          "type": "link_list",
+          "id": "menu4",
+          "label": "Select menu"
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image4",
+          "label": "Banner image",
+          "info": "Recommended size 275x330"
+        },
+        {
+          "type": "select",
+          "id": "button_style4",
+          "label": "Button style",
+          "default": "btn-black",
+          "options": [
+            {
+              "value": "btn-black",
+              "label": "Solid button black"
+            },
+            {
+              "value": "btn-white",
+              "label": "Solid button white"
+            },
+            {
+              "value": "btn-base-color",
+              "label": "Solid button base"
+            },
+            {
+              "value": "btn-black-border",
+              "label": "Border button black"
+            },
+            {
+              "value": "btn-white-border",
+              "label": "Border button white"
+            },
+            {
+              "value": "btn-base-color-border",
+              "label": "Border button base"
+            },
+            {
+              "value": "btn-white-border border-opacity",
+              "label": "Border opacity button white"
+            },
+            {
+              "value": "btn-black-border border-opacity",
+              "label": "Border opacity button black"
+            },
+            {
+              "value": "btn-link btn-link-black",
+              "label": "Underlined button black"
+            },
+            {
+              "value": "btn-link btn-link-white",
+              "label": "Underlined button white"
+            },
+            {
+              "value": "btn-link btn-link-base-color",
+              "label": "Underlined button base"
+            },
+            {
+              "value": "btn-custom",
+              "label": "Custom button"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size4",
+          "label": "Button size",
+          "default": "btn-medium",
+          "options": [
+            {
+              "value": "btn-extra-large",
+              "label": "Extra Large"
+            },
+            {
+              "value": "btn-large",
+              "label": "Large"
+            },
+            {
+              "value": "btn-medium",
+              "label": "Medium"
+            },
+            {
+              "value": "btn-small",
+              "label": "Small"
+            },
+            {
+              "value": "btn-very-small",
+              "label": "Very Small"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "btn_radius4",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Button radius",
+          "default": 0
+        },
+        {
+          "type": "text",
+          "id": "btn_text4",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "btn_link4",
+          "label": "Button link"
+        },
+        {
+          "type": "collection",
+          "id": "collection4",
+          "label": "Select collection for product slider"
+        },
+        {
+          "type": "text",
+          "id": "slider_title4",
+          "label": "Slider top text",
+          "default": "lorem ipsum dummy text"
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_desktop4",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view desktop",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_mini_desktop4",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view mini desktop",
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_ipad4",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view tablet",
+          "default": 2
+        },        
+        {
+          "type": "range",
+          "id": "slide_per_view_mobile4",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view mobile",
+          "default": 1
+        },
+        {
+          "type": "header",
+          "content": "Megamenu column 5"
+        },
+        {
+          "type": "select",
+          "id": "column_type5",
+          "label": "Column type",
+          "default": "menu",
+          "options": [
+            {
+              "value": "menu",
+              "label": "Menu"
+            },
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "collection",
+              "label": "Product slider"
+            },
+            {
+              "value": "image-menu",
+              "label": "Image with menu"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "column_width5",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column - 1/12"
+            },
+            {
+              "value": "2",
+              "label": "2 columns - 1/6"
+            },
+            {
+              "value": "3",
+              "label": "3 columns - 1/4"
+            },
+            {
+              "value": "4",
+              "label": "4 columns - 1/3"
+            },
+            {
+              "value": "5",
+              "label": "5 columns - 5/12"
+            },
+            {
+              "value": "6",
+              "label": "6 columns - 1/2"
+            },
+            {
+              "value": "7",
+              "label": "7 columns - 7/12"
+            },
+            {
+              "value": "8",
+              "label": "8 columns - 2/3"
+            },
+            {
+              "value": "9",
+              "label": "9 columns - 3/4"
+            },
+            {
+              "value": "10",
+              "label": "10 columns - 5/6"
+            },
+            {
+              "value": "11",
+              "label": "11 columns - 11/12"
+            },
+            {
+              "value": "12",
+              "label": "12 columns - 1/1"
+            }
+          ]
+        },
+        {
+          "type": "link_list",
+          "id": "menu5",
+          "label": "Select menu"
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image5",
+          "label": "Banner image",
+          "info": "Recommended size 275x330"
+        },
+        {
+          "type": "select",
+          "id": "button_style5",
+          "label": "Button style",
+          "default": "btn-black",
+          "options": [
+            {
+              "value": "btn-black",
+              "label": "Solid button black"
+            },
+            {
+              "value": "btn-white",
+              "label": "Solid button white"
+            },
+            {
+              "value": "btn-base-color",
+              "label": "Solid button base"
+            },
+            {
+              "value": "btn-black-border",
+              "label": "Border button black"
+            },
+            {
+              "value": "btn-white-border",
+              "label": "Border button white"
+            },
+            {
+              "value": "btn-base-color-border",
+              "label": "Border button base"
+            },
+            {
+              "value": "btn-white-border border-opacity",
+              "label": "Border opacity button white"
+            },
+            {
+              "value": "btn-black-border border-opacity",
+              "label": "Border opacity button black"
+            },
+            {
+              "value": "btn-link btn-link-black",
+              "label": "Underlined button black"
+            },
+            {
+              "value": "btn-link btn-link-white",
+              "label": "Underlined button white"
+            },
+            {
+              "value": "btn-link btn-link-base-color",
+              "label": "Underlined button base"
+            },
+            {
+              "value": "btn-custom",
+              "label": "Custom button"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size5",
+          "label": "Button size",
+          "default": "btn-medium",
+          "options": [
+            {
+              "value": "btn-extra-large",
+              "label": "Extra Large"
+            },
+            {
+              "value": "btn-large",
+              "label": "Large"
+            },
+            {
+              "value": "btn-medium",
+              "label": "Medium"
+            },
+            {
+              "value": "btn-small",
+              "label": "Small"
+            },
+            {
+              "value": "btn-very-small",
+              "label": "Very Small"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "btn_radius5",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Button radius",
+          "default": 0
+        },
+        {
+          "type": "text",
+          "id": "btn_text5",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "btn_link5",
+          "label": "Button link"
+        },
+        {
+          "type": "collection",
+          "id": "collection5",
+          "label": "Select collection for product slider"
+        },
+        {
+          "type": "text",
+          "id": "slider_title5",
+          "label": "Slider top text",
+          "default": "lorem ipsum dummy text"
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_desktop5",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view desktop",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_mini_desktop5",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view mini desktop",
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_ipad5",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view tablet",
+          "default": 2
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_mobile5",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view mobile",
+          "default": 1
+        },
+        {
+          "type": "header",
+          "content": "Megamenu column 6"
+        },
+        {
+          "type": "select",
+          "id": "column_type6",
+          "label": "Column type",
+          "default": "menu",
+          "options": [
+            {
+              "value": "menu",
+              "label": "Menu"
+            },
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "collection",
+              "label": "Product slider"
+            },
+            {
+              "value": "image-menu",
+              "label": "Image with menu"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "column_width6",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column - 1/12"
+            },
+            {
+              "value": "2",
+              "label": "2 columns - 1/6"
+            },
+            {
+              "value": "3",
+              "label": "3 columns - 1/4"
+            },
+            {
+              "value": "4",
+              "label": "4 columns - 1/3"
+            },
+            {
+              "value": "5",
+              "label": "5 columns - 5/12"
+            },
+            {
+              "value": "6",
+              "label": "6 columns - 1/2"
+            },
+            {
+              "value": "7",
+              "label": "7 columns - 7/12"
+            },
+            {
+              "value": "8",
+              "label": "8 columns - 2/3"
+            },
+            {
+              "value": "9",
+              "label": "9 columns - 3/4"
+            },
+            {
+              "value": "10",
+              "label": "10 columns - 5/6"
+            },
+            {
+              "value": "11",
+              "label": "11 columns - 11/12"
+            },
+            {
+              "value": "12",
+              "label": "12 columns - 1/1"
+            }
+          ]
+        },
+        {
+          "type": "link_list",
+          "id": "menu6",
+          "label": "Select menu"
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image6",
+          "label": "Banner image",
+          "info": "Recommended size 275x330"
+        },
+        {
+          "type": "select",
+          "id": "button_style6",
+          "label": "Button style",
+          "default": "btn-black",
+          "options": [
+            {
+              "value": "btn-black",
+              "label": "Solid button black"
+            },
+            {
+              "value": "btn-white",
+              "label": "Solid button white"
+            },
+            {
+              "value": "btn-base-color",
+              "label": "Solid button base"
+            },
+            {
+              "value": "btn-black-border",
+              "label": "Border button black"
+            },
+            {
+              "value": "btn-white-border",
+              "label": "Border button white"
+            },
+            {
+              "value": "btn-base-color-border",
+              "label": "Border button base"
+            },
+            {
+              "value": "btn-white-border border-opacity",
+              "label": "Border opacity button white"
+            },
+            {
+              "value": "btn-black-border border-opacity",
+              "label": "Border opacity button black"
+            },
+            {
+              "value": "btn-link btn-link-black",
+              "label": "Underlined button black"
+            },
+            {
+              "value": "btn-link btn-link-white",
+              "label": "Underlined button white"
+            },
+            {
+              "value": "btn-link btn-link-base-color",
+              "label": "Underlined button base"
+            },
+            {
+              "value": "btn-custom",
+              "label": "Custom button"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size6",
+          "label": "Button size",
+          "default": "btn-medium",
+          "options": [
+            {
+              "value": "btn-extra-large",
+              "label": "Extra Large"
+            },
+            {
+              "value": "btn-large",
+              "label": "Large"
+            },
+            {
+              "value": "btn-medium",
+              "label": "Medium"
+            },
+            {
+              "value": "btn-small",
+              "label": "Small"
+            },
+            {
+              "value": "btn-very-small",
+              "label": "Very Small"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "btn_radius6",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Button radius",
+          "default": 0
+        },
+        {
+          "type": "text",
+          "id": "btn_text6",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "btn_link6",
+          "label": "Button link"
+        },
+        {
+          "type": "collection",
+          "id": "collection6",
+          "label": "Select collection for product slider"
+        },
+        {
+          "type": "text",
+          "id": "slider_title6",
+          "label": "Slider top text",
+          "default": "lorem ipsum dummy text"
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_desktop6",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view desktop",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_mini_desktop6",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view mini desktop",
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_ipad6",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view tablet",
+          "default": 2
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_mobile6",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view mobile",
+          "default": 1
+        },
+        {
+          "type": "header",
+          "content": "Megamenu bottom banner"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_border_top",
+          "label": "Show border top",
+          "default": false
+        },
+        {
+          "type": "paragraph",
+          "content": "Banner 1"
+        },
+        {
+          "type": "select",
+          "id": "bottom_column_width1",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column - 1/12"
+            },
+            {
+              "value": "2",
+              "label": "2 columns - 1/6"
+            },
+            {
+              "value": "3",
+              "label": "3 columns - 1/4"
+            },
+            {
+              "value": "4",
+              "label": "4 columns - 1/3"
+            },
+            {
+              "value": "5",
+              "label": "5 columns - 5/12"
+            },
+            {
+              "value": "6",
+              "label": "6 columns - 1/2"
+            },
+            {
+              "value": "7",
+              "label": "7 columns - 7/12"
+            },
+            {
+              "value": "8",
+              "label": "8 columns - 2/3"
+            },
+            {
+              "value": "9",
+              "label": "9 columns - 3/4"
+            },
+            {
+              "value": "10",
+              "label": "10 columns - 5/6"
+            },
+            {
+              "value": "11",
+              "label": "11 columns - 11/12"
+            },
+            {
+              "value": "12",
+              "label": "12 columns - 1/1"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image_bm1",
+          "label": "Banner image",
+          "info": "Recommended size 170x50"
+        },
+        {
+          "type": "url",
+          "id": "banner_bm_url1",
+          "label": "Banner url"
+        },
+        {
+          "type": "paragraph",
+          "content": "Banner 2"
+        },
+        {
+          "type": "select",
+          "id": "bottom_column_width2",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column - 1/12"
+            },
+            {
+              "value": "2",
+              "label": "2 columns - 1/6"
+            },
+            {
+              "value": "3",
+              "label": "3 columns - 1/4"
+            },
+            {
+              "value": "4",
+              "label": "4 columns - 1/3"
+            },
+            {
+              "value": "5",
+              "label": "5 columns - 5/12"
+            },
+            {
+              "value": "6",
+              "label": "6 columns - 1/2"
+            },
+            {
+              "value": "7",
+              "label": "7 columns - 7/12"
+            },
+            {
+              "value": "8",
+              "label": "8 columns - 2/3"
+            },
+            {
+              "value": "9",
+              "label": "9 columns - 3/4"
+            },
+            {
+              "value": "10",
+              "label": "10 columns - 5/6"
+            },
+            {
+              "value": "11",
+              "label": "11 columns - 11/12"
+            },
+            {
+              "value": "12",
+              "label": "12 columns - 1/1"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image_bm2",
+          "label": "Banner image",
+          "info": "Recommended size 170x50"
+        },
+        {
+          "type": "url",
+          "id": "banner_bm_url2",
+          "label": "Banner url"
+        },
+        {
+          "type": "paragraph",
+          "content": "Banner 3"
+        },
+        {
+          "type": "select",
+          "id": "bottom_column_width3",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column - 1/12"
+            },
+            {
+              "value": "2",
+              "label": "2 columns - 1/6"
+            },
+            {
+              "value": "3",
+              "label": "3 columns - 1/4"
+            },
+            {
+              "value": "4",
+              "label": "4 columns - 1/3"
+            },
+            {
+              "value": "5",
+              "label": "5 columns - 5/12"
+            },
+            {
+              "value": "6",
+              "label": "6 columns - 1/2"
+            },
+            {
+              "value": "7",
+              "label": "7 columns - 7/12"
+            },
+            {
+              "value": "8",
+              "label": "8 columns - 2/3"
+            },
+            {
+              "value": "9",
+              "label": "9 columns - 3/4"
+            },
+            {
+              "value": "10",
+              "label": "10 columns - 5/6"
+            },
+            {
+              "value": "11",
+              "label": "11 columns - 11/12"
+            },
+            {
+              "value": "12",
+              "label": "12 columns - 1/1"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image_bm3",
+          "label": "Banner image",
+          "info": "Recommended size 170x50"
+        },
+        {
+          "type": "url",
+          "id": "banner_bm_url3",
+          "label": "Banner url"
+        },
+        {
+          "type": "paragraph",
+          "content": "Banner 4"
+        },
+        {
+          "type": "select",
+          "id": "bottom_column_width4",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column - 1/12"
+            },
+            {
+              "value": "2",
+              "label": "2 columns - 1/6"
+            },
+            {
+              "value": "3",
+              "label": "3 columns - 1/4"
+            },
+            {
+              "value": "4",
+              "label": "4 columns - 1/3"
+            },
+            {
+              "value": "5",
+              "label": "5 columns - 5/12"
+            },
+            {
+              "value": "6",
+              "label": "6 columns - 1/2"
+            },
+            {
+              "value": "7",
+              "label": "7 columns - 7/12"
+            },
+            {
+              "value": "8",
+              "label": "8 columns - 2/3"
+            },
+            {
+              "value": "9",
+              "label": "9 columns - 3/4"
+            },
+            {
+              "value": "10",
+              "label": "10 columns - 5/6"
+            },
+            {
+              "value": "11",
+              "label": "11 columns - 11/12"
+            },
+            {
+              "value": "12",
+              "label": "12 columns - 1/1"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image_bm4",
+          "label": "Banner image",
+          "info": "Recommended size 170x50"
+        },
+        {
+          "type": "url",
+          "id": "banner_bm_url4",
+          "label": "Banner url"
+        },
+        {
+          "type": "paragraph",
+          "content": "Banner 5"
+        },
+        {
+          "type": "select",
+          "id": "bottom_column_width5",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column - 1/12"
+            },
+            {
+              "value": "2",
+              "label": "2 columns - 1/6"
+            },
+            {
+              "value": "3",
+              "label": "3 columns - 1/4"
+            },
+            {
+              "value": "4",
+              "label": "4 columns - 1/3"
+            },
+            {
+              "value": "5",
+              "label": "5 columns - 5/12"
+            },
+            {
+              "value": "6",
+              "label": "6 columns - 1/2"
+            },
+            {
+              "value": "7",
+              "label": "7 columns - 7/12"
+            },
+            {
+              "value": "8",
+              "label": "8 columns - 2/3"
+            },
+            {
+              "value": "9",
+              "label": "9 columns - 3/4"
+            },
+            {
+              "value": "10",
+              "label": "10 columns - 5/6"
+            },
+            {
+              "value": "11",
+              "label": "11 columns - 11/12"
+            },
+            {
+              "value": "12",
+              "label": "12 columns - 1/1"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image_bm5",
+          "label": "Banner image",
+          "info": "Recommended size 170x50"
+        },
+        {
+          "type": "url",
+          "id": "banner_bm_url5",
+          "label": "Banner url"
+        },
+        {
+          "type": "paragraph",
+          "content": "Banner 6"
+        },
+        {
+          "type": "select",
+          "id": "bottom_column_width6",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column - 1/12"
+            },
+            {
+              "value": "2",
+              "label": "2 columns - 1/6"
+            },
+            {
+              "value": "3",
+              "label": "3 columns - 1/4"
+            },
+            {
+              "value": "4",
+              "label": "4 columns - 1/3"
+            },
+            {
+              "value": "5",
+              "label": "5 columns - 5/12"
+            },
+            {
+              "value": "6",
+              "label": "6 columns - 1/2"
+            },
+            {
+              "value": "7",
+              "label": "7 columns - 7/12"
+            },
+            {
+              "value": "8",
+              "label": "8 columns - 2/3"
+            },
+            {
+              "value": "9",
+              "label": "9 columns - 3/4"
+            },
+            {
+              "value": "10",
+              "label": "10 columns - 5/6"
+            },
+            {
+              "value": "11",
+              "label": "11 columns - 11/12"
+            },
+            {
+              "value": "12",
+              "label": "12 columns - 1/1"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image_bm6",
+          "label": "Banner image",
+          "info": "Recommended size 170x50"
+        },
+        {
+          "type": "url",
+          "id": "banner_bm_url6",
+          "label": "Banner url"
+        }
+      ]
+    },
+    {
+      "type": "simple-dropdown",
+      "name": "Simple dropdown",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Menu link text"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link url"
+        },
+        {
+          "type": "link_list",
+          "id": "simple_menu",
+          "label": "Select simple menu"
+        }
+      ]
+    },
+    {
+      "type": "collection-menu",
+      "name": "Collection menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Menu link text"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link url"
+        },
+        {
+          "type": "checkbox",
+          "id": "megamenu_fullwidth",
+          "label": "Full width",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Collection item 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "collection_img1",
+          "label": "Collection image",
+          "info": "Recommended size 110x110"
+        },
+        {
+          "type": "text",
+          "id": "collection_name1",
+          "label": "Collection name"
+        },
+        {
+          "type": "url",
+          "id": "collection_url1",
+          "label": "Collection url"
+        },
+        {
+          "type": "header",
+          "content": "Collection item 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "collection_img2",
+          "label": "Collection image",
+          "info": "Recommended size 110x110"
+        },
+        {
+          "type": "text",
+          "id": "collection_name2",
+          "label": "Collection name"
+        },
+        {
+          "type": "url",
+          "id": "collection_url2",
+          "label": "Collection url"
+        },
+        {
+          "type": "header",
+          "content": "Collection item 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "collection_img3",
+          "label": "Collection image",
+          "info": "Recommended size 110x110"
+        },
+        {
+          "type": "text",
+          "id": "collection_name3",
+          "label": "Collection name"
+        },
+        {
+          "type": "url",
+          "id": "collection_url3",
+          "label": "Collection url"
+        },
+        {
+          "type": "header",
+          "content": "Collection item 4"
+        },
+        {
+          "type": "image_picker",
+          "id": "collection_img4",
+          "label": "Collection image",
+          "info": "Recommended size 110x110"
+        },
+        {
+          "type": "text",
+          "id": "collection_name4",
+          "label": "Collection name"
+        },
+        {
+          "type": "url",
+          "id": "collection_url4",
+          "label": "Collection url"
+        },
+        {
+          "type": "header",
+          "content": "Collection item 5"
+        },
+        {
+          "type": "image_picker",
+          "id": "collection_img5",
+          "label": "Collection image",
+          "info": "Recommended size 110x110"
+        },
+        {
+          "type": "text",
+          "id": "collection_name5",
+          "label": "Collection name"
+        },
+        {
+          "type": "url",
+          "id": "collection_url5",
+          "label": "Collection url"
+        },
+        {
+          "type": "header",
+          "content": "Collection item 6"
+        },
+        {
+          "type": "image_picker",
+          "id": "collection_img6",
+          "label": "Collection image",
+          "info": "Recommended size 110x110"
+        },
+        {
+          "type": "text",
+          "id": "collection_name6",
+          "label": "Collection name"
+        },
+        {
+          "type": "url",
+          "id": "collection_url6",
+          "label": "Collection url"
+        }
+      ]
+    },
+    {
+      "type": "custom-html",
+      "name": "Custom HTML",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Menu link text"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link url"
+        },
+        {
+          "type": "html",
+          "id": "menu_custom_html",
+          "label": "Custom HTML"
+        },
+        {
+          "type": "checkbox",
+          "id": "megamenu_fullwidth",
+          "label": "Full width",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "language-currency",
+      "name": "Language & currency",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Applicable for mobile view only"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_language",
+          "label": "Show language",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_currency",
+          "label": "Show currency",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "mobile-custom-html",
+      "name": "Custom HTML(Mobile view)",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Applicable for mobile view only"
+        }, 
+        {
+          "type": "html",
+          "id": "widget-html",
+          "label": "Custom HTML"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": []
+  }
+}
+{% endschema %}

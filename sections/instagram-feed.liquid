@@ -1,0 +1,869 @@
+{{ 'instagram.min.css' | asset_url | stylesheet_tag }}
+{%- capture InstaSliderOptions -%}
+  "loop": {{ section.settings.loop }}, 
+  "autoplay": {{ section.settings.autoplay }}, 
+  "direction":"horizontal",  
+  "spaceBetween": {{ section.settings.space_slide }}, 
+  "navigation":{
+      "nextEl":".section-{{ section.id }} .swiper-button-next",
+      "prevEl":".section-{{ section.id }} .swiper-button-prev"
+  },
+  "keyboard":{
+      "enabled":true,
+      "onlyInViewport":true
+  },
+  "speed": 500,
+  "breakpoints": { 
+    "320": { "slidesPerView": {{ section.settings.slide_per_view_mobile }} },
+    "768": { "slidesPerView": {{ section.settings.slide_per_view_tablet }} },
+    "992": { "slidesPerView": {{ section.settings.slide_per_view_mini_desktop }} },
+    "1200": { "slidesPerView": {{ section.settings.slide_per_view_desktop }} }
+  }
+{%- endcapture -%}
+<section id="{{ section.settings.section_id }}" class="section-{{ section.id }} instagram-feed-main instagram-feed-{{ section.id }} {% if section.settings.section_show == false %}d-none{% endif %} {{ section.settings.section_class_name }} d-md-block instagram-feed-{{ section.settings.instagram_style }} position-relative overflow-hidden" style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}">
+<div class="{{ section.settings.container_type }}">
+  <instagram-feed class="insta-feed-main">
+    <div class="section-radius {% if section.settings.section_bg_image != blank %}{{ section.settings.background_position }}{% endif %} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }}" style="{% if section.settings.section_bg_image != blank %}background-image: url({{ section.settings.section_bg_image | image_url }});{% endif %}">
+      {%- liquid 
+        assign wrapper_class = ''
+        if section.settings.container_type == 'w-100 overflow-hidden'
+          if section.settings.show_content_container == true
+            assign wrapper_class = 'container'
+          else 
+            assign wrapper_class = 'container-fluid'
+          endif
+        elsif section.settings.container_type == 'container-fluid' and section.settings.show_content_container == true
+          assign wrapper_class = 'container'
+        endif
+      -%}
+      {%- if wrapper_class != '' -%}
+        <div class="{% if section.settings.full_width_nogap == true %}w-100{% else %}{{ wrapper_class }}{% endif %}">
+      {%- endif -%}
+        {%- if section.settings.heading != blank or section.settings.sub_heading != blank or section.settings.description != blank or section.settings.btn_text != blank -%}
+          <div class="row heading-wrapper title-{{ section.settings.title_style }} align-items-{% if section.settings.description != blank %}start{% else %}center{% endif %} text-center text-lg-start">
+            {%- render 'section-title-style', heading_alignment: section.settings.heading_alignment -%}
+            {%- if section.settings.btn_text != blank -%}
+              <div class="col-lg-auto title-style-btn position-relative">
+                {%- render 'button-settings',
+                  btn_style: section.settings.button_style,
+                  btn_size: section.settings.button_size,
+                  btn_text: section.settings.btn_text,
+                  btn_link: section.settings.btn_link,
+                  btn_radius: section.settings.btn_radius,
+                  btn_border_width: section.settings.btn_border_width,
+                  btn_icon_class: section.settings.btn_icon_class,
+                  icon_position: section.settings.icon_position
+                -%}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+        {%- assign image_count = section.settings.count -%}
+        {%- unless image_count -%}
+            {%- assign image_count = 4 -%}
+        {%- endunless -%}
+        {%- if section.settings.instagram_style == "style-1" -%}
+          <div class="insta-feed-item-wrapper position-relative d-flex justify-content-center align-items-center">
+            {%- if section.settings.instaType == "grid" -%}
+              <div class="row row-cols-{{ section.settings.grid_limit_mobile }} row-cols-md-{{ section.settings.grid_limit_tablet }} row-cols-lg-{{ section.settings.grid_limit_mini_desktop }} row-cols-xl-{{ section.settings.grid_limit_desktop }}{% if section.settings.grid_space %} g-0 {% endif %}{% if section.settings.instaType == "grid" %} insta-type-grid{% else %} insta-type-slider{% endif %}" id="instagram-feed-{{ section.id }}" data-section-id="{{ section.id }}" data-count="{{ image_count }}" data-instagram-feed data-element-remove=".instagram-feed-{{ section.id }}" style="width: 100%;">
+                {%- if settings.access_token != blank -%}
+                  {%- for i in (1..image_count) -%} 
+                    <div class="col">
+                      <div class="loading-overlay" style="position: static;margin: 0 auto;">
+                        <div class="loading-overlay__spinner">
+                          <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                            <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  {%- endfor -%}
+                {%- else -%}
+                  {%- for i in (1..image_count) -%}
+                    <div class="col insta-items">
+                      <div class="position-relative">
+                        {%- render 'responsive-image', placeholder_type: 'simple-image' -%}
+                        <span class="insta-hover"><i class="bi bi-instagram"></i></span>
+                      </div>
+                    </div>
+                  {%- endfor -%}
+                {%- endif -%}
+              </div>
+            {%- else -%}
+              {%- if settings.access_token != blank -%}
+                <div class="overflow-hidden position-relative">
+                  <div class="swiper instagram-slider" insta-slider-options='{ {{ InstaSliderOptions }} }'>
+                    <div class="swiper-wrapper insta-type-slider" id="instagram-feed-{{ section.id }}" data-section-id="{{ section.id }}" data-count="{{ image_count }}" data-instagram-feed data-element-remove=".instagram-feed-{{ section.id }}" style="width: 100%;">
+                        {%- for i in (1..image_count) -%} 
+                          <div class="col">
+                            <div class="loading-overlay" style="position: static;margin: 0 auto;">
+                              <div class="loading-overlay__spinner">
+                                <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                                  <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                        {%- endfor -%}
+                    </div>
+                  </div>
+                  {%- if section.settings.navigation == true -%}
+                    <div class="swiper-button-next"><i class="bi bi-arrow-right-short"></i></div>
+                    <div class="swiper-button-prev"><i class="bi bi-arrow-left-short"></i></i></div>
+                  {%- endif -%}
+                </div>
+              {%- else -%}
+                <div class="row row-cols-6 w-100{% if section.settings.grid_space %} g-0{% endif %}">
+                {%- for i in (1..image_count) -%}
+                  <div class="col insta-items">
+                    <div class="position-relative h-100">
+                      {%- render 'responsive-image', placeholder_type: 'simple-image' -%}
+                      <span class="insta-hover"><i class="bi bi-instagram"></i></span>
+                    </div>
+                  </div>
+                {%- endfor -%}
+                </div>
+              {%- endif -%}
+            {%- endif -%}
+            {%- if section.settings.label_text != blank -%}
+              <a href="{{ section.settings.insta_btn_link | default: '#' }}" target="_blank" class="insta-btn alt-font" aria-label="btn"><i class="bi bi-instagram"></i>{{- section.settings.label_text -}}</a>
+            {%- endif -%}
+          </div>
+        {%- else -%}
+          <div class="insta-feed-item-wrapper position-relative d-flex justify-content-center align-items-center w-100">
+            {%- if section.settings.instaType == "grid" -%}
+              {%- if settings.access_token != blank -%}
+                <div class="row row-cols-{{ section.settings.grid_limit_mobile }} row-cols-md-{{ section.settings.grid_limit_tablet }} row-cols-lg-{{ section.settings.grid_limit_mini_desktop }} row-cols-xl-{{ section.settings.grid_limit_desktop }} {% if section.settings.grid_space %} g-0 {% endif %}" id="instagram-feed-{{ section.id }}" data-section-id="{{ section.id }}" data-count="{{ image_count }}" data-instagram-feed data-element-remove=".instagram-feed-{{ section.id }}">
+                    {%- for i in (1..image_count) -%}
+                      <div class="col">
+                        <div class="loading-overlay" style="position: static;margin: 0 auto;">
+                          <div class="loading-overlay__spinner">
+                            <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                              <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    {%- endfor -%}
+                </div>
+              {%- else -%}
+                <div class="row row-cols-6 d-flex justify-content-center align-items-center w-100{% if section.settings.grid_space %} g-0{% endif %}">
+                  {%- for i in (1..image_count) -%}
+                    <div class="col insta-items">
+                      <div class="position-relative">
+                        {%- render 'responsive-image', placeholder_type: 'simple-image' -%}
+                        <span class="insta-hover"><i class="bi bi-instagram"></i></span> 
+                      </div>
+                    </div>
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+            {% else %}  
+              {%- if settings.access_token != blank -%}
+                <div class="overflow-hidden position-relative">
+                  <div class="swiper instagram-slider" insta-slider-options='{ {{ InstaSliderOptions }} }'>
+                    <div class="swiper-wrapper insta-type-slider" id="instagram-feed-{{ section.id }}" data-section-id="{{ section.id }}" data-count="{{ image_count }}" data-instagram-feed data-element-remove=".instagram-feed-{{ section.id }}">
+                      {%- if settings.access_token != blank -%}
+                        {%- for i in (1..image_count) -%}
+                          <div class="col">
+                            <div class="loading-overlay" style="position: static;margin: 0 auto;">
+                              <div class="loading-overlay__spinner">
+                                <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                                  <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                        {%- endfor -%}
+                      {%- else -%}
+                        {%- for i in (1..image_count) -%}
+                          <div class="col insta-items">
+                            <div class="position-relative">
+                              {%- render 'responsive-image', placeholder_type: 'simple-image' -%}
+                              <span class="insta-hover"><i class="bi bi-instagram"></i></span>
+                            <div class="position-relative">
+                          </div>
+                        {%- endfor -%}
+                      {%- endif -%}
+                    </div>
+                  </div>
+                  {%- if section.settings.navigation == true -%}
+                    <div class="swiper-button-next"><i class="bi bi-arrow-right-short"></i></div>
+                    <div class="swiper-button-prev"><i class="bi bi-arrow-left-short"></i></i></div>
+                  {%- endif -%}
+                </div>
+              {%- else -%}
+                <div class="row row-cols-6 w-100{% if section.settings.grid_space %} g-0{% endif %}">
+                {%- for i in (1..image_count) -%}
+                  <div class="col insta-items">
+                    <div class="position-relative h-100">
+                      {%- render 'responsive-image', placeholder_type: 'simple-image' -%}
+                      <span class="insta-hover"><i class="bi bi-instagram"></i></span>
+                    </div>
+                  </div>
+                {%- endfor -%}
+                </div>
+              {%- endif -%}
+            {% endif %}  
+            {%- if section.settings.label_text != blank -%} 
+              <a href="{{ section.settings.insta_btn_link | default: '#' }}" target="_blank" class="insta-btn alt-font" aria-label="link"><i class="bi bi-instagram"></i>{{- section.settings.label_text -}}</a>
+            {%- endif -%} 
+          </div>
+          {%- if section.settings.footer_subheading != blank -%}
+            <div class="row">
+                <div class="col-12 text-center footer-sub-heading">
+                    {{ section.settings.footer_subheading }}
+                </div>
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+      {%- if wrapper_class != '' -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </instagram-feed>
+</div>
+  <script id="instagram-token-{{ section.id }}" type="application/json">{{ settings.access_token | json }}</script>
+</section>
+<style>
+  {%- unless section.settings.use_default_section_typography == true -%}
+    .section-{{ section.id }} .section-heading {
+      font-size: {{ section.settings.section_heading_size }}px;
+      line-height: {{ section.settings.heading_line_height }}px;
+    }
+    .section-{{ section.id }} .section-sub-heading {
+      font-size: {{ section.settings.sub_heading_size }}px;
+      letter-spacing: {{ section.settings.subheading_letter_spacing }}px;
+      line-height: {{ section.settings.sub_heading_line_height }}px;
+    }
+  {%- endunless -%}
+  {%- if section.settings.section_heading_color != blank -%}
+    .section-{{ section.id }} .section-heading {
+      color: {{ section.settings.section_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_sub_heading_color != blank -%}
+    .section-{{ section.id }} .section-sub-heading {
+      color: {{ section.settings.section_sub_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_description_color != blank -%}
+    .section-{{ section.id }} .section-description {
+      color: {{ section.settings.section_description_color }};
+    }
+  {%- endif -%}
+  @media (min-width: 1200px) {
+    .section-{{ section.id }} .insta-items:nth-child(n+{{ section.settings.grid_limit_desktop | plus: 1 }}) {
+      margin-top: 30px;
+    }
+  }
+  @media (max-width: 1199px) {
+    .section-{{ section.id }} .insta-items:nth-child(n+{{ section.settings.grid_limit_mini_desktop | plus: 1 }}) {
+      margin-top: 30px;
+    }
+  }
+  @media (max-width: 991px) {
+    .section-{{ section.id }} .insta-items:nth-child(n+{{ section.settings.grid_limit_tablet | plus: 1 }}) {
+      margin-top: 30px;
+    }
+  }
+  @media (max-width: 767px) {
+    .section-{{ section.id }} .insta-items:nth-child(n+{{ section.settings.grid_limit_mobile | plus: 1 }}) {
+      margin-top: 30px;
+    }
+  }
+</style>
+{% schema %}
+{
+  "name": "Instagram feed",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width_nogap",
+      "label": "Show full width with without left and right gap",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_content_container",
+      "label": "Show content in container",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Wrap word in square bracket for stylish word. e.g. [Hello] World"
+    },
+    {
+      "type": "textarea",
+      "id": "sub_heading",
+      "label": "Sub heading"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "title_style",
+      "label": "Title style",
+      "default": "style-1",
+      "options": [
+        {
+          "value": "style-1",
+          "label": "Style-1"
+        },
+        {
+          "value": "style-2",
+          "label": "Style-2"
+        },
+        {
+          "value": "style-3",
+          "label": "Style-3"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "instagram_style",
+      "label": "Instagram style",
+      "default": "style-1",
+      "options": [
+        {
+          "value": "style-1",
+          "label": "Style 1"
+        },
+        {
+          "value": "style-2",
+          "label": "Style 2"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "label_text",
+      "label": "Insta button text",
+      "default": "#Fashionstyle"
+    },
+    {
+      "type": "url",
+      "id": "insta_btn_link", 
+      "label": "Insta button link"
+    },
+    {
+      "type": "select",
+      "id": "instaType",
+      "label": "Instagram type",
+      "default": "grid",
+      "options": [
+        {
+          "value": "grid",
+          "label": "Grid"
+        },
+        {
+          "value": "slider",
+          "label": "Slider"
+        }
+      ]
+    },
+    {
+      "type": "richtext",
+      "id": "footer_subheading",
+      "default": "<p>instagram</p>",
+      "label": "Footer sub heading"
+    },
+    {
+      "type": "range",
+      "id": "count",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "label": "No. of images to show",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Grid Configuration"
+    },
+    {
+      "type": "range",
+      "id": "grid_limit_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "label": "Desktop"
+    },
+    {
+      "type": "range",
+      "id": "grid_limit_mini_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "label": "Mini desktop"
+    },
+    {
+      "type": "range",
+      "id": "grid_limit_tablet",
+      "label": "Tablet",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "grid_limit_mobile",
+      "label": "Mobile",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "checkbox",
+      "id": "grid_space",
+      "label": "Remove gap",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Slider settings"
+    },
+    {
+      "type": "range",
+      "id": "slide_per_view_desktop",
+      "min": 1,
+      "max": 15,
+      "step": 1,
+      "label": "Slide per view desktop",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "slide_per_view_mini_desktop",
+      "min": 1,
+      "max": 15,
+      "step": 1,
+      "label": "Slide per view mini desktop",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "slide_per_view_tablet",
+      "min": 1,
+      "max": 15,
+      "step": 1,
+      "label": "Slide per view tablet",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "slide_per_view_mobile",
+      "min": 1,
+      "max": 15,
+      "step": 1,
+      "label": "Slide per view mobile",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "space_slide",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "label": "Space between two slide",
+      "default": 30
+    },
+    {
+      "type": "checkbox",
+      "id": "navigation",
+      "label": "Show navigation",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "default": "btn-black",
+      "options": [
+        {
+          "value": "btn-black",
+          "label": "Solid button black"
+        },
+        {
+          "value": "btn-white",
+          "label": "Solid button white"
+        },
+        {
+          "value": "btn-base-color",
+          "label": "Solid button base"
+        },
+        {
+          "value": "btn-black-border",
+          "label": "Border button black"
+        },
+        {
+          "value": "btn-white-border",
+          "label": "Border button white"
+        },
+        {
+          "value": "btn-base-color-border",
+          "label": "Border button base"
+        },
+        {
+          "value": "btn-white-border border-opacity",
+          "label": "Border opacity button white"
+        },
+        {
+          "value": "btn-black-border border-opacity",
+          "label": "Border opacity button black"
+        },
+        {
+          "value": "btn-link btn-link-black",
+          "label": "Underlined button black"
+        },
+        {
+          "value": "btn-link btn-link-white",
+          "label": "Underlined button white"
+        },
+        {
+          "value": "btn-link btn-link-base-color",
+          "label": "Underlined button base"
+        },
+        {
+          "value": "btn-custom",
+          "label": "Custom button"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Button size",
+      "default": "btn-medium",
+      "options": [
+        {
+          "value": "btn-extra-large",
+          "label": "Extra Large"
+        },
+        {
+          "value": "btn-large",
+          "label": "Large"
+        },
+        {
+          "value": "btn-medium",
+          "label": "Medium"
+        },
+        {
+          "value": "btn-small",
+          "label": "Small"
+        },
+        {
+          "value": "btn-very-small",
+          "label": "Very Small"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "btn_radius",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Button radius",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "btn_border_width",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Button border width",
+      "default": 2
+    },
+    {
+      "type": "text",
+      "id": "btn_icon_class",
+      "label": "Enter icon class",
+      "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+    },
+    {
+      "type": "select",
+      "id": "icon_position",
+      "label": "Icon position",
+      "default": "right-icon",
+      "options": [
+        {
+          "value": "left-icon",
+          "label": "Left"
+        },
+        {
+          "value": "right-icon",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Section settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_default_section_typography",
+      "label": "Use section typography from theme settings",
+      "info": "By default section typography values will be used from theme settings. Uncheck this checkbox to use below values.",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "section_heading_size",
+      "min": 20,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 45
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "label": "Heading line height",
+      "unit": "px",
+      "min": 26,
+      "max": 120,
+      "step": 1,
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_size",
+      "min": 12,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Sub heading size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_line_height",
+      "label": "Sub heading line height",
+      "unit": "px",
+      "min": 24,
+      "max": 60,
+      "step": 1,
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "subheading_letter_spacing",
+      "min": 0,
+      "max": 10,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Sub heading letter spacing",
+      "default": 0
+    },
+    {
+      "type": "paragraph",
+      "content": "====================="
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": "small-section-top",
+      "options": [
+        {
+          "value": "large-section-top",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-top",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-top",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-top",
+          "label": "Very small section"
+        },
+        {
+          "value": "pt-0",
+          "label": "No padding top"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": "small-section-bottom",
+      "options": [
+        {
+          "value": "large-section-bottom",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-bottom",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-bottom",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-bottom",
+          "label": "Very small section"
+        },
+        {
+          "value": "pb-0",
+          "label": "No padding buttom"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment ",
+      "default": "center",
+      "info": "Not applicable in title style-2",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "section_show",
+      "label": "Show section in mobile",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "section_bg_image",
+      "label": "Section background image",
+      "info": "Recommended size 1920x800"
+    },
+    {
+      "type": "select",
+      "id": "background_position",
+      "label": "Background position",
+      "options": [
+        {
+          "value": "cover-background",
+          "label": "Cover"
+        },
+        {
+          "value": "fixed-background",
+          "label": "Fixed"
+        }
+      ],
+      "default": "cover-background"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color"
+    },
+    {
+      "type": "color",
+      "id": "section_heading_color",
+      "label": "Section heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_sub_heading_color",
+      "label": "Section sub heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_description_color",
+      "label": "Section description color"
+    },
+    {
+      "type": "text",
+      "id": "element_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "section_class_name",
+      "label": "Section class name"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram feed",
+      "blocks": [
+
+      ]
+    }
+  ]
+}
+{% endschema %}

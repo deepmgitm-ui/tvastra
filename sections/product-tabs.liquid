@@ -1,0 +1,278 @@
+<section
+  {% if section.settings.element_id != blank %}
+    id="{{ section.settings.element_id }}"
+  {% endif %}
+  class="product-tabs section-{{ section.id }} {% if section.settings.element_class != blank %} {{ section.settings.element_class }}{% endif %} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }}"
+  data-section-type="product-tabs"
+  data-section-id="{{ section.id }}"
+>
+  <div class="{{ section.settings.container_type }}">
+    <div class="tabs-wrapper">
+      <ul class="nav nav-tabs d-none d-md-flex" id="product-tabs-{{ section.id }}" role="tablist">
+        {%- assign activated = true -%}
+        {%- for block in section.blocks -%}
+          <li class="nav-item tab-{{ forloop.index }}-{{ section.id }}-tab" role="presentation">
+            <button
+              class="nav-link {% if activated %}active{% endif %} alt-font"
+              id="tab-{{ forloop.index }}-{{ section.id }}-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#tab-{{ forloop.index }}-{{ section.id }}"
+              type="button"
+              role="tab"
+              aria-controls="tab-{{ forloop.index }}-{{ section.id }}"
+              aria-selected="true"
+              data-tab-type="{{ block.type }}"
+            >
+              {{ block.settings.heading }}
+            </button>
+          </li>
+          {%- assign activated = false -%}
+        {%- endfor -%}
+      </ul>
+      <div class="tab-content" id="product-tabs-{{ section.id }}-content">
+        {%- assign activated = true -%}
+        {%- for block in section.blocks -%}
+          {%- capture tabcontent -%}
+            {%- case block.type -%}
+              {%- when 'description' -%}
+                {%- if block.settings.heading != blank -%}
+                  <h6 class="mobile-tab-title d-block d-md-none" data-bs-item="tab-{{ forloop.index }}-{{ section.id }}">{{ block.settings.heading }}</h6>
+                {%- endif -%}
+                <div class="content-wrap">{{ product.description }}</div>
+              {%- when 'custom' -%}
+                {%- if block.settings.heading != blank -%}<h6 class="mobile-tab-title d-block d-md-none" data-bs-item="tab-{{ forloop.index }}-{{ section.id }}">{{ block.settings.heading }}</h6>{%- endif -%}
+                <div class="content-wrap">
+                  {{ block.settings.tab_content }}
+                  {{ block.settings.content_page.content }}
+                </div>
+              {%- when 'liquid' -%}
+                {%- if block.settings.heading != blank -%}
+                  <h6 class="mobile-tab-title d-block d-md-none" data-bs-item="tab-{{ forloop.index }}-{{ section.id }}">{{ block.settings.heading }}</h6>
+                {%- endif -%}
+                <div class="content-wrap">{{ block.settings.tab_content }}</div>
+              {%- when 'reviews' -%}
+                <script>window.hasReviewTab = true;</script>
+                {%- if block.settings.heading != blank -%}
+                  <h6 class="mobile-tab-title d-block d-md-none" data-bs-item="tab-{{ forloop.index }}-{{ section.id }}">{{ block.settings.heading }}</h6>
+                {%- endif -%}
+                <div class="content-wrap product-reviews-wrapper">
+                  {%- if block.settings.custom_liquid != blank -%}
+                    {{ block.settings.custom_liquid }}
+                  {%- else -%}
+                    <div id="shopify-product-reviews" data-id="{{ product.id }}">{{ product.metafields.spr.reviews }}</div>
+                  {%- endif -%} 
+                </div>
+              {%- else -%}
+            {%- endcase -%}
+          {%- endcapture -%}
+          {%- assign tabcontent = tabcontent | strip -%}
+          {%- if tabcontent != '' -%}
+            <div
+              class="tab-pane fade {% if activated %}show active{% endif %} {{ block.type }}"
+              id="tab-{{ forloop.index }}-{{ section.id }}"
+              role="tabpanel"
+              aria-labelledby="tab-{{ forloop.index }}-{{ section.id }}-tab"
+            >
+              {{ tabcontent }}
+            </div>
+            {%- assign activated = false -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+<style type="text/css">
+  @media (max-width: 767px) {
+    .tab-content > .tab-pane {
+        display: block;
+    }
+    .fade:not(.show) {
+      opacity: 1;
+    }
+    .tab-content > .tab-pane > .content-wrap {
+      display: none;
+    }
+  }
+  @media (min-width: 768px) {
+    .product-tabs .content-wrap {
+      display: block !important;
+    }
+  }
+</style>
+{% schema %}
+{
+  "name": "Product tabs",
+  "class": "spaced-section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": "small-section-top",
+      "options": [
+        {
+          "value": "large-section-top",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-top",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-top",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-top",
+          "label": "Very small section"
+        },
+        {
+          "value": "pt-0",
+          "label": "No padding top"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": "small-section-bottom",
+      "options": [
+        {
+          "value": "large-section-bottom",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-bottom",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-bottom",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-bottom",
+          "label": "Very small section"
+        },
+        {
+          "value": "pb-0",
+          "label": "No padding bottom"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "element_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "element_class",
+      "label": "Section class"
+    }
+  ],
+  "max_blocks": 6,
+  "blocks": [
+    {
+      "type": "description",
+      "limit": 1,
+      "name": "Description",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "This tab will show the product's description"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Tab title"
+        }
+      ]
+    },
+    {
+      "type": "reviews",
+      "name": "Reviews",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Note",
+          "info": "This section requires [Product Reviews](https://apps.shopify.com/product-reviews) app by Shopify to work. If you are using different app then paste the liquid code of the app review in 'Custom liquid' field."
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Tab title"
+        },
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "Liquid code of review app"
+        }
+      ]
+    },
+    {
+      "type": "custom",
+      "name": "Custom content",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Tab title"
+        },
+        {
+          "type": "textarea",
+          "id": "tab_content",
+          "label": "Tab content"
+        },
+        {
+          "type": "page",
+          "id": "content_page",
+          "label": "Tab content from page"
+        }
+      ]
+    },
+    {
+      "type": "liquid",
+      "name": "Custom liquid",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Tab title"
+        },
+        {
+          "type": "liquid",
+          "id": "tab_content",
+          "label": "Tab content (Liquid Code)"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

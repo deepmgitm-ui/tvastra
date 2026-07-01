@@ -1,0 +1,103 @@
+{%- assign crosssell_type = settings.crosssell_type -%}
+{%- assign crosssell_type = 'selection' -%}
+{%- capture sliderOptions -%}"slidesPerView": 1, "loop": {{ settings.loop }}, "speed": {%- if settings.transition_speed != blank -%}{{ settings.transition_speed }}{%- else -%}500{%- endif -%}, {%- if settings.autoplay == true -%}"autoplay": {"delay": {{ settings.auto_speed_delay }},"disableOnInteraction": false,"pauseOnMouseEnter":true},{%- endif -%} "pagination": {"el":".swiper-pagination","clickable":true}, "navigation":{ "nextEl":".cart-notification-navigation .swiper-button-next", "prevEl":".cart-notification-navigation .swiper-button-prev"
+  }, "keyboard":{"enabled":true, "onlyInViewport":true}{%- endcapture -%}
+{%- liquid
+  assign has_products = false
+  if crosssell_type == 'api' and recommendations.performed and recommendations.products_count > 0
+    assign has_products = true
+  endif
+  if crosssell_type == 'selection' and cart.items.size > 0
+    assign has_products = true
+  endif
+-%}
+{%- if has_products -%}
+  {%- capture yaml_slide_html -%}
+    {%- if crosssell_type == 'api' -%}
+      {%- for recommendation in recommendations.products -%}
+        <div class="swiper-slide product-box">
+          {%- render 'product-card-comman',
+            product_card_product: recommendation,
+            product_card_style: 'shop-standard',
+            image_width: '230',
+            include_srcset: false,
+            show_secondary_image: false,
+            show_add_to_cart: false,
+            show_wishlist: false,
+            show_compare: false,
+            show_quickview: false,
+            show_deal_product: false,
+            display_label: false,
+            disable_hover: true,
+            sale_label_type: settings.sale_label_type,
+            sale_label_text: settings.sale_label_text,
+            sold_out_label_text: settings.sold_out_label_text
+          -%}
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      {%- liquid      
+        assign crosssell_item = ''
+        assign item_limit = 10
+        assign item_count = 1 
+      -%}
+      {%- for item in cart.items -%}
+        {%- assign products = item.product.metafields.custom.crosssell_products.value -%}
+        {%- for product in products -%}
+          {%- unless crosssell_item contains product.id -%}
+            <div class="swiper-slide product-box {{ product.id }} ">          
+              {%- render 'product-card-comman',
+                product_card_product: product,
+                product_card_style: 'shop-standard',
+                image_width: '230',
+                include_srcset: false,
+                show_secondary_image: false,
+                show_add_to_cart: false,
+                show_wishlist: false,
+                show_compare: false,
+                show_quickview: false,
+                show_deal_product: false,
+                display_label: false,
+                disable_hover: true,
+                sale_label_type: settings.sale_label_type,
+                sale_label_text: settings.sale_label_text,
+                sold_out_label_text: settings.sold_out_label_text
+              -%}
+              {%- assign crosssell_item = crosssell_item | append: product.id | append: ',' -%}
+            </div>
+            {%- liquid
+              assign item_count = item_count | plus: 1
+              if item_count > item_limit
+                break
+              endif
+            -%}
+          {%- endunless -%}          
+        {%- endfor -%}
+         {%- if item_count > item_limit -%}
+            {% break %}
+          {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endcapture -%}
+  {%- assign yaml_slide_html = yaml_slide_html | strip -%}
+  {%- if yaml_slide_html != '' -%}
+    <div class="cart-notification-ymal-wrapper">
+      <div class="ymal-title alt-font d-flex align-items-center">
+        <span>{{ 'sections.cart_crosssell_products.title' | t }}</span>
+        <div class="cart-notification-navigation d-flex ms-auto flex-shrink-0">
+          <div class="swiper-button-prev {{ navigation }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/></svg>
+          </div>
+          <div class="swiper-button-next {{ navigation }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="swiper" data-slider-options='{ {{ sliderOptions }} }'>
+        <div class="swiper-wrapper">
+          {{ yaml_slide_html }}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+{%- endif -%}

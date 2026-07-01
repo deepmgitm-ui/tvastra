@@ -1,0 +1,56 @@
+{%- if settings.product_card_style == 'shop-classic'
+  or settings.product_card_style == 'shop-modern'
+  or settings.product_card_style == 'shop-flat'
+-%}
+  {%- render 'product-card-classic',
+    product_card_product: product,
+    product_card_style: settings.product_card_style,
+    show_image_slider: section.settings.show_slider,
+    slider_options: slider_options,
+    show_secondary_image: settings.show_secondary_image,
+    show_add_to_cart: settings.show_add_to_cart,
+    show_wishlist: settings.show_wishlist,
+    show_compare: settings.show_compare,
+    show_quickview: settings.show_quickview,
+    show_deal_product: settings.show_deal_product,
+    display_label: settings.display_label,
+    sale_label_type: settings.sale_label_type,
+    sale_label_text: settings.sale_label_text,
+    sold_out_label_text: settings.sold_out_label_text
+  -%}
+{%- elsif settings.product_card_style == 'shop-box'  -%} 
+    {%- render 'product-card-box',
+        product_card_product: product,
+        product_card_style: settings.product_card_style,
+        show_image_slider: section.settings.show_slider,
+        slider_options: slider_options,
+        show_secondary_image: settings.show_secondary_image,
+        show_add_to_cart: settings.show_add_to_cart,
+        show_wishlist: settings.show_wishlist,
+        show_compare: settings.show_compare,
+        show_quickview: settings.show_quickview,
+        show_deal_product: settings.show_deal_product,
+        display_label: settings.display_label,
+        sale_label_type: settings.sale_label_type,
+        sale_label_text: settings.sale_label_text,
+        sold_out_label_text: settings.sold_out_label_text
+      -%}
+{% else %}
+  {%- render 'product-card-comman',
+    product_card_product: product,
+    product_card_style: settings.product_card_style,
+    show_image_slider: section.settings.show_slider,
+    slider_options: slider_options,
+    show_secondary_image: settings.show_secondary_image,
+    show_add_to_cart: settings.show_add_to_cart,
+    show_wishlist: settings.show_wishlist,
+    show_compare: settings.show_compare,
+    show_quickview: settings.show_quickview,
+    show_deal_product: settings.show_deal_product,
+    display_label: settings.display_label,
+    sale_label_type: settings.sale_label_type,
+    sale_label_text: settings.sale_label_text,
+    sold_out_label_text: settings.sold_out_label_text
+  -%}
+{%- endif -%}
+

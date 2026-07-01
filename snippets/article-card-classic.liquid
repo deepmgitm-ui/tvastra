@@ -1,0 +1,44 @@
+<div class="col blog-item">
+  <div class="blog-image overflow-hidden">
+    <a class="w-100" href="{{ article.url }}" aria-label="link">
+      {%- render 'responsive-image', image: article.image, placeholder_type: 'simple-image' -%} 
+    </a>
+    {%- if settings.show_tags_category != '' and settings.show_tags_category == 'category' -%}
+      <a href="{{ blog.url }}" class="blog-post-meta alt-font" aria-label="blog">{{ blog.title }}</a>
+    {%- endif -%}
+  </div>
+  <div class="blog-content text-start">
+    {%- if settings.show_tags_category == 'tag' and settings.show_tags_category != '' -%}
+      {%- if article.tags.size > 0 -%}
+        {%- for tag in article.tags -%}
+          <a href="{{ blog.url }}/tagged/{{ tag | handle }}" aria-label="blog">{{ tag }}</a>
+          {%- unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      {%- endif -%}
+    {%- endif -%}
+    <a class="blog-post-title alt-font" href="{{ article.url }}" aria-label="article">{{ article.title }}</a>
+    {%- if settings.truncate_excerpt and settings.truncate_word != blank -%}
+      {%- assign truncatewords = settings.truncate_word -%}
+    {%- else -%}
+      {%- assign truncatewords = 9 -%}
+    {%- endif -%}
+    {%- if settings.blog_show_excerpt == true and article.excerpt != blank -%}
+      <p>{{ article.excerpt | strip_html | truncatewords: truncatewords }}</p>
+    {%- endif -%}
+    {%- if settings.blog_show_author == true or settings.blog_show_date == true -%}
+      <div class="blog-meta-wrap">
+        {%- if settings.blog_show_date -%}
+          {%- assign date-format = settings.date_format -%}
+          <span>{{ article.published_at | date: date-format }}</span>
+        {%- endif -%}
+        {% if settings.blog_show_author == true %}
+          {{ 'general.article_card_classic.by_label' | t }}
+          {{ article.author -}}
+        {%- endif -%}
+        {%- if settings.blog_show_author == true and settings.blog_show_date == true %}
+          {{ 'general.article_card_classic.on_label' | t }}
+        {% endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>

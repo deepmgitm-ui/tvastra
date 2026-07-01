@@ -1,0 +1,43 @@
+<li class="grid-item grid-content-column{% if block_settings.grid_image == blank %} placeholder-item{% endif %}">
+  <div
+    class="shop-grid-wrap position-relative"
+    {% if block_settings.bg_color != blank %}
+      style="background-color: {{ block_settings.bg_color }}"
+    {% endif %}
+  >
+    <a href="{{ block_settings.button_link | default: '#' }}" class="shop-grid-img" aria-label="link">
+      {%- render 'responsive-image', image: block_settings.grid_image, placeholder_type: 'simple-image' -%}
+    </a>
+    <div class="shop-grid-details d-flex {{ block_settings.box_alignment }}">
+      <div class="text-{{ block_settings.txt_alignment }}">
+        {%- if block_settings.grid_small_title != blank -%}
+          <div class="small-title text-dark-gray">{{ block_settings.grid_small_title }}</div>
+        {%- endif -%}
+        {%- if block_settings.grid_title != blank -%}
+          <div class="title alt-font">{{ block_settings.grid_title }}</div>
+        {%- endif -%}
+        {%- render 'button-settings',
+          btn_style: block_settings.button_style,
+          btn_size: block_settings.button_size,
+          btn_text: block_settings.btn_text,
+          btn_link: block_settings.btn_link,
+          btn_radius: block_settings.btn_radius,
+          btn_border_width: block_settings.btn_border_width,
+          btn_icon_class: block_settings.btn_icon_class,
+          icon_position: block_settings.icon_position
+        -%}
+      </div>
+    </div>
+    {%- if section.grid_overlay == true -%}
+      <div
+        class="grid-overlay"
+        style="{% if section.overlay_color != blank %} background-color: {{ section.overlay_color }}; {% endif %}opacity: {{ section.overlay_opacity }};"
+      ></div>
+    {%- endif -%}
+  </div>
+</li>
+<li class="grid-item grid-banner-column{% if block_settings.banner_image == blank %} placeholder-item{% endif %}">
+  <a href="{{ block_settings.banner_link | default: '#' }}" class="shop-grid-img" aria-label="link">
+    {%- render 'responsive-image', image: block_settings.banner_image, placeholder_type: 'simple-image' -%}
+  </a>
+</li>

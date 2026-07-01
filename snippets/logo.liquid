@@ -1,0 +1,33 @@
+<a class="navbar-brand" href="{{ routes.root_url }}" style="--main-logo-width: {{ settings.logo_max_width }}px;" aria-label="logo">
+  {%- if settings.logo != blank -%}
+    <img
+      src="{{ settings.logo | image_url }}"
+      alt="{{ settings.logo.alt }}"
+      width="{{ settings.logo.width }}"
+      height="{{ settings.logo.height }}"
+      class="default-logo"
+      loading="lazy"
+    >
+    {%- if settings.logo_transparent != blank and settings.transparent_header != false -%}
+      <img
+      src="{{ settings.logo_transparent | image_url }}"
+      alt="{{ settings.logo_transparent.alt }}"
+      width="{{ settings.logo_transparent.width }}"
+      height="{{ settings.logo_transparent.height }}"
+      loading="lazy"          
+      class="lazyload alt-logo"
+      >
+    {%- else -%}
+      <img
+      src="{{ settings.logo | image_url }}"
+      alt="{{ settings.logo.alt }}"
+      width="{{ settings.logo.width }}"
+      height="{{ settings.logo.height }}"
+      loading="lazy"          
+      class="alt-logo"
+      >
+    {%- endif -%}            
+  {%- else -%}
+    <h1 class="logo-text">{{ settings.logo_text }}</h1>
+  {%- endif -%}          
+</a>

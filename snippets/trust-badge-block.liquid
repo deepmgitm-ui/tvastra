@@ -1,0 +1,12 @@
+{%- if block_settings.trust_badge_text != blank or block_settings.trust_badge_img != blank -%}
+  <div class="trust-badge d-flex align-items-{{ block_settings.text_alignment }} {{ block_settings.trust_badge_position }} ">
+    {%- if block_settings.trust_badge_text != blank -%}
+      <div class="badge-test {% if block_settings.trust_badge_position == 'flex-column' %}mb-3 {% else %}mt-3{% endif %}">{{ block_settings.trust_badge_text }}</div>
+    {%- endif -%}
+    {%- if block_settings.trust_badge_img != blank -%}
+      <img src="{{ block_settings.trust_badge_img | image_url }}" alt="" width="{{ block_settings.trust_badge_img.width }}" height="{{ block_settings.trust_badge_img.height }}" loading="lazy" style="{% if block_settings.trust_badge_width != blank %}width: {{ block_settings.trust_badge_width }}px;{% endif %}" />
+    {%- else -%}
+      {{ 'image' | placeholder_svg_tag: 'svg-placeholder position-static' }}
+    {%- endif -%}
+  </div>
+{%- endif -%}

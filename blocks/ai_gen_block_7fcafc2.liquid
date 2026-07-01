@@ -1,0 +1,549 @@
+{% doc %}
+  @prompt
+    Create a fully responsive "Card Grid Section" layout with the following requirements:
+    
+    GOAL:
+    Build only the layout structure (no fixed content). Everything must be easily customizable (image, label, title, link).
+    
+    SECTION LAYOUT:
+    - Full width section
+    - Background color customizable (default black)
+    - Centered container with max-width (1200–1400px)
+    - Equal horizontal spacing
+    - Clean, minimal, premium ecommerce style
+    
+    DESKTOP (1200px+):
+    - 3 columns grid
+    - Equal gap between cards (24–32px)
+    
+    TABLET (768px–1199px):
+    - 2 columns grid
+    - Same spacing proportions
+    
+    MOBILE (<768px):
+    - 1 column
+    - Full width cards
+    - Side padding (16–20px)
+    
+    CARD STRUCTURE:
+    Each card should contain:
+    
+    1. Image container
+       - Rounded corners (12–16px)
+       - Overflow hidden
+       - Customizable height
+       - Object-fit: cover
+       - Smooth hover zoom effect
+    
+    2. Content area below image
+       - Small label text (customizable)
+       - Title text (customizable, multi-line supported)
+       - Optional arrow/icon aligned right
+    
+    LAYOUT REQUIREMENTS:
+    - Entire card clickable
+    - Flexbox used inside card for text alignment
+    - Title and arrow should align in same row
+    - Arrow pushed to right using flex
+    - Smooth transitions (0.3s ease)
+    
+    CUSTOMIZATION REQUIREMENTS:
+    - All content dynamic (no hardcoded text)
+    - Easy to duplicate cards
+    - Colors, spacing, font sizes easily editable
+    - Clean class structure
+    - Well organized CSS
+    
+    DO NOT:
+    - Hardcode text
+    - Add unnecessary styling
+    - Use external libraries
+    
+    Return clean, production-ready HTML + CSS.
+    Focus only on structure and responsiveness.
+    
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-card-grid-section-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.section_padding_top }}px 0 {{ block.settings.section_padding_bottom }}px;
+  }
+
+  .ai-card-grid-container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.container_max_width }}px;
+    margin: 0 auto;
+    padding: 0 {{ block.settings.container_padding }}px;
+  }
+
+  .ai-card-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: {{ block.settings.card_gap }}px;
+  }
+
+  .ai-card-item-{{ ai_gen_id }} {
+    display: block;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+  }
+
+  .ai-card-item-{{ ai_gen_id }}:hover {
+    transform: translateY(-4px);
+  }
+
+  .ai-card-image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: {{ block.settings.card_image_height }}px;
+    border-radius: {{ block.settings.card_border_radius }}px;
+    overflow: hidden;
+    margin-bottom: {{ block.settings.content_spacing }}px;
+  }
+
+  .ai-card-image-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .ai-card-item-{{ ai_gen_id }}:hover .ai-card-image-{{ ai_gen_id }} {
+    transform: scale(1.05);
+  }
+
+  .ai-card-image-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-card-image-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-card-content-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: {{ block.settings.text_spacing }}px;
+  }
+
+  .ai-card-label-{{ ai_gen_id }} {
+    font-size: {{ block.settings.label_font_size }}px;
+    color: {{ block.settings.label_color }};
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+  }
+
+  .ai-card-title-row-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .ai-card-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_font_size }}px;
+    color: {{ block.settings.title_color }};
+    margin: 0;
+    line-height: 1.3;
+    flex: 1;
+  }
+
+  .ai-card-arrow-{{ ai_gen_id }} {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    color: {{ block.settings.arrow_color }};
+    transition: transform 0.3s ease;
+  }
+
+  .ai-card-item-{{ ai_gen_id }}:hover .ai-card-arrow-{{ ai_gen_id }} {
+    transform: translateX(4px);
+  }
+
+  @media screen and (max-width: 1199px) and (min-width: 768px) {
+    .ai-card-grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .ai-card-grid-section-{{ ai_gen_id }} {
+      padding: {{ block.settings.section_padding_top | times: 0.6 }}px 0 {{ block.settings.section_padding_bottom | times: 0.6 }}px;
+    }
+
+    .ai-card-grid-container-{{ ai_gen_id }} {
+      padding: 0 {{ block.settings.mobile_padding }}px;
+    }
+
+    .ai-card-grid-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: {{ block.settings.card_gap | times: 0.75 }}px;
+    }
+
+    .ai-card-image-wrapper-{{ ai_gen_id }} {
+      height: {{ block.settings.card_image_height | times: 0.8 }}px;
+    }
+
+    .ai-card-label-{{ ai_gen_id }} {
+      font-size: {{ block.settings.label_font_size | times: 0.9 }}px;
+    }
+
+    .ai-card-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_font_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<card-grid-section-{{ ai_gen_id }} class="ai-card-grid-section-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-card-grid-container-{{ ai_gen_id }}">
+    <div class="ai-card-grid-{{ ai_gen_id }}">
+      {% for i in (1..3) %}
+        {% liquid
+          assign card_image_key = 'card_' | append: i | append: '_image'
+          assign card_label_key = 'card_' | append: i | append: '_label'
+          assign card_title_key = 'card_' | append: i | append: '_title'
+          assign card_link_key = 'card_' | append: i | append: '_link'
+
+          assign card_image = block.settings[card_image_key]
+          assign card_label = block.settings[card_label_key]
+          assign card_title = block.settings[card_title_key]
+          assign card_link = block.settings[card_link_key]
+        %}
+
+        <a 
+          href="{% if card_link != blank %}{{ card_link }}{% else %}#{% endif %}" 
+          class="ai-card-item-{{ ai_gen_id }}"
+        >
+          <div class="ai-card-image-wrapper-{{ ai_gen_id }}">
+            {% if card_image %}
+              <img
+                src="{{ card_image | image_url: width: 800 }}"
+                alt="{{ card_image.alt | escape }}"
+                loading="lazy"
+                width="800"
+                height="{{ block.settings.card_image_height }}"
+                class="ai-card-image-{{ ai_gen_id }}"
+              >
+            {% else %}
+              <div class="ai-card-image-placeholder-{{ ai_gen_id }}">
+                {{ 'image' | placeholder_svg_tag }}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="ai-card-content-{{ ai_gen_id }}">
+            {% if card_label != blank %}
+              <p class="ai-card-label-{{ ai_gen_id }}">{{ card_label }}</p>
+            {% endif %}
+
+            <div class="ai-card-title-row-{{ ai_gen_id }}">
+              {% if card_title != blank %}
+                <h3 class="ai-card-title-{{ ai_gen_id }}">{{ card_title }}</h3>
+              {% endif %}
+
+              {% if block.settings.show_arrow %}
+                <svg class="ai-card-arrow-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              {% endif %}
+            </div>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</card-grid-section-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class CardGridSection{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.cards = this.querySelectorAll('.ai-card-item-{{ ai_gen_id }}');
+        this.setupAccessibility();
+      }
+
+      setupAccessibility() {
+        this.cards.forEach((card) => {
+          card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              card.click();
+            }
+          });
+        });
+      }
+    }
+
+    customElements.define('card-grid-section-{{ ai_gen_id }}', CardGridSection{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Card grid section",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section layout"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container max width",
+      "min": 1200,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "default": 1400
+    },
+    {
+      "type": "range",
+      "id": "container_padding",
+      "label": "Container side padding",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding",
+      "label": "Mobile side padding",
+      "min": 12,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section padding top",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Card layout"
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Gap between cards",
+      "min": 16,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "label": "Card border radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "card_image_height",
+      "label": "Card image height",
+      "min": 200,
+      "max": 500,
+      "step": 20,
+      "unit": "px",
+      "default": 360
+    },
+    {
+      "type": "range",
+      "id": "content_spacing",
+      "label": "Image to content spacing",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "text_spacing",
+      "label": "Text spacing",
+      "min": 4,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Card style"
+    },
+    {
+      "type": "range",
+      "id": "label_font_size",
+      "label": "Label font size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label color",
+      "default": "#999999"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "label": "Title font size",
+      "min": 16,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrow",
+      "label": "Show arrow",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "arrow_color",
+      "label": "Arrow color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Card 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_1_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "card_1_label",
+      "label": "Label",
+      "default": "Collection"
+    },
+    {
+      "type": "text",
+      "id": "card_1_title",
+      "label": "Title",
+      "default": "Explore our latest collection"
+    },
+    {
+      "type": "url",
+      "id": "card_1_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Card 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_2_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "card_2_label",
+      "label": "Label",
+      "default": "Featured"
+    },
+    {
+      "type": "text",
+      "id": "card_2_title",
+      "label": "Title",
+      "default": "Discover premium products"
+    },
+    {
+      "type": "url",
+      "id": "card_2_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Card 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_3_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "card_3_label",
+      "label": "Label",
+      "default": "New arrivals"
+    },
+    {
+      "type": "text",
+      "id": "card_3_title",
+      "label": "Title",
+      "default": "Shop the newest styles"
+    },
+    {
+      "type": "url",
+      "id": "card_3_link",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Card grid section"
+    }
+  ]
+}
+{% endschema %}

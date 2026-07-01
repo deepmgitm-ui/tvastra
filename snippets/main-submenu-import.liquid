@@ -1,0 +1,326 @@
+{%- capture contentForQuerystring -%}{{ content_for_header }}{%- endcapture -%}
+{%- assign pageUrlWithHost = contentForQuerystring | split:'"pageurl":"' | last | split:'"' | first |
+   replace:'\/','/' | 
+   replace:'%20',' ' | 
+   replace:'\u0026','&'
+-%}
+{%- liquid
+	assign urlarray = pageUrlWithHost | split:'q='
+	assign urlarrayfinal = urlarray[1] | split: '&view'
+-%}
+{%- for block in section.blocks -%}
+	{%- if block.id == urlarrayfinal[0] -%}
+		{%- case block.type -%}
+			{%- when 'megamenu' -%}
+				{%- comment -%} for mega menu column {%- endcomment -%}
+          {%- capture megamenu-content -%}
+            {%- for i in (1..6) -%}
+              {%- liquid
+                assign column_type_key = 'column_type' | append: i | strip
+                assign column_type = block.settings[column_type_key]
+                assign column_width_key = 'column_width' | append: i | strip 
+                assign column_width_handle = block.settings[column_width_key]
+              -%}
+              {%- if column_type == 'image' -%}
+                {%- liquid
+                  assign banner_image_key = 'banner_image' | append: i | strip
+                  assign banner_image = block.settings[banner_image_key]
+                  assign btn_link_key = 'btn_link' | append: i | strip
+                  assign btn_link = block.settings[btn_link_key]
+                  assign button_style_key = 'button_style' | append: i | strip
+                  assign button_style = block.settings[button_style_key]
+                  assign button_size_key = 'button_size' | append: i | strip
+                  assign button_size = block.settings[button_size_key]
+                  assign btn_text_key = 'btn_text' | append: i | strip
+                  assign btn_text = block.settings[btn_text_key]
+                  assign btn_radius_key = 'btn_radius' | append: i | strip
+                  assign btn_radius = block.settings[btn_radius_key]
+                -%}
+                {%- if banner_image != null and banner_image != blank -%}
+                  <li class="col-{{ column_width_handle }} d-xl-block d-none position-relative menu-image-banner">
+                    <a href="{{ btn_link | default: '#' }}" title="" aria-label="btn">
+                      <img src="{{ banner_image | image_url }}" alt="" width="{{ banner_image.width }}" height="{{ banner_image.height }}" loading="lazy" />
+                    </a>
+                    {%- if btn_text != blank -%}
+                      <div class="banner-button">
+                        {%- render 'button-settings',
+                          btn_style: button_style,
+                          btn_size: button_size,
+                          btn_text: btn_text,
+                          btn_link: btn_link,
+                          btn_radius: btn_radius,
+                          btn_border_width: false,
+                          btn_icon_class: false,
+                          icon_position: false 
+                        -%}
+                      </div>
+                    {%- endif -%}
+                  </li>
+                {%- endif -%}
+              {%- endif -%} 
+              {%- if column_type == 'menu' or column_type == 'image-menu' and block.settings.image_position == 'top' -%}
+                {%- liquid
+                  assign menu_key = 'menu' | append: i | strip
+                  assign menu_handle = block.settings[menu_key]
+                  assign menu = linklists[menu_handle]
+                -%}
+                {%- if menu != null and menu != blank -%}
+                  <li class="col-{{ column_width_handle }} {{ column_type }} level1">
+                    {%- if column_type == 'image-menu' -%}
+                      {%- liquid
+                        assign banner_image_key = 'banner_image' | append: i | strip
+                        assign banner_image = block.settings[banner_image_key]
+                        assign banner_url_key = 'btn_link' | append: i | strip
+                        assign banner_url = block.settings[banner_url_key]
+                      -%}
+                      {%- if banner_image != blank -%}
+                        <a href="{{ banner_url | default: '#' }}" class="d-none d-xl-block" title="" aria-label="link">
+                          <img src="{{ banner_image | image_url }}" alt="" width="{{ banner_image.width }}" height="{{ banner_image.height }}" loading="lazy" />
+                        </a>
+                      {%- endif -%}
+                    {%- endif -%}
+                    {%- for link in menu.links -%}
+                      {%- liquid
+                        assign childlinks = link.links
+                        assign child_label_count = link.title | downcase | split: '[label' | last | split: ']' | first
+                        assign child_label = "text_lable" | append: child_label_count
+                        assign child_bgColor = "bg_color_lable" | append: child_label_count
+                        assign child_color = "color_lable" | append: child_label_count 
+                      -%}
+                      <a href="{{ link.url | default: '#' }}" class="child-link-title{% if link.active == true or link.child_active == true %} active{% endif %}" aria-label="link">{{ link.title | escape | split: '[' | first }}{%- if link.title contains '[' -%}<span class="menu-lable" style=" background-color: {{ settings[child_bgColor] }}; color: {{ settings[child_color] }}; ">{{ settings[child_label] }}</span>{%- endif -%}{% if childlinks.size > 0 %}<span class="feather-chevron-right parent d-flex align-items-center d-xl-none"></span>{% endif %}</a>
+                      {%- if childlinks.size > 0 -%}
+                        <ul class="submenu sub-menu">
+                          {%- comment -%} Menu Back {%- endcomment -%}
+                          <li class="back-wrapper d-xl-none d-block">{{ link.title | escape | split: '[' | first }}</li>                            
+                          {%- for childlink in childlinks -%}
+                            <li class="level2">
+                              {%- liquid
+                                assign secondlevellinks = childlink.links
+                                assign subchild_label_count = childlink.title | downcase | split: '[label' | last | split: ']' | first
+                                assign subchild_label = "text_lable" | append: subchild_label_count
+                                assign subchild_bgColor = "bg_color_lable" | append: subchild_label_count
+                                assign subchild_color = "color_lable" | append: subchild_label_count
+                              -%}
+                              <a href="{{ childlink.url | default: '#' }}" class="{% if childlink.active == true or childlink.child_active == true %}active{% endif %}" aria-label="link">{{ childlink.title | escape | split: '[' | first }}
+                              {%- if childlink.title contains '[' -%}<span class="menu-lable" style=" background-color: {{ settings[subchild_bgColor] }}; color: {{ settings[subchild_color] }}; ">{{ settings[subchild_label] }}</span>{%- endif -%}</a>
+                              {%- if secondlevellinks.size > 0 -%}
+                                <ul class="submenu sub-menu">
+                                  {%- for secondlevellink in secondlevellinks -%}
+                                    <li class="level3">
+                                      <a href="{{ secondlevellink.url | default: '#' }}" class="{% if secondlevellink.active == true or secondlevellink.child_active == true %} active{% endif %}" aria-label="link">{{ secondlevellink.title | escape }}</a>
+                                    </li>
+                                  {%- endfor -%}
+                                </ul>
+                              {%- endif- %}
+                            </li>
+                          {%- endfor -%}
+                        </ul>   
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </li>
+                {%- endif -%}
+              {%- elsif column_type == 'image-menu' and block.settings.image_position == 'left' -%}
+                {%- liquid
+                  assign menu_key = 'menu' | append: i | strip
+                  assign menu_handle = block.settings[menu_key]
+                  assign menu = linklists[menu_handle]
+                -%}
+                {%- if menu != null and menu != blank -%}
+                  <li class="col-{{ column_width_handle }} image-left d-flex align-items-center level1">
+                    {%- if column_type == 'image-menu' -%}
+                      {%- liquid
+                        assign banner_image_key = 'banner_image' | append: i | strip
+                        assign banner_image = block.settings[banner_image_key]
+                        assign banner_url_key = 'btn_link' | append: i | strip
+                        assign banner_url = block.settings[banner_url_key]
+                      -%}
+                      <a href="{{ banner_url | default: '#' }}" class="image-wrapper d-none d-xl-block" title="" aria-label="banner">
+                        <img src="{{ banner_image | image_url }}" alt="" width="{{ banner_image.width }}" height="{{ banner_image.height }}" loading="lazy" />
+                      </a>
+                    {%- endif -%}
+                    {%- for link in menu.links -%}
+                      {%- liquid
+                        assign childlinks = link.links
+                        assign child_label_count = link.title | downcase | split: '[label' | last | split: ']' | first
+                        assign child_label = "text_lable" | append: child_label_count
+                        assign child_bgColor = "bg_color_lable" | append: child_label_count
+                        assign child_color = "color_lable" | append: child_label_count
+                      -%}
+                      <div class="inner-menu">
+                        <a href="{{ link.url | default: '#' }}" class="child-link-title{% if link.active == true or link.child_active == true %} active{% endif %}" aria-label="link">{{ link.title | escape | split: '[' | first }}{% if link.title contains '[' %}<span class="child-lable-{{ child_label }}" style=" background-color: {{ settings[child_bgColor] }}; color: {{ settings[child_color] }}; ">{{ settings[child_label] }}</span>{% endif %}{% if childlinks.size > 0 %}<span class="feather-chevron-right parent d-flex align-items-center d-xl-none"></span>{% endif %}</a>
+                        {%- if childlinks.size > 0 -%}
+                          <ul class="submenu sub-menu">
+                            {%- comment -%} Menu Back {%- endcomment -%}
+                            <li class="back-wrapper d-xl-none d-block">{{ link.title | escape | split: '[' | first }}</li>                              
+                            {%- for childlink in childlinks -%}
+                              <li class="level2">
+                                {%- liquid
+                                  assign secondlevellinks = childlink.links
+                                  assign subchild_label_count = childlink.title | downcase | split: '[label' | last | split: ']' | first
+                                  assign subchild_label = "text_lable" | append: subchild_label_count
+                                  assign subchild_bgColor = "bg_color_lable" | append: subchild_label_count
+                                  assign subchild_color = "color_lable" | append: subchild_label_count
+                                -%}
+                                <a href="{{ childlink.url | default: '#' }}" class="{% if childlink.active == true or childlink.child_active == true %}active{% endif %}" aria-label="link">{{ childlink.title | escape | split: '[' | first }}{% if childlink.title contains '[' %}<span class="subchild-lable-{{ subchild_label }}" style=" background-color: {{ settings[subchild_bgColor] }}; color: {{ settings[subchild_color] }}; ">{{ settings[subchild_label] }}</span>{% endif %}</a>
+                                {%- if secondlevellinks.size > 0 -%}
+                                  <ul class="submenu sub-menu">
+                                    {%- for secondlevellink in secondlevellinks -%}
+                                      <li class="level3">
+                                        <a href="{{ secondlevellink.url | default: '#' }}" class="{% if secondlevellink.active == true or secondlevellink.child_active == true %} active{% endif %}" aria-label="link">{{ secondlevellink.title | escape }}</a>
+                                      </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                {%- endif- %}
+                              </li>
+                            {%- endfor -%}
+                          </ul>   
+                        {%- endif -%}
+                      </div>
+                    {%- endfor -%}
+                  </li>
+                {%- endif -%}
+              {%- endif -%}
+              {%- if column_type == 'collection' -%}
+                {%- liquid
+                  assign collection_key = 'collection' | append: i | strip
+                  assign collection_handle = block.settings[collection_key]
+                  assign products = collection_handle.products
+                  assign slider_title_key = 'slider_title' | append: i | strip
+                  assign slider_title_handle = block.settings[slider_title_key]
+                  assign slide_per_view_desktop_key = 'slide_per_view_desktop' | append: i | strip
+                  assign slide_per_view_desktop_handle = block.settings[slide_per_view_desktop_key]
+                  assign slide_per_view_mini_desktop_key = 'slide_per_view_mini_desktop' | append: i | strip
+                  assign slide_per_view_mini_desktop_handle = block.settings[slide_per_view_mini_desktop_key]
+                  assign slide_per_view_ipad_key = 'slide_per_view_ipad' | append: i | strip
+                  assign slide_per_view_ipad_handle = block.settings[slide_per_view_ipad_key]
+                  assign slide_per_view_mobile_key = 'slide_per_view_mobile' | append: i | strip
+                  assign slide_per_view_mobile_handle = block.settings[slide_per_view_mobile_key]
+                -%}
+                <li class="col-{{ column_width_handle }} {{ collection_key }} product-menu text-center">
+                  <div class="product-slider-wrap position-relative">
+                    <div class="navigation-btn d-flex justify-content-end align-items-center">
+                      <h6 class="mb-0 me-auto">{{ slider_title_handle }}</h6>
+                      <div class="swiper-button-prev rounded-circle"><i class="bi bi-arrow-left"></i></div>
+                      <div class="swiper-button-next rounded-circle"><i class="bi bi-arrow-right"></i></div>
+                    </div>
+                    <div class="swiper" data-slider-options='{"loop":true,"autoplay":{"delay":2500,"disableOnInteraction":false},"direction":"horizontal","navigation":{"nextEl":".{{ collection_key }} .swiper-button-next","prevEl":".{{collection_key}} .swiper-button-prev"},"keyboard":{"enabled":true,"onlyInViewport":true},"speed":500,"spaceBetween":15,"breakpoints":{"320":{"slidesPerView":{{ slide_per_view_mobile_handle }}},"768":{"slidesPerView":{{ slide_per_view_ipad_handle }}},"992":{"slidesPerView":{{ slide_per_view_mini_desktop_handle }}},"1200":{"slidesPerView":{{ slide_per_view_desktop_handle }}}}}'>
+                      <div class="swiper-wrapper">
+                        {%- if collection_handle != blank -%}
+                          {%- for product in products -%}                                  
+                            <div class="swiper-slide text-center product-box">
+                               {%- render 'product-simple-card', product_card_product: product -%}
+                            </div>
+                          {%- endfor -%}
+                        {%- else -%}
+                          {%- for i in (1..5) -%}
+                            <div class="swiper-slide text-center product-box">
+                              {%- render 'placeholder-images', placeholder_type: 'product-image' -%}
+                              <div class="product-footer text-center placeholder-product">
+                                <span class="product-title alt-font">{{ 'onboarding.product_title' | t }}</span>
+                                <div class="price">{{ 5000 | money }}</div>
+                              </div>
+                            </div>
+                          {%- endfor -%}
+                        {%- endif -%}
+                      </div>                                
+                    </div>
+                  </div>
+                </li>
+              {%- endif -%}                        
+            {%- endfor -%}
+          {%- endcapture -%}
+          {%- comment -%} for mega menu bottom banner {%- endcomment -%}
+          {%- capture bottom-banner-content -%}
+            {%- for i in (1..6) -%}
+              {%- liquid
+                assign banner_column_width_key = 'bottom_column_width' | append: i | strip
+                assign banner_column_width = block.settings[banner_column_width_key]
+                assign banner_bm_key = 'banner_bm_url' | append: i | strip
+                assign banner_bm = block.settings[banner_bm_key]
+                assign banner_image_bm_key = 'banner_image_bm' | append: i | strip
+                assign banner_image_bm = block.settings[banner_image_bm_key]
+              -%}
+              {%- if banner_image_bm != blank -%}
+                <div class="col-{{ banner_column_width }}">
+                  <a href="{{ banner_bm | default: '#' }}" aria-label="banner">
+                    {{
+                      banner_image_bm
+                      | image_url: width: 3840
+                      | image_tag:
+                        height: banner_image_bm.height,
+                        width: banner_image_bm.width,
+                        sizes: '100vw',
+                        widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840',
+                        loading: 'lazy'
+                    }}
+                  </a>
+                </div> 
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endcapture -%}
+          {%- assign megamenu-content = megamenu-content | strip -%}
+          {%- assign bottom-banner-content = bottom-banner-content | strip -%} 
+					<div class="{% if block.settings.megamenu_fullwidth == true %}container-fluid{% else %}container{% endif %}">
+						{%- comment -%} Menu Back {%- endcomment -%}
+						<div class="back-wrapper d-xl-none d-block">{{ block.settings.text | escape | split: '[' | first }}</div>
+						<ul class="row justify-content-center align-items-start">
+						{%- comment -%} Mega Menu Content {%- endcomment -%}
+						{{ megamenu-content }}
+						</ul>
+            {%- if bottom-banner-content != blank -%}
+  						<div class="row justify-content-center menu-bottom-banner d-none d-xl-flex">
+  						{%- if block.settings.show_border_top == true -%}
+  						<div class="menus-separator"></div>
+  						{%- endif -%}
+  						{{ bottom-banner-content }}
+  						</div>
+            {%- endif -%}
+					</div>
+			{%- when 'collection-menu' -%}
+					          {%- capture collection-menu -%}
+            {%- for i in (1..6) -%}
+              {%- liquid
+                assign collection_img_key = 'collection_img' | append: i | strip
+                assign collection_img = block.settings[collection_img_key]
+                assign collection_url_key = 'collection_url' | append: i | strip
+                assign collection_url = block.settings[collection_url_key]
+                assign collection_name_key = 'collection_name' | append: i | strip
+                assign collection_name = block.settings[collection_name_key]
+              -%}
+              {%- if collection_img != blank or collection_name != blank -%}
+                <li class="col d-lg-flex flex-column justify-content-center align-items-center text-center collection-box">
+                  {%- if collection_img != null and collection_img != blank -%}
+                    <div class="collection-img-wrap">
+                      <a href="{{ collection_url | default: '#' }}" class="d-none d-xl-block" aria-label="collection">
+                        {{
+                          collection_img
+                          | image_url: width: 3840
+                          | image_tag:
+                            height: collection_img.height,
+                            width: collection_img.width,
+                            sizes: '100vw',
+                            widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840',
+                            loading: 'lazy'
+                        }}
+                      </a>                            
+                    </div>
+                  {%- endif -%}
+                  {%- if collection_name != blank -%}
+                    <a class="collection-name" href="{{ collection_url | default: '#' }}" aria-label="collection">{{ collection_name }}</a>
+                  {%- endif -%}
+                </li>
+              {%- endif -%}
+            {%- endfor -%} 
+          {%- endcapture -%}
+          {%- assign collection-menu = collection-menu | strip -%}
+          <div class="{% if block.settings.megamenu_fullwidth == true %}container-fluid{% else %}container{% endif %}">
+            {%- comment -%} Menu Back {%- endcomment -%}
+            <div class="back-wrapper d-xl-none d-block">{{ block.settings.text | escape | split: '[' | first }}</div>
+            <ul class="row">                    
+              {%- comment -%} Collection Menu Content {%- endcomment -%}
+              {{ collection-menu }}
+            </ul>
+          </div>
+		{%- endcase -%}
+	{%- endif -%}
+{%- endfor -%}

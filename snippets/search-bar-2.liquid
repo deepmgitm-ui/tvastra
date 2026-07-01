@@ -1,0 +1,27 @@
+<div id="minisearch-popup" class="minisearch-popup">
+  <div class="d-flex flex-column justify-content-center align-items-center">
+    <div class="search-popup-inner w-100">
+      {%- if settings.header_layout == 'style-1'-%}
+        <h4 class="text-center search-label alt-font w-100">{{ 'sections.search_input_placeholder.search_popup_heading' | t }}</h4>
+      {%- endif -%}
+      <div class="search-form-wrapper w-100">
+        <form action="{{ routes.search_url }}" method="get" class="form minisearch" role="search" id="form-minisearch">
+          <input type="hidden" name="type" value="product">
+          <input type="hidden" name="options[prefix]" value="last">
+          <input class="search-type-2" type="text" name="q" autocomplete="off" placeholder="{{ 'sections.search_input_placeholder.placeholder_text' | t }}" {%- if settings.enable_search_suggestions == true -%}data-search-input required {% endif %} data-no-result-text="{{ 'sections.search_input_placeholder.not_found_text' | t }}" />
+          <button type="submit" class=""><i class="feather-search"></i>{{ 'sections.header.search' | t }}</button>
+        </form>
+      </div>
+    </div>
+
+    {%- render 'search-results-wrapper' -%}
+
+
+  </div>
+</div>
+<div class="search-overlay"></div>
+<style type="text/css">
+  #quick-search {
+  width: 100%;
+}
+</style>

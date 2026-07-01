@@ -1,0 +1,153 @@
+<div class="group-product-main">
+  <div class="group-product">
+    <ul>
+      {%- liquid
+        assign main_current_variant = main_product.selected_or_first_available_variant
+        assign main_productImage = main_current_variant.featured_image | default: product.featured_image
+        assign main_product_available = main_product.variants | where: 'available'
+        if main_product.available == false
+        continue
+        endif
+      -%}
+      <li class="group-item">
+        <div class="product-image">
+          <img src="{{ main_productImage | img_url: '110x' }}" loading="lazy" alt="" width="auto" height="auto" />
+        </div>
+        <div class="product-detail"> 
+          <div class="detail-wrapper">
+            <a href="{{ product.url }}" aria-label="product">{{ main_product.title }}</a>
+            <div class="variant-select">
+              {%- if main_product.variants.size > 1 -%}
+                <select
+                  name="items[][id]"
+                  class="group-product-variant-option"
+                  data-compare-price="{{ main_product.compare_at_price | default: main_product.price | money_without_currency }}"
+                  data-price="{{ main_product.price | money_without_currency }}"
+                  data-id="{{ main_current_variant.id }}"
+                  data-final-price="{{ main_product.price | money_without_currency }}"
+                >
+                  {%- for variants in main_product_available -%}
+                  ddd
+                    {%- liquid
+                      assign selected = false
+                    -%}
+                    {%- if variants.id == main_product.selected_or_first_available_variant.id -%}
+                      {% assign selected = true %}
+                    {%- endif -%}
+                    <option
+                      value="{{ variants.id }}"
+                      {% if selected %}
+                        selected="true"
+                      {% endif %}
+                      data-image="{{ variants.featured_image | default: image | img_url: '110x' }}"
+                      data-compare-price="{{ variants.compare_at_price | default: variants.price | money_without_currency }}"
+                      data-price="{{ variants.price | money_without_currency }}"
+                    >
+                      {{ variants.title }}
+                    </option>
+                  {%- endfor -%}
+                </select>
+              {%- else -%}
+                <input
+                  type="hidden"
+                  class="group-product-variant-option"
+                  name="items[][id]"
+                  value="{{ main_product.selected_or_first_available_variant.id }}"
+                  data-compare-price="{{ main_product.compare_at_price | default: main_product.price | money_without_currency }}"
+                  data-price="{{ main_product.price | money_without_currency }}"
+                  data-final-price="{{ main_product.price | money_without_currency }}"
+                >
+              {%- endif -%}
+            </div>
+          <div class="price-wrapper group-product-price">        
+           {%- render 'price', product: main_product -%}
+          </div> 
+        </div>
+        <div class="quantity">
+          <quantity-input class="quantity">
+            <button class="quantity-button quantity-minus feather-minus" name="minus" type="button" aria-label="minus"><span class="visually-hidden">-</span></button>
+            <input id="quantity-input" class="quantity-input" type="number" name="items[][quantity]" id="Quantity-{{ product.id }}" min="0" value="1" />
+            <label for="quantity-input" class="visually-hidden"></label>
+            <button class="quantity-button quantity-plus feather-plus" name="plus" type="button" aria-label="plus"><span class="visually-hidden">+</span></button>
+          </quantity-input>
+        </div>
+      </div>
+      </li>
+      {%- for product in productgrop.value -%}
+        {%- liquid
+          assign current_variant = product.selected_or_first_available_variant
+          assign productImage = current_variant.featured_image | default: product.featured_image
+          assign product_available = product.variants | where: 'available'
+          if product.available == false
+          continue
+          endif
+        -%}
+        <li class="group-item">
+          <div class="product-image">
+            <img src="{{ productImage | img_url: '110x' }}" loading="lazy" alt="" width="auto" height="auto" />
+          </div>
+          <div class="product-detail">
+            <div class="detail-wrapper">
+              <a href="{{ product.url }}" aria-label="product">{{ product.title }}</a>
+                <div class="variant-select">
+                  {%- if product.variants.size > 1 -%}
+                    <select
+                      name="items[][id]"
+                      class="group-product-variant-option"
+                      data-compare-price="{{ product.compare_at_price | default: product.price | money_without_currency }}"
+                      data-price="{{ product.price | money_without_currency }}"
+                      data-id="{{ current_variant.id }}"
+                      data-final-price="{{ product.price | money_without_currency }}"
+                    >
+                      {%- for variant in product_available -%}
+                        {%- liquid
+                          assign selected = false
+                        -%}
+                        {%- if variant.id == product.selected_or_first_available_variant.id -%}
+                          {% assign selected = true %}
+                        {%- endif -%}
+                        <option
+                          value="{{ variant.id }}"
+                          {% if selected %}
+                            selected="true"
+                          {% endif %}
+                          data-image="{{ variant.featured_image | default: image | img_url: '110x' }}"
+                          data-compare-price="{{ variant.compare_at_price | default: variant.price | money_without_currency }}"
+                          data-price="{{ variant.price | money_without_currency }}"
+                          data-final-price="{{ product.price | money_without_currency }}"
+                        >
+                          {{ variant.title }}
+                        </option>
+                      {%- endfor -%}
+                    </select>
+                  {%- else -%}
+                    <input
+                      type="hidden"
+                      class="group-product-variant-option"
+                      name="items[][id]"
+                      value="{{ product.selected_or_first_available_variant.id }}"
+                      data-compare-price="{{ product.compare_at_price | default: product.price | money_without_currency }}"
+                      data-price="{{ product.price | money_without_currency }}"
+                      data-final-price="{{ product.price | money_without_currency }}"
+                    >
+                  {%- endif -%}
+                </div>
+              <div class="price-wrapper group-product-price">        
+               {%- render 'price', product: product -%}
+              </div>
+          </div>
+          <div class="quantity">
+            <quantity-input class="quantity">
+              <button class="quantity-button quantity-minus feather-minus" name="minus" type="button" aria-label="minus"><span class="visually-hidden">-</span></button>
+              <input id="group-quantity-input-{{ forloop.index }}" class="quantity-input" type="number" name="items[][quantity]" id="Quantity-{{ product.id }}" min="0" value="1" />
+              <label for="group-quantity-input-{{ forloop.index }}" class="visually-hidden"></label>
+              <button class="quantity-button quantity-plus feather-plus" name="plus" type="button" aria-label="plus"><span class="visually-hidden">+</span></button>
+            </quantity-input>
+          </div>
+          </div> 
+        </li>
+      {%- endfor -%}
+    </ul>
+    <div class="subtotal" data-subtotal="">{{ 'sections.group_product.subtotal' | t }} <span></span></div>
+  </div>
+</div>

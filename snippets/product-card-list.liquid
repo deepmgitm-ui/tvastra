@@ -1,0 +1,154 @@
+{%- liquid
+  assign purchase_btn = false 
+  assign login_to_see = false
+  if settings.enable_login_price == true and customer and  settings.enable_catalog_mode == false
+    assign purchase_btn = true
+    assign login_to_see = true
+  elsif  settings.enable_login_price == false and settings.enable_catalog_mode == false
+    assign purchase_btn = true
+    assign login_to_see = true 
+  elsif settings.enable_catalog_mode == true and settings.enable_login_price == false
+    assign purchase_btn = false
+    assign login_to_see = true
+  elsif settings.enable_login_price == true  and  customer and  settings.enable_catalog_mode == true
+    assign purchase_btn = false
+    assign login_to_see = true
+  elsif settings.enable_login_price == true  and settings.enable_catalog_mode == true
+    assign purchase_btn = false
+    assign login_to_see = false
+  endif
+-%}
+<div class="box-inner d-flex align-items-center">
+  <div class="product-image position-relative {% unless deal_products == true %}overflow-hidden{% endunless %}"> 
+    {%- if show_image_slider == true -%}
+      <div class="swiper product-image-slider" {%- if slider_options -%}data-slider-options='{{ slider_options }}'{%- endif -%}>
+        <div class="swiper-wrapper">
+          {%- for media in product.media -%}
+            <div class="swiper-slide" data-meida-img-id="{{ media.id }}" image-index="{{ forloop.index }}">
+              <a  style="{{ style | strip | strip_newlines }} " aria-label="link"> 
+                {%- case media.media_type -%}
+                  {%- when 'image' -%}    
+                    {%- render 'responsive-image', image: media, placeholder_type: 'product-image' -%}
+                {%- endcase -%}
+              </a>
+            </div>
+          {%- endfor -%}  
+        </div>
+      </div> 
+    {%- else -%}  
+      <a href="{{ product.url | default: '#' | within: collection }}" class="d-block" aria-label="product">
+        {%- if product.media -%}
+          {%- render 'responsive-image', media: product.media, type: 'product', placeholder_type: 'product-image', show_secondary_image: show_secondary_image -%}
+        {%- endif -%}
+      </a>
+    {%- endif -%}
+    {%- render 'product-badge', product_for_badge: product -%}     
+  </div>
+  {%- liquid
+    assign can_show_rating = false
+    if use_section_rating == true
+      if show_rating == true
+        assign can_show_rating = true
+      endif
+    elsif settings.show_product_rating == true 
+      assign can_show_rating = true
+    endif
+  -%}
+  <div class="product-content">
+    {%- if special_product == true -%}
+      {%- if can_show_rating == true -%}
+        <div class="product-rating {{ use_section_rating }} {{ show_rating }}">
+          {%- comment -%} replace Product rating code if you are not using shopify product review app. {%- endcomment -%}
+          {%- comment -%} Product rating code start here. {%- endcomment -%}
+          <span class="shopify-product-reviews-badge" data-id="{{ product.id }}">
+            <span class="spr-badge">
+              <span class="spr-starrating spr-badge-starrating"><i class="spr-icon spr-icon-star-empty"></i><i class="spr-icon spr-icon-star-empty"></i><i class="spr-icon spr-icon-star-empty"></i><i class="spr-icon spr-icon-star-empty"></i><i class="spr-icon spr-icon-star-empty"></i></span>
+            </span>
+          </span>
+          {%- comment -%} Product rating code end here. {%- endcomment -%}
+        </div>
+      {%- endif -%}
+    {%- endif -%}  
+    {%- unless product_vendor == false -%}
+      <div class="product-vendor{% if menu_banner_product == true%} alt-font{% endif %}"> 
+        <a href="/collections/all?filter.v.price.gte=&filter.v.price.lte=&filter.p.vendor={{ product.vendor }}&sort_by=title-ascending" aria-label="vendor">{{ product.vendor }}</a>
+      </div>
+    {%- endunless -%}
+    <a href="{{ product.url | default: '#' | within: collection }}" class="product-title alt-font" aria-label="product">
+      {{ product.title | escape }}
+    </a>      
+    {%- if can_show_rating == true and  banner_with_product == true -%}
+        <div class="product-rating">
+          {%- comment -%} replace Product rating code if you are not using shopify product review app. {%- endcomment -%}
+          {%- comment -%} Product rating code start here. {%- endcomment -%}
+          <span class="shopify-product-reviews-badge" data-id="{{ product.id }}">
+            <span class="spr-badge">
+              <span class="spr-starrating spr-badge-starrating"><i class="spr-icon spr-icon-star-empty"></i><i class="spr-icon spr-icon-star-empty"></i><i class="spr-icon spr-icon-star-empty"></i><i class="spr-icon spr-icon-star-empty"></i><i class="spr-icon spr-icon-star-empty"></i></span>
+            </span>
+          </span>
+          {%- comment -%} Product rating code end here. {%- endcomment -%}
+        </div>
+      {%- endif -%}
+    {%- unless login_to_see == false -%}
+      {%- render 'price', product: product, price_class: '', banner_with_product: true, product_grid_style: settings.product_card_style -%}
+    {%- endunless -%}
+    {%- unless special_product == true  or banner_with_product == true -%}
+      {%- if can_show_rating == true -%}
+        <div class="product-rating">
+          {%- comment -%} replace Product rating code if you are not using shopify product review app. {%- endcomment -%}
+          {%- comment -%} Product rating code start here. {%- endcomment -%}
+          <span class="shopify-product-reviews-badge" data-id="{{ product.id }}">
+            <span class="spr-badge">
+              <span class="spr-starrating spr-badge-starrating"><i class="spr-icon spr-icon-star-empty"></i><i class="spr-icon spr-icon-star-empty"></i><i class="spr-icon spr-icon-star-empty"></i><i class="spr-icon spr-icon-star-empty"></i><i class="spr-icon spr-icon-star-empty"></i></span>
+            </span>
+          </span>
+          {%- comment -%} Product rating code end here. {%- endcomment -%}
+        </div>
+      {%- endif -%}
+    {%- endunless -%}
+    {%- unless product_stock == false or banner_with_product == true or menu_banner_product == true -%}
+      <div class="stock-left-wrap">
+        {%- liquid
+          assign total = product
+          assign product_item = 0
+          for variant in total.variants
+            if variant.inventory_quantity > 0
+              assign product_item = product_item | plus: variant.inventory_quantity
+            endif
+          endfor
+        -%}
+        <div class="stock-left-message">{{ 'general.product_card_list.available' | t }}<span>{{ product_item }} {{ 'general.product_card_list.product' | t }}</span></div>
+      </div>
+    {%- endunless -%}
+    {%- unless add_to_cart == false or purchase_btn == false  or banner_with_product == true or menu_banner_product == true  -%}
+      <product-form class="product-form"> 
+        {%- form 'product', product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          {%- if product.selected_or_first_available_variant.available -%}
+            {%- if product.selected_or_first_available_variant.incoming and product.selected_or_first_available_variant.inventory_quantity < 1 -%}
+              <input type="hidden" name="properties[_isPreorder]" value="Yes" autocomplete="off" readonly />
+            {%- endif -%} 
+          {%- endif -%}
+          <div class="product-form-buttons">
+            <div class="action-btn d-md-flex justify-content-between align-items-end">
+              {%- if product -%}
+              {%- assign selected_variant = product.selected_or_first_available_variant -%}
+                {%- if selected_variant.available == false -%}
+                  <a class="cart-btn position-relative" href="{{ product.url | default: '#' | within: collection }}" data-bs-toggle="tooltip" data-bs-placement="top" class="btn-animation" aria-label="btn">
+                    <i class="icon-feather-shopping-bag"></i>
+                      <span class="btn-text">{{ 'general.product_card_list.view_product' | t }}</span></a>
+                  </a>
+                {%- else -%}
+                  <a class="cart-btn position-relative" href="/cart/add?id={{ selected_variant.id }}"  data-bs-toggle="tooltip" data-bs-placement="top" class="btn-animation" data-trigger="addtocart" data-variant="{{ selected_variant.id }}" aria-label="btn">
+                    <i class="feather-shopping-bag"></i>
+                    <span class="btn-text">{{ 'general.product_card_list.add_to_cart' | t }}</span>
+                  </a>
+                {%- endif -%}
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endform -%}
+      </product-form>
+    {%- endunless -%}
+  </div>
+</div>

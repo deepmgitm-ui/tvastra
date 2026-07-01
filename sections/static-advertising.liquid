@@ -1,0 +1,129 @@
+{%- if section.settings.show_product_desktop == true or section.settings.show_on_mobile == true -%}
+  {%- liquid
+    if section.settings.show_product_desktop == true and section.settings.show_on_mobile == false
+      assign overlay_classes = 'd-none d-md-block'
+    elsif section.settings.show_on_mobile == true and section.settings.show_product_desktop == false
+      assign overlay_classes = 'd-block d-md-none'
+    elsif section.settings.show_on_mobile == true and section.settings.show_product_desktop == true
+      assign overlay_classes = 'd-block'
+    endif
+  -%}
+  <div class="recent-bought {{ overlay_classes }}" id="recentBought">
+    <div class="recent-bought-inner d-flex"></div>
+    <span class="close-icon feather-x"></span>
+  </div>
+  {%- capture recent_products -%}
+    {%- for block in section.blocks -%}
+      {%- if block.settings.product_item != nil -%}
+        {
+          p_img: {{ block.settings.product_item.featured_image | image_url: width: 65 | json }},
+          p_img_width: 65,
+          p_img_height: {{ 65 | divided_by: block.settings.product_item.featured_image.aspect_ratio | round }},
+          p_name: {{ block.settings.product_item.title | json }},
+          p_url: {{ block.settings.product_item.url | json }},
+          p_loc: {{ block.settings.locations_text | split: '|' | json }}
+        },
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- assign recent_products_json = '[' | append: recent_products | append: ']' -%}
+  <script type="text/javascript">
+    window.RecentBoughtJsonConfig = {
+      canShowTime: '{{ section.settings.show_fake_time }}',
+      mainText: '{{ section.settings.text1 }}',
+      products: {{ recent_products_json }},
+      delay_time: {{ section.settings.delay_time | default: 1000 }},
+      display_time: {{ section.settings.display_time | default: 5000 }}
+    };
+  </script>
+  <style>
+    {%- if section.settings.product_bg_color != blank -%}
+      .recent-bought {
+        background-color: {{ section.settings.product_bg_color }};
+      }
+    {%- endif -%}
+      {%- if section.settings.product_bg_txt_color != blank -%}
+      .recent-bought-content span, .recent-bought-content .recent-title, .recent-bought-content .bought-time {
+        color: {{ section.settings.product_bg_txt_color }};
+      }
+    {%- endif -%}
+  </style>
+{%- endif -%}
+{% schema %}
+{
+  "name": "Purchase notification",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_product_desktop",
+      "label": "Show in desktop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_mobile",
+      "label": "Show in mobile",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Modal delay settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_fake_time",
+      "label": "Show fake time",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Main text",
+      "default": "Someone purchsed a"
+    },
+    {
+      "type": "text",
+      "id": "delay_time",
+      "label": "Delay time",
+      "default": "1000",
+      "info": "in miliseconds (1000 = 1 seconds)"
+    },
+    {
+      "type": "text",
+      "id": "display_time",
+      "label": "Display time",
+      "default": "5000",
+      "info": "in miliseconds (5000 = 5 seconds)"
+    },
+    {
+      "type": "color",
+      "id": "product_bg_color",
+      "label": "Product box bg color"
+    },
+    {
+      "type": "color",
+      "id": "product_bg_txt_color",
+      "label": "Product text color"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product_item",
+          "label": "Select product"
+        },
+        {
+          "type": "text",
+          "id": "locations_text",
+          "label": "Location text",
+          "default": "India | Singapore | New York | Dubai | Paris | London | USA"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

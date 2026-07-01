@@ -1,0 +1,185 @@
+{% style %}
+  /* 1. Sabse pehle fonts ko load karna zaroori hai (Agar Futura use nahi ho raha tab) */
+  {%- for block in section.blocks -%}
+    {%- if block.settings.box_font != blank and block.settings.use_futura_font == false -%}
+      {{ block.settings.box_font | font_face: font_display: 'swap' }}
+    {%- endif -%}
+  {%- endfor -%}
+
+  /* 2. Main Section - Koi white space nahi, pura 100% width */
+  .custom-split-{{ section.id }} {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* 3. Box Style - Exact 50% width, No extra gaps */
+  .split-item-{{ section.id }} {
+    width: 50%; /* Pura 50% - aada hissa */
+    min-height: {{ section.settings.box_height }}px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    box-sizing: border-box; /* Isse padding width ke andar hi rehti hai, layout nahi tootti */
+    transition: opacity 0.2s ease;
+  }
+
+  .split-item-{{ section.id }}:hover {
+    opacity: 0.85; /* Hover pe halka sa fade hoga taaki click feel aaye */
+  }
+
+  /* Mobile Layout - Mobile pe bhi 50-50 aur full edge-to-edge */
+  @media screen and (max-width: 768px) {
+    .split-item-{{ section.id }} {
+      width: 50%; 
+      min-height: {{ section.settings.box_height_mobile }}px;
+    }
+  }
+
+  /* 4. Block-Specific Settings (Har box ka apna background, color aur font) */
+  {% for block in section.blocks %}
+    .split-item-{{ block.id }} {
+      background-color: {{ block.settings.box_bg_color }} !important;
+    }
+
+    .split-item-{{ block.id }} .box-text,
+    .split-item-{{ block.id }} .box-text p,
+    .split-item-{{ block.id }} .box-text a {
+      margin: 0;
+      text-align: center;
+      color: {{ block.settings.text_color }} !important;
+      font-size: {{ block.settings.text_size }}px !important;
+      text-decoration: none;
+      
+      /* ✨ Custom Font Logic ✨ */
+      {%- if block.settings.use_futura_font -%}
+        font-family: 'FuturaCustom', sans-serif !important;
+      {%- else -%}
+        {%- if block.settings.box_font != blank -%}
+          font-family: {{ block.settings.box_font.family }}, {{ block.settings.box_font.fallback_families }} !important;
+          font-weight: {{ block.settings.box_font.weight }} !important;
+          font-style: {{ block.settings.box_font.style }} !important;
+        {%- endif -%}
+      {%- endif -%}
+    }
+
+    /* Mobile Text Size Adjustments */
+    @media screen and (max-width: 768px) {
+      .split-item-{{ block.id }} .box-text,
+      .split-item-{{ block.id }} .box-text p,
+      .split-item-{{ block.id }} .box-text a {
+        font-size: calc({{ block.settings.text_size }}px * 0.75) !important; 
+      }
+    }
+  {% endfor %}
+{% endstyle %}
+
+<div class="custom-split-{{ section.id }}">
+  {% for block in section.blocks %}
+    <a href="{{ block.settings.link }}" class="split-item-{{ section.id }} split-item-{{ block.id }}" {{ block.shopify_attributes }}>
+      <div class="box-text">{{ block.settings.title }}</div>
+    </a>
+  {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "Small Split Boxes",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Box Dimensions"
+    },
+    {
+      "type": "range",
+      "id": "box_height",
+      "min": 40,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "PC Box Height",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "box_height_mobile",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Mobile Box Height",
+      "default": 50
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text_block",
+      "name": "Text Box",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Text & Link"
+        },
+        {
+          "type": "richtext",
+          "id": "title",
+          "label": "Box Text",
+          "default": "<p>Shop Men</p>"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "✨ Box Style & Typography"
+        },
+        {
+          "type": "font_picker",
+          "id": "box_font",
+          "label": "Custom Font for this Box",
+          "default": "helvetica_n4"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_futura_font",
+          "label": "🔥 Use Custom Futura Font?",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "text_size",
+          "min": 10,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Text Size",
+          "default": 16
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "box_bg_color",
+          "label": "Box Background Color",
+          "default": "#000000"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Small Split Boxes"
+    }
+  ]
+}
+{% endschema %}

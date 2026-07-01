@@ -1,0 +1,474 @@
+<section
+  id="{{ section.settings.section_id }}"
+  class="section-{{ section.id }} {% if section.settings.section_show == false %}d-none{% endif %} {{ section.settings.section_class_name }} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }} d-md-block"
+  style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}"
+>
+  <div class="{{ section.settings.container_type }}">
+    {%- if section.settings.heading != blank
+      or section.settings.sub_heading != blank
+      or section.settings.description != blank
+    -%}
+      <div class="row heading-wrapper title-{{ section.settings.title_style }} align-items-{% if section.settings.description != blank %}start{% else %}center{% endif %} text-center text-lg-start">
+        {%- render 'section-title-style', heading_alignment: section.settings.heading_alignment -%}
+      </div>
+    {%- endif -%}
+    <div class="row row-cols-{{ section.settings.per_row_contact_box_mobile }} row-cols-md-{{ section.settings.per_row_contact_box_tablet }} row-cols-lg-{{ section.settings.per_row_contact_box_mini_desktop }} row-cols-xl-{{ section.settings.per_row_contact_box_desktop }}">
+      {%- for block in section.blocks -%}
+        <div class="col contact-box box-{{ block.id }}">
+          {%- if block.settings.title != blank or block.settings.icon_class != blank -%}
+            <div class="alt-font contact-heading">
+              {%- if block.settings.icon_class != blank -%}<i class="{{ block.settings.icon_class }}"></i>{%- endif -%}
+              {{ block.settings.title }}
+            </div>
+          {%- endif -%}
+          {%- if block.settings.content != blank -%}
+            <div class="contact-content">{{ block.settings.content }}</div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* --- CUSTOM FONT LOADING --- */
+  {%- if section.settings.heading_custom_font != blank -%}
+    {{ section.settings.heading_custom_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- if section.settings.subheading_custom_font != blank -%}
+    {{ section.settings.subheading_custom_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- if section.settings.description_custom_font != blank -%}
+    {{ section.settings.description_custom_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+
+  {%- for block in section.blocks -%}
+    {%- if block.settings.block_title_font != blank -%}
+      {{ block.settings.block_title_font | font_face: font_display: 'swap' }}
+    {%- endif -%}
+    {%- if block.settings.block_content_font != blank -%}
+      {{ block.settings.block_content_font | font_face: font_display: 'swap' }}
+    {%- endif -%}
+  {%- endfor -%}
+
+  /* --- SECTION TYPOGRAPHY OVERRIDES --- */
+  {%- unless section.settings.use_default_section_typography == true -%}
+    .section-{{ section.id }} .section-heading {
+      font-size: {{ section.settings.section_heading_size }}px !important;
+      line-height: {{ section.settings.heading_line_height }}px !important;
+    }
+    .section-{{ section.id }} .section-sub-heading {
+      font-size: {{ section.settings.sub_heading_size }}px !important;
+      letter-spacing: {{ section.settings.subheading_letter_spacing }}px !important;
+      line-height: {{ section.settings.sub_heading_line_height }}px !important;
+    }
+  {%- endunless -%}
+
+  /* Heading Font */
+  {%- if section.settings.heading_custom_font != blank -%}
+  .section-{{ section.id }} .section-heading, .section-{{ section.id }} .section-heading * {
+    font-family: {{ section.settings.heading_custom_font.family }}, {{ section.settings.heading_custom_font.fallback_families }} !important;
+    font-weight: {{ section.settings.heading_custom_font.weight }} !important;
+    font-style: {{ section.settings.heading_custom_font.style }} !important;
+  }
+  {%- endif -%}
+
+  /* Sub-Heading Font */
+  {%- if section.settings.subheading_custom_font != blank -%}
+  .section-{{ section.id }} .section-sub-heading, .section-{{ section.id }} .section-sub-heading * {
+    font-family: {{ section.settings.subheading_custom_font.family }}, {{ section.settings.subheading_custom_font.fallback_families }} !important;
+    font-weight: {{ section.settings.subheading_custom_font.weight }} !important;
+    font-style: {{ section.settings.subheading_custom_font.style }} !important;
+  }
+  {%- endif -%}
+
+  /* Description Font */
+  {%- if section.settings.description_custom_font != blank -%}
+  .section-{{ section.id }} .section-description, .section-{{ section.id }} .section-description * {
+    font-family: {{ section.settings.description_custom_font.family }}, {{ section.settings.description_custom_font.fallback_families }} !important;
+    font-weight: {{ section.settings.description_custom_font.weight }} !important;
+    font-style: {{ section.settings.description_custom_font.style }} !important;
+  }
+  {%- endif -%}
+
+  /* Section Colors */
+  {%- if section.settings.section_heading_color != blank -%}
+    .section-{{ section.id }} .section-heading { color: {{ section.settings.section_heading_color }} !important; }
+  {%- endif -%}
+  {%- if section.settings.section_sub_heading_color != blank -%}
+    .section-{{ section.id }} .section-sub-heading { color: {{ section.settings.section_sub_heading_color }} !important; }
+  {%- endif -%}
+  {%- if section.settings.section_description_color != blank -%}
+    .section-{{ section.id }} .section-description { color: {{ section.settings.section_description_color }} !important; }
+  {%- endif -%}
+
+  /* --- BOX STYLING (Shape, Border, Background) --- */
+  .section-{{ section.id }} .contact-box {
+    {% if section.settings.box_bg_color != blank %}background-color: {{ section.settings.box_bg_color }};{% endif %}
+    {% if section.settings.box_border_color != blank %}border: {{ section.settings.box_border_width }}px solid {{ section.settings.box_border_color }};{% endif %}
+    border-radius: {{ section.settings.box_border_radius }}px;
+    padding: {{ section.settings.box_padding }}px;
+    text-align: {{ section.settings.box_text_align }};
+    transition: all 0.3s ease;
+  }
+
+  /* --- BLOCK LEVEL CUSTOMIZATIONS (Individual Fonts & Colors) --- */
+  {%- for block in section.blocks -%}
+    .box-{{ block.id }} .contact-heading {
+      {%- if block.settings.block_title_font != blank -%}
+      font-family: {{ block.settings.block_title_font.family }}, {{ block.settings.block_title_font.fallback_families }} !important;
+      font-weight: {{ block.settings.block_title_font.weight }} !important;
+      font-style: {{ block.settings.block_title_font.style }} !important;
+      {%- endif -%}
+      font-size: {{ block.settings.block_title_size }}px !important;
+      {% if block.settings.block_title_color != blank %}color: {{ block.settings.block_title_color }} !important;{% endif %}
+    }
+
+    .box-{{ block.id }} .contact-content {
+      {%- if block.settings.block_content_font != blank -%}
+      font-family: {{ block.settings.block_content_font.family }}, {{ block.settings.block_content_font.fallback_families }} !important;
+      font-weight: {{ block.settings.block_content_font.weight }} !important;
+      font-style: {{ block.settings.block_content_font.style }} !important;
+      {%- endif -%}
+      font-size: {{ block.settings.block_content_size }}px !important;
+      {% if block.settings.block_content_color != blank %}color: {{ block.settings.block_content_color }} !important;{% endif %}
+    }
+  {%- endfor -%}
+
+  /* Default Margin adjustments from theme */
+  @media (min-width: 1200px) {
+    .contact-box:nth-child(n+{{ section.settings.per_row_contact_box_desktop | plus: 1 }}) { margin-top: 50px; }
+  }
+  @media (max-width: 1199px) {
+    .contact-box:nth-child(n+{{ section.settings.per_row_contact_box_mini_desktop | plus: 1 }}) { margin-top: 50px; }
+  }
+  @media (max-width: 991px) {
+    .contact-box:nth-child(n+{{ section.settings.per_row_contact_box_tablet | plus: 1 }}) { margin-top: 50px; }
+  }
+  @media (max-width: 767px) {
+    .contact-box:nth-child(n+{{ section.settings.per_row_contact_box_mobile | plus: 1 }}) { margin-top: 30px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Addresses",
+  "settings": [
+    {
+      "type": "header",
+      "content": "✨ Master Typography (Fonts)"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_custom_font",
+      "label": "Heading Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "font_picker",
+      "id": "subheading_custom_font",
+      "label": "Sub-heading Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "font_picker",
+      "id": "description_custom_font",
+      "label": "Description Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "header",
+      "content": "✨ Box Shape & Styling"
+    },
+    {
+      "type": "color",
+      "id": "box_bg_color",
+      "label": "Box Background Color"
+    },
+    {
+      "type": "color",
+      "id": "box_border_color",
+      "label": "Box Border Color"
+    },
+    {
+      "type": "range",
+      "id": "box_border_width",
+      "min": 0, "max": 10, "step": 1, "unit": "px",
+      "label": "Box Border Width", "default": 0
+    },
+    {
+      "type": "range",
+      "id": "box_border_radius",
+      "min": 0, "max": 50, "step": 1, "unit": "px",
+      "label": "Box Shape (Border Radius)", "default": 0
+    },
+    {
+      "type": "range",
+      "id": "box_padding",
+      "min": 0, "max": 50, "step": 1, "unit": "px",
+      "label": "Box Inner Padding", "default": 15
+    },
+    {
+      "type": "select",
+      "id": "box_text_align",
+      "label": "Box Text Alignment",
+      "options": [
+        {"value": "left", "label": "Left"},
+        {"value": "center", "label": "Center"},
+        {"value": "right", "label": "Right"}
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        { "value": "container-fluid", "label": "Container fluid" },
+        { "value": "w-100 overflow-hidden", "label": "Full width" },
+        { "value": "container", "label": "Container" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Wrap word in square bracket for stylish word. e.g. [Hello] World"
+    },
+    {
+      "type": "textarea",
+      "id": "sub_heading",
+      "label": "Sub heading"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "title_style",
+      "label": "Title style",
+      "default": "style-1",
+      "options": [
+        { "value": "style-1", "label": "Style-1" },
+        { "value": "style-2", "label": "Style-2" },
+        { "value": "style-3", "label": "Style-3" }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": "Contact box per row"
+    },
+    {
+      "type": "range",
+      "id": "per_row_contact_box_desktop",
+      "min": 1, "max": 6, "step": 1, "default": 4, "label": "Desktop"
+    },
+    {
+      "type": "range",
+      "id": "per_row_contact_box_mini_desktop",
+      "min": 1, "max": 6, "step": 1, "default": 4, "label": "Mini desktop"
+    },
+    {
+      "type": "range",
+      "id": "per_row_contact_box_tablet",
+      "label": "Tablet", "min": 1, "max": 6, "step": 1, "default": 2
+    },
+    {
+      "type": "range",
+      "id": "per_row_contact_box_mobile",
+      "label": "Mobile", "min": 1, "max": 6, "step": 1, "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_default_section_typography",
+      "label": "Use section typography from theme settings",
+      "info": "Uncheck this checkbox to use below values.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "section_heading_size",
+      "min": 20, "max": 100, "step": 1, "unit": "px", "label": "Heading size", "default": 45
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "label": "Heading line height", "unit": "px", "min": 26, "max": 120, "step": 1, "default": 55
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_size",
+      "min": 12, "max": 50, "step": 1, "unit": "px", "label": "Sub heading size", "default": 24
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_line_height",
+      "label": "Sub heading line height", "unit": "px", "min": 24, "max": 60, "step": 1, "default": 30
+    },
+    {
+      "type": "range",
+      "id": "subheading_letter_spacing",
+      "min": 0, "max": 10, "step": 0.5, "unit": "px", "label": "Sub heading letter spacing", "default": 0
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": "small-section-top",
+      "options": [
+        { "value": "large-section-top", "label": "Large section" },
+        { "value": "medium-section-top", "label": "Medium section" },
+        { "value": "small-section-top", "label": "Small section" },
+        { "value": "very-small-section-top", "label": "Very small section" },
+        { "value": "pt-0", "label": "No padding top" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": "small-section-bottom",
+      "options": [
+        { "value": "large-section-bottom", "label": "Large section" },
+        { "value": "medium-section-bottom", "label": "Medium section" },
+        { "value": "small-section-bottom", "label": "Small section" },
+        { "value": "very-small-section-bottom", "label": "Very small section" },
+        { "value": "pb-0", "label": "No padding bottom" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment ",
+      "default": "center",
+      "info": "Not applicable in title style-2",
+      "options": [
+        { "value": "start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "end", "label": "Right" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "section_show",
+      "label": "Show section in mobile", "default": true
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color"
+    },
+    {
+      "type": "color",
+      "id": "section_heading_color",
+      "label": "Section heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_sub_heading_color",
+      "label": "Section sub heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_description_color",
+      "label": "Section description color"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "section_class_name",
+      "label": "Section class name"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "content-block",
+      "name": "Address item",
+      "settings": [
+        {
+          "type": "header",
+          "content": "✨ Block Typography"
+        },
+        {
+          "type": "font_picker",
+          "id": "block_title_font",
+          "label": "Title Font",
+          "default": "helvetica_n4"
+        },
+        {
+          "type": "range",
+          "id": "block_title_size",
+          "min": 10, "max": 50, "step": 1, "unit": "px",
+          "label": "Title Size", "default": 18
+        },
+        {
+          "type": "color",
+          "id": "block_title_color",
+          "label": "Title Color"
+        },
+        {
+          "type": "font_picker",
+          "id": "block_content_font",
+          "label": "Content Font",
+          "default": "helvetica_n4"
+        },
+        {
+          "type": "range",
+          "id": "block_content_size",
+          "min": 10, "max": 30, "step": 1, "unit": "px",
+          "label": "Content Size", "default": 14
+        },
+        {
+          "type": "color",
+          "id": "block_content_color",
+          "label": "Content Color"
+        },
+        {
+          "type": "header",
+          "content": "Block Content"
+        },
+        {
+          "type": "text",
+          "id": "icon_class",
+          "label": "Enter icon class",
+          "default": "bi bi-pin-map"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Office location"
+        },
+        {
+          "type": "textarea",
+          "id": "content",
+          "label": "Content",
+          "default": "401 Broadway, 24th Floor Iceland, Iceland 10013."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Addresses",
+      "blocks": [
+        { "type": "content-block" },
+        { "type": "content-block" },
+        { "type": "content-block" },
+        { "type": "content-block" }
+      ]
+    }
+  ]
+}
+{% endschema %}

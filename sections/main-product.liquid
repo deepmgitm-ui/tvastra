@@ -1,0 +1,1128 @@
+{{ 'product-detail.min.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign section_id = section.id  
+  assign variant_colors = settings.product_colors | strip_newlines | downcase | split: ','
+  assign slides_per_view = 'auto'
+  assign direction = 'vertical'
+  if section.settings.product_gellery == 'slider-horizontal'
+    assign direction = 'horizontal'
+    assign slides_per_view = '5'
+  endif 
+  if section.settings.thumb_slider_placement == 'left' and section.settings.product_gellery == 'slider-vertical'
+    assign thumb_slider = ' thumb-left'
+  elsif section.settings.thumb_slider_placement == 'right' and section.settings.product_gellery == 'slider-vertical'
+    assign thumb_slider = ' thumb-right'
+  endif 
+  assign group_image = section.settings.enable_variant_group
+  assign product_options_downcased = product.selected_or_first_available_variant.options | downcase
+
+  if product.selected_or_first_available_variant.featured_media
+    assign seo_media = product.selected_or_first_available_variant.featured_media
+  else
+    assign seo_media = product.featured_media
+  endif
+-%} 
+<section {% if section.settings.element_id != blank %} id="{{ section.settings.element_id }}"{% endif %} class="section-{{ section.id }} position-relative main-product-page product-page-{{ section.settings.product_page_style }} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }}{% if section.settings.element_class != blank %} {{ section.settings.element_class }}{% endif %}{% if section.settings.section_bg_image != blank %} {{ section.settings.background_position }}{% endif %}{% unless section.settings.zoom_enabled == true %} zoom-disable{% endunless %}" style="{% if section.settings.section_bg_image != blank %}background-image: url({{ section.settings.section_bg_image | image_url }});{% elsif section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}">
+  <div class="{{ section.settings.container_type }}">
+    <div class="product row">
+      {%- if section.settings.product_page_style == 'style-2' -%}
+        <div class="col-12 product-gallery{{ thumb_slider }}" id="product-gallery-{{ section.id }}" data-group-image="{{ section.settings.enable_variant_group }}">
+          {%- render 'product-media-grid-column',
+            section_settings: section.settings, 
+            slider_veiw: slides_per_view, 
+            direction: direction, 
+            group_image: group_image, 
+            section_id: section_id,
+            product_options_downcased: product_options_downcased  
+          -%}
+        </div>
+        <div class="col-12 product-summary">
+          {%- if section.settings.show_content_container == true -%}
+          <div class="container">
+          {%- endif -%}  
+            <div class="row">
+              {%- render 'product-information',
+                section_settings: section.settings,
+                variant_colors: variant_colors, 
+                block: block,
+                section_id: section_id,
+                forloop_content: section.blocks
+              -%}
+            </div>
+          {%- if section.settings.show_content_container == true -%}
+          </div>
+          {%- endif -%}  
+        </div>
+      {%- else -%}
+        {%- liquid
+          if section.settings.product_gellery == 'grid-2-columns' and section.settings.container_type != 'container'
+            assign col_class = 'col-lg-6 col-xl-7 col-xxl-8'
+          else
+            assign col_class = 'col-xl-7 col-lg-6'
+          endif
+        -%}
+        <div class="product-gallery {{ col_class }} {{ section.settings.product_gellery }}{{ thumb_slider }} {%- if section.settings.show_thumb_slider == false -%}no-thumb{% endif %}" id="product-gallery-{{ section.id }}" data-group-image="{{ section.settings.enable_variant_group }}">
+          <div class="position-sticky product-media-grid-wrapper mobille-media-slider d-flex flex-wrap {% if section.settings.product_gellery == 'slider-horizontal' %}flex-column {% endif %} w-100 product-{{ section.settings.product_page_style }}" style="top: var(--top-space);">
+            {%- if section.settings.product_gellery == 'slider-vertical' or section.settings.product_gellery == 'slider-horizontal' -%}
+              {%- render 'product-media',
+                section_settings: section.settings,
+                slider_veiw: slides_per_view,
+                direction: direction,
+                group_image: group_image,
+                section_id: section_id,
+                product_options_downcased: product_options_downcased
+              -%} 
+            {%- elsif section.settings.product_gellery == 'grid-2-columns' or section.settings.product_gellery == 'grid-1-columns' or section.settings.product_gellery == 'combined-grid' -%}
+              {%- render 'product-media-grid-column',
+                section_settings: section.settings,
+                slider_veiw: slides_per_view,
+                direction: direction,
+                group_image: group_image,
+                section_id: section_id,
+                product_options_downcased: product_options_downcased
+              -%}
+            {%- endif -%}
+          </div>
+        </div>  
+        <div class="col-lg-6 col-xl-5{% if section.settings.product_gellery == 'grid-2-columns' and section.settings.container_type != 'container' %} col-xxl-4{% endif %} product-summary">
+          <div class="position-sticky" style="top: var(--top-space);">
+            {%- render 'product-information',
+              section_settings: section.settings,
+              variant_colors: variant_colors, 
+              block: block,
+              section_id: section_id,
+              forloop_content: section.blocks 
+            -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+  {%- render 'product-sticky-addtocart' -%}  
+</section>
+{%- if section.settings.zoom_enabled == true -%}
+<script src="{{ 'jquery.zoom.js' | asset_url }}" defer="defer"></script>
+<script>window.ZOOM = true;</script>
+{%- endif -%}
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+{%- assign first_3d_model = product.media | where: "media_type", "model" | first -%}
+{%- if first_3d_model -%}
+  <link id="ModelViewerStyle" rel="stylesheet" href="https://cdn.shopify.com/shopifycloud/model-viewer-ui/assets/v1.0/model-viewer-ui.css" media="print" onload="this.media='all'">
+  <script type="application/json" id="ProductJSON-{{ product.id }}">
+    {{ product.media | where: 'media_type', 'model' | json }}
+  </script>
+  <script src="{{ 'product-model.js' | asset_url }}" defer></script>
+{%- endif -%}
+{%- render 'product-photoswipe' -%}
+<script src="{{ 'product-photoswipe.js' | asset_url }}" defer="defer"></script>
+<script type="text/javascript">
+    window._themeProducts = window._themeProducts || {}
+    window.productPrice = '{{ product.selected_or_first_available_variant.price | money }}';
+  window._themeProducts[{{ product.id }}] = {
+    id: {{ product.id }},
+    title: {{ product.title | json }},
+    available: {{ product.available | json }},
+    handle: {{ product.handle | json }},
+    variants: {{ product.variants | json }},
+    options: {{ product.options_with_values | json }},
+    selected_or_first_available_variant: {{ product.selected_or_first_available_variant | json }},
+    media: {{ product.media | json }},
+    featured_image: {{ product.featured_image | json }},
+    aspect_ratio: {{ product.featured_image.aspect_ratio | json }},
+    images: {{ product.images | json }},
+    price: {{ product.price | json }},
+  };
+  {%- for variant in product.variants -%}
+    window._themeProducts[{{ product.id }}].variants[{{ forloop.index0 }}].inventory_quantity = {{ variant.inventory_quantity }};
+  {%- endfor -%}
+  
+  
+</script>
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org/",
+    "@type": "Product",
+    "name": {{ product.title | json }},
+    "url": {{ request.origin | append: product.url | json }},
+    {%- if seo_media -%}
+      "image": [
+        {{ seo_media | image_url: width: seo_media.preview_image.width | prepend: "https:" | json }}
+      ],
+    {%- endif -%}
+    "description": {{ product.description | strip_html | json }},
+    {% if product.selected_or_first_available_variant.sku != blank -%}
+      "sku": {{ product.selected_or_first_available_variant.sku | json }},
+    {%- endif %}
+    "brand": {
+      "@type": "Brand",
+      "name": {{ product.vendor | json }}
+    },
+    "offers": [
+      {%- for variant in product.variants -%}
+        {
+          "@type" : "Offer",
+          {%- if variant.sku != blank -%}
+            "sku": {{ variant.sku | json }},
+          {%- endif -%}
+          {%- if variant.barcode.size == 12 -%}
+            "gtin12": {{ variant.barcode }},
+          {%- endif -%}
+          {%- if variant.barcode.size == 13 -%}
+            "gtin13": {{ variant.barcode }},
+          {%- endif -%}
+          {%- if variant.barcode.size == 14 -%}
+            "gtin14": {{ variant.barcode }},
+          {%- endif -%}
+          "availability" : "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+          "price" : {{ variant.price | divided_by: 100.00 | json }},
+          "priceCurrency" : {{ cart.currency.iso_code | json }},
+          "url" : {{ request.origin | append: variant.url | json }}
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  }
+</script>
+<style>
+  /* === TRUST BADGE BLOCK STYLING === */
+  /* Trust badge ka background box, padding aur border hatane ke liye */
+  .product-summary [class*="trust"], 
+  .product-summary [class*="badge"] {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin-bottom: 8px !important; /* Trust badge aur USP ke beech ka gap kam kiya */
+  }
+
+  /* Agar trust badge ke andar ki image ke upar koi default margin ho toh use hatane ke liye */
+  .product-summary [class*="trust"] img,
+  .product-summary [class*="badge"] img {
+    margin: 0 auto !important;
+    display: block;
+  }
+
+
+  /* === USP BLOCK STYLING === */
+  /* USP block ki top spacing khatam karne ke liye taaki wo upar wale block ke close aa jaye */
+  .product-summary [class*="product-usp"],
+  .product-summary [class*="usp"] {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  /* Sirf PC/Desktop ke liye (purana fix + alignment) */
+  @media (min-width: 992px) {
+    .product-summary [class*="usp"], 
+    .product-summary [class*="usp"] span, 
+    .product-summary [class*="usp"] a,
+    .product-summary [class*="usp"] div {
+      white-space: nowrap !important;
+      font-size: 12px !important; 
+    }
+
+    .product-summary [class*="usp"] {
+      display: inline-flex !important;
+      align-items: center;
+      gap: 4px !important; 
+    }
+  }
+</style>
+{% schema %}
+{
+  "name": "t:sections.main-product.name",
+  "class": "product-section spaced-section",
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "vendor",
+      "name": "Vendor / Subtitle"
+    },
+    {
+      "type": "text",
+      "name": "t:sections.main-product.blocks.text.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "default": "Text block",
+          "label": "t:sections.main-product.blocks.text.settings.text.label"
+        }
+      ]
+    },
+    {
+      "type": "collapsible",
+      "name": "Collapsible tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_heading",
+          "label": "Tab title",
+          "default": " Collapsible  title"
+        },
+        {
+          "type": "liquid",
+          "id": "tab_content",
+          "label": "Tab content (Liquid Code)"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_default",
+          "label": "Open tab by default",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "reviews_collapsible",
+      "name": "Reviews collapsible tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_heading",
+          "label": "Tab title",
+          "default": "Reviews collapsible title"
+        }
+      ]
+    },
+    {
+      "type": "product-meta",
+      "name": "Product meta",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "hide_category",
+          "default": true,
+          "label": "Show category"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_tags",
+          "default": true,
+          "label": "Show tags"
+        }
+      ]
+    },
+    {
+      "type": "title",
+      "name": "Title box",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "hide_price",
+          "default": true,
+          "label": "Show price"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_ratings",
+          "default": true,
+          "label": "Show ratings"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_sku",
+          "default": true,
+          "label": "Show SKU"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_save_label",
+          "default": true,
+          "label": "Show save label"
+        }
+      ]
+    },
+    {
+      "type": "short_description",
+      "name": "Short description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "liquid_code",
+          "label": "Liquid code",
+          "default": "{{product.metafields.custom.short_description}}",
+          "info": "Add metafield with key=short_description."
+        }
+      ]
+    },
+    {
+      "type": "colum-devider",
+      "name": "Column divider",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Applicable when product page style = Style 2. This block will devide the product information content in two columns from where this block is positioned."
+        }
+      ]
+    },
+    {
+      "type": "product_deal",
+      "name": "Countdown timer",
+      "limit": 1
+    },
+    {
+      "type": "variant_picker",
+      "name": "t:sections.main-product.blocks.variant_picker.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_size_guide",
+          "default": true,
+          "label": "Show size guide popup"
+        },
+        {
+          "type": "text",
+          "id": "size_guide_option_label",
+          "default": "Size",
+          "label": "Size option label",
+          "info": "Enter option label in which you want to show size guide button."
+        },
+        {
+          "type": "text",
+          "id": "size_guide_button_text",
+          "default": "Size guide",
+          "label": "Size guide button text"
+        },
+        {
+          "type": "textarea",
+          "id": "size_guide_content",
+          "label": "Size guide popup content"
+        },
+        {
+          "type": "paragraph",
+          "content": "OR"
+        },
+        {
+          "type": "image_picker",
+          "id": "size_guide_image",
+          "label": "Size guide image"
+        }
+      ]
+    },
+    {
+      "type": "buy_buttons",
+      "name": "t:sections.main-product.blocks.buy_buttons.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_qty",
+          "default": true,
+          "label": "Show quantity selector"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_add_to_cart",
+          "default": true,
+          "label": "Show add to cart button"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_wishlist",
+          "default": true,
+          "label": "Show wishlist"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_dynamic_checkout",
+          "default": true,
+          "label": "t:sections.main-product.blocks.buy_buttons.settings.show_dynamic_checkout.label",
+          "info": "t:sections.main-product.blocks.buy_buttons.settings.show_dynamic_checkout.info"
+        },
+        {
+          "type": "header",
+          "content": "Back in stock notification"
+        },
+        {
+          "type": "checkbox",
+          "id": "collect_back_in_stock",
+          "default": false,
+          "label": "Collect back in stock notification"
+        },
+        {
+          "type": "text",
+          "id": "back-in-stock-title",
+          "default": "Notify me when this is in stock",
+          "label": "Heading"
+        },
+        {
+          "type": "textarea",
+          "id": "back-in-stock-subheading",
+          "default": "We will send you a notification as soon as this product is available again.",
+          "label": "Sub heading"
+        },
+        {
+          "type": "text",
+          "id": "back_in_icon_name",
+          "label": "Enter icon class",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)",
+          "default": "bi bi-patch-check-fill"
+        },
+        {
+          "type": "textarea",
+          "id": "back-in-stock-text",
+          "default": "It will be in stock after",
+          "label": "Expected back in stock text"
+        }
+      ]
+    },
+    {
+      "type": "stock-left",
+      "name": "Stock countdown",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "radio",
+          "id": "countdown_number",
+          "label": "Countdown number",
+          "default": "custom-range",
+          "options": [
+            {
+              "value": "inventory-quantity",
+              "label": "Use inventory quantity"
+            },
+            {
+              "value": "custom-range",
+              "label": "Use custom range"
+            }
+          ]
+        },
+        {
+          "type": "number",
+          "id": "from_number",
+          "label": "From",
+          "default": 10
+        },
+        {
+          "type": "number",
+          "id": "to_number",
+          "label": "To",
+          "default": 30
+        }
+      ]
+    },
+    {
+      "type": "sold-product",
+      "name": "Product sale count",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "number",
+          "id": "from_sold_number",
+          "label": "From sold number",
+          "default": 10
+        },
+        {
+          "type": "number",
+          "id": "to_sold_number",
+          "label": "To sold number",
+          "default": 30
+        },
+        {
+          "type": "range",
+          "id": "from_sold_time",
+          "label": "From sold time",
+          "min": 1,
+          "max": 24,
+          "step": 1,
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "to_sold_time",
+          "label": "To sold time",
+          "min": 1,
+          "max": 24,
+          "step": 1,
+          "default": 10
+        }
+      ]
+    },
+    {
+      "type": "live-visitors",
+      "name": "Real time visitors",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "visitors_text",
+          "label": "Visitor text",
+          "default": "[visitors] Persons looking for this product"
+        },
+        {
+          "type": "range",
+          "id": "visitors",
+          "label": "Visitor count range",
+          "min": 10,
+          "max": 500,
+          "step": 10,
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "visitors_time",
+          "label": "Change count number every",
+          "min": 1,
+          "max": 50,
+          "step": 1,
+          "unit": "sec",
+          "default": 10
+        }
+      ]
+    },
+    {
+      "type": "trust-badge",
+      "name": "Trust badge",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "trust_badge_img",
+          "label": "Trust badge image",
+          "info": "Recommended size 310x30"
+        },
+        {
+          "type": "range",
+          "id": "trust_badge_width",
+          "label": "Image width",
+          "min": 50,
+          "max": 500,
+          "step": 5,
+          "unit": "px",
+          "default": 310
+        },
+        {
+          "type": "richtext",
+          "id": "trust_badge_text",
+          "label": "Trust badge text"
+        },
+        {
+          "type": "select",
+          "id": "trust_badge_position",
+          "label": "Trust badge position",
+          "default": "flex-column",
+          "options": [
+            {
+              "value": "flex-column",
+              "label": "Text above image"
+            },
+            {
+              "value": "flex-column-reverse",
+              "label": "Text below image"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Content alignment",
+          "default": "start",
+          "options": [
+            {
+              "value": "start",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "end",
+              "label": "Right"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "product-usp",
+      "name": "Product USP",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "=== USP item 1 ==="
+        },
+        {
+          "type": "text",
+          "id": "icon_class1",
+          "label": "Enter icon class",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+        },
+        {
+          "type": "text",
+          "id": "usp_text1",
+          "label": "USP text"
+        },
+        {
+          "type": "url",
+          "id": "usp_link1",
+          "label": "Set USP link"
+        },
+        {
+          "type": "paragraph",
+          "content": "=== USP item 2 ==="
+        },
+        {
+          "type": "text",
+          "id": "icon_class2",
+          "label": "Enter icon class",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+        },
+        {
+          "type": "text",
+          "id": "usp_text2",
+          "label": "USP text"
+        },
+        {
+          "type": "url",
+          "id": "usp_link2",
+          "label": "Set USP link"
+        },
+         {
+          "type": "paragraph",
+          "content": "=== USP item 3 ==="
+        },
+        {
+          "type": "text",
+          "id": "icon_class3",
+          "label": "Enter icon class",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+        },
+        {
+          "type": "text",
+          "id": "usp_text3",
+          "label": "USP text"
+        },
+        {
+          "type": "url",
+          "id": "usp_link3",
+          "label": "Set USP link"
+        },
+        {
+          "type": "select",
+          "id": "usp_alignment",
+          "label": "USP alignment",
+          "default": "start",
+          "options": [
+            {
+              "value": "start",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "end",
+              "label": "Right"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "addon-buttons",
+      "name": "Product addons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_compare",
+          "default": true,
+          "label": "Show add to compare"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_question",
+          "default": true,
+          "label": "Show ask a question"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_social_share",
+          "default": true,
+          "label": "Show social share"
+        }
+      ]
+    },
+    {
+      "type": "shipping",
+      "name": "Delivery and return",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_delivery_times",
+          "label": "Show delivery estimation",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "deliver_text",
+          "label": "Delivery text",
+          "default": "Estimated Delivery:"
+        },
+        {
+          "type": "text",
+          "id": "deliver_days",
+          "label": "Deliver in:",
+          "info": "Days (+/- 2 days). Delivery date range will be -2 to +2 days from the current date plus above entered days.",
+          "default": "7"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_shipping_text",
+          "label": "Show Shipping text",
+          "default": true
+        },
+        {
+          "type": "richtext",
+          "id": "shipping_text",
+          "label": "Shipping text",
+          "default": "<p><strong>Free Shipping & Returns: </strong>On all orders over $75</p>"
+        }
+      ]
+    },
+    {
+      "type": "separator",
+      "name": "Separator",
+      "settings": [
+        {
+          "type": "color",
+          "id": "separator_color",
+          "default": "#e4e4e4",
+          "label": "Separator color"
+        },
+        {
+          "type": "range",
+          "id": "separator_height",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "unit": "px",
+          "label": "Separator height",
+          "default": 1
+        }
+      ]
+    },
+    {
+      "type": "custom-html",
+      "name": "Custom HTML",
+      "settings": [
+        {
+          "type": "html",
+          "id": "custom_html",
+          "label": "Custom HTML"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "product_page_style",
+      "label": "Product page style",
+      "info": "Use column divider block to divide product information into two columns for product page style 2.",
+      "default": "style-1",
+      "options": [
+        {
+          "value": "style-1",
+          "label": "Style 1"
+        },
+        {
+          "value": "style-2",
+          "label": "Style 2"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_content_container",
+      "label": "Show content in container",
+      "info": "Applicable when product page style = Style 2",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Product gallery settings"
+    },
+    {
+      "type": "select",
+      "id": "product_gellery",
+      "label": "Product gallery style",
+      "info": "Applicable when product page style = Style 1",
+      "default": "slider-vertical",
+      "options": [
+        {
+          "value": "slider-horizontal",
+          "label": "Slider horizontal"
+        },
+        {
+          "value": "slider-vertical",
+          "label": "Slider vertical"
+        },
+        {
+          "value": "grid-1-columns",
+          "label": "Grid 1 column"
+        },
+        {
+          "value": "grid-2-columns",
+          "label": "Grid 2 columns"
+        },
+        {
+          "value": "combined-grid",
+          "label": "Combined grid"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_variant_group",
+      "default": false,
+      "label": "Enable variant group image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_border",
+      "default": false,
+      "label": "Show gallery image border"
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "min": 0,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Gallery image border radius",
+      "default": 0
+    },    
+    {
+      "type": "checkbox",
+      "id": "zoom_enabled",
+      "label": "Enable gallery image zoom",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Thumb slider settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_thumb_slider",
+      "label": "Show thumb slider",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "thumb_slider_placement",
+      "label": "Thumb slider placement",
+      "default": "left",
+      "info": "Only applicable for product gallery style: Slider vertical",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "gutter_size",
+      "label": "Spacing between columns",
+      "default": "gutter-very-small",
+      "info": "Only applicable for product gallery style: Grid 1 Column & Grid 2 Columns",
+      "options": [
+        {
+          "value": "gutter-none",
+          "label": "Gutter none"
+        },
+        {
+          "value": "gutter-very-small",
+          "label": "Gutter very small"
+        },
+        {
+          "value": "gutter-small",
+          "label": "Gutter small"
+        },
+        {
+          "value": "gutter-medium",
+          "label": "Gutter medium"
+        },
+        {
+          "value": "gutter-large",
+          "label": "Gutter large"
+        },
+        {
+          "value": "gutter-extra-large",
+          "label": "Gutter extra large"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Sticky add to cart"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_cart_desktop",
+      "label": "Show sticky cart in desktop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_cart_mobile",
+      "label": "Show sticky cart in mobile",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dynamic_checkout_btn",
+      "label": "Show dynamic checkout button",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sticky_wishlist",
+      "label": "Show wishlist",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_compare",
+      "label": "Show compare",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "section_bg_image",
+      "label": "Section background image",
+      "info": "Recommended size 1920x1080"
+    },
+    {
+      "type": "select",
+      "id": "background_position",
+      "label": "Background position",
+      "options": [
+        {
+          "value": "cover-background",
+          "label": "Cover"
+        },
+        {
+          "value": "fixed-background",
+          "label": "Fixed"
+        }
+      ],
+      "default": "cover-background"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color"
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": "small-section-top",
+      "options": [
+        {
+          "value": "large-section-top",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-top",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-top",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-top",
+          "label": "Very small section"
+        },
+        {
+          "value": "pt-0",
+          "label": "No padding top"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": "small-section-bottom",
+      "options": [
+        {
+          "value": "large-section-bottom",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-bottom",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-bottom",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-bottom",
+          "label": "Very small section"
+        },
+        {
+          "value": "pb-0",
+          "label": "No padding bottom"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "element_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "element_class",
+      "label": "Section class"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,27 @@
+{%- if settings.header_layout == 'style-1' -%}
+	<div class="account {{ settings.menu_text_case }}">
+	  <a href="{{ routes.account_url }}" aria-label="account">
+	    <i class="feather-user d-inline-block"></i>
+	    {%- if settings.show_icon == false -%}<span class="{% if settings.header_style == "center-navigation" %}d-none d-xxl-inline-block{% else %}d-none d-xl-inline-block{% endif %}">{{ 'sections.header.account' | t }}</a>{%- if customer -%}<a href="/account/logout" class="active d-none d-lg-inline-block customer-logout" aria-label="logout">({{ 'sections.header.logout' | t }})</a>{%- endif -%}</span>{%- endif -%}
+	</div>
+{%- else -%}
+	<div class="account alt-font {{ settings.menu_text_case }}">
+	  <a href="{%- if customer -%}/account/logout{% else %}{{ routes.account_url }}{% endif %}" aria-label="account">
+	  	<div class="accont-icon">
+	    	<i class="bi bi-person-plus"></i>
+	  	</div>
+	    {%- if settings.show_icon == false -%}
+		  	<div class="account-text alt-font">
+			    {%- if customer -%}
+			    	<span class="addon-title d-none d-xl-block">{{ 'sections.header.logout' | t }}</span>
+					{%- else -%}
+						<span class="addon-title d-none d-xl-block">{{ 'sections.header.login' | t }}</span>
+					{%- endif -%}
+					<span class="{% if settings.header_style == "center-navigation" %}d-none d-xxl-block{% else %}d-none d-xl-block{% endif %}">
+				    {{ 'sections.header.account' | t }}
+					</span>
+				</div>
+	    {%- endif -%}
+		</a>
+	</div>
+{%- endif -%}

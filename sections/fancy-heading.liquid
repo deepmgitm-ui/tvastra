@@ -1,0 +1,227 @@
+<section
+  id="{{ section.settings.section_id }}"
+  class="section-{{ section.id }} {% if section.settings.section_show == false %}d-none{% endif %}{{ section.settings.section_class_name }} d-none d-sm-block overflow-hidden"
+  style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}"
+>
+  <div class="{{ section.settings.container_type }}">
+    {%- if section.settings.fancy_text != blank -%}
+      <div class="row justify-content-center text-center">
+        <div class="col-12">
+          {%- if section.settings.fancy_text != blank -%}
+            <div class="fancy-text alt-font {{ section.settings.fancy_text_type }}">
+              {{ section.settings.fancy_text }}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+<style>
+  .section-{{ section.id }} .fancy-text {
+    color: {{ section.settings.fancy_text_color }};
+    margin-bottom: -{{ section.settings.fancy_text_bd_size }}px;
+    font-size: {{ section.settings.fancy_text_size }}px;
+    line-height: {{ section.settings.fancy_text_lh_size }}px;
+    font-weight: {{ section.settings.font_weight }};
+    letter-spacing: {{ section.settings.text_letter_spacing }}px;
+  }
+  .section-{{ section.id }} .border-text {
+    -webkit-text-stroke-color: {{ section.settings.fancy_text_color }};
+  }
+  @media (max-width: 1400px) {
+    .section-{{ section.id }} .fancy-text {
+      font-size: 160px;
+      line-height: 170px;
+    }
+  }
+  @media (max-width: 1199px) {
+    .section-{{ section.id }} .fancy-text {
+      font-size: 130px;
+      line-height: 160px;
+    }
+  }
+  @media (max-width: 991px) {
+    .section-{{ section.id }} .fancy-text {
+      font-size: 100px;
+      line-height: 110px;
+      margin-bottom: -30px;
+    }
+  }
+  @media (max-width: 767px) {
+    .section-{{ section.id }} .fancy-text {
+      font-size: 75px;
+      line-height: 90px;
+      margin-bottom: -25px;
+      letter-spacing: -4px;
+    }
+  }
+</style>
+{% schema %}
+{
+  "name": "Fancy heading",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "fancy_text",
+      "label": "Fancy text",
+      "default": "Collection list"
+    },
+    {
+      "type": "select",
+      "id": "fancy_text_type",
+      "label": "Fancy text type",
+      "default": "fill-text",
+      "options": [
+        {
+          "value": "border-text",
+          "label": "Border text"
+        },
+        {
+          "value": "fill-text",
+          "label": "Fill text"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "fancy_text_size",
+      "min": 30,
+      "max": 300,
+      "step": 5,
+      "unit": "px",
+      "label": "Fancy text size",
+      "default": 180
+    },
+    {
+      "type": "range",
+      "id": "fancy_text_lh_size",
+      "min": 30,
+      "max": 350,
+      "step": 5,
+      "unit": "px",
+      "label": "Fancy text line height",
+      "default": 160
+    },
+    {
+      "type": "range",
+      "id": "text_letter_spacing",
+      "min": -10,
+      "max": 10,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Fancy text letter spacing",
+      "default": -7
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font weight",
+      "default": "500",
+      "options": [
+        {
+          "value": "100",
+          "label": "100"
+        },
+        {
+          "value": "200",
+          "label": "200"
+        },
+        {
+          "value": "300",
+          "label": "300"
+        },
+        {
+          "value": "400",
+          "label": "400"
+        },
+        {
+          "value": "500",
+          "label": "500"
+        },
+        {
+          "value": "600",
+          "label": "600"
+        },
+        {
+          "value": "700",
+          "label": "700"
+        },
+        {
+          "value": "800",
+          "label": "800"
+        },
+        {
+          "value": "900",
+          "label": "900"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "fancy_text_bd_size",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Fancy text bottom down",
+      "default": 45
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "section_show",
+      "label": "Show section in mobile",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color"
+    },
+    {
+      "type": "color",
+      "id": "fancy_text_color",
+      "label": "Fancy text color"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "section_class_name",
+      "label": "Section class name"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Fancy heading"
+    }
+  ]
+}
+{% endschema %}

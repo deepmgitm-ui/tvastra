@@ -1,0 +1,36 @@
+{%- comment -%}
+  Shopify Wishlist
+  Usage:
+    - Markup: {%- render 'button-wishlist', product: product -%}
+    - Place this snippet inside your existing product card snippet
+  Parameters:
+    - product: <Shopify product> (required)
+{%- endcomment -%}
+{%- if product.handle != blank -%}
+  {%- if settings.enable_wishlist_hero_app_widget -%}
+    {% if product_card_style %}
+      {% render 'wishlisthero-collection-product' with product: product %}
+    {% else %}
+      <div class="product-form__item" id="wishlist-hero-product-page-button"></div>
+    {% endif %}
+  {%- else -%}
+    <button
+      class="wishlist wishlist-btn position-relative {{class}}"
+      type="button"
+      name="wishlist"
+      aria-label="wishlist"
+      button-wishlist
+      data-product-handle="{{ product.handle }}"
+      data-text-add="{{ 'general.wishlist.add' | t }}"
+      data-text-added="{{ 'general.wishlist.remove' | t }}" 
+      {%- if product_card_style != 'shop-simple' %}
+        data-bs-toggle="tooltip"
+        data-bs-placement="{{ tooltip_position }}"
+        data-bs-original-title="{{ 'general.wishlist.add' | t }}"
+        data-bs-trigger="hover" 
+      {%- endif -%}
+    >
+    <span><i class="feather-heart"></i></span>
+    </button>
+  {%- endif -%}
+{%- endif -%}

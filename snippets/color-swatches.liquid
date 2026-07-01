@@ -1,0 +1,53 @@
+{% comment %} Color Swatches for Collection Grid {% endcomment %}
+
+{% assign current_handle = product.handle %}
+
+{% capture group_crop_top %}aubergine-grey-crop-top-gym-wear-copy|#8B1C38,graphite-grey-crop-top-gym-wear|#383838,white-grey-crop-top-gym-wear|#FFFFFF{% endcapture %}
+{% capture group_wine_black %}women-s-black-crop-top-long-sleeve-stretchable-gym-wear-copy|#000000,wine-crop-top-gym-wear|#722F37{% endcapture %}
+{% capture group_black_olive %}black-crop-top-gym-wear|#000000,olive-crop-top-gym-wear|#4A4D3A{% endcapture %}
+{% capture group_sando %}white-sando|#FFFFFF,sage-sando|#879E86,pale-yellow-sando|#FFFACD{% endcapture %}
+{% capture group_tank %}pale-lavender-tank-top|#E6E6FA,aurbergeine-tank-top|#9A325E{% endcapture %}
+{% capture group_raglan %}olive-raglan-sleeves|#556B2F,camoflouge-raglan-sleeves|#4D5C6A{% endcapture %}
+{% capture group_halfnhalf %}graphite-half-n-half|#4D5C6A,camoflouge-half-n-half|#383838{% endcapture %}
+{% capture group_strap %}strap-back-studio-tank-bold-yellow|#FFFACD,strap-back-studio-tank-teal|#008080,strap-back-studio-tank-olive|#4A5D3E{% endcapture %}
+{% capture group_sleeveless %}women-s-sleeveless-gym-top-light-purple-striped-activewear-tank|#DCD0FF,coreease-sleeveless-performance-mint-top|#808C6C,women-s-sleeveless-gym-top|#53565A{% endcapture %}
+{% capture group_tshirt %}sage-t-shirt|#879E86,black-t-shirt|#000000,pale-yellow-t-shirt|#E9F5BA,wine-t-shirt|#FFFFFF,wine-t-shirt-1|#5C262C{% endcapture %}
+
+{% assign all_groups = group_crop_top | append: ";" | append: group_wine_black | append: ";" | append: group_black_olive | append: ";" | append: group_sando | append: ";" | append: group_tank | append: ";" | append: group_raglan | append: ";" | append: group_halfnhalf | append: ";" | append: group_strap | append: ";" | append: group_sleeveless | append: ";" | append: group_tshirt %}
+
+{% assign active_group = "" %}
+{% assign groups_array = all_groups | split: ";" %}
+{% for group in groups_array %}
+  {% assign items = group | split: "," %}
+  {% for item in items %}
+    {% assign parts = item | split: "|" %}
+    {% if parts[0] == current_handle %}
+      {% assign active_group = group %}
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+
+{% if active_group != "" %}
+<style>
+  .tv-swatches { display: flex; gap: 5px; flex-wrap: wrap; margin: 4px 0 6px 0; }
+  .tv-dot { width: 14px; height: 14px; border-radius: 50%; display: block; border: 1.5px solid #ccc; transition: transform 0.2s ease; box-sizing: border-box; }
+  .tv-dot:hover { transform: scale(1.25); border-color: #000; }
+  .tv-dot.active { border-color: #000; border-width: 2px; transform: scale(1.15); }
+  .tv-dot.light { border-color: #bbb; }
+</style>
+<div class="tv-swatches">
+  {% assign active_items = active_group | split: "," %}
+  {% for item in active_items %}
+    {% assign parts = item | split: "|" %}
+    {% assign item_handle = parts[0] %}
+    {% assign item_color = parts[1] %}
+    {% assign is_active = "" %}
+    {% assign is_light = "" %}
+    {% if item_handle == current_handle %}{% assign is_active = "active" %}{% endif %}
+    {% if item_color == "#FFFFFF" or item_color == "#FFFACD" or item_color == "#E6E6FA" or item_color == "#DCD0FF" or item_color == "#E9F5BA" %}{% assign is_light = "light" %}{% endif %}
+    <a href="/products/{{ item_handle }}" title="{{ item_handle }}">
+      <span class="tv-dot {{ is_active }} {{ is_light }}" style="background-color: {{ item_color }};"></span>
+    </a>
+  {% endfor %}
+</div>
+{% endif %}

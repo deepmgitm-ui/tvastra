@@ -1,0 +1,342 @@
+<!-- 👇 Icon Libraries 👇 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<section id="insta-cta-{{ section.id }}" class="insta-cta-section">
+  <div class="insta-cta-container">
+    
+    <!-- 1. Ab Heading Upar Aayegi -->
+    {%- if section.settings.main_heading != blank -%}
+      <h2 class="insta-heading">{{ section.settings.main_heading }}</h2>
+    {%- endif -%}
+
+    <!-- 2. Instagram Handle aur Logo Neeche Aayega -->
+    {%- if section.settings.insta_handle != blank -%}
+      <a {% if section.settings.insta_link != blank %}href="{{ section.settings.insta_link }}" target="_blank"{% else %}role="link" aria-disabled="true"{% endif %} class="insta-handle">
+        
+        {%- if section.settings.show_icon -%}
+          <span class="insta-icon">
+            {%- if section.settings.icon_image != blank -%}
+              <img src="{{ section.settings.icon_image | image_url: width: 100 }}" alt="Instagram" loading="lazy">
+            {%- elsif section.settings.icon_class != blank -%}
+              <i class="{{ section.settings.icon_class }}"></i>
+            {%- else -%}
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            {%- endif -%}
+          </span>
+        {%- endif -%}
+
+        <span class="insta-text">{{ section.settings.insta_handle }}</span>
+      </a>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<style>
+  /* =========================================
+     ✨ MASTER FONTS LOADING ✨
+  ========================================= */
+  {%- if section.settings.handle_font != blank and section.settings.use_futura_handle == false -%}
+    {{ section.settings.handle_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- if section.settings.heading_font != blank and section.settings.use_futura_heading == false -%}
+    {{ section.settings.heading_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+
+  /* =========================================
+     SECTION LAYOUT & BACKGROUND
+  ========================================= */
+  #insta-cta-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }} !important;
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #insta-cta-{{ section.id }} .insta-cta-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: {{ section.settings.text_gap }}px; 
+    max-width: 800px;
+    padding: 0 20px;
+  }
+
+  /* =========================================
+     TYPOGRAPHY & ICON STYLING
+  ========================================= */
+  
+  /* Top Text (Main Heading) */
+  #insta-cta-{{ section.id }} .insta-heading {
+    {%- if section.settings.use_futura_heading -%}
+      font-family: 'FuturaCustom', sans-serif !important;
+    {%- else -%}
+      {%- if section.settings.heading_font != blank -%}
+        font-family: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }} !important;
+        font-weight: {{ section.settings.heading_font.weight }} !important;
+        font-style: {{ section.settings.heading_font.style }} !important;
+      {%- endif -%}
+    {%- endif -%}
+    font-size: {{ section.settings.heading_size }}px !important;
+    color: {{ section.settings.heading_color }} !important;
+    letter-spacing: {{ section.settings.heading_spacing }}px !important;
+    margin: 0 !important;
+    line-height: 1.2;
+  }
+
+  /* Bottom Text Box (Icon + Handle) */
+  #insta-cta-{{ section.id }} .insta-handle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: {{ section.settings.icon_gap }}px;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+  }
+
+  #insta-cta-{{ section.id }} .insta-handle[href]:hover {
+    opacity: 0.7;
+  }
+
+  /* Icon Control */
+  #insta-cta-{{ section.id }} .insta-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: {{ section.settings.icon_color }} !important;
+  }
+  #insta-cta-{{ section.id }} .insta-icon svg,
+  #insta-cta-{{ section.id }} .insta-icon i {
+    width: {{ section.settings.icon_size }}px;
+    height: {{ section.settings.icon_size }}px;
+    font-size: {{ section.settings.icon_size }}px;
+  }
+  #insta-cta-{{ section.id }} .insta-icon img {
+    width: {{ section.settings.icon_size }}px;
+    height: {{ section.settings.icon_size }}px;
+    object-fit: contain;
+  }
+
+  /* Handle Text */
+  #insta-cta-{{ section.id }} .insta-text {
+    {%- if section.settings.use_futura_handle -%}
+      font-family: 'FuturaCustom', sans-serif !important;
+    {%- else -%}
+      {%- if section.settings.handle_font != blank -%}
+        font-family: {{ section.settings.handle_font.family }}, {{ section.settings.handle_font.fallback_families }} !important;
+        font-weight: {{ section.settings.handle_font.weight }} !important;
+        font-style: {{ section.settings.handle_font.style }} !important;
+      {%- endif -%}
+    {%- endif -%}
+    font-size: {{ section.settings.handle_size }}px !important;
+    color: {{ section.settings.handle_color }} !important;
+    letter-spacing: {{ section.settings.handle_spacing }}px !important;
+    line-height: 1.2;
+  }
+
+  /* =========================================
+     MOBILE RESPONSIVE
+  ========================================= */
+  @media (max-width: 768px) {
+    #insta-cta-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top_mobile }}px !important;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px !important;
+    }
+    #insta-cta-{{ section.id }} .insta-cta-container {
+      gap: calc({{ section.settings.text_gap }}px * 0.7); 
+    }
+    #insta-cta-{{ section.id }} .insta-text {
+      font-size: calc({{ section.settings.handle_size }}px * 0.85) !important;
+    }
+    #insta-cta-{{ section.id }} .insta-heading {
+      font-size: calc({{ section.settings.heading_size }}px * 0.8) !important;
+    }
+    #insta-cta-{{ section.id }} .insta-icon svg,
+    #insta-cta-{{ section.id }} .insta-icon i,
+    #insta-cta-{{ section.id }} .insta-icon img {
+      width: calc({{ section.settings.icon_size }}px * 0.85);
+      height: calc({{ section.settings.icon_size }}px * 0.85);
+      font-size: calc({{ section.settings.icon_size }}px * 0.85);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Insta Community CTA",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "✨ Top Text (Main Heading)"
+    },
+    {
+      "type": "text",
+      "id": "main_heading",
+      "label": "Heading Text",
+      "default": "Join Our Community"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Heading Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_futura_heading",
+      "label": "🔥 Use Custom Futura Font?",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 20, "max": 80, "step": 1, "unit": "px",
+      "label": "Heading Font Size", "default": 36
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "min": 0, "max": 10, "step": 1, "unit": "px",
+      "label": "Letter Spacing", "default": 0
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Text Color",
+      "default": "#444444"
+    },
+    {
+      "type": "header",
+      "content": "✨ Bottom Text & Logo (Instagram)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon",
+      "label": "Show Logo/Icon?",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "icon_class",
+      "label": "Icon Class (Optional)",
+      "info": "E.g., 'bi bi-instagram'. Leave blank for default Instagram logo."
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_image",
+      "label": "Custom Logo Image (Optional)"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "min": 10, "max": 50, "step": 1, "unit": "px",
+      "label": "Logo Size", "default": 20
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Logo Color",
+      "default": "#111111"
+    },
+    {
+      "type": "range",
+      "id": "icon_gap",
+      "min": 0, "max": 20, "step": 1, "unit": "px",
+      "label": "Gap between Logo and Text", "default": 8
+    },
+    {
+      "type": "text",
+      "id": "insta_handle",
+      "label": "Handle Text",
+      "default": "Instagram @tvastra.fit"
+    },
+    {
+      "type": "url",
+      "id": "insta_link",
+      "label": "Instagram Link (Optional)"
+    },
+    {
+      "type": "font_picker",
+      "id": "handle_font",
+      "label": "Handle Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_futura_handle",
+      "label": "🔥 Use Custom Futura Font?",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "handle_size",
+      "min": 10, "max": 40, "step": 1, "unit": "px",
+      "label": "Handle Font Size", "default": 16
+    },
+    {
+      "type": "range",
+      "id": "handle_spacing",
+      "min": 0, "max": 10, "step": 1, "unit": "px",
+      "label": "Letter Spacing", "default": 0
+    },
+    {
+      "type": "color",
+      "id": "handle_color",
+      "label": "Handle Text Color",
+      "default": "#111111"
+    },
+    {
+      "type": "header",
+      "content": "📏 Spacing & Layout"
+    },
+    {
+      "type": "range",
+      "id": "text_gap",
+      "min": 0, "max": 60, "step": 2, "unit": "px",
+      "label": "Gap between Top and Bottom Texts",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f9f9f9"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (PC)",
+      "min": 0, "max": 120, "step": 5, "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (PC)",
+      "min": 0, "max": 120, "step": 5, "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding Top (Mobile)",
+      "min": 0, "max": 80, "step": 2, "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding Bottom (Mobile)",
+      "min": 0, "max": 80, "step": 2, "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Insta Community CTA"
+    }
+  ]
+}
+{% endschema %}

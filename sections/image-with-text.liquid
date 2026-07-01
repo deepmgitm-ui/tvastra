@@ -1,0 +1,687 @@
+<section
+  id="{{ section.settings.section_id }}"
+  class="image-with-text section-{{ section.id }} {% if section.settings.section_show == false %}d-none{% endif %} {{ section.settings.section_class_name }} d-md-block"
+  style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}"
+>
+  <div class="{{ section.settings.container_type }}">
+    <div class="bg-img overflow-visible {{ section.settings.padding_top }} {{ section.settings.padding_bottom }}{% if section.settings.section_bg_image != blank %} {{ section.settings.background_position }}{% endif%}" style="{% if section.settings.section_bg_image != blank %}background-image: url({{ section.settings.section_bg_image | image_url }});{% endif %}">
+      {%- liquid
+        assign wrapper_class = ''
+        if section.settings.container_type == 'w-100 overflow-hidden'
+          if section.settings.show_content_container == true
+            assign wrapper_class = 'container'
+          else
+            assign wrapper_class = 'container-fluid'
+          endif
+        elsif section.settings.container_type == 'container-fluid' and section.settings.show_content_container == true
+          assign wrapper_class = 'container'
+        endif
+      -%}
+      {%- if wrapper_class != '' -%}
+        <div class="{{ wrapper_class }}">
+      {%- endif -%}
+    <div class="row align-items-center justify-content-center justify-content-lg-start">
+      {%- if section.settings.hide_image == true -%}
+        <div class="col-lg-{{ section.settings.column_width }} text-md-center image">
+          {%- render 'responsive-image', image: section.settings.image, placeholder_type: 'simple-image' -%}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.hide_content == true -%}
+        <div class="col-lg-{{ section.settings.column_width1 }} content-wrap text-center text-lg-start">
+          {%- if section.settings.block_sub_heading != blank -%}
+            <span class="section-sub-heading">{{ section.settings.block_sub_heading }}</span>
+          {%- endif -%}
+          {%- if section.settings.block_heading != blank -%}
+            <h3 class="section-heading alt-font">{{ section.settings.block_heading }}</h3>
+          {%- endif -%}
+          {%- if section.settings.block_description != blank -%}
+            <div class="section-description">{{ section.settings.block_description }}</div>
+          {%- endif -%}
+          {%- if section.settings.counter_title1 != blank
+            or section.settings.counter_title2 != blank
+            or section.settings.counter_title3 != blank
+            and section.settings.counter_sub_title3 != blank
+          -%}
+            <div class="counter-wrap d-flex justify-content-center justify-content-lg-start alt-font">
+              {%- if section.settings.counter_title1 != blank and section.settings.counter_sub_title1 != blank -%}
+                <div class="counter-item">
+                  {%- if section.settings.counter_title1 != blank -%}
+                    <h3 class="mb-0">{{ section.settings.counter_title1 }}</h3>
+                  {%- endif -%}
+                  {%- if section.settings.counter_sub_title1 != blank -%}
+                    <span>{{ section.settings.counter_sub_title1 }}</span>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+              {%- if section.settings.counter_title2 != blank and section.settings.counter_sub_title2 != blank -%}
+                <div class="counter-item">
+                  {%- if section.settings.counter_title2 != blank -%}
+                    <h3 class="mb-0">{{ section.settings.counter_title2 }}</h3>
+                  {%- endif -%}
+                  {%- if section.settings.counter_sub_title2 != blank -%}
+                    <span>{{ section.settings.counter_sub_title2 }}</span>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+              {%- if section.settings.counter_title3 != blank and section.settings.counter_sub_title3 != blank -%}
+                <div class="counter-item">
+                  {%- if section.settings.counter_title3 != blank -%}
+                    <h3 class="mb-0">{{ section.settings.counter_title3 }}</h3>
+                  {%- endif -%}
+                  {%- if section.settings.counter_sub_title3 != blank -%}
+                    <span>{{ section.settings.counter_sub_title3 }}</span>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+          {%- render 'button-settings',
+            btn_style: section.settings.button_style,
+            btn_size: section.settings.button_size,
+            btn_text: section.settings.btn_text,
+            btn_link: section.settings.btn_link,
+            btn_radius: section.settings.btn_radius,
+            btn_border_width: section.settings.btn_border_width,
+            btn_icon_class: section.settings.btn_icon_class,
+            icon_position: section.settings.icon_position
+          -%}
+        </div>
+      {%- endif -%}
+    </div>
+    {%- if wrapper_class != '' -%}
+      </div>
+    {%- endif -%}
+  </div>
+  </div>
+</section>
+<style>
+  {%- unless section.settings.use_default_section_typography == true -%}
+    .section-{{ section.id }} .section-heading {
+      font-size: {{ section.settings.section_heading_size }}px;
+      line-height: {{ section.settings.heading_line_height }}px;
+    }
+    .section-{{ section.id }} .section-sub-heading {
+      font-size: {{ section.settings.sub_heading_size }}px;
+      letter-spacing: {{ section.settings.subheading_letter_spacing }}px;
+      line-height: {{ section.settings.sub_heading_line_height }}px;
+    }
+  {%- endunless -%}
+  {%- if section.settings.section_heading_color != blank -%}
+    .section-{{ section.id }} .section-heading {
+      color: {{ section.settings.section_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_sub_heading_color != blank -%}
+    .section-{{ section.id }} .section-sub-heading {
+      color: {{ section.settings.section_sub_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_description_color != blank -%}
+    .section-{{ section.id }} .section-description {
+      color: {{ section.settings.section_description_color }};
+    }
+  {%- endif -%}
+</style>
+{% schema %}
+{
+  "name": "Image with text",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_content_container",
+      "label": "Show content in container",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Image block"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Recommended size 800x860"
+    },
+    {
+      "type": "select",
+      "id": "column_width",
+      "label": "Column width",
+      "default": "6",
+      "info": "Total columns of whole block should not be more than 12 columns",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column - 1/12"
+        },
+        {
+          "value": "2",
+          "label": "2 columns - 1/6"
+        },
+        {
+          "value": "3",
+          "label": "3 columns - 1/4"
+        },
+        {
+          "value": "4",
+          "label": "4 columns - 1/3"
+        },
+        {
+          "value": "5",
+          "label": "5 columns - 5/12"
+        },
+        {
+          "value": "6",
+          "label": "6 columns - 1/2"
+        },
+        {
+          "value": "7",
+          "label": "7 columns - 7/12"
+        },
+        {
+          "value": "8",
+          "label": "8 columns - 2/3"
+        },
+        {
+          "value": "9",
+          "label": "9 columns - 3/4"
+        },
+        {
+          "value": "10",
+          "label": "10 columns - 5/6"
+        },
+        {
+          "value": "11",
+          "label": "11 columns - 11/12"
+        },
+        {
+          "value": "12",
+          "label": "12 columns - 1/1"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_image",
+      "label": "Show image",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Content block"
+    },
+    {
+      "type": "text",
+      "id": "block_heading",
+      "label": "Heading",
+      "default": "We are a lifestyle brand & we believe that great style"
+    },
+    {
+      "type": "text",
+      "id": "block_sub_heading",
+      "label": "Sub heading",
+      "default": "Start from since 1998"
+    },
+    {
+      "type": "richtext",
+      "id": "block_description",
+      "label": "Description",
+      "default": "<p>Lorem ipsum is simply dolor amet consectetur adipiscing elit eiusmod tempor incididunt ut labore dolore magna ut enim veniam.</p>"
+    },
+    {
+      "type": "select",
+      "id": "column_width1",
+      "label": "Column width",
+      "default": "6",
+      "info": "Total columns of whole block should not be more than 12 columns",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column - 1/12"
+        },
+        {
+          "value": "2",
+          "label": "2 columns - 1/6"
+        },
+        {
+          "value": "3",
+          "label": "3 columns - 1/4"
+        },
+        {
+          "value": "4",
+          "label": "4 columns - 1/3"
+        },
+        {
+          "value": "5",
+          "label": "5 columns - 5/12"
+        },
+        {
+          "value": "6",
+          "label": "6 columns - 1/2"
+        },
+        {
+          "value": "7",
+          "label": "7 columns - 7/12"
+        },
+        {
+          "value": "8",
+          "label": "8 columns - 2/3"
+        },
+        {
+          "value": "9",
+          "label": "9 columns - 3/4"
+        },
+        {
+          "value": "10",
+          "label": "10 columns - 5/6"
+        },
+        {
+          "value": "11",
+          "label": "11 columns - 11/12"
+        },
+        {
+          "value": "12",
+          "label": "12 columns - 1/1"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_content",
+      "label": "Show content",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "default": "btn-black",
+      "options": [
+        {
+          "value": "btn-black",
+          "label": "Solid button black"
+        },
+        {
+          "value": "btn-white",
+          "label": "Solid button white"
+        },
+        {
+          "value": "btn-base-color",
+          "label": "Solid button base"
+        },
+        {
+          "value": "btn-black-border",
+          "label": "Border button black"
+        },
+        {
+          "value": "btn-white-border",
+          "label": "Border button white"
+        },
+        {
+          "value": "btn-base-color-border",
+          "label": "Border button base"
+        },
+        {
+          "value": "btn-white-border border-opacity",
+          "label": "Border opacity button white"
+        },
+        {
+          "value": "btn-black-border border-opacity",
+          "label": "Border opacity button black"
+        },
+        {
+          "value": "btn-link btn-link-black",
+          "label": "Underlined button black"
+        },
+        {
+          "value": "btn-link btn-link-white",
+          "label": "Underlined button white"
+        },
+        {
+          "value": "btn-link btn-link-base-color",
+          "label": "Underlined button base"
+        },
+        {
+          "value": "btn-custom",
+          "label": "Custom button"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Button size",
+      "default": "btn-medium",
+      "options": [
+        {
+          "value": "btn-extra-large",
+          "label": "Extra Large"
+        },
+        {
+          "value": "btn-large",
+          "label": "Large"
+        },
+        {
+          "value": "btn-medium",
+          "label": "Medium"
+        },
+        {
+          "value": "btn-small",
+          "label": "Small"
+        },
+        {
+          "value": "btn-very-small",
+          "label": "Very Small"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "btn_radius",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Button radius",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "btn_border_width",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Button border width",
+      "default": 2
+    },
+    {
+      "type": "text",
+      "id": "btn_icon_class",
+      "label": "Enter icon class",
+      "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+    },
+    {
+      "type": "select",
+      "id": "icon_position",
+      "label": "Icon position",
+      "default": "right-icon",
+      "options": [
+        {
+          "value": "left-icon",
+          "label": "Left"
+        },
+        {
+          "value": "right-icon",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button text",
+      "default": "Explore question"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Number item 1"
+    },
+    {
+      "type": "text",
+      "id": "counter_title1",
+      "label": "Number title",
+      "default": "6M+"
+    },
+    {
+      "type": "text",
+      "id": "counter_sub_title1",
+      "label": "Number subtitle",
+      "default": "Happy clients"
+    },
+    {
+      "type": "header",
+      "content": "Number item 2"
+    },
+    {
+      "type": "text",
+      "id": "counter_title2",
+      "label": "Number title",
+      "default": "5M+"
+    },
+    {
+      "type": "text",
+      "id": "counter_sub_title2",
+      "label": "Number subtitle",
+      "default": "Great products"
+    },
+    {
+      "type": "header",
+      "content": "Number item 3"
+    },
+    {
+      "type": "text",
+      "id": "counter_title3",
+      "label": "Number title",
+      "default": "9M+"
+    },
+    {
+      "type": "text",
+      "id": "counter_sub_title3",
+      "label": "Number subtitle",
+      "default": "Working hours"
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_default_section_typography",
+      "label": "Use section typography from theme settings",
+      "info": "By default section typography values will be used from theme settings. Uncheck this checkbox to use below values.",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "section_heading_size",
+      "label": "Heading size",
+      "unit": "px",
+      "min": 20,
+      "max": 70,
+      "step": 1,
+      "default": 45
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "label": "Heading line height",
+      "unit": "px",
+      "min": 35,
+      "max": 95,
+      "step": 1,
+      "default": 45
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_size",
+      "label": "Sub heading size",
+      "unit": "px",
+      "min": 12,
+      "max": 50,
+      "step": 1,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_line_height",
+      "label": "Sub heading line height",
+      "unit": "px",
+      "min": 24,
+      "max": 60,
+      "step": 1,
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "subheading_letter_spacing",
+      "min": 0,
+      "max": 10,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Sub heading letter spacing",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": "small-section-top",
+      "options": [
+        {
+          "value": "large-section-top",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-top",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-top",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-top",
+          "label": "Very small section"
+        },
+        {
+          "value": "pt-0",
+          "label": "No padding top"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": "small-section-bottom",
+      "options": [
+        {
+          "value": "large-section-bottom",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-bottom",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-bottom",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-bottom",
+          "label": "Very small section"
+        },
+        {
+          "value": "pb-0",
+          "label": "No padding bottom"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "section_show",
+      "label": "Show section in mobile",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "section_bg_image",
+      "label": "Section background image",
+      "info": "Recommended size 1920x800"
+    },
+    {
+      "type": "select",
+      "id": "background_position",
+      "label": "Background position",
+      "options": [
+        {
+          "value": "cover-background",
+          "label": "Cover"
+        },
+        {
+          "value": "fixed-background",
+          "label": "Fixed"
+        }
+      ],
+      "default": "cover-background"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color"
+    },
+    {
+      "type": "color",
+      "id": "section_heading_color",
+      "label": "Section heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_sub_heading_color",
+      "label": "Section sub heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_description_color",
+      "label": "Section description color"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "section_class_name",
+      "label": "Section class name"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with text",
+      "blocks": [
+
+      ]
+    }
+  ]
+}
+{% endschema %}

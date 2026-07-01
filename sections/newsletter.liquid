@@ -1,0 +1,321 @@
+{{ 'newsletter.min.css' | asset_url | stylesheet_tag }}
+<section id="{{ section.settings.section_id }}" class="section-{{ section.id }} newsletter-{{ section.settings.newsletter_style }} {% if section.settings.section_show == false %}d-none{% endif %} {{ section.settings.section_class_name }} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }} d-md-block" {% unless section.settings.newsletter_style == "style-2" -%}style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}"{% endunless %}>
+  {%- if section.settings.newsletter_style == "style-2" -%}
+    <div class="newsletter-box" style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}">
+  {%- endif -%}
+  <div class="{{ section.settings.container_type }}">
+    <div class="row justify-content-center">
+      {%- capture subscribe_form -%}
+        {%- if section.blocks.size > 0 -%}
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {%- when 'mailchimp-form' -%}
+                <form class="mailchimp-form" method="post" action="{{ block.settings.mailchimp_url }}" target="_blank">
+                  <div class="input-group d-inline-block position-relative">
+                    <input 
+                      type="email" 
+                      name="EMAIL"
+                      class="mb-0"
+                      value="{% if customer %}{{ customer.email }}{% endif %}" 
+                      aria-required="true"
+                      autocorrect="off" 
+                      autocapitalize="off" 
+                      autocomplete="off"                                       
+                      placeholder="{{ section.settings.email_placeholder }}" 
+                      required
+                    />
+                    <button type="submit" class="btn alt-font"><i class="feather-mail"></i>{{- section.settings.btn_text | default: 'SUBSCRIBE' -}}</button>
+                  </div>                              
+                </form>
+              {%- when 'klaviyo-form' -%}
+                <div class="klaviyo-form-{{ block.settings.klaviyo_form_id }}"></div>
+                {%- if block.settings.klaviyo_script != blank -%}{{ block.settings.klaviyo_script }}{%- endif -%}
+            {%- endcase -%}            
+          {%- endfor -%}
+        {%- else -%}
+          {%- assign formId = 'newsletter-form-' | append: section.id -%}
+          {%- form 'customer', class: 'newsletter-form', id: formId -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <div class="input-group d-inline-block position-relative">
+              <input 
+                id="{{ formId }}-email" 
+                type="email" 
+                name="contact[email]" 
+                class="mb-0 {% if form.errors %}error{% endif %}"
+                value="" 
+                aria-required="true"
+                autocorrect="off" 
+                autocapitalize="off" 
+                autocomplete="email" 
+                {% if form.errors %} 
+                  autofocus
+                  aria-invalid="true"
+                  aria-describedby="newsletter-form-error-{{ section.id }}"
+                {% elsif form.posted_successfully? %}
+                  aria-describedby="{{ formId }}-success"
+                {% endif %}                    
+                placeholder="{{ section.settings.email_placeholder }}" 
+                required
+              />
+              <button type="submit" class="btn alt-font"><i class="feather-mail"></i>{{- section.settings.btn_text | default: 'SUBSCRIBE' -}}</button>
+            </div>
+          {%- endform -%}
+        {%- endif -%}
+      {%- endcapture -%}
+      {%- if section.settings.newsletter_style == "style-1" -%}
+        <div class="col-lg-10 col-xl-8 newsletter-wrap text-center">
+          {%- if section.settings.newsletter_title != blank -%}<h3 class="widget-title alt-font text-center m-0">{%- if section.settings.icon_name != blank -%}<i class="{{ section.settings.icon_name }}" style="font-size: {{ section.settings.icon_font_size }}px;color: {{ section.settings.icon_color }};"></i>{%- endif -%}{{ section.settings.newsletter_title }}</h3>{%- endif -%}
+          {%- if section.settings.newsletter_description != blank -%}<p>{{ section.settings.newsletter_description }}</p>{%- endif -%}
+          {{ subscribe_form }} 
+        </div>          
+      {%- else -%}  
+        <div class="col-12 d-flex flex-column flex-xl-row justify-content-center align-items-center">
+          
+          <div class="newsletter-heading text-center text-md-start d-flex flex-column flex-lg-row justify-content-center align-items-center">
+            {%- if section.settings.newsletter_title != blank -%}<h3 class="widget-title alt-font">{%- if section.settings.icon_name != blank -%}<i class="{{ section.settings.icon_name }}" style="font-size: {{ section.settings.icon_font_size }}px;color: {{ section.settings.icon_color }};"></i>{%- endif -%}{{ section.settings.newsletter_title }}</h3>{%- endif -%}
+            {%- if section.settings.newsletter_description != blank -%}<p>{{ section.settings.newsletter_description }}</p>{%- endif -%}  
+          </div>  
+          <div class="newsletter-form newsletter-wrap">
+            {{ subscribe_form }}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+  {%- if section.settings.newsletter_style == "style-2" -%}
+    </div>
+  {%- endif -%}
+</section>
+<style>
+  {%- if section.settings.title_color != blank -%}
+    .section-{{ section.id }} .newsletter-wrap .widget-title,
+    .section-{{ section.id }} .newsletter-heading .widget-title {
+      color: {{ section.settings.title_color }}; 
+    }
+  {%- endif -%}
+  {%- if section.settings.description_color != blank -%}
+    .section-{{ section.id }} .newsletter-wrap p, .section-{{ section.id }} .newsletter-heading p {
+      color: {{ section.settings.description_color }};
+    }
+  {%- endif -%}
+</style>
+{% schema %}
+{
+  "name": "Newsletter",
+  "max_blocks": 1,
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "newsletter_style",
+      "label": "Newsletter style",
+      "default": "style-1",
+      "options": [
+        {
+          "value": "style-1",
+          "label": "Style-1"
+        },
+        {
+          "value": "style-2",
+          "label": "Style-2"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "icon_name",
+      "label": "Enter icon class",
+      "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+    },
+    {
+      "type": "range",
+      "id": "icon_font_size",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Icon size",
+      "default": 42
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon color"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_title",
+      "label": "Newsletter title",
+      "default": "Subscribe and get 30% discount!"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_description",
+      "label": "Newsletter description"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email placeholder",
+      "default": "Enter your email...",
+      "info": "Not applicable in mailchimp & klaviyo block"
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button text",
+      "default": "Subscribe",
+      "info": "Not applicable in mailchimp & klaviyo block"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#262626"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description color",
+      "default": "#808080"
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": "small-section-top",
+      "options": [
+        {
+          "value": "large-section-top",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-top",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-top",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-top",
+          "label": "Very small section"
+        },
+        {
+          "value": "pt-0",
+          "label": "No padding top"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": "small-section-bottom",
+      "options": [
+        {
+          "value": "large-section-bottom",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-bottom",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-bottom",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-bottom",
+          "label": "Very small section"
+        },
+        {
+          "value": "pb-0",
+          "label": "No padding bottom"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "section_show",
+      "label": "Show section in mobile",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color"
+    },
+    {
+      "type": "text",
+      "id": "element_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "extra_class_name",
+      "label": "Section class name"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "mailchimp-form",
+      "name": "Mailchimp form",
+      "settings": [
+        {
+          "type": "text",
+          "id": "mailchimp_url",
+          "label": "MailChimp form action URL"
+        }
+      ]
+    },
+    {
+      "type": "klaviyo-form",
+      "name": "Klaviyo form",
+      "settings": [
+        {
+          "type": "text",
+          "id": "klaviyo_form_id",
+          "label": "Klaviyo form ID"
+        },
+        {
+          "type": "textarea",
+          "id": "klaviyo_script",
+          "label": "Klaviyo script"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter",
+      "blocks": [
+
+      ]
+    }
+  ]
+}
+{% endschema %}

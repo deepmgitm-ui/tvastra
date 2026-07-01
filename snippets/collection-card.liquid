@@ -1,0 +1,21 @@
+<div class="col collection-list-items">
+  <figure>
+    <a
+      {% if collection.all_products_count > 0 %}
+        href="{{ collection.url }}"
+      {% endif %}
+      class="d-block h-100 w-100 overflow-hidden"
+      aria-label="collection"
+    >
+      {%- render 'responsive-image', image: collection.image, placeholder_type: 'collection-image' -%}
+      <figcaption>
+        <div class="icon"><i class="bi bi-arrow-right-short"></i></div>
+        <div class="collection-name text-large alt-font">{{- collection.title | default: 'Collection name' -}}</div>
+        <span>
+          {{- collection.all_products_count }}
+          {{ 'sections.collection_card.product' | t -}}
+        </span>
+      </figcaption>
+    </a>
+  </figure>
+</div>

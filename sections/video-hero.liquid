@@ -1,0 +1,720 @@
+<section
+  id="{{ section.settings.section_id }}"
+  class="video-hero-section section-{{ section.id }} {% if section.settings.section_show == false %}d-none{% endif %} {{ section.settings.section_class_name }} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }} d-md-block"
+  style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}"
+>
+  {%- if section.settings.rotate_image != blank -%}
+    <div class="container position-relative">
+      <div class="video-rotate-image position-absolute rotate-animation {% if section.settings.show_rotate_animation == true %}rotation-image{% endif %}" style="top: -{{ section.settings.rotate_image_top }}px; right: {{ section.settings.rotate_image_right }}%;z-index: 99;">
+        <img src="{{ section.settings.rotate_image | image_url }}" alt="" width="{{ section.settings.rotate_image.width }}" height="{{ section.settings.rotate_image.height }}" loading="lazy" />
+      </div>
+    </div>
+  {%- endif -%}
+  <div class="{{ section.settings.container_type }}">
+    {%- if section.settings.heading != blank
+      or section.settings.sub_heading != blank
+      or section.settings.description != blank
+    -%}      
+    {%- endif -%}
+    <div class="row">
+      <div class="col-12">        
+        <div class="video-hero-wrap position-relative overflow-hidden {% if section.settings.full_height == true %}full-screen{% endif %}">
+          
+          <div class="desktop-video-wrapper w-100 h-100">
+            {%- if section.settings.locale_video_url != blank -%}
+              <div class="video-hero locale-video h-100">
+                {{ section.settings.locale_video_url | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1920x', class: 'w-100 h-100 custom-object-fit' }}
+              </div>
+            {%- else -%}
+              <div class="video-hero youtube-vimeo-video h-100">
+                {%- if section.settings.video_url.type == 'youtube' -%}
+                  {% liquid
+                    assign youtubeLink = 'https://www.youtube.com/embed/' | append: section.settings.video_url.id | append: '?enablejsapi=1&mute=1&autoplay=1' | append: '&loop=1&playlist=' | append: section.settings.video_url.id                  
+                  %}
+                  <iframe src="{{ youtubeLink }}" class="w-100 h-100 custom-object-fit" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.heading | escape }}"></iframe>
+                {%- else -%}
+                  {% liquid
+                    assign vimeoURL = 'https://player.vimeo.com/video/' | append: section.settings.video_url.id | append: '?&muted=1&autoplay=1&loop=1'                  
+                  %}
+                  <iframe src="{{ vimeoURL }}" class="w-100 h-100 custom-object-fit" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.heading | escape }}"></iframe>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
+          <div class="mobile-video-wrapper w-100 h-100">
+            {%- assign mobile_local = section.settings.mobile_locale_video_url | default: section.settings.locale_video_url -%}
+            {%- assign mobile_yt_vimeo = section.settings.mobile_video_url | default: section.settings.video_url -%}
+
+            {%- if mobile_local != blank -%}
+              <div class="video-hero locale-video h-100">
+                {{ mobile_local | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1080x1080', class: 'w-100 h-100 custom-object-fit' }}
+              </div>
+            {%- else -%}
+              <div class="video-hero youtube-vimeo-video h-100">
+                {%- if mobile_yt_vimeo.type == 'youtube' -%}
+                  {% liquid
+                    assign youtubeLink = 'https://www.youtube.com/embed/' | append: mobile_yt_vimeo.id | append: '?enablejsapi=1&mute=1&autoplay=1' | append: '&loop=1&playlist=' | append: mobile_yt_vimeo.id                  
+                  %}
+                  <iframe src="{{ youtubeLink }}" class="w-100 h-100 custom-object-fit" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.heading | escape }}"></iframe>
+                {%- else -%}
+                  {% liquid
+                    assign vimeoURL = 'https://player.vimeo.com/video/' | append: mobile_yt_vimeo.id | append: '?&muted=1&autoplay=1&loop=1'                  
+                  %}
+                  <iframe src="{{ vimeoURL }}" class="w-100 h-100 custom-object-fit" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.heading | escape }}"></iframe>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
+          {%- if section.settings.desktop_overlay == true or section.settings.mobile_overlay == true -%}
+            {%- liquid
+              if section.settings.desktop_overlay == true and section.settings.mobile_overlay == false
+                assign overlay_classes = 'd-none d-md-block'
+              elsif section.settings.mobile_overlay == true and section.settings.desktop_overlay == false
+                assign overlay_classes = 'd-block d-md-none'
+              elsif section.settings.mobile_overlay == true and section.settings.desktop_overlay == true
+                assign overlay_classes = 'd-block'
+              endif
+            -%}
+            <div class="hongo-overlay {{ overlay_classes }}" style="opacity: {{ section.settings.overlay_opacity }}; background-color: {{ section.settings.overlay_color }}; z-index: {{ section.settings.z_index }}; "></div>
+          {%- endif -%}
+          <div class="video-content-wrap d-flex flex-column {{ section.settings.box_alignment }}">
+            <div class="video-content text-{{ section.settings.txt_alignment }}">
+              {%- if section.settings.subtitle != blank -%}
+                <div class="subtitle alt-font">{{ section.settings.subtitle }}</div>
+              {%- endif -%}
+              {%- if section.settings.title != blank -%}
+                <div class="title alt-font">{{ section.settings.title }}</div>
+              {%- endif -%}
+              {%- if section.settings.description != blank -%}
+                <p>{{ section.settings.description }}</p>
+              {%- endif -%}
+              {%- render 'button-settings',
+                btn_style: section.settings.button_style,
+                btn_size: section.settings.button_size,
+                btn_text: section.settings.btn_text,
+                btn_link: section.settings.btn_link,
+                btn_radius: section.settings.btn_radius,
+                btn_border_width: section.settings.btn_border_width,
+                btn_icon_class: section.settings.btn_icon_class,
+                icon_position: section.settings.icon_position
+              -%}
+            </div>
+          </div>          
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>  
+  .desktop-video-wrapper { display: block; }
+  .mobile-video-wrapper { display: none; }
+  .custom-object-fit { object-fit: cover !important; }
+  .video-hero video, .video-hero iframe { object-fit: cover; width: 100%; height: 100%; }
+
+  @media (max-width: 767px) {
+    .desktop-video-wrapper { display: none; }
+    .mobile-video-wrapper { display: block; }
+    
+    /* Yahan phone ke liye 1:1 (Square) fix kiya hai */
+    .section-{{ section.id }} .video-hero-wrap {
+      aspect-ratio: 1 / 1 !important;
+      height: auto !important; 
+      min-height: unset !important;
+    }
+  }
+
+  .section-{{ section.id }} .video-hero-wrap .video-content-wrap .subtitle {
+    font-size: {{ section.settings.subtitle_font_size }}px;
+    line-height: {{ section.settings.subtitle_line_height }}px;
+    font-weight: {{ section.settings.subtitle_font_weight }};
+  }
+  .section-{{ section.id }} .video-hero-wrap .video-content-wrap .title {
+    {%- if section.settings.title_color != blank -%}
+      color: {{ section.settings.title_color }};
+    {%- endif -%}
+    font-size: {{ section.settings.title_font_size }}px;
+    line-height: {{ section.settings.title_line_height }}px;
+    font-weight: {{ section.settings.title_font_weight }};
+  }  
+  {%- if section.settings.title_color != blank -%}
+    .section-{{ section.id }} .video-hero-wrap .video-content-wrap .subtitle {
+      color: {{ section.settings.subtitle_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.description_color != blank -%}
+    .section-{{ section.id }} .video-hero-wrap .video-content-wrap p {
+      color: {{ section.settings.description_color }};
+    }
+  {%- endif -%}
+  @media (max-width: 991px) {
+    .section-{{ section.id }} .video-hero-wrap .video-content-wrap .title {
+      font-size: var(--font_size_plus72);
+      line-height: var(--font_size_plus72);
+    }
+  }
+  @media (max-width: 767px) {
+    .section-{{ section.id }} .video-hero-wrap .video-content-wrap .title {
+      font-size: var(--font_size_plus52);
+      line-height: var(--font_size_plus52);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Video hero",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "w-100 overflow-hidden",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "NARROW<br> EDITION"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "SPLASH INTO SUMMER COLLECTIONS"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_height",
+      "label": "Full height video",
+      "default": true
+    },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "label": "Youtube or Vimeo video URL",
+      "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+      "accept": [
+        "youtube",
+        "vimeo"
+      ]
+    },
+    {
+      "type": "video",
+      "id": "locale_video_url",
+      "label": "Local video"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Video (Optional)"
+    },
+    {
+      "type": "video_url",
+      "id": "mobile_video_url",
+      "label": "Mobile Youtube or Vimeo video URL",
+      "accept": [
+        "youtube",
+        "vimeo"
+      ]
+    },
+    {
+      "type": "video",
+      "id": "mobile_locale_video_url",
+      "label": "Mobile Local video"
+    },
+    {
+      "type": "header",
+      "content": "Rotate image"
+    },
+    {
+      "type": "image_picker",
+      "id": "rotate_image",
+      "label": "Rotate image",
+      "info": "Recommended size 135x135"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rotate_animation",
+      "label": "Show rotate animation",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "rotate_image_top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Rotate image position top",
+      "default": 46
+    },
+    {
+      "type": "range",
+      "id": "rotate_image_right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Rotate image position right",
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "checkbox",
+      "id": "desktop_overlay",
+      "label": "Show overlay in desktop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_overlay",
+      "label": "Show overlay in mobile",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#333333"
+    },
+    {
+      "type": "select",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "default": "0.2",
+      "options": [
+        {
+          "value": "0.1",
+          "label": "0.1"
+        },
+        {
+          "value": "0.2",
+          "label": "0.2"
+        },
+        {
+          "value": "0.3",
+          "label": "0.3"
+        },
+        {
+          "value": "0.4",
+          "label": "0.4"
+        },
+        {
+          "value": "0.5",
+          "label": "0.5"
+        },
+        {
+          "value": "0.6",
+          "label": "0.6"
+        },
+        {
+          "value": "0.7",
+          "label": "0.7"
+        },
+        {
+          "value": "0.8",
+          "label": "0.8"
+        },
+        {
+          "value": "0.9",
+          "label": "0.9"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "z_index",
+      "label": "Z-index"
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "default": "btn-custom",
+      "options": [
+        {
+          "value": "btn-black",
+          "label": "Solid button black"
+        },
+        {
+          "value": "btn-white",
+          "label": "Solid button white"
+        },
+        {
+          "value": "btn-base-color",
+          "label": "Solid button base"
+        },
+        {
+          "value": "btn-black-border",
+          "label": "Border button black"
+        },
+        {
+          "value": "btn-white-border",
+          "label": "Border button white"
+        },
+        {
+          "value": "btn-base-color-border",
+          "label": "Border button base"
+        },
+        {
+          "value": "btn-white-border border-opacity",
+          "label": "Border opacity button white"
+        },
+        {
+          "value": "btn-black-border border-opacity",
+          "label": "Border opacity button black"
+        },
+        {
+          "value": "btn-link btn-link-black",
+          "label": "Underlined button black"
+        },
+        {
+          "value": "btn-link btn-link-white",
+          "label": "Underlined button white"
+        },
+        {
+          "value": "btn-link btn-link-base-color",
+          "label": "Underlined button base"
+        },
+        {
+          "value": "btn-custom",
+          "label": "Custom button"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Button size",
+      "default": "btn-medium",
+      "options": [
+        {
+          "value": "btn-extra-large",
+          "label": "Extra Large"
+        },
+        {
+          "value": "btn-large",
+          "label": "Large"
+        },
+        {
+          "value": "btn-medium",
+          "label": "Medium"
+        },
+        {
+          "value": "btn-small",
+          "label": "Small"
+        },
+        {
+          "value": "btn-very-small",
+          "label": "Very Small"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "btn_radius",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Button radius",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "btn_border_width",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Button border width",
+      "default": 2
+    },
+    {
+      "type": "text",
+      "id": "btn_icon_class",
+      "label": "Enter icon class",
+      "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+    },
+    {
+      "type": "select",
+      "id": "icon_position",
+      "label": "Icon position",
+      "default": "right-icon",
+      "options": [
+        {
+          "value": "left-icon",
+          "label": "Left"
+        },
+        {
+          "value": "right-icon",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button text",
+      "default": "SHOP COLLECTION"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Button link"
+    },    
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "min": 10,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Title font size",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "title_line_height",
+      "min": 10,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Title line height",
+      "default": 105
+    },
+    {
+      "type": "select",
+      "id": "title_font_weight",
+      "label": "Title font weight",
+      "default": "500",
+      "options": [
+        {
+          "value": "100",
+          "label": "100"
+        },
+        {
+          "value": "200",
+          "label": "200"
+        },
+        {
+          "value": "300",
+          "label": "300"
+        },
+        {
+          "value": "400",
+          "label": "400"
+        },
+        {
+          "value": "500",
+          "label": "500"
+        },
+        {
+          "value": "600",
+          "label": "600"
+        },
+        {
+          "value": "700",
+          "label": "700"
+        },
+        {
+          "value": "800",
+          "label": "800"
+        },
+        {
+          "value": "900",
+          "label": "900"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "subtitle_font_size",
+      "min": 10,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtitle font size",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "subtitle_line_height",
+      "min": 10,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtitle line height",
+      "default": 22
+    },
+    {
+      "type": "select",
+      "id": "subtitle_font_weight",
+      "label": "Subtitle font weight",
+      "default": "400",
+      "options": [
+        {
+          "value": "100",
+          "label": "100"
+        },
+        {
+          "value": "200",
+          "label": "200"
+        },
+        {
+          "value": "300",
+          "label": "300"
+        },
+        {
+          "value": "400",
+          "label": "400"
+        },
+        {
+          "value": "500",
+          "label": "500"
+        },
+        {
+          "value": "600",
+          "label": "600"
+        },
+        {
+          "value": "700",
+          "label": "700"
+        },
+        {
+          "value": "800",
+          "label": "800"
+        },
+        {
+          "value": "900",
+          "label": "900"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "txt_alignment",
+      "label": "Text alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "box_alignment",
+      "label": "Content box alignment",
+      "default": "justify-content-center align-items-center",
+      "options": [
+        {
+          "value": "justify-content-start align-items-start",
+          "label": "Left top"
+        },
+        {
+          "value": "justify-content-center align-items-start",
+          "label": "Left middle"
+        },
+        {
+          "value": "justify-content-end align-items-start",
+          "label": "Left bottom"
+        },
+        {
+          "value": "justify-content-start align-items-center",
+          "label": "Center top"
+        },
+        {
+          "value": "justify-content-center align-items-center",
+          "label": "Center middle"
+        },
+        {
+          "value": "justify-content-end align-items-center",
+          "label": "Center bottom"
+        },
+        {
+          "value": "justify-content-start align-items-end",
+          "label": "Right top"
+        },
+        {
+          "value": "justify-content-center align-items-end",
+          "label": "Right middle"
+        },
+        {
+          "value": "justify-content-end align-items-end",
+          "label": "Right bottom"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle color"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description color"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "section_class_name",
+      "label": "Section class name"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video hero"
+    }
+  ]
+}
+{% endschema %}

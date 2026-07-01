@@ -1,0 +1,64 @@
+{%- liquid
+  assign display_label = settings.display_label
+  assign sale_label_type = settings.sale_label_type
+  assign sold_out_label_text = settings.sold_out_label_text
+  assign sale_label_text = settings.sale_label_text
+  assign new_label_text = settings.new_label_text
+-%} 
+{%- if template contains 'product' -%}
+  {%- assign product_variant = product_for_badge.selected_or_first_available_variant -%}
+{%- else -%}
+  {%- assign product_variant = product_for_badge -%}
+{%- endif -%}
+{%- if display_label == true -%}  
+  <div class="badge-wrap d-flex align-items-start alt-font">
+    {%- comment -%} Sold out label {%- endcomment -%}
+    {%- if product_variant.available == false and sold_out_label_text != blank -%}
+      <span class="badge sold-out" aria-hidden="true">{{ sold_out_label_text }}</span>
+    {%- endif -%} 
+    {%- comment -%} Sale label {%- endcomment -%}
+    {%- if product_variant.compare_at_price > product_variant.price -%}
+      {%- if sale_label_type == 'discount' -%}
+        {%- if product_for_badge.has_only_default_variant or product_for_badge.variants.size > 0 and product_for_badge.price_varies == false or product_for_badge.compare_at_price_varies == false -%}
+          <span class="badge discount" aria-hidden="true">
+            {%- assign price_percentage = product_variant.compare_at_price | minus: product_variant.price | times: 100.0 | divided_by: product_variant.compare_at_price | round -%}
+            {%- if price_percentage < 9 -%}0{%- endif -%}{{ price_percentage }}%
+          </span>
+        {%- else -%}
+          <span class="badge">{{ sale_label_text }}</span>
+        {%- endif -%}
+      {%- elsif sale_label_type == 'text-with-discount' -%}
+        {%- if product_for_badge.has_only_default_variant or product_for_badge.variants.size > 0 and product_for_badge.price_varies == false or product_for_badge.compare_at_price_varies == false -%}
+          <span class="badge text-with-discount" aria-hidden="true">
+            {%- assign price_percentage = product_variant.compare_at_price | minus: product_variant.price | times: 100.0 | divided_by: product_variant.compare_at_price | round -%}
+            {{ sale_label_text }} <span>{%- if price_percentage < 9 -%}0{%- endif -%}{{ price_percentage }}%</span>
+          </span>
+          {%- else -%}
+            <span class="badge">{{ sale_label_text }}</span>
+          {%- endif -%}
+      {%- else -%}
+        <span class="badge">{{ sale_label_text }}</span>
+      {%- endif -%}
+    {%- endif -%}
+    {%- comment -%} New label {%- endcomment -%}
+    {%- liquid
+      assign today_date = 'now' | date: '%s'
+      assign new_start_date = product_for_badge.metafields.custom.product_new_from_date
+      assign new_end_date = product_for_badge.metafields.custom.product_new_end_time
+    -%}
+    {%- if new_start_date != blank -%}
+      {%- capture new_start_date -%}<script>document.write(new Date('{{new_start_date}}'));</script>{%- endcapture -%}
+      {%- assign new_start_date = new_start_date | date: '%s' -%}
+      {%- if new_end_date != blank -%}
+        {%- capture new_end_date -%}<script>document.write(new Date('{{new_end_date}}'));</script>{%- endcapture -%}
+        {%- assign new_end_date = new_end_date | date: '%s' -%}
+      {%- else -%}
+        {%- assign new_end_date = 'now' | date: "%Y-%m-%d 23:59:59" -%}
+        {%- assign new_end_date = new_end_date | date: '%s' -%}
+      {%- endif -%}
+      {%- if new_start_date < today_date and new_end_date > today_date %}
+        <span class="badge new">{{ new_label_text }}</span>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+{%- endif -%}

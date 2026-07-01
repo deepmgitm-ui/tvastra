@@ -1,0 +1,736 @@
+<section
+  id="{{ section.settings.section_id }}"
+  class="contact-form section-{{ section.id }} {% if section.settings.section_show == false %}d-none{% endif %} {{ section.settings.section_class_name }} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }} d-md-block"
+  style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}"
+>
+  <div class="{{ section.settings.container_type }}">
+    {%- assign forloop_count = 0 -%}
+    {%- for block in section.blocks -%}
+      {%- assign forloop_count = forloop_count | plus: 1 -%}
+    {%- endfor -%}
+    <div class="row align-items-center">
+      {%- if forloop_count > 0
+        or section.settings.sub_title != blank
+        or section.settings.title != blank
+        or section.settings.show_social_icon == true
+      -%}
+        {%- assign content_section_cound = content_section_cound | plus: 1 -%}
+        <div class="col-lg-{{ section.settings.block_column_width }} contact-detail-wrap text-center text-lg-start">
+          {%- if section.settings.sub_title != blank -%}
+            <p class="text-small alt-font section-sub-heading">{{ section.settings.sub_title }}</p>
+          {%- endif -%}
+          {%- if section.settings.title != blank -%}
+            <h4 class="alt-font section-heading">{{ section.settings.title }}</h4>
+          {%- endif -%}
+          <div class="item-wrap">
+            {%- for block in section.blocks -%}
+              <div class="contact-item{% if section.settings.show_icon == false %} ps-0{% endif %}">
+                {%- if block.settings.icon_class != blank and section.settings.show_icon == true -%}
+                  <i class="{{ block.settings.icon_class }}"></i>
+                {%- endif -%}
+                {%- if block.settings.title != blank -%}
+                  <div class="alt-font">{{ block.settings.title }}</div>
+                {%- endif -%}
+                {%- if block.settings.content != blank -%}
+                  <p>{{ block.settings.content }}</p>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          </div>
+          {%- if section.settings.show_social_icon == true -%}
+            <div class="social-icon d-flex align-items-center justify-content-center justify-content-lg-start">
+              <span class="text-small alt-font">{{ section.settings.social_title }}</span>
+              {%- render 'social-follow',
+                style_class: section.settings.social_type,
+                social_mode: section.settings.social_style
+              -%}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+        <div class="col-lg-{{ section.settings.image_column_width }} text-center">
+          <div class="form-bg">
+            {%- render 'responsive-image', image: section.settings.form_bg, placeholder_type: 'simple-image' -%}
+          </div>
+        </div>
+      <div class="col-lg-{{ section.settings.content_column_width }} form-content">
+        <div class="form-wrap">
+          <div class="contact">
+            {%- if section.settings.form_sub_title != blank -%}
+              <span class="section-sub-heading form_subtitle">{{ section.settings.form_sub_title }}</span>
+            {%- endif -%}
+            {%- if section.settings.form_title != blank -%}
+              <h4 class="alt-font form-title">{{ section.settings.form_title }}</h4>
+            {%- endif -%}
+            {%- form 'contact', id: 'ContactForm' -%}
+              {%- if form.posted_successfully? -%}
+                <div class="form-status-message" tabindex="-1" autofocus>
+                  <i class="feather-check-circle"></i> {{ 'templates.contact.form.post_success' | t }}
+                </div>
+              {%- endif -%}
+              <div class="field">
+                {%- if section.settings.show_form_lable == true -%}
+                  <label class="label">{{ 'sections.contact_form.name' | t }}</label>
+                {%- endif -%}
+                <div class="input-group position-relative">
+                  <input
+                    autocomplete="name"
+                    type="text"
+                    id="ContactForm-name"
+                    name="contact[{{ 'templates.contact.form.name' | t }}]"
+                    value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                    placeholder="{{ 'sections.contact_form.name_placeholder' | t }}"
+                  >
+                  <span class="field-icon"><i class="feather-user"></i></span>
+                </div>
+              </div>
+              <div class="field position-relative">
+                {%- if section.settings.show_form_lable == true -%}
+                  <label class="label">{{ 'sections.contact_form.email' | t }}</label>
+                {%- endif -%}
+                <div class="input-group position-relative">
+                  <input
+                    autocomplete="email"
+                    type="email"
+                    id="ContactForm-email"
+                    class="{% if form.errors -%}error{% endif %}"
+                    name="contact[email]"
+                    spellcheck="false"
+                    autocapitalize="off"
+                    value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                    aria-required="true"
+                    {% if form.errors contains 'email' %}
+                      aria-invalid="true"
+                      aria-describedby="ContactForm-email-error"
+                    {% endif %}
+                    placeholder="{{ 'sections.contact_form.email_placeholder' | t }}"
+                  >
+                  <span class="field-icon"><i class="feather-mail"></i></span>
+                </div>
+              </div>
+              <div class="field position-relative">
+                {%- if section.settings.show_form_lable == true -%}
+                  <label class="label">{{ 'sections.contact_form.phone' | t }}</label>
+                {%- endif -%}
+                <div class="input-group position-relative">
+                  <input
+                    type="tel"
+                    id="ContactForm-phone"
+                    autocomplete="tel"
+                    name="contact[{{ 'templates.contact.form.phone' | t }}]"
+                    pattern="[0-9\-]*"
+                    value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+                    placeholder="{{ 'sections.contact_form.phone_number_placeholder' | t }}"
+                  >
+                  <span class="field-icon"><i class="feather-phone-outgoing"></i></span>
+                </div>
+              </div>
+              <div class="field position-relative">
+                {%- if section.settings.show_form_lable == true -%}
+                  <label class="label">{{ 'sections.contact_form.message' | t }}</label>
+                {%- endif -%}
+                <div class="input-group form-textarea position-relative">
+                  <textarea
+                    rows="3"
+                    id="ContactForm-body"
+                    name="contact[{{ 'templates.contact.form.comment' | t }}]"
+                    placeholder="{{ 'sections.contact_form.message_placeholder' | t }}"
+                  >
+                    {{- form.body -}}
+                  </textarea>
+                  <span class="field-icon"><i class="feather-message-circle"></i></span>
+                </div>
+              </div>
+              {%- if settings.show_terms_contact == true -%}
+                <div class="form-agreement d-flex align-items-center">
+                  <input
+                    type="checkbox"
+                    id="terms_agreement_contact"
+                    name="terms_agreement"
+                    value="yes"
+                    form="ContactForm"
+                    required
+                    autocomplete="off"
+                    data-terms-trigger="ContactForm"
+                  >
+                  <label for="terms_agreement_contact">
+                    {{- settings.terms_conditions_label | default: 'I agree with the Terms & Conditions' }}
+                  </label>
+                </div>
+              {%- endif -%}
+              <button
+                type="submit"
+                class="btn btn-black btn-medium {% if section.settings.show_button_text == true %}text-uppercase{% endif %}"
+                {% if settings.show_terms_contact == true %}
+                  disabled="disabled"
+                  data-terms-action="ContactForm"
+                {% endif %}
+              >
+                {{ 'sections.contact_form.button_label' | t }}{% if section.settings.show_button_arrrow == true -%}
+                  <i class="feather-arrow-right"></i>
+                {%- endif %}
+              </button>
+            {%- endform -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  {%- if section.settings.form_subtitle_fontsize -%}
+  .section-{{ section.id }}.contact-form .form-content .section-sub-heading {
+    font-size: {{ section.settings.form_subtitle_fontsize }}px;
+    line-height: {{ section.settings.form_subtitle_lineheight }}px;
+  }
+  {%- endif -%}
+  {%- if section.settings.form_title_fontsize -%}
+  .section-{{ section.id }}.contact-form .form-content .form-title {
+      font-size: {{ section.settings.form_title_fontsize }}px;
+      line-height: {{ section.settings.form_title_lineheight }}px;
+    }
+  {%- endif -%}
+  {%- if section.settings.subtitle_fontsize -%}
+    .section-{{ section.id }} .contact-detail-wrap > p {
+      font-size: {{ section.settings.subtitle_fontsize }}px;
+      line-height: {{ section.settings.subtitle_lineheight }}px;
+    }
+  {%- endif -%}
+  {%- if section.settings.title_fontsize -%}
+    .section-{{ section.id }} .contact-detail-wrap > h4 {
+      font-size: {{ section.settings.title_fontsize }}px;
+      line-height: {{ section.settings.title_lineheight }}px;
+    }
+  {%- endif -%}
+  @media (max-width: 1199px) {
+    .section-{{ section.id }}.contact-form .form-content .form-title {
+      font-size: var(--font_size_plus20);
+      line-height: var(--font_size_plus24);
+    }
+  }
+  @media (max-width: 767px) {
+    .section-{{ section.id }}.contact-form .form-content .form-title {
+      font-size: var(--font_size_plus16);
+      line-height: var(--font_size_plus19);
+    }
+  }
+</style>
+{% schema %}
+{
+  "name": "Contact from",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Contact detail"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Let's get in touch"
+    },
+    {
+      "type": "text",
+      "id": "sub_title",
+      "label": "Subtitle",
+      "default": "We’re here to help you!"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon",
+      "label": "Show icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_icon",
+      "label": "Show social icon",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "social_type",
+      "label": "Social media type",
+      "default": "social-icon-only",
+      "options": [
+        {
+          "label": "Social icon with text",
+          "value": "social-icon-with-text"
+        },
+        {
+          "label": "Social simple",
+          "value": "social-simple"
+        },
+        {
+          "label": "Social icon only",
+          "value": "social-icon-only"
+        },
+        {
+          "label": "Social short name",
+          "value": "social-short-name"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "social_style",
+      "label": "Social style",
+      "default": "dark",
+      "options": [
+        {
+          "label": "Dark",
+          "value": "dark"
+        },
+        {
+          "label": "Light",
+          "value": "light"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "social_title",
+      "label": "Social title",
+      "default": "Follow us :"
+    },
+    {
+      "type": "select",
+      "id": "block_column_width",
+      "label": "Column width",
+      "default": "4",
+      "info": "Total columns of whole block should not be more than 12 columns",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column - 1/12"
+        },
+        {
+          "value": "2",
+          "label": "2 columns - 1/6"
+        },
+        {
+          "value": "3",
+          "label": "3 columns - 1/4"
+        },
+        {
+          "value": "4",
+          "label": "4 columns - 1/3"
+        },
+        {
+          "value": "5",
+          "label": "5 columns - 5/12"
+        },
+        {
+          "value": "6",
+          "label": "6 columns - 1/2"
+        },
+        {
+          "value": "7",
+          "label": "7 columns - 7/12"
+        },
+        {
+          "value": "8",
+          "label": "8 columns - 2/3"
+        },
+        {
+          "value": "9",
+          "label": "9 columns - 3/4"
+        },
+        {
+          "value": "10",
+          "label": "10 columns - 5/6"
+        },
+        {
+          "value": "11",
+          "label": "11 columns - 11/12"
+        },
+        {
+          "value": "12",
+          "label": "12 columns - 1/1"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "title_fontsize",
+      "label": "Title font size",
+      "unit": "px",
+      "min": 25,
+      "max": 80,
+      "step": 1,
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "title_lineheight",
+      "label": "Title line height",
+      "unit": "px",
+      "min": 35,
+      "max": 95,
+      "step": 1,
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "subtitle_fontsize",
+      "label": "Subtitle font size",
+      "unit": "px",
+      "min": 14,
+      "max": 40,
+      "step": 1,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "subtitle_lineheight",
+      "label": "Subtitle line height",
+      "unit": "px",
+      "min": 24,
+      "max": 60,
+      "step": 1,
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Image settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "form_bg",
+      "label": "Form image",
+      "info": "Recommended size 650x1050"
+    },
+    {
+      "type": "select",
+      "id": "image_column_width",
+      "label": "Column width",
+      "default": "4",
+      "info": "Total columns of whole block should not be more than 12 columns",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column - 1/12"
+        },
+        {
+          "value": "2",
+          "label": "2 columns - 1/6"
+        },
+        {
+          "value": "3",
+          "label": "3 columns - 1/4"
+        },
+        {
+          "value": "4",
+          "label": "4 columns - 1/3"
+        },
+        {
+          "value": "5",
+          "label": "5 columns - 5/12"
+        },
+        {
+          "value": "6",
+          "label": "6 columns - 1/2"
+        },
+        {
+          "value": "7",
+          "label": "7 columns - 7/12"
+        },
+        {
+          "value": "8",
+          "label": "8 columns - 2/3"
+        },
+        {
+          "value": "9",
+          "label": "9 columns - 3/4"
+        },
+        {
+          "value": "10",
+          "label": "10 columns - 5/6"
+        },
+        {
+          "value": "11",
+          "label": "11 columns - 11/12"
+        },
+        {
+          "value": "12",
+          "label": "12 columns - 1/1"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Form settings"
+    },
+    {
+      "type": "text",
+      "id": "form_title",
+      "label": "Form title",
+      "default": "How we can help you?"
+    },
+    {
+      "type": "text",
+      "id": "form_sub_title",
+      "label": "Form subtitle"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button_text",
+      "label": "Show button text uppercase",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button_arrrow",
+      "label": "Show button icon",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_form_lable",
+      "label": "Show form label",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "content_column_width",
+      "label": "Column width",
+      "default": "4",
+      "info": "Total columns of whole block should not be more than 12 columns",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column - 1/12"
+        },
+        {
+          "value": "2",
+          "label": "2 columns - 1/6"
+        },
+        {
+          "value": "3",
+          "label": "3 columns - 1/4"
+        },
+        {
+          "value": "4",
+          "label": "4 columns - 1/3"
+        },
+        {
+          "value": "5",
+          "label": "5 columns - 5/12"
+        },
+        {
+          "value": "6",
+          "label": "6 columns - 1/2"
+        },
+        {
+          "value": "7",
+          "label": "7 columns - 7/12"
+        },
+        {
+          "value": "8",
+          "label": "8 columns - 2/3"
+        },
+        {
+          "value": "9",
+          "label": "9 columns - 3/4"
+        },
+        {
+          "value": "10",
+          "label": "10 columns - 5/6"
+        },
+        {
+          "value": "11",
+          "label": "11 columns - 11/12"
+        },
+        {
+          "value": "12",
+          "label": "12 columns - 1/1"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "form_title_fontsize",
+      "label": "Title font size",
+      "unit": "px",
+      "min": 25,
+      "max": 80,
+      "step": 1,
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "form_title_lineheight",
+      "label": "Title line height",
+      "unit": "px",
+      "min": 35,
+      "max": 95,
+      "step": 1,
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "form_subtitle_fontsize",
+      "label": "Subtitle font size",
+      "unit": "px",
+      "min": 14,
+      "max": 40,
+      "step": 1,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "form_subtitle_lineheight",
+      "label": "Subtitle line height",
+      "unit": "px",
+      "min": 24,
+      "max": 60,
+      "step": 1,
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": "small-section-top",
+      "options": [
+        {
+          "value": "large-section-top",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-top",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-top",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-top",
+          "label": "Very small section"
+        },
+        {
+          "value": "pt-0",
+          "label": "No padding top"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": "small-section-bottom",
+      "options": [
+        {
+          "value": "large-section-bottom",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-bottom",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-bottom",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-bottom",
+          "label": "Very small section"
+        },
+        {
+          "value": "pb-0",
+          "label": "No padding bottom"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "section_show",
+      "label": "Show section in mobile",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "section_class_name",
+      "label": "Section class name"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "content-block",
+      "name": "Content block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon_class",
+          "label": "Enter icon class",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)",
+          "default": "bi bi-pin-map"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Block Title"
+        },
+        {
+          "type": "textarea",
+          "id": "content",
+          "label": "Content",
+          "default": "401 Broadway, 24th Floor Iceland, Iceland 10013."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.contact-form.presets.name",
+      "blocks": [
+        {
+          "type": "content-block"
+        },
+        {
+          "type": "content-block"
+        },
+        {
+          "type": "content-block"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

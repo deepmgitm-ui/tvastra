@@ -1,0 +1,68 @@
+{%- render 'page-title',
+  title: page.title,
+  image: section.settings.image,
+  enable_parallax: section.settings.enable_parallax,
+  hide_breadcrumb: section.settings.hide_breadcrumb,
+  breadcrumb_position: section.settings.breadcrumb_position,
+  content_alignment: section.settings.content_alignment
+-%}
+{% schema %}
+{
+  "name": "Contact us",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Page title image"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_parallax",
+      "label": "Enable parallax",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_breadcrumb",
+      "label": "Show breadcrumb",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "breadcrumb_position",
+      "label": "Breadcrumb position",
+      "default": "on-collection-banner",
+      "options": [
+        {
+          "value": "on-collection-banner",
+          "label": "On collection banner"
+        },
+        {
+          "value": "after-collection-banner",
+          "label": "After collection banner"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment ",
+      "default": "center",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

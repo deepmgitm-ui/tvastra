@@ -1,0 +1,1232 @@
+{%- if template.suffix == "vertical_submenu" and template.name == 'search' and settings.enable_ajex_data == true -%}
+  {%- render 'vertical-submenu-import',section:section -%}  
+{%- endif -%}
+<span class="d-none">[devide]</span>
+  {%- if section.settings.heading != blank-%}
+    <a class="vertical-menu-dropdown d-flex align-items-center alt-font" href="#">
+      <span class="vertical-menu-icon">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+      <span>{{ section.settings.heading }}</span>
+      <i class="vertical-menu-arrow feather-chevron-down"></i>
+    </a>
+  {%- endif -%}
+  <div class="vertical-navbar-collappes" name="{{ template.name }}" suffiex="{{ template.suffix }}">
+    <ul class="vertical-navbar-list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign parants_label_count = block.settings.text | downcase | split: '[label' | last | split: ']' | first
+          assign parants_label = "text_lable" | append: parants_label_count
+          assign parants_bgColor = "bg_color_lable" | append: parants_label_count
+          assign parants_color = "color_lable" | append: parants_label_count
+        -%}
+        {%- case block.type -%}
+          {%- when 'link' -%}
+            <li class="vertical-nav-item nav-type-link">
+              <a class="nav-link d-flex align-items-center {% if block.settings.url == request.path %}active{% endif %} {{ settings.menu_text_case }}" href="{{ block.settings.url | default:'#' }}" aria-label="link">
+                {%- if block.settings.icon_option == 'icon' and block.settings.show_icon == true -%}
+                  {%- if block.settings.icon_name != blank -%}
+                    <i
+                      class="{{ block.settings.icon_name }} {% if block.settings.icon_with_text_styles == 'left-icon' %}align-self-center{% endif %}"
+                      style="font-size: {{ block.settings.icon_font_size }}px"
+                    ></i>
+                  {%- endif -%}
+                {%- elsif block.settings.icon_option == 'image' and block.settings.icon_option != 'icon' and block.settings.show_icon == true
+                 and block.settings.title_icon != blank
+                -%}
+                  <img src="{{ block.settings.title_icon | image_url }}"  alt="{{ block.settings.title_icon.alt | escape }}" style="width: {{ block.settings.image_size }}px;"/>
+                {%- endif -%}
+                <span>{{- block.settings.text | escape | split: '[' | first -}}
+                  {%- if block.settings.text contains '[' -%}
+                    <span class="menu-lable parent-lable" style=" background-color: {{ settings[parants_bgColor] }}; color: {{ settings[parants_color] }}; ">{{ settings[parants_label] }}</span> 
+                  {%- endif -%}
+                </span>
+              </a>              
+            </li>
+          {%- when 'megamenu' -%}
+            {%- capture megamenu-content -%}
+              {%- for i in (1..6) -%}
+                {%- liquid
+                  assign column_width_key = 'column_width' | append: i | strip 
+                  assign column_width_handle = block.settings[column_width_key]
+                -%}
+                  {%- liquid
+                    assign menu_key = 'menu' | append: i | strip
+                    assign menu_handle = block.settings[menu_key]
+                    assign menu = linklists[menu_handle]
+                  -%}
+                  {%- if menu != null and menu != blank -%}
+                    {%- liquid
+                      assign banner_image_key = 'banner_image' | append: i | strip
+                      assign banner_image = block.settings[banner_image_key]
+                      assign banner_url_key = 'banner_url' | append: i | strip
+                      assign banner_url = block.settings[banner_url_key]
+                    -%}
+                    <div class="col-{{ column_width_handle }} level1{% if banner_image != blank%} image-menu{% endif%}">
+                        {%- if banner_image != blank -%}
+                          <a class="d-none d-xl-block" href="{{ banner_url | default: '#' }}" title="" aria-label="link">
+                            <img src="{{ banner_image | image_url }}" alt="" width="{{ banner_image.width }}" height="{{ banner_image.height }}" loading="lazy" />
+                          </a>
+                        {%- endif -%}
+                      {%- for link in menu.links -%}
+                        {%- liquid
+                          assign childlinks = link.links
+                          assign child_label_count = link.title | downcase | split: '[label' | last | split: ']' | first
+                          assign child_label = "text_lable" | append: child_label_count
+                          assign child_bgColor = "bg_color_lable" | append: child_label_count
+                          assign child_color = "color_lable" | append: child_label_count 
+                        -%}
+                        <a href="{{ link.url | default: '#' }}" class="child-link-title{% if link.active == true or link.child_active == true %} active{% endif %} alt-font" aria-label="link">{{ link.title | escape | split: '[' | first }}{%- if link.title contains '[' -%}<span class="menu-lable" style=" background-color: {{ settings[child_bgColor] }}; color: {{ settings[child_color] }}; ">{{ settings[child_label] }}</span>{%- endif -%}{% if childlinks.size > 0 %}<span class="feather-chevron-right parent d-flex align-items-center d-xl-none"></span>{% endif %}</a>
+                        {%- if childlinks.size > 0 -%}
+                          <ul class="child-submenu">
+                            {%- comment -%} Menu Back {%- endcomment -%}
+                            <li class="back-wrapper d-xl-none d-block">{{ link.title | escape | split: '[' | first }}</li>
+                            {%- for childlink in childlinks -%}
+                              <li class="level2">
+                                {%- liquid
+                                  assign secondlevellinks = childlink.links
+                                  assign subchild_label_count = childlink.title | downcase | split: '[label' | last | split: ']' | first
+                                  assign subchild_label = "text_lable" | append: subchild_label_count
+                                  assign subchild_bgColor = "bg_color_lable" | append: subchild_label_count
+                                  assign subchild_color = "color_lable" | append: subchild_label_count
+                                -%}
+                                <a href="{{ childlink.url | default: '#' }}" {% if childlink.active == true or childlink.child_active == true %}class="active"{% endif %} aria-label="link">{{ childlink.title | escape | split: '[' | first }}
+                                {%- if childlink.title contains '[' -%}<span class="menu-lable" style=" background-color: {{ settings[subchild_bgColor] }}; color: {{ settings[subchild_color] }}; ">{{ settings[subchild_label] }}</span>{%- endif -%}</a>
+                                {%- if secondlevellinks.size > 0 -%}
+                                  <ul class="submenu">
+                                    {%- for secondlevellink in secondlevellinks -%}
+                                      <li class="level3">
+                                        <a href="{{ secondlevellink.url | default: '#' }}" {% if secondlevellink.active == true or secondlevellink.child_active == true %}class="active"{% endif %} aria-label="link">{{ secondlevellink.title | escape }}</a>
+                                      </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                {%- endif- %}
+                              </li>
+                            {%- endfor -%}
+                          </ul>   
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                  {%- endif -%}
+              {%- endfor -%}
+            {%- endcapture -%}
+            {%- comment -%} for mega menu right banner {%- endcomment -%}
+            {%- capture right-banner-content -%}
+              {%- if block.settings.banner_type == 'image' -%}
+                {%- if block.settings.banner_image_bm != blank -%}
+                  <div class="col">
+                    <a href="{{ block.settings.banner_bm_url | default: '#' }}" aria-label="banner">
+                      {{
+                        block.settings.banner_image_bm
+                        | image_url: width: 3840
+                        | image_tag:
+                          height: block.settings.banner_image_bm.height,
+                          width: block.settings.banner_image_bm.width,
+                          sizes: '100vw',
+                          widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840',
+                          loading: 'lazy'
+                      }}
+                    </a>
+                  </div> 
+                {%- endif -%}
+              {%- elsif block.settings.banner_type == 'collection_slider' -%}
+                <div class="product-slider-wrap position-relative">
+                  <div class="navigation-btn d-flex justify-content-end align-items-center">
+                    <span class="child-link-title d-block">{{ block.settings.slider_title }}</span>
+                    <div class="swiper-button-prev rounded-circle"><i class="bi bi-arrow-left"></i></div>
+                    <div class="swiper-button-next rounded-circle"><i class="bi bi-arrow-right"></i></div>
+                  </div>
+                  <div class="swiper" data-slider-options='{"loop":true,"autoplay":{"delay":2500,"disableOnInteraction":false},"direction":"horizontal","navigation":{"nextEl":".navigation-btn .swiper-button-next","prevEl":".navigation-btn .swiper-button-prev"},"keyboard":{"enabled":true,"onlyInViewport":true},"speed":500,"spaceBetween":15,"breakpoints":{"320":{"slidesPerView":{{ block.settings.slide_per_view_mobile }}},"768":{"slidesPerView":{{ block.settings.slide_per_view_ipad }}},"992":{"slidesPerView":{{ block.settings.slide_per_view_mini_desktop }}},"1200":{"slidesPerView":{{ block.settings.slide_per_view_desktop  }}}}}'>
+                    <div class="swiper-wrapper">
+                      {%- if block.settings.collection != blank -%}
+                        {%- for product in block.settings.collection.products -%}                                  
+                          <div class="swiper-slide text-center product-box">
+                             {%- render 'product-simple-card', product_card_product: product -%}
+                          </div>
+                        {%- endfor -%}
+                      {%- else -%}
+                        {%- for i in (1..5) -%}
+                          <div class="swiper-slide text-center product-box">
+                            {%- render 'placeholder-images', placeholder_type: 'product-image' -%}
+                            <div class="product-footer text-center placeholder-product">
+                              <span class="product-title alt-font">{{ 'onboarding.product_title' | t }}</span>
+                              <div class="price">{{ 5000 | money }}</div>
+                            </div>
+                          </div>
+                        {%- endfor -%}
+                      {%- endif -%}
+                    </div>                                
+                  </div>
+                </div>
+              {%- else -%}
+                {%- assign products = block.settings.banner_products -%}
+                {%- for product in products -%}
+                  {%- if product != blank -%}
+                    <div class="col product-box">
+                      {%- render 'product-card-list', product: product, menu_banner_product: true,  show_rating: section.settings.show_section_rating, use_section_rating: true -%}
+                    </div>
+                    {%- assign total_products = total_products | plus: 1 -%}
+                  {%- else -%}
+                    {% render 'product-card-placeholder' %} 
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endif -%}
+            {%- endcapture -%}
+            {%- assign megamenu-content = megamenu-content | strip -%}
+            {%- assign right-banner-content = right-banner-content | strip -%} 
+            <li class="vertical-nav-item" data-searchUrl="{{routes.search_url}}?q={{block.id}}&view=vertical_submenu">
+              <a class="nav-link alt-font d-flex align-items-center{% if block.settings.url == request.path %} active{% endif %}" href="{{ block.settings.url | default:'#' }}" aria-label="link">
+                {%- if block.settings.icon_option == 'icon' and block.settings.show_icon == true -%}
+                  {%- if block.settings.icon_name != blank -%}
+                    <i
+                      class="{{ block.settings.icon_name }} {% if block.settings.icon_with_text_styles == 'left-icon' %}align-self-center{% endif %}"
+                      style="font-size: {{ block.settings.icon_font_size }}px"
+                    ></i>
+                  {%- endif -%}
+                {%- elsif block.settings.icon_option == 'image' and block.settings.icon_option != 'icon' and block.settings.show_icon == true
+                 and block.settings.title_icon != blank
+                -%}
+                  <img src="{{ block.settings.title_icon | image_url }}"  alt="{{ block.settings.title_icon.alt | escape }}" style="width: {{ block.settings.image_size }}px;"/>
+                {%- endif -%}
+                <span>
+                  {{- block.settings.text | escape | split: '[' | first -}}
+                  {%- if block.settings.text contains '[' -%}
+                    <span class="menu-lable parent-lable" style=" background-color: {{ settings[parants_bgColor] }}; color: {{ settings[parants_color] }}; ">{{ settings[parants_label] }}</span>
+                  {%- endif -%}
+                </span> 
+                  {%- if megamenu-content != blank or right-banner-content != blank -%}
+                    <i class="feather-chevron-right parent d-flex align-items-center"></i>
+                  {%- endif -%}
+                </a>
+                {%- if megamenu-content != blank or right-banner-content != blank -%}             
+                  <div class="sub-menu{% if block.settings.megamenu_bg != blank %} cover-background{% endif%}" style="{% if block.settings.megamenu_bg != blank %}background-image: url({{ block.settings.megamenu_bg | image_url }}); {% unless block.settings.background_position == 'cover-background'%}background-position:{{ block.settings.background_position }};{% endunless %}{% else %}background-color: #fff; {% endif %}width: {{ block.settings.submenu_width }}px">
+                    {%- unless settings.enable_ajex_data == true -%}
+                      <div class="row g-0{% if block.settings.left_banner == true %} flex-row-reverse{% endif%} h-lg-auto h-100">
+                        <div class="{% if right-banner-content != blank %}col-xl-7{% else%}col{% endif %} block-menu-wrapper">
+                          {%- if megamenu-content != blank -%}
+                            {%- comment -%} Menu Back {%- endcomment -%}
+                            <div class="back-wrapper d-xl-none d-block">{{ block.settings.text | escape | split: '[' | first }}</div>
+                            <div class="row align-items-start">
+                              {{ megamenu-content }}
+                            </div>
+                          {%- endif -%}
+                        </div>
+                        {%- if right-banner-content != blank -%}
+                          <div class="col-xl-5 position-relative block-menu-right{% if block.settings.banner_type == 'product' %} products-list{% elsif block.settings.banner_type == 'collection_slider' %} block-menu-right-slider{% else %} block-menu-right-banner d-none d-xl-block{% endif %}">
+                              {%- if block.settings.banner_heading != blank -%}
+                                <span class="child-link-title d-block">{{ block.settings.banner_heading }}</span>
+                              {%- endif -%}
+                              <div class="row g-0 row-cols-1">
+                                {{ right-banner-content }}
+                              </div>
+                          </div>
+                        {%- endif -%}
+                      </div>
+                    {%- else -%}
+                      {%- render 'loader',verticalMenu: true -%}
+                      <div class="sub-menu-wrapper"></div>
+                    {%- endunless -%}
+                  </div>
+                {%- endif -%}
+     
+            </li>
+          {%- when 'simple-dropdown' -%}
+            <li class="vertical-nav-item nav-type-dropdown">
+              {%- assign sublinks = linklists[block.settings.simple_menu].links -%}
+              <a class="nav-link d-flex align-items-center{% if block.settings.url == request.path %} active{% endif %}" href="{{ block.settings.url | default:'#' }}" aria-label="link">
+                 {%- if block.settings.icon_option == 'icon' and block.settings.show_icon == true -%}
+                  {%- if block.settings.icon_name != blank -%}
+                    <i
+                      class="{{ block.settings.icon_name }} {% if block.settings.icon_with_text_styles == 'left-icon' %}align-self-center{% endif %}"
+                      style="font-size: {{ block.settings.icon_font_size }}px"
+                    ></i>
+                  {%- endif -%}
+                {%- elsif block.settings.icon_option == 'image' and block.settings.icon_option != 'icon' and block.settings.show_icon == true
+                 and block.settings.title_icon != blank
+                -%}
+                  <img src="{{ block.settings.title_icon | image_url }}"  alt="{{ block.settings.title_icon.alt | escape }}" style="width: {{ block.settings.image_size }}px;"/>
+                {%- endif -%}
+                <span>
+                  {{- block.settings.text | escape | split: '[' | first -}}
+                  {%- if block.settings.text contains '[' -%}
+                    <span class="menu-lable parent-lable" style=" background-color: {{ settings[parants_bgColor] }}; color: {{ settings[parants_color] }};">{{ settings[parants_label] }}</span>
+                  {%- endif -%}
+                </span> 
+                {%- if sublinks != blank -%}
+                  <i class="feather-chevron-right parent d-flex align-items-center"></i>
+                {%- endif -%}
+              </a>              
+              {%- if sublinks.size > 0 -%}
+                <ul class="sub-menu" style="width:{{ block.settings.submenu_width }}px">
+                {%- comment -%} Menu Back {%- endcomment -%}
+                <li class="back-wrapper d-xl-none d-block">{{ block.settings.text | escape | split: '[' | first }}</li>                  
+                {%- for link in sublinks -%}
+                  {%- assign sublinkschild = link.links -%}
+                  <li>
+                    {%- liquid
+                      assign child_label_count = link.title | downcase | split: '[label' | last | split: ']' | first
+                      assign child_label = "text_lable" | append: child_label_count
+                      assign child_bgColor = "bg_color_lable" | append: child_label_count
+                      assign child_color = "color_lable" | append: child_label_count
+                    -%}
+                    <a href="{{ link.url }}" class="{% if link.active == true or link.child_active == true %}active{% endif %}" aria-label="link">{{ link.title | escape | split: '[' | first }}{%- if link.title contains '[' -%}<span class="menu-lable" style=" background-color: {{ settings[child_bgColor] }}; color: {{ settings[child_color] }}; ">{{ settings[child_label] }}</span>{%- endif -%}{% if sublinkschild.size > 0 %}<span class="feather-chevron-right parent d-flex align-items-center d-xl-none"></span>{% endif %}</a>
+                    {%- if sublinkschild != blank -%}
+                      <ul class="simple-dropdown sub-menu">
+                        {%- comment -%} Menu Back {%- endcomment -%}
+                        <li class="back-wrapper d-xl-none d-block">
+                          {{ link.title | escape | split: '[' | first }}
+                        </li>                          
+                        {%- for childlink in link.links -%}
+                          {%- liquid
+                            assign subchild_label_count = childlink.title | downcase | split: '[label' | last | split: ']' | first
+                            assign subchild_label = "text_lable" | append: subchild_label_count
+                            assign subchild_bgColor = "bg_color_lable" | append: subchild_label_count
+                            assign subchild_color = "color_lable" | append: subchild_label_count
+                          -%} 
+                          <li>
+                            <a href="{{ childlink.url }}" class="{% if childlink.active == true or childlink.child_active == true %}active{% endif %}" aria-label="link">{{ childlink.title | escape | split: '[' | first }}{%- if childlink.title contains '[' -%}<span class="menu-lable" style=" background-color: {{ settings[subchild_bgColor] }}; color: {{ settings[subchild_color] }}; ">{{ settings[subchild_label] }}</span>{%- endif -%}</a>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    {%- endif -%}
+                  </li>
+                {%- endfor -%}
+              </ul>
+              {%- endif -%} 
+            </li>
+        {%- endcase -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+  <style type="text/css">
+    {%- if section.settings.color != blank or section.settings.bg_color != blank  -%}
+      .vertical-menu-dropdown {
+        {%- if section.settings.color != blank -%}color: {{ section.settings.color }};{%- endif -%}
+        {%- if section.settings.bg_color != blank -%}background-color: {{ section.settings.bg_color }}{%- endif -%}
+      }
+    {%- endif -%}
+    {%- if section.settings.color != blank -%}
+      .vertical-menu-dropdown .vertical-menu-icon span {
+        background-color: {{ section.settings.color }}
+      }
+    {%- endif -%}
+  </style>
+<span class="d-none">[devide]</span>  
+{% schema %}
+{
+  "name": "Vertical menu",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default":"Shop by category"
+    },
+    {
+      "type": "color",
+      "id": "color",
+      "label": "Heading color"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Heading backgrond color"
+    }
+
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Menu link text"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link url"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_icon",
+          "label": "Show icon/image",
+          "default": true
+        },
+        {
+          "type": "radio",
+          "id": "icon_option",
+          "label": "Icon type",
+          "options": [
+            {
+              "value": "icon",
+              "label": "Icon"
+            },
+            {
+              "value": "image",
+              "label": "Image"
+            }
+          ],
+          "default": "icon"
+        },
+        {
+          "type": "image_picker",
+          "id": "title_icon",
+          "label": "Title icon",
+          "info": "Recommended size 25x50"
+        },
+        {
+          "type": "text",
+          "id": "icon_name",
+          "label": "Enter icon class",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)",
+          "default": "bi bi-box-seam"
+        },
+        {
+          "type": "range",
+          "id": "image_size",
+          "min": 10,
+          "max": 150,
+          "step": 2,
+          "unit": "px",
+          "label": "Icon image maximum width",
+          "default": 22
+        },
+        {
+          "type": "range",
+          "id": "icon_font_size",
+          "min": 10,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Icon size",
+          "default": 22
+        }
+      ]
+    },
+    {
+      "type": "megamenu",
+      "name": "Vertical megamenu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Menu link text"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link url"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_icon",
+          "label": "Show icon/image",
+          "default": true
+        },
+        {
+          "type": "radio",
+          "id": "icon_option",
+          "label": "Icon type",
+          "options": [
+            {
+              "value": "icon",
+              "label": "Icon"
+            },
+            {
+              "value": "image",
+              "label": "Image"
+            }
+          ],
+          "default": "icon"
+        },
+        {
+          "type": "image_picker",
+          "id": "title_icon",
+          "label": "Title icon",
+          "info": "Recommended size 25x30"
+        },
+        {
+          "type": "text",
+          "id": "icon_name",
+          "label": "Enter icon class",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)",
+          "default": "bi bi-box-seam"
+        },
+        {
+          "type": "range",
+          "id": "image_size",
+          "min": 10,
+          "max": 150,
+          "step": 2,
+          "unit": "px",
+          "label": "Icon image maximum width",
+          "default": 22
+        },
+        {
+          "type": "range",
+          "id": "icon_font_size",
+          "min": 10,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Icon size",
+          "default": 22
+        },
+        {
+          "type": "header",
+          "content": "Sub menu"
+        },
+        {
+          "type": "image_picker",
+          "id": "megamenu_bg",
+          "label": "Background image",
+          "info": "Recommended size 800x500"
+        },
+        {
+          "type": "select",
+          "id": "background_position",
+          "label": "Background position",
+          "default": "cover-background",
+          "options": [
+            {
+              "value": "cover-background",
+              "label": "Cover"
+            },
+            {
+              "value": "center center",
+              "label": "Center Center"
+            },
+            {
+              "value": "center top",
+              "label": "Center Top"
+            },
+            {
+              "value": "center bottom",
+              "label": "Center Bottom"
+            },
+            {
+              "value": "center left",
+              "label": "Center Left"
+            },
+            {
+              "value": "center right",
+              "label": "Center Right"
+            },
+            {
+              "value": "top center",
+              "label": "Top Center"
+            },
+            {
+              "value": "top right",
+              "label": "Top Right"
+            },
+            {
+              "value": "top left",
+              "label": "Top Left"
+            },
+            {
+              "value": "bottom center",
+              "label": "Bottom Center"
+            },
+            {
+              "value": "bottom left",
+              "label": "Bottom Left"
+            },
+            {
+              "value": "bottom right",
+              "label": "Bottom Right"
+            },
+            {
+              "value": "right center",
+              "label": "Right Center"
+            },
+            {
+              "value": "right bottom",
+              "label": "Right Bottom"
+            },
+            {
+              "value": "right top",
+              "label": "Right Top"
+            },
+
+            {
+              "value": "left center",
+              "label": "Left Center"
+            },
+            {
+              "value": "left bottom",
+              "label": "Left Bottom"
+            },
+            {
+              "value": "left top",
+              "label": "Left top"
+            }
+          ]
+        },
+        {
+          "type": "range", 
+          "id": "submenu_width",
+          "label": "Submenu width",
+          "unit": "px",
+          "min": 450,
+          "max": 900,
+          "step": 5,
+          "default": 785
+        },
+        {
+          "type": "checkbox",
+          "id": "left_banner",
+          "label": "Show left side banner",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Megamenu column 1"
+        },
+        {
+          "type": "select",
+          "id": "column_width1",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column - 1/12"
+            },
+            {
+              "value": "2",
+              "label": "2 columns - 1/6"
+            },
+            {
+              "value": "3",
+              "label": "3 columns - 1/4"
+            },
+            {
+              "value": "4",
+              "label": "4 columns - 1/3"
+            },
+            {
+              "value": "5",
+              "label": "5 columns - 5/12"
+            },
+            {
+              "value": "6",
+              "label": "6 columns - 1/2"
+            },
+            {
+              "value": "7",
+              "label": "7 columns - 7/12"
+            },
+            {
+              "value": "8",
+              "label": "8 columns - 2/3"
+            },
+            {
+              "value": "9",
+              "label": "9 columns - 3/4"
+            },
+            {
+              "value": "10",
+              "label": "10 columns - 5/6"
+            },
+            {
+              "value": "11",
+              "label": "11 columns - 11/12"
+            },
+            {
+              "value": "12",
+              "label": "12 columns - 1/1"
+            }
+          ]
+        },
+        {
+          "type": "link_list",
+          "id": "menu1",
+          "label": "Select menu"
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image1",
+          "label": "Banner image",
+          "info": "Recommended size 210x165"
+        },
+        {
+          "type": "url",
+          "id": "banner_url1",
+          "label": "Banner url"
+        },
+        {
+          "type": "header",
+          "content": "Megamenu column 2"
+        },
+        {
+          "type": "select",
+          "id": "column_width2",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column - 1/12"
+            },
+            {
+              "value": "2",
+              "label": "2 columns - 1/6"
+            },
+            {
+              "value": "3",
+              "label": "3 columns - 1/4"
+            },
+            {
+              "value": "4",
+              "label": "4 columns - 1/3"
+            },
+            {
+              "value": "5",
+              "label": "5 columns - 5/12"
+            },
+            {
+              "value": "6",
+              "label": "6 columns - 1/2"
+            },
+            {
+              "value": "7",
+              "label": "7 columns - 7/12"
+            },
+            {
+              "value": "8",
+              "label": "8 columns - 2/3"
+            },
+            {
+              "value": "9",
+              "label": "9 columns - 3/4"
+            },
+            {
+              "value": "10",
+              "label": "10 columns - 5/6"
+            },
+            {
+              "value": "11",
+              "label": "11 columns - 11/12"
+            },
+            {
+              "value": "12",
+              "label": "12 columns - 1/1"
+            }
+          ]
+        },
+        {
+          "type": "link_list",
+          "id": "menu2",
+          "label": "Select menu"
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image2",
+          "label": "Banner image",
+          "info": "Recommended size 210x165"
+        },
+        {
+          "type": "url",
+          "id": "banner_url2",
+          "label": "Banner url"
+        },
+        {
+          "type": "header",
+          "content": "Megamenu column 3"
+        },
+        {
+          "type": "select",
+          "id": "column_width3",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column - 1/12"
+            },
+            {
+              "value": "2",
+              "label": "2 columns - 1/6"
+            },
+            {
+              "value": "3",
+              "label": "3 columns - 1/4"
+            },
+            {
+              "value": "4",
+              "label": "4 columns - 1/3"
+            },
+            {
+              "value": "5",
+              "label": "5 columns - 5/12"
+            },
+            {
+              "value": "6",
+              "label": "6 columns - 1/2"
+            },
+            {
+              "value": "7",
+              "label": "7 columns - 7/12"
+            },
+            {
+              "value": "8",
+              "label": "8 columns - 2/3"
+            },
+            {
+              "value": "9",
+              "label": "9 columns - 3/4"
+            },
+            {
+              "value": "10",
+              "label": "10 columns - 5/6"
+            },
+            {
+              "value": "11",
+              "label": "11 columns - 11/12"
+            },
+            {
+              "value": "12",
+              "label": "12 columns - 1/1"
+            }
+          ]
+        },
+        {
+          "type": "link_list",
+          "id": "menu3",
+          "label": "Select menu"
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image3",
+          "label": "Banner image",
+          "info": "Recommended size 210x165"
+        },
+        {
+          "type": "url",
+          "id": "banner_url3",
+          "label": "Banner url"
+        },
+        {
+          "type": "header",
+          "content": "Megamenu column 4"
+        },
+        {
+          "type": "select",
+          "id": "column_width4",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column - 1/12"
+            },
+            {
+              "value": "2",
+              "label": "2 columns - 1/6"
+            },
+            {
+              "value": "3",
+              "label": "3 columns - 1/4"
+            },
+            {
+              "value": "4",
+              "label": "4 columns - 1/3"
+            },
+            {
+              "value": "5",
+              "label": "5 columns - 5/12"
+            },
+            {
+              "value": "6",
+              "label": "6 columns - 1/2"
+            },
+            {
+              "value": "7",
+              "label": "7 columns - 7/12"
+            },
+            {
+              "value": "8",
+              "label": "8 columns - 2/3"
+            },
+            {
+              "value": "9",
+              "label": "9 columns - 3/4"
+            },
+            {
+              "value": "10",
+              "label": "10 columns - 5/6"
+            },
+            {
+              "value": "11",
+              "label": "11 columns - 11/12"
+            },
+            {
+              "value": "12",
+              "label": "12 columns - 1/1"
+            }
+          ]
+        },
+        {
+          "type": "link_list",
+          "id": "menu4",
+          "label": "Select menu"
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image4",
+          "label": "Banner image",
+          "info": "Recommended size 210x165"
+        },
+        {
+          "type": "url",
+          "id": "banner_url4",
+          "label": "Banner url"
+        },
+        {
+          "type": "header",
+          "content": "Megamenu column 5"
+        },
+        {
+          "type": "select",
+          "id": "column_width5",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column - 1/12"
+            },
+            {
+              "value": "2",
+              "label": "2 columns - 1/6"
+            },
+            {
+              "value": "3",
+              "label": "3 columns - 1/4"
+            },
+            {
+              "value": "4",
+              "label": "4 columns - 1/3"
+            },
+            {
+              "value": "5",
+              "label": "5 columns - 5/12"
+            },
+            {
+              "value": "6",
+              "label": "6 columns - 1/2"
+            },
+            {
+              "value": "7",
+              "label": "7 columns - 7/12"
+            },
+            {
+              "value": "8",
+              "label": "8 columns - 2/3"
+            },
+            {
+              "value": "9",
+              "label": "9 columns - 3/4"
+            },
+            {
+              "value": "10",
+              "label": "10 columns - 5/6"
+            },
+            {
+              "value": "11",
+              "label": "11 columns - 11/12"
+            },
+            {
+              "value": "12",
+              "label": "12 columns - 1/1"
+            }
+          ]
+        },
+        {
+          "type": "link_list",
+          "id": "menu5",
+          "label": "Select menu"
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image5",
+          "label": "Banner image",
+          "info": "Recommended size 210x165"
+        },
+        {
+          "type": "url",
+          "id": "banner_url5",
+          "label": "Banner url"
+        },
+        {
+          "type": "header",
+          "content": "Megamenu column 6"
+        },
+        {
+          "type": "select",
+          "id": "column_width6",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column - 1/12"
+            },
+            {
+              "value": "2",
+              "label": "2 columns - 1/6"
+            },
+            {
+              "value": "3",
+              "label": "3 columns - 1/4"
+            },
+            {
+              "value": "4",
+              "label": "4 columns - 1/3"
+            },
+            {
+              "value": "5",
+              "label": "5 columns - 5/12"
+            },
+            {
+              "value": "6",
+              "label": "6 columns - 1/2"
+            },
+            {
+              "value": "7",
+              "label": "7 columns - 7/12"
+            },
+            {
+              "value": "8",
+              "label": "8 columns - 2/3"
+            },
+            {
+              "value": "9",
+              "label": "9 columns - 3/4"
+            },
+            {
+              "value": "10",
+              "label": "10 columns - 5/6"
+            },
+            {
+              "value": "11",
+              "label": "11 columns - 11/12"
+            },
+            {
+              "value": "12",
+              "label": "12 columns - 1/1"
+            }
+          ]
+        },
+        {
+          "type": "link_list",
+          "id": "menu6",
+          "label": "Select menu"
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image6",
+          "label": "Banner image",
+          "info": "Recommended size 210x165"
+        },
+        {
+          "type": "url",
+          "id": "banner_url6",
+          "label": "Banner url"
+        },
+        {
+          "type": "header",
+          "content": "Megamenu right side"
+        },
+        {
+          "type": "text",
+          "id": "banner_heading",
+          "label": "Heading"
+        },
+        {
+          "type": "select",
+          "id": "banner_type",
+          "label": "Banner type",
+          "default": "image",
+          "options": [
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "product",
+              "label": "Product list"
+            },
+            {
+              "value": "collection_slider",
+              "label": "Product slider"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image_bm",
+          "label": "Banner image",
+          "info": "Recommended size 250x350"
+        },
+        {
+          "type": "url",
+          "id": "banner_bm_url",
+          "label": "Banner url"
+        },
+        {
+          "type": "product_list",
+          "id": "banner_products",
+          "label": "Select products"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Select collection for product slider"
+        },
+        {
+          "type": "text",
+          "id": "slider_title",
+          "label": "Slider top text",
+          "default": "lorem ipsum dummy text"
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_desktop",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view desktop",
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_mini_desktop",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view mini desktop",
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_ipad",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view tablet",
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "slide_per_view_mobile",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Slide per view mobile",
+          "default": 1
+        }
+        
+      ]
+    },
+    {
+      "type": "simple-dropdown",
+      "name": "Simple dropdown",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Menu link text"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_icon",
+          "label": "Show icon/image",
+          "default": true
+        },
+        {
+          "type": "radio",
+          "id": "icon_option",
+          "label": "Icon type",
+          "options": [
+            {
+              "value": "icon",
+              "label": "Icon"
+            },
+            {
+              "value": "image",
+              "label": "Image"
+            }
+          ],
+          "default": "icon"
+        },
+        {
+          "type": "image_picker",
+          "id": "title_icon",
+          "label": "Title icon",
+          "info": "Recommended size 25x30"
+        },
+        {
+          "type": "text",
+          "id": "icon_name",
+          "label": "Enter icon class",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)",
+          "default": "bi bi-box-seam"
+        },
+        {
+          "type": "range",
+          "id": "image_size",
+          "min": 10,
+          "max": 150,
+          "step": 2,
+          "unit": "px",
+          "label": "Icon image maximum width",
+          "default": 22
+        },
+        {
+          "type": "range",
+          "id": "icon_font_size",
+          "min": 10,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Icon size",
+          "default": 22
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link url"
+        },
+        {
+          "type": "link_list",
+          "id": "simple_menu",
+          "label": "Select simple menu"
+        },
+        {
+          "type": "range", 
+          "id": "submenu_width",
+          "label": "Submenu width",
+          "unit": "px",
+          "min": 150,
+          "max": 500,
+          "step": 5,
+          "default": 200
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

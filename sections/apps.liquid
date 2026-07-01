@@ -1,0 +1,113 @@
+<style>
+  /* --- CUSTOM FONT LOADING --- */
+  {%- if section.settings.app_custom_font != blank -%}
+    {{ section.settings.app_custom_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+
+  /* --- APP CONTAINER STYLING --- */
+  .custom-app-wrapper-{{ section.id }} {
+    {% if section.settings.app_bg_color != blank %}background-color: {{ section.settings.app_bg_color }} !important;{% endif %}
+    {% if section.settings.app_border_color != blank %}border: {{ section.settings.app_border_width }}px solid {{ section.settings.app_border_color }} !important;{% endif %}
+    border-radius: {{ section.settings.app_border_radius }}px !important;
+    padding: {{ section.settings.app_padding }}px !important;
+    overflow: hidden; /* Ye border-radius ko bahar nikalne nahi dega */
+  }
+
+  /* --- FORCE FONT AND TEXT COLOR ON APP ELEMENTS --- */
+  .custom-app-wrapper-{{ section.id }},
+  .custom-app-wrapper-{{ section.id }} p,
+  .custom-app-wrapper-{{ section.id }} h1,
+  .custom-app-wrapper-{{ section.id }} h2,
+  .custom-app-wrapper-{{ section.id }} h3,
+  .custom-app-wrapper-{{ section.id }} h4,
+  .custom-app-wrapper-{{ section.id }} h5,
+  .custom-app-wrapper-{{ section.id }} h6,
+  .custom-app-wrapper-{{ section.id }} span,
+  .custom-app-wrapper-{{ section.id }} a {
+    {%- if section.settings.app_custom_font != blank -%}
+      font-family: {{ section.settings.app_custom_font.family }}, {{ section.settings.app_custom_font.fallback_families }} !important;
+      font-weight: {{ section.settings.app_custom_font.weight }} !important;
+      font-style: {{ section.settings.app_custom_font.style }} !important;
+    {%- endif -%}
+    {% if section.settings.app_text_color != blank %}color: {{ section.settings.app_text_color }} !important;{% endif %}
+  }
+</style>
+
+<div class="custom-app-wrapper-{{ section.id }} {% if section.settings.include_margins %}page-width{% endif %}">
+  {%- for block in section.blocks -%}
+    {%- render block -%}
+  {%- endfor -%}
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.apps.name",
+  "tag": "section",
+  "class": "spaced-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "include_margins",
+      "default": false,
+      "label": "t:sections.apps.settings.include_margins.label"
+    },
+    {
+      "type": "header",
+      "content": "✨ Master Typography & Colors"
+    },
+    {
+      "type": "font_picker",
+      "id": "app_custom_font",
+      "label": "App Font (Forces font on apps)",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "color",
+      "id": "app_text_color",
+      "label": "Text Color"
+    },
+    {
+      "type": "header",
+      "content": "✨ Box Shape & Styling"
+    },
+    {
+      "type": "color",
+      "id": "app_bg_color",
+      "label": "Background Color"
+    },
+    {
+      "type": "color",
+      "id": "app_border_color",
+      "label": "Border Color"
+    },
+    {
+      "type": "range",
+      "id": "app_border_width",
+      "min": 0, "max": 10, "step": 1, "unit": "px",
+      "label": "Border Width", "default": 0
+    },
+    {
+      "type": "range",
+      "id": "app_border_radius",
+      "min": 0, "max": 50, "step": 1, "unit": "px",
+      "label": "Shape (Border Radius)", "default": 0
+    },
+    {
+      "type": "range",
+      "id": "app_padding",
+      "min": 0, "max": 100, "step": 2, "unit": "px",
+      "label": "Inner Padding", "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.apps.presets.name"
+    }
+  ]
+}
+{% endschema %}

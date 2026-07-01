@@ -1,0 +1,617 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "page-title": {
+      "type": "page-title",
+      "settings": {
+        "page_title_style": "style-2",
+        "show_full_width": false,
+        "show_banner_image": true,
+        "hide_breadcrumb": true,
+        "enable_parallax": false,
+        "title_uppercase": false,
+        "show_description": false,
+        "border_top": false,
+        "border_bottom": false,
+        "banner_title_size": "h-2",
+        "breadcrumb_position": "on-collection-banner",
+        "banner_height": "medium-screen",
+        "content_alignment": "center",
+        "content_color_style": "dark-style",
+        "banner_bg_color": "#f7f7f7"
+      }
+    },
+    "1633946636ff228416": {
+      "type": "image-with-text",
+      "settings": {
+        "container_type": "container",
+        "show_content_container": true,
+        "image": "shopify://shop_images/CONTACT_US.png",
+        "column_width": "6",
+        "hide_image": true,
+        "block_heading": "The Hardest Part Is Often Starting.",
+        "block_sub_heading": "",
+        "block_description": "<p>Not the workout. Not the match. Just the decision to move.</p><p>We built this brand around that moment, the in-between. The space between intention and action.</p><p>A morning gym session. An evening paddle game. A stretch between long hours. A reset walk before the day begins again.</p><p>Because movement isn't always dramatic.</p><p>But it's always personal.</p>",
+        "column_width1": "5",
+        "hide_content": true,
+        "button_style": "btn-black",
+        "button_size": "btn-very-small",
+        "btn_radius": 0,
+        "btn_border_width": 1,
+        "btn_icon_class": "",
+        "icon_position": "right-icon",
+        "btn_text": "",
+        "btn_link": "",
+        "counter_title1": "",
+        "counter_sub_title1": "",
+        "counter_title2": "",
+        "counter_sub_title2": "",
+        "counter_title3": "",
+        "counter_sub_title3": "",
+        "use_default_section_typography": false,
+        "section_heading_size": 45,
+        "heading_line_height": 45,
+        "sub_heading_size": 20,
+        "sub_heading_line_height": 34,
+        "subheading_letter_spacing": 0,
+        "padding_top": "medium-section-top",
+        "padding_bottom": "small-section-bottom",
+        "section_show": true,
+        "background_position": "cover-background",
+        "section_bg_color": "rgba(0,0,0,0)",
+        "section_heading_color": "",
+        "section_sub_heading_color": "#d1ab13",
+        "section_description_color": "",
+        "section_id": "",
+        "section_class_name": ""
+      }
+    },
+    "icon_with_text_r8HeYb": {
+      "type": "icon-with-text",
+      "blocks": {
+        "item_hRenTq": {
+          "type": "item",
+          "settings": {
+            "icon_name": "bi bi-box-seam",
+            "box_heading": "Free shipping",
+            "box_sub_heading": "<p>Standard shipping</p>",
+            "heading_link": ""
+          }
+        },
+        "item_ELf3zT": {
+          "type": "item",
+          "settings": {
+            "icon_name": "bi bi-patch-check",
+            "box_heading": "Special discounts",
+            "box_sub_heading": "<p>Guaranteed saving</p>",
+            "heading_link": ""
+          }
+        },
+        "item_izHFD6": {
+          "type": "item",
+          "settings": {
+            "icon_name": "bi bi-wallet",
+            "box_heading": "Buyers protection",
+            "box_sub_heading": "<p>Secure payment</p>",
+            "heading_link": ""
+          }
+        },
+        "item_UjMJKf": {
+          "type": "item",
+          "settings": {
+            "icon_name": "bi bi-chat-left-text",
+            "box_heading": "Customer service",
+            "box_sub_heading": "<p>Give us feedback</p>",
+            "heading_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "item_hRenTq",
+        "item_ELf3zT",
+        "item_izHFD6",
+        "item_UjMJKf"
+      ],
+      "settings": {
+        "container_type": "container",
+        "heading": "",
+        "sub_heading": "",
+        "description": "",
+        "title_style": "style-1",
+        "icon_with_text_styles": "left-icon",
+        "content_alignment": "start",
+        "title_font_size": 19,
+        "title_line_height": 22,
+        "title_gap": 0,
+        "sub_title_width": 100,
+        "show_icon": true,
+        "icon_option": "icon",
+        "image_size": 42,
+        "icon_font_size": 40,
+        "icon_limit_desktop": 4,
+        "icon_limit_mini_desktop": 4,
+        "icon_limit_tablet": 2,
+        "icon_limit_mobile": 2,
+        "icon_color": "",
+        "text_color": "",
+        "small_text_color": "",
+        "use_default_section_typography": true,
+        "section_heading_size": 45,
+        "heading_line_height": 55,
+        "sub_heading_size": 18,
+        "sub_heading_line_height": 30,
+        "subheading_letter_spacing": 0,
+        "padding_top": "very-small-section-top",
+        "padding_bottom": "very-small-section-bottom",
+        "heading_alignment": "center",
+        "section_show": true,
+        "section_bg_color": "",
+        "section_heading_color": "",
+        "section_sub_heading_color": "",
+        "section_description_color": "",
+        "section_id": "",
+        "section_class_name": ""
+      }
+    },
+    "163394727558bbdcc5": {
+      "type": "video-with-text",
+      "blocks": {
+        "5cb71f43-7775-4449-9479-53a323c45e04": {
+          "type": "list-item",
+          "settings": {
+            "title": "Soft fabric",
+            "description": "<p>Lorem ipsum is simply dolor amet consectetur adipiscing eiusmod tempor incididunt.</p>"
+          }
+        },
+        "c1064217-f630-4b3a-865d-820d1201bf46": {
+          "type": "list-item",
+          "settings": {
+            "title": "Lightweight",
+            "description": "<p>Lorem ipsum is simply dolor amet consectetur adipiscing eiusmod tempor incididunt.</p>"
+          }
+        },
+        "1ec74e13-033b-4662-b7da-f9e7e16fcbeb": {
+          "type": "list-item",
+          "settings": {
+            "title": "All day comfort",
+            "description": "<p>Lorem ipsum is simply dolor amet consectetur adipiscing eiusmod tempor incididunt.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "5cb71f43-7775-4449-9479-53a323c45e04",
+        "c1064217-f630-4b3a-865d-820d1201bf46",
+        "1ec74e13-033b-4662-b7da-f9e7e16fcbeb"
+      ],
+      "disabled": true,
+      "settings": {
+        "container_type": "container",
+        "video_column_width": "6",
+        "video_url": "https://www.youtube.com/watch?v=CiQovCRvvm0",
+        "hide_video": true,
+        "hide_video_icon": true,
+        "content_column_width": "6",
+        "block_heading": "We believe in quality products.",
+        "block_sub_heading": "",
+        "hide_rotation": true,
+        "use_default_section_typography": false,
+        "section_heading_size": 45,
+        "heading_line_height": 45,
+        "sub_heading_size": 24,
+        "sub_heading_line_height": 30,
+        "padding_top": "small-section-top",
+        "padding_bottom": "pb-0",
+        "section_show": true,
+        "section_bg_color": "",
+        "section_heading_color": "#ffffff",
+        "section_sub_heading_color": "",
+        "section_id": "",
+        "section_class_name": ""
+      }
+    },
+    "image_with_text_686Jf8": {
+      "type": "image-with-text",
+      "settings": {
+        "container_type": "container",
+        "show_content_container": true,
+        "image": "shopify://shop_images/ABOUT_US_1.png",
+        "column_width": "6",
+        "hide_image": true,
+        "block_heading": "Our Pieces Are Designed To Support That Rhythm",
+        "block_sub_heading": "",
+        "block_description": "<p>Lightweight fabrics that breathe in heat. Stretch that moves naturally with your body. Clean, modern silhouettes that feel sharp and effortless. Structured enough for performance. Fluid enough for everyday wear.</p>",
+        "column_width1": "5",
+        "hide_content": true,
+        "button_style": "btn-black",
+        "button_size": "btn-very-small",
+        "btn_radius": 0,
+        "btn_border_width": 1,
+        "btn_icon_class": "",
+        "icon_position": "right-icon",
+        "btn_text": "",
+        "btn_link": "",
+        "counter_title1": "",
+        "counter_sub_title1": "",
+        "counter_title2": "",
+        "counter_sub_title2": "",
+        "counter_title3": "",
+        "counter_sub_title3": "",
+        "use_default_section_typography": false,
+        "section_heading_size": 45,
+        "heading_line_height": 45,
+        "sub_heading_size": 20,
+        "sub_heading_line_height": 34,
+        "subheading_letter_spacing": 0,
+        "padding_top": "medium-section-top",
+        "padding_bottom": "small-section-bottom",
+        "section_show": true,
+        "background_position": "cover-background",
+        "section_bg_color": "rgba(0,0,0,0)",
+        "section_heading_color": "",
+        "section_sub_heading_color": "#d1ab13",
+        "section_description_color": "",
+        "section_id": "",
+        "section_class_name": ""
+      }
+    },
+    "1633694919b8dc6f07": {
+      "type": "icon-with-text",
+      "blocks": {
+        "1633694919b8dc6f07-0": {
+          "type": "item",
+          "settings": {
+            "image_icon": "shopify://shop_images/Untitled_design_-_2026-02-14T174405.192.png",
+            "icon_name": "bi bi-box-seam",
+            "box_heading": "Our Mission",
+            "box_sub_heading": "<p>To create comfortable, stylish, and high-performance sportswear that empowers people to move confidently and live actively every day.</p>",
+            "heading_link": ""
+          }
+        },
+        "1633694919b8dc6f07-1": {
+          "type": "item",
+          "settings": {
+            "image_icon": "shopify://shop_images/Untitled_design_-_2026-02-14T174341.944.png",
+            "icon_name": "bi bi-box-seam",
+            "box_heading": "Our Vision",
+            "box_sub_heading": "<p>To become a trusted sportswear brand that inspires confidence, promotes an active lifestyle, and performance with modern style.</p>",
+            "heading_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "1633694919b8dc6f07-0",
+        "1633694919b8dc6f07-1"
+      ],
+      "settings": {
+        "container_type": "container",
+        "heading": "",
+        "sub_heading": "",
+        "description": "",
+        "title_style": "style-1",
+        "icon_with_text_styles": "center-icon",
+        "content_alignment": "center",
+        "title_font_size": 19,
+        "title_line_height": 26,
+        "title_gap": 5,
+        "sub_title_width": 100,
+        "show_icon": true,
+        "icon_option": "image",
+        "image_size": 54,
+        "icon_font_size": 36,
+        "icon_limit_desktop": 2,
+        "icon_limit_mini_desktop": 2,
+        "icon_limit_tablet": 2,
+        "icon_limit_mobile": 2,
+        "icon_color": "",
+        "text_color": "",
+        "small_text_color": "",
+        "use_default_section_typography": true,
+        "section_heading_size": 45,
+        "heading_line_height": 55,
+        "sub_heading_size": 24,
+        "sub_heading_line_height": 30,
+        "subheading_letter_spacing": 0,
+        "padding_top": "very-small-section-top",
+        "padding_bottom": "very-small-section-bottom",
+        "heading_alignment": "center",
+        "section_show": false,
+        "section_bg_color": "#ffffff",
+        "section_heading_color": "#232323",
+        "section_sub_heading_color": "#232323",
+        "section_description_color": "",
+        "section_id": "",
+        "section_class_name": ""
+      }
+    },
+    "lookbook_with_video_FzrePq": {
+      "type": "lookbook-with-video",
+      "blocks": {
+        "pin_ghCEfj": {
+          "type": "pin",
+          "settings": {
+            "x_pos": 50,
+            "y_pos": 35,
+            "pin_product": "pale-lavender-tank-top"
+          }
+        }
+      },
+      "block_order": [
+        "pin_ghCEfj"
+      ],
+      "name": "lookbook with video",
+      "settings": {
+        "container_type": "container",
+        "heading": "But performance without style? That was never the plan.",
+        "sub_heading": "",
+        "description": "<p>Tvastra combines modern design with real functionality, so whether you’re at the gym, on the track, or living your everyday active life, you look as good as you feel.</p><p>This is activewear made for real life movement.</p><p>Welcome to Tvastra.</p>",
+        "image": "shopify://shop_images/Slevless_17.png",
+        "poster_image": "shopify://shop_images/Untitleddesign-2026-02-28T055443.647.png",
+        "video_url": "",
+        "title": "",
+        "button_style": "btn-black",
+        "button_size": "btn-medium",
+        "btn_radius": 5,
+        "btn_border_width": 2,
+        "btn_icon_class": "",
+        "icon_position": "right-icon",
+        "btn_text": "",
+        "btn_link": "",
+        "use_default_section_typography": false,
+        "section_heading_size": 32,
+        "heading_line_height": 50,
+        "sub_heading_size": 15,
+        "sub_heading_line_height": 24,
+        "subheading_letter_spacing": 0,
+        "padding_top": "small-section-top",
+        "padding_bottom": "small-section-bottom",
+        "heading_alignment": "center",
+        "section_show": true,
+        "section_bg_color": "",
+        "section_heading_color": "",
+        "section_sub_heading_color": "",
+        "section_description_color": "",
+        "section_id": "",
+        "section_class_name": "lookbook"
+      }
+    },
+    "image_with_text_2_BGmDQY": {
+      "type": "image-with-text-2",
+      "disabled": true,
+      "name": "Image with text 2",
+      "settings": {
+        "container_type": "container",
+        "image": "shopify://shop_images/Untitled_design_-_2026-02-14T170031.567.png",
+        "support_days": "24/7",
+        "support_title": "Customer support",
+        "support_phone": "0222 8899900",
+        "column_width": "6",
+        "hide_image_block": true,
+        "block_heading": "Built for Motion, Designed for Confidence.",
+        "block_sub_heading": "At Tvastra Fit",
+        "block_description": "<p>We focus on breathable fabrics, smart fits, and clean designs that balance performance with everyday fashion. Every piece is created to deliver durability, comfort, and effortless style, making Tvastra Sports Wear the perfect choice for those who value both function and aesthetics.</p>",
+        "column_width1": "5",
+        "hide_content_block": true,
+        "use_default_section_typography": false,
+        "section_heading_size": 45,
+        "heading_line_height": 45,
+        "sub_heading_size": 20,
+        "sub_heading_line_height": 35,
+        "subheading_letter_spacing": 0,
+        "padding_top": "small-section-top",
+        "padding_bottom": "small-section-bottom",
+        "section_show": true,
+        "section_bg_color": "",
+        "section_heading_color": "",
+        "section_sub_heading_color": "",
+        "section_description_color": "",
+        "section_id": "",
+        "section_class_name": ""
+      }
+    },
+    "1633958485f0f6c220": {
+      "type": "instagram-feed",
+      "disabled": true,
+      "settings": {
+        "full_width_nogap": true,
+        "container_type": "w-100 overflow-hidden",
+        "show_content_container": false,
+        "heading": "",
+        "sub_heading": "",
+        "description": "",
+        "title_style": "style-1",
+        "instagram_style": "style-1",
+        "label_text": "Hongo fashion",
+        "insta_btn_link": "https://www.instagram.com/hongo_shopify/",
+        "instaType": "slider",
+        "footer_subheading": "<p>instagram</p>",
+        "count": 8,
+        "grid_limit_desktop": 6,
+        "grid_limit_mini_desktop": 6,
+        "grid_limit_tablet": 3,
+        "grid_limit_mobile": 2,
+        "grid_space": true,
+        "slide_per_view_desktop": 8,
+        "slide_per_view_mini_desktop": 6,
+        "slide_per_view_tablet": 4,
+        "slide_per_view_mobile": 2,
+        "space_slide": 0,
+        "navigation": false,
+        "autoplay": false,
+        "loop": true,
+        "button_style": "btn-black",
+        "button_size": "btn-medium",
+        "btn_radius": 0,
+        "btn_border_width": 2,
+        "btn_icon_class": "",
+        "icon_position": "right-icon",
+        "btn_text": "",
+        "btn_link": "",
+        "use_default_section_typography": true,
+        "section_heading_size": 45,
+        "heading_line_height": 55,
+        "sub_heading_size": 24,
+        "sub_heading_line_height": 30,
+        "subheading_letter_spacing": 0,
+        "padding_top": "small-section-top",
+        "padding_bottom": "pb-0",
+        "heading_alignment": "center",
+        "section_show": true,
+        "background_position": "cover-background",
+        "section_bg_color": "",
+        "section_heading_color": "#232323",
+        "section_sub_heading_color": "#232323",
+        "section_description_color": "",
+        "element_id": "",
+        "section_class_name": ""
+      }
+    },
+    "instagram_feed_kEU6RJ": {
+      "type": "instagram-feed",
+      "disabled": true,
+      "name": "Instagram feed",
+      "settings": {
+        "full_width_nogap": false,
+        "container_type": "container",
+        "show_content_container": true,
+        "heading": "",
+        "sub_heading": "",
+        "description": "",
+        "title_style": "style-1",
+        "instagram_style": "style-1",
+        "label_text": "#Fashionstyle",
+        "insta_btn_link": "",
+        "instaType": "grid",
+        "footer_subheading": "<p>instagram</p>",
+        "count": 4,
+        "grid_limit_desktop": 4,
+        "grid_limit_mini_desktop": 4,
+        "grid_limit_tablet": 3,
+        "grid_limit_mobile": 2,
+        "grid_space": true,
+        "slide_per_view_desktop": 4,
+        "slide_per_view_mini_desktop": 4,
+        "slide_per_view_tablet": 2,
+        "slide_per_view_mobile": 2,
+        "space_slide": 30,
+        "navigation": true,
+        "autoplay": true,
+        "loop": false,
+        "button_style": "btn-black",
+        "button_size": "btn-medium",
+        "btn_radius": 0,
+        "btn_border_width": 2,
+        "btn_icon_class": "",
+        "icon_position": "right-icon",
+        "btn_text": "",
+        "btn_link": "",
+        "use_default_section_typography": true,
+        "section_heading_size": 45,
+        "heading_line_height": 55,
+        "sub_heading_size": 24,
+        "sub_heading_line_height": 30,
+        "subheading_letter_spacing": 0,
+        "padding_top": "small-section-top",
+        "padding_bottom": "small-section-bottom",
+        "heading_alignment": "center",
+        "section_show": true,
+        "background_position": "cover-background",
+        "section_bg_color": "",
+        "section_heading_color": "",
+        "section_sub_heading_color": "",
+        "section_description_color": "",
+        "element_id": "",
+        "section_class_name": ""
+      }
+    },
+    "faq_wUwmbD": {
+      "type": "faq",
+      "blocks": {
+        "faq_item_XnWD9F": {
+          "type": "faq-item",
+          "settings": {
+            "question": "What makes Tvastra sportswear unique?",
+            "answer": "<p>Tvastra sportswear is designed to combine comfort, performance, and modern style, making it perfect for workouts as well as everyday wear.</p>",
+            "open": false
+          }
+        },
+        "faq_item_zXe4rA": {
+          "type": "faq-item",
+          "settings": {
+            "question": "Are Tvastra products suitable for all types of workouts?",
+            "answer": "<p>Yes, our activewear is designed for gym training, running, yoga, and daily active lifestyles.</p>",
+            "open": false
+          }
+        },
+        "faq_item_683aQV": {
+          "type": "faq-item",
+          "settings": {
+            "question": "What fabrics are used in Tvastra sportswear?",
+            "answer": "<p>We use breathable, flexible, and durable fabrics that support movement and provide long-lasting comfort.</p>",
+            "open": false
+          }
+        },
+        "faq_item_VCFVxt": {
+          "type": "faq-item",
+          "settings": {
+            "question": "Is Tvastra sportswear easy to maintain?",
+            "answer": "<p>Yes, our products are made with high-quality materials that are easy to wash and maintain for regular use.</p>",
+            "open": false
+          }
+        }
+      },
+      "block_order": [
+        "faq_item_XnWD9F",
+        "faq_item_zXe4rA",
+        "faq_item_683aQV",
+        "faq_item_VCFVxt"
+      ],
+      "name": "Faq",
+      "settings": {
+        "container_type": "container",
+        "heading": "How can we help you?",
+        "sub_heading": "",
+        "description": "<p>Frequently asked questions</p>",
+        "title_style": "style-1",
+        "inactive_icon": "feather-plus",
+        "active_icon": "feather-minus",
+        "use_default_section_typography": true,
+        "section_heading_size": 45,
+        "heading_line_height": 55,
+        "sub_heading_size": 24,
+        "sub_heading_line_height": 30,
+        "subheading_letter_spacing": 0,
+        "padding_top": "small-section-top",
+        "padding_bottom": "small-section-bottom",
+        "heading_alignment": "center",
+        "section_show": true,
+        "section_bg_color": "",
+        "section_heading_color": "",
+        "section_sub_heading_color": "",
+        "section_description_color": "",
+        "section_id": "",
+        "section_class_name": ""
+      }
+    }
+  },
+  "order": [
+    "page-title",
+    "1633946636ff228416",
+    "icon_with_text_r8HeYb",
+    "163394727558bbdcc5",
+    "image_with_text_686Jf8",
+    "1633694919b8dc6f07",
+    "lookbook_with_video_FzrePq",
+    "image_with_text_2_BGmDQY",
+    "1633958485f0f6c220",
+    "instagram_feed_kEU6RJ",
+    "faq_wUwmbD"
+  ]
+}

@@ -1,0 +1,47 @@
+{%- if section.settings.title_style == 'style-1' -%}
+  <div class="col-12 text-lg-{{ heading_alignment }}">
+    {%- if section.settings.sub_heading != blank -%}
+      <div class="section-sub-heading">{{ section.settings.sub_heading }}</div>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h3 class="section-heading alt-font">
+        {{ section.settings.heading | replace: '[', '<span class="bottom-border">' | replace: ']', '</span>' }}
+      </h3>
+    {%- endif -%}
+    {%- if section.settings.description != blank -%}
+      <div class="section-description">{{ section.settings.description }}</div>
+    {%- endif -%}
+  </div>
+{%- elsif section.settings.title_style == 'style-2' -%}
+  <div class="col">
+    <div class="{% if product_with_banner == true %}d-md-flex flex-column flex-lg-row align-items-start{% elsif iscollectiontab == true or isdeal_product == true %}justify-content-center justify-content-xl-{{ heading_alignment }} d-xl-flex{% else %} d-lg-flex{% endif %} align-items-lg-{% if section.settings.description != blank %}start{% else %}center{% endif %}">
+      {%- if section.settings.heading != blank -%}
+        <h3 class="section-heading alt-font me-auto">
+          {{ section.settings.heading | replace: '[', '<span class="text-outline">' | replace: ']', '</span>' }}
+        </h3>
+      {%- endif -%}
+      {%- if section.settings.sub_heading != blank -%}
+        <div class="section-sub-heading">{{ section.settings.sub_heading }}</div>
+      {%- endif -%}
+    </div>
+    {%- if section.settings.description != blank -%}
+      <div class="section-description">{{ section.settings.description }}</div>
+    {%- endif -%}
+  </div>
+{%- elsif section.settings.title_style == 'style-3' -%}
+  <div class="col">
+    <div class="{% if product_with_banner == true %}d-lg-flex justify-content-lg-{{ heading_alignment }} align-items-start{% elsif iscollectiontab == true or isdeal_product == true %}justify-content-center justify-content-xl-{{ heading_alignment }} d-xl-flex{% else %}d-lg-flex justify-content-{{ heading_alignment }}{% endif %} align-items-lg-center">
+      {%- if section.settings.heading != blank -%}
+        <h3 class="section-heading alt-font">
+          {{ section.settings.heading | replace: '[', '<span>' | replace: ']', '</span>' }}
+        </h3>
+      {%- endif -%}
+      {%- if section.settings.sub_heading != blank -%}
+        <div class="section-sub-heading">{{ section.settings.sub_heading }}</div>
+      {%- endif -%}
+    </div>
+    {%- if section.settings.description != blank -%}
+      <div class="section-description {% if iscollectiontab == true or isdeal_product == true %} text-xl-{{ heading_alignment }}{% else %} text-lg-{{ heading_alignment }} {% endif %}">{{ section.settings.description }}</div>
+    {%- endif -%}
+  </div>
+{%- endif -%}

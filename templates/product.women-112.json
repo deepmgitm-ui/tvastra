@@ -1,0 +1,393 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "1643711855bc4aea40": {
+      "type": "breadcrumb",
+      "settings": {
+        "container_type": "container",
+        "banner_title_size": "h-3",
+        "content_alignment": "start",
+        "show_pagetitle": false,
+        "title_uppercase": false,
+        "border_top": true,
+        "border_bottom": false,
+        "show_mobile": true
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "collapsible_prerwX": {
+          "type": "collapsible",
+          "settings": {
+            "tab_heading": "Model Information",
+            "tab_content": "{{product.metafields.custom.model_info}}",
+            "open_default": false
+          }
+        },
+        "2c4c2e34-acdb-4c1f-a4a8-3391aa6523ed": {
+          "type": "vendor",
+          "settings": {}
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+            "hide_price": true,
+            "hide_ratings": false,
+            "hide_sku": false,
+            "show_save_label": false
+          }
+        },
+        "a71eef00-2cd2-4cfe-bff5-8e81cd4bf70c": {
+          "type": "short_description",
+          "settings": {
+            "liquid_code": "{{product.metafields.custom.short_description}}"
+          }
+        },
+        "81229d02-3ee9-4dec-ae0f-58c97356e659": {
+          "type": "product_deal",
+          "disabled": true,
+          "settings": {}
+        },
+        "0689be55-a76a-49f2-96fa-3e40482179f8": {
+          "type": "live-visitors",
+          "disabled": true,
+          "settings": {
+            "visitors_text": "[visitors] people are viewing this right now.",
+            "visitors": 150,
+            "visitors_time": 10
+          }
+        },
+        "0c18cfc7-6f8c-4100-9df4-3ec4a3cb4bae": {
+          "type": "sold-product",
+          "disabled": true,
+          "settings": {
+            "from_sold_number": 10,
+            "to_sold_number": 100,
+            "from_sold_time": 10,
+            "to_sold_time": 24
+          }
+        },
+        "c2463fbc-fe64-4ef3-9871-7b5242b3c6df": {
+          "type": "stock-left",
+          "disabled": true,
+          "settings": {
+            "countdown_number": "custom-range",
+            "from_number": 10,
+            "to_number": 50
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "show_size_guide": true,
+            "size_guide_option_label": "Size",
+            "size_guide_button_text": "Size guide",
+            "size_guide_content": "<img src=\"https://cdn.shopify.com/s/files/1/0641/9395/3905/files/Beige_and_Black_Minimalist_Size_Chart_Instagram_Post_8.png?v=1773061182\">"
+          }
+        },
+        "collapsible_CMBCcp": {
+          "type": "collapsible",
+          "disabled": true,
+          "settings": {
+            "tab_heading": "Size Chart",
+            "tab_content": "{% if product.metafields.custom.size_cart %}\n  <img src=\"{{ product.metafields.custom.size_cart | image_url: width: 400 }}\">\n{% endif %}",
+            "open_default": false
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_qty": true,
+            "show_add_to_cart": true,
+            "show_wishlist": true,
+            "show_dynamic_checkout": true,
+            "collect_back_in_stock": true,
+            "back-in-stock-title": "Notify me when this is in stock",
+            "back-in-stock-subheading": "We will send you a notification as soon as this product is available again.",
+            "back_in_icon_name": "bi bi-patch-check-fill",
+            "back-in-stock-text": "It will be in stock after"
+          }
+        },
+        "61d3394c-f64e-49ec-a0db-31caf6818cb9": {
+          "type": "addon-buttons",
+          "settings": {
+            "show_compare": false,
+            "show_question": true,
+            "show_social_share": true
+          }
+        },
+        "2e41d2a3-0012-4c8b-9237-c097ef9c9d44": {
+          "type": "shipping",
+          "settings": {
+            "show_delivery_times": true,
+            "deliver_text": "Estimated delivery:",
+            "deliver_days": "8",
+            "show_shipping_text": false,
+            "shipping_text": "<p>Free return within <strong>30 days</strong> of purchase.</p>"
+          }
+        },
+        "9c54112d-607b-48ba-9682-f677f8655767": {
+          "type": "trust-badge",
+          "settings": {
+            "trust_badge_img": "shopify://shop_images/Screenshot_2024-08-30_at_1.31.00_PM-removebg-preview.png",
+            "trust_badge_width": 310,
+            "trust_badge_text": "<p>Guarantee safe and secure checkout</p>",
+            "trust_badge_position": "flex-column",
+            "text_alignment": "start"
+          }
+        },
+        "6b248757-9f0d-41ae-8160-d357904cbec6": {
+          "type": "product-usp",
+          "settings": {
+            "icon_class1": "bi bi-truck",
+            "usp_text1": "Free shipping",
+            "usp_link1": "",
+            "icon_class2": "bi bi-chat-text",
+            "usp_text2": "Reliable support",
+            "usp_link2": "",
+            "usp_alignment": "start"
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_prerwX",
+        "2c4c2e34-acdb-4c1f-a4a8-3391aa6523ed",
+        "title",
+        "a71eef00-2cd2-4cfe-bff5-8e81cd4bf70c",
+        "81229d02-3ee9-4dec-ae0f-58c97356e659",
+        "0689be55-a76a-49f2-96fa-3e40482179f8",
+        "0c18cfc7-6f8c-4100-9df4-3ec4a3cb4bae",
+        "c2463fbc-fe64-4ef3-9871-7b5242b3c6df",
+        "variant_picker",
+        "collapsible_CMBCcp",
+        "buy_buttons",
+        "61d3394c-f64e-49ec-a0db-31caf6818cb9",
+        "2e41d2a3-0012-4c8b-9237-c097ef9c9d44",
+        "9c54112d-607b-48ba-9682-f677f8655767",
+        "6b248757-9f0d-41ae-8160-d357904cbec6"
+      ],
+      "settings": {
+        "container_type": "container",
+        "product_page_style": "style-1",
+        "show_content_container": true,
+        "product_gellery": "slider-vertical",
+        "enable_variant_group": true,
+        "show_border": false,
+        "image_border_radius": 0,
+        "zoom_enabled": true,
+        "show_thumb_slider": true,
+        "thumb_slider_placement": "left",
+        "gutter_size": "gutter-medium",
+        "sticky_cart_desktop": true,
+        "sticky_cart_mobile": true,
+        "show_dynamic_checkout_btn": true,
+        "show_sticky_wishlist": true,
+        "show_compare": true,
+        "background_position": "cover-background",
+        "section_bg_color": "",
+        "padding_top": "pt-0",
+        "padding_bottom": "pb-0",
+        "element_id": "",
+        "element_class": ""
+      }
+    },
+    "bought-together": {
+      "type": "bought-together",
+      "settings": {
+        "container_type": "container",
+        "heading": "Frequently bought together",
+        "sub_heading": "",
+        "description": "",
+        "title_style": "style-2",
+        "discount_description": "{% assign discount-rate = product.metafields.custom.bundle_discount_rate %}\nGet a {{ discount-rate }}% discount buying these products together",
+        "use_default_section_typography": false,
+        "section_heading_size": 32,
+        "heading_line_height": 32,
+        "sub_heading_size": 24,
+        "sub_heading_line_height": 30,
+        "subheading_letter_spacing": 0,
+        "padding_top": "small-section-top",
+        "padding_bottom": "pb-0",
+        "heading_alignment": "center",
+        "section_show": true,
+        "section_bg_color": "",
+        "section_heading_color": "",
+        "section_sub_heading_color": "",
+        "section_description_color": "",
+        "section_id": "",
+        "section_class_name": ""
+      }
+    },
+    "product-tabs": {
+      "type": "product-tabs",
+      "blocks": {
+        "description": {
+          "type": "description",
+          "settings": {
+            "heading": "Product description"
+          }
+        },
+        "additional_information": {
+          "type": "liquid",
+          "settings": {
+            "heading": "Additional information",
+            "tab_content": "<table class=\"table additional-information\">\n    <tbody>\n        {%- if product.title != blank -%}\n        <tr><th>Name</th><td>{{ product.title }}</td></tr>\n        {%- endif -%}\n        {%- assign first_variant = product.selected_or_first_available_variant -%}\n          <tr><th>SKU</th><td>{{ first_variant.sku }}</td></tr>\n        {%- if product.vendor != blank -%}\n        <tr><th>Vendor</th><td>{{ product.vendor }}</td></tr>\n        {%- endif -%}        \n        {%- unless product.has_only_default_variant -%}        \n          {%- for product_option in product.options_with_values -%}\n              <tr>\n                <th>{{ product_option.name }}</th>\n                <td>\n                  {%- for option_value in product_option.values -%}\n                    {{ option_value }}{% if forloop.last == false %}, {% endif %}\n                  {%- endfor -%}\n                </td>\n              </tr>\n          {%- endfor -%}\n        {%- endunless -%}\n    </tbody>\n</table>"
+          }
+        },
+        "0c706291-06fb-4980-8270-bfb7b6c922c0": {
+          "type": "custom",
+          "settings": {
+            "heading": "Shipping & return",
+            "tab_content": "<h6 class=\"alt-font\">Returns policy</h6>\n\nDispatch: Within 24 Hours\n<ul>\n<li>Free shipping on all products</li>\n<li>Delivery time - 7-10 business days</li>\n<li>Cash on delivery might be available</li>\n<li>Easy 7 days returns and exchanges</li>\n</ul>\n<h6 class=\"alt-font\">Shipping policy</h6>\n<p>Tvastra Fit offers reliable shipping across India. All orders are processed within 1–3 business days after confirmation, and delivery typically takes 3–7 business days depending on your location. Once your order is shipped, a tracking number will be shared via email or SMS so you can monitor your package. While we strive to ensure timely delivery, delays may occasionally occur due to courier services, weather conditions, or unforeseen circumstances. Tvastra Fit is not responsible for delays caused by incorrect shipping details provided by the customer.</p>",
+            "content_page": ""
+          }
+        },
+        "reviews": {
+          "type": "reviews",
+          "disabled": true,
+          "settings": {
+            "heading": "Product reviews",
+            "custom_liquid": ""
+          }
+        }
+      },
+      "block_order": [
+        "description",
+        "additional_information",
+        "0c706291-06fb-4980-8270-bfb7b6c922c0",
+        "reviews"
+      ],
+      "settings": {
+        "container_type": "container",
+        "padding_top": "medium-section-top",
+        "padding_bottom": "very-small-section-bottom",
+        "element_id": "",
+        "element_class": ""
+      }
+    },
+    "product-related": {
+      "type": "product-related",
+      "settings": {
+        "container_type": "container",
+        "heading": "Related products",
+        "sub_heading": "",
+        "description": "",
+        "title_style": "style-1",
+        "products_to_show": 16,
+        "slide_per_view_desktop": 4,
+        "slide_per_view_mini_desktop": 4,
+        "slide_per_view_tablet": 3,
+        "slide_per_view_mobile": 2,
+        "space_slide": 30,
+        "navigation": false,
+        "autoplay": true,
+        "loop": false,
+        "use_default_section_typography": true,
+        "section_heading_size": 45,
+        "heading_line_height": 55,
+        "sub_heading_size": 24,
+        "sub_heading_line_height": 30,
+        "subheading_letter_spacing": 0,
+        "padding_top": "pt-0",
+        "padding_bottom": "very-small-section-bottom",
+        "heading_alignment": "center",
+        "section_show": true,
+        "background_position": "cover-background",
+        "section_bg_color": "",
+        "section_heading_color": "",
+        "section_sub_heading_color": "",
+        "section_description_color": "",
+        "section_id": "",
+        "section_class_name": ""
+      }
+    },
+    "product-upsell": {
+      "type": "product-upsell",
+      "settings": {
+        "container_type": "container",
+        "heading": "You may also like",
+        "sub_heading": "",
+        "description": "",
+        "title_style": "style-1",
+        "products_to_show": 16,
+        "slide_per_view_desktop": 4,
+        "slide_per_view_mini_desktop": 4,
+        "slide_per_view_tablet": 3,
+        "slide_per_view_mobile": 2,
+        "space_slide": 30,
+        "navigation": false,
+        "autoplay": true,
+        "loop": false,
+        "use_default_section_typography": true,
+        "section_heading_size": 45,
+        "heading_line_height": 55,
+        "sub_heading_size": 24,
+        "sub_heading_line_height": 30,
+        "subheading_letter_spacing": 0,
+        "padding_top": "pt-0",
+        "padding_bottom": "very-small-section-bottom",
+        "heading_alignment": "center",
+        "section_show": true,
+        "background_position": "cover-background",
+        "section_bg_color": "",
+        "section_heading_color": "",
+        "section_sub_heading_color": "",
+        "section_description_color": "",
+        "section_id": "",
+        "section_class_name": ""
+      }
+    },
+    "recent-viewed-products": {
+      "type": "recent-viewed-products",
+      "settings": {
+        "container_type": "container",
+        "heading": "Recently viewed products",
+        "sub_heading": "",
+        "description": "",
+        "title_style": "style-1",
+        "slide_per_view_desktop": 4,
+        "slide_per_view_mini_desktop": 4,
+        "slide_per_view_tablet": 3,
+        "slide_per_view_mobile": 2,
+        "space_slide": 30,
+        "autoplay": true,
+        "navigation": false,
+        "use_default_section_typography": true,
+        "section_heading_size": 45,
+        "heading_line_height": 55,
+        "sub_heading_size": 24,
+        "sub_heading_line_height": 30,
+        "subheading_letter_spacing": 0,
+        "padding_top": "pt-0",
+        "padding_bottom": "very-small-section-bottom",
+        "heading_alignment": "center",
+        "section_show": true,
+        "background_position": "cover-background",
+        "section_bg_color": "",
+        "section_heading_color": "",
+        "section_sub_heading_color": "",
+        "section_description_color": "",
+        "section_id": "",
+        "section_class_name": ""
+      }
+    }
+  },
+  "order": [
+    "1643711855bc4aea40",
+    "main",
+    "bought-together",
+    "product-tabs",
+    "product-related",
+    "product-upsell",
+    "recent-viewed-products"
+  ]
+}

@@ -1,0 +1,613 @@
+{% liquid
+  assign best_collection = collections[section.settings.collection]
+  assign desktop_show = section.settings.desktop_show | default: 4
+  assign mobile_show = section.settings.mobile_show | default: 2
+  assign autoplay_speed = section.settings.autoplay_speed | default: 3 | times: 1000
+%}
+
+<section
+  id="bss-{{ section.id }}"
+  class="bss-section"
+  style="background:{{ section.settings.bg }};"
+  aria-label="{{ section.settings.heading }}"
+>
+  <!-- Background dot pattern (Optional, tu isko CSS se hide kar sakta hai agar ye bhi nahi chahiye) -->
+  <div class="bss-pattern bss-pattern-left" aria-hidden="true"></div>
+  <div class="bss-pattern bss-pattern-right" aria-hidden="true"></div>
+
+  <div class="bss-container">
+
+    <header class="bss-header">
+      <h2 class="bss-heading">
+        {{ section.settings.heading }}
+      </h2>
+    </header>
+
+    <p class="bss-subheading">
+      {{ section.settings.subheading }}
+    </p>
+
+    <div class="bss-slider" role="region" aria-label="Product slider">
+
+      {% if section.settings.show_arrows %}
+      <button class="bss-arrow bss-arrow--prev" aria-label="Previous products">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      {% endif %}
+
+      <div class="bss-viewport">
+        <div class="bss-track products {{ settings.product_card_style }} product-grid">
+
+          {% if best_collection != blank %}
+            {% for product in best_collection.products %}
+              <div class="bss-card product-box">
+                {% render 'product-card', product: product %}
+              </div>
+            {% else %}
+              <div class="bss-empty"><p>No products found in this collection.</p></div>
+            {% endfor %}
+          {% else %}
+            <div class="bss-empty"><p>Please select a collection in Theme Editor.</p></div>
+          {% endif %}
+
+        </div>
+      </div>
+
+      {% if section.settings.show_arrows %}
+      <button class="bss-arrow bss-arrow--next" aria-label="Next products">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+      {% endif %}
+
+    </div>
+  </div>
+</section>
+
+<style>
+/* ================================================
+  MASTER CUSTOMIZATION FONTS
+================================================ */
+{%- if section.settings.heading_font != blank and section.settings.use_futura_heading == false -%}
+  {{ section.settings.heading_font | font_face: font_display: 'swap' }}
+{%- endif -%}
+{%- if section.settings.subheading_font != blank and section.settings.use_futura_subheading == false -%}
+  {{ section.settings.subheading_font | font_face: font_display: 'swap' }}
+{%- endif -%}
+{%- if section.settings.product_title_font != blank and section.settings.use_futura_title == false -%}
+  {{ section.settings.product_title_font | font_face: font_display: 'swap' }}
+{%- endif -%}
+{%- if section.settings.product_price_font != blank and section.settings.use_futura_price == false -%}
+  {{ section.settings.product_price_font | font_face: font_display: 'swap' }}
+{%- endif -%}
+
+/* Main Heading Style */
+#bss-{{ section.id }} .bss-heading {
+  {%- if section.settings.use_futura_heading -%}
+    font-family: 'FuturaCustom', sans-serif !important;
+  {%- else -%}
+    {%- if section.settings.heading_font != blank -%}
+      font-family: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }} !important;
+      font-weight: {{ section.settings.heading_font.weight }} !important;
+      font-style: {{ section.settings.heading_font.style }} !important;
+    {%- endif -%}
+  {%- endif -%}
+  
+  /* BHAII YAHAN CLAMP HATAKAR DIRECT SIZE LAGAYA HAI (Ab 10px bhi kaam karega) */
+  font-size: {{ section.settings.heading_size }}px !important;
+  
+  letter-spacing: {{ section.settings.heading_spacing }}px !important;
+  color: {{ section.settings.heading_color }} !important;
+}
+
+/* Subheading Style */
+#bss-{{ section.id }} .bss-subheading {
+  {%- if section.settings.use_futura_subheading -%}
+    font-family: 'FuturaCustom', sans-serif !important;
+  {%- else -%}
+    {%- if section.settings.subheading_font != blank -%}
+      font-family: {{ section.settings.subheading_font.family }}, {{ section.settings.subheading_font.fallback_families }} !important;
+      font-weight: {{ section.settings.subheading_font.weight }} !important;
+      font-style: {{ section.settings.subheading_font.style }} !important;
+    {%- endif -%}
+  {%- endif -%}
+  font-size: {{ section.settings.subheading_size }}px !important;
+  color: {{ section.settings.text_color }} !important;
+}
+
+/* --- PRODUCT CARD TYPOGRAPHY --- */
+/* Product Name */
+#bss-{{ section.id }} .product-box .product-title,
+#bss-{{ section.id }} .product-box .product-title a,
+#bss-{{ section.id }} .product-box .product-name,
+#bss-{{ section.id }} .product-box .product-name a {
+  {%- if section.settings.use_futura_title -%}
+    font-family: 'FuturaCustom', sans-serif !important;
+  {%- else -%}
+    {%- if section.settings.product_title_font != blank -%}
+      font-family: {{ section.settings.product_title_font.family }}, {{ section.settings.product_title_font.fallback_families }} !important;
+      font-weight: {{ section.settings.product_title_font.weight }} !important;
+      font-style: {{ section.settings.product_title_font.style }} !important;
+    {%- endif -%}
+  {%- endif -%}
+  font-size: {{ section.settings.product_title_size }}px !important;
+  color: {{ section.settings.product_title_color }} !important;
+}
+
+/* Product Price */
+#bss-{{ section.id }} .product-box .price,
+#bss-{{ section.id }} .product-box .price-item,
+#bss-{{ section.id }} .product-box .amount {
+  {%- if section.settings.use_futura_price -%}
+    font-family: 'FuturaCustom', sans-serif !important;
+  {%- else -%}
+    {%- if section.settings.product_price_font != blank -%}
+      font-family: {{ section.settings.product_price_font.family }}, {{ section.settings.product_price_font.fallback_families }} !important;
+      font-weight: {{ section.settings.product_price_font.weight }} !important;
+      font-style: {{ section.settings.product_price_font.style }} !important;
+    {%- endif -%}
+  {%- endif -%}
+  font-size: {{ section.settings.product_price_size }}px !important;
+  color: {{ section.settings.product_price_color }} !important;
+}
+
+/* ================================================
+  SHAPES & BORDERS
+================================================ */
+#bss-{{ section.id }} .bss-card,
+#bss-{{ section.id }} .bss-card img,
+#bss-{{ section.id }} .bss-card .product-image {
+  border-radius: {{ section.settings.card_radius }}px !important;
+  overflow: hidden;
+}
+
+#bss-{{ section.id }} .bss-arrow {
+  border-radius: {{ section.settings.arrow_radius }}px !important;
+}
+
+/* ================================================
+  BEST SELLER SLIDER CSS (Clean Solid Background)
+================================================ */
+
+.bss-section, .bss-container, .bss-header, .bss-slider {
+  box-sizing: border-box;
+}
+
+.bss-section {
+  padding: 50px 0; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+/* Glow hataya gaya - Ab clean background aayega */
+.bss-section::before,
+.bss-section::after {
+  display: none !important;
+}
+
+.bss-pattern {
+  position: absolute;
+  top: 10px;
+  width: 25vw;
+  max-width: 350px;
+  height: 160px;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1.5px, transparent 1.5px);
+  background-size: 14px 14px; 
+  pointer-events: none;
+  z-index: 0;
+}
+.bss-pattern-left { left: 0; }
+.bss-pattern-right { right: 0; }
+
+.bss-container {
+  position: relative;
+  z-index: 1;
+  width: 94%;
+  max-width: 1250px; 
+  margin: 0 auto;
+}
+
+.bss-header {
+  text-align: center;
+  margin-bottom: 12px; 
+  position: relative;
+}
+
+.bss-heading {
+  margin: 0;
+  line-height: 1.15;
+}
+
+.bss-subheading {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 30px; 
+  line-height: 1.5;
+}
+
+/* -- Slider Core -- */
+.bss-slider {
+  position: relative;
+  padding: 0; 
+}
+
+.bss-viewport {
+  width: 100%;
+  overflow: hidden;
+  padding: 0; 
+}
+
+.bss-track {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  gap: 20px; 
+  margin: 0 !important;
+}
+
+.bss-card {
+  flex: 0 0 calc((100% - (20px * ({{ section.settings.desktop_show | minus: 1 }}))) / {{ section.settings.desktop_show }}) !important;
+  max-width: calc((100% - (20px * ({{ section.settings.desktop_show | minus: 1 }}))) / {{ section.settings.desktop_show }}) !important;
+  margin: 0 !important;
+  padding-bottom: 0 !important; 
+}
+.bss-card > div {
+  margin-bottom: 0 !important;
+}
+
+.bss-arrow {
+  position: absolute;
+  top: 45%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 44px; height: 44px; 
+  border: none;
+  background: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 12px rgba(0,0,0,.1);
+  color: #222;
+  transition: background .25s, color .25s;
+}
+.bss-arrow:hover {
+  background: #bb9553;
+  color: #fff;
+}
+.bss-arrow--prev { left: -22px; }
+.bss-arrow--next { right: -22px; }
+
+.bss-empty {
+  width: 100%;
+  text-align: center;
+  color: #999;
+}
+
+@media (max-width: 991px) {
+  .bss-pattern { display: none; } 
+  .bss-arrow--prev { left: -10px; }
+  .bss-arrow--next { right: -10px; }
+  .bss-track { gap: 15px; }
+  .bss-card {
+    flex: 0 0 calc((100% - (15px * ({{ section.settings.mobile_show | minus: 1 }}))) / {{ section.settings.mobile_show }}) !important;
+    max-width: calc((100% - (15px * ({{ section.settings.mobile_show | minus: 1 }}))) / {{ section.settings.mobile_show }}) !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .bss-section { 
+      padding: 30px 0;
+  } 
+  .bss-header { margin-bottom: 8px; }
+  .bss-subheading { margin-bottom: 20px; font-size: 14px !important; }
+  .bss-arrow { display: none; }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var root = document.getElementById('bss-{{ section.id }}');
+  if (!root) return;
+
+  var track = root.querySelector('.bss-track');
+  var btnPrev = root.querySelector('.bss-arrow--prev');
+  var btnNext = root.querySelector('.bss-arrow--next');
+  
+  if (!track || track.children.length === 0) return;
+
+  var desktopCount = {{ section.settings.desktop_show | default: 4 }};
+  var mobileCount = {{ section.settings.mobile_show | default: 2 }};
+  
+  var visible = window.innerWidth < 768 ? mobileCount : desktopCount;
+  var gap = window.innerWidth <= 991 ? 15 : 20; 
+  var cardW = 0;
+
+  function updateDimensions() {
+    visible = window.innerWidth < 768 ? mobileCount : desktopCount;
+    gap = window.innerWidth <= 991 ? 15 : 20;
+    var viewportW = root.querySelector('.bss-viewport').offsetWidth;
+    cardW = (viewportW - gap * (visible - 1)) / visible;
+  }
+
+  updateDimensions();
+  window.addEventListener('resize', function() {
+    setTimeout(updateDimensions, 100);
+  });
+
+  var isAnimating = false;
+
+  function slideNext() {
+    if (isAnimating) return;
+    isAnimating = true;
+    
+    track.style.transition = 'transform 0.4s ease-in-out';
+    track.style.transform = 'translateX(-' + (cardW + gap) + 'px)';
+
+    setTimeout(function() {
+      track.style.transition = 'none';
+      track.appendChild(track.firstElementChild);
+      track.style.transform = 'translateX(0)';
+      isAnimating = false;
+    }, 400);
+  }
+
+  function slidePrev() {
+    if (isAnimating) return;
+    isAnimating = true;
+
+    track.style.transition = 'none';
+    track.insertBefore(track.lastElementChild, track.firstElementChild);
+    track.style.transform = 'translateX(-' + (cardW + gap) + 'px)';
+
+    track.offsetHeight;
+
+    track.style.transition = 'transform 0.4s ease-in-out';
+    track.style.transform = 'translateX(0)';
+
+    setTimeout(function() {
+      isAnimating = false;
+    }, 400);
+  }
+
+  if (btnNext) btnNext.addEventListener('click', function() { slideNext(); resetAuto(); });
+  if (btnPrev) btnPrev.addEventListener('click', function() { slidePrev(); resetAuto(); });
+
+  var touchX = 0;
+  track.addEventListener('touchstart', function(e) {
+    touchX = e.changedTouches[0].clientX;
+  }, { passive: true });
+  track.addEventListener('touchend', function(e) {
+    var diff = touchX - e.changedTouches[0].clientX;
+    if (diff > 40) { slideNext(); resetAuto(); }
+    if (diff < -40) { slidePrev(); resetAuto(); }
+  });
+
+  var autoplay = {{ section.settings.autoplay | json }};
+  var speed = {{ section.settings.autoplay_speed | default: 3 | times: 1000 }};
+  var autoTimer;
+
+  function startAuto() {
+    if (!autoplay) return;
+    clearInterval(autoTimer);
+    autoTimer = setInterval(slideNext, speed);
+  }
+
+  function stopAuto() { clearInterval(autoTimer); }
+  function resetAuto() { stopAuto(); startAuto(); }
+
+  startAuto();
+
+  if ({{ section.settings.pause_hover | json }}) {
+    root.addEventListener('mouseenter', stopAuto);
+    root.addEventListener('mouseleave', startAuto);
+  }
+});
+</script>
+
+{% schema %}
+{
+  "name": "Best Seller Slider",
+  "tag": "section",
+  "class": "premium-best-seller",
+  "settings": [
+    {
+      "type": "header",
+      "content": "✨ Master Typography (Section)"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Heading Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_futura_heading",
+      "label": "🔥 Use Custom Futura Font?",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 10, "max": 100, "step": 1, "unit": "px",
+      "label": "Heading Size", "default": 42
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "min": 0, "max": 10, "step": 1, "unit": "px",
+      "label": "Heading Letter Spacing", "default": 2
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#1b1b1b"
+    },
+    {
+      "type": "font_picker",
+      "id": "subheading_font",
+      "label": "Subheading Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_futura_subheading",
+      "label": "🔥 Use Custom Futura Font?",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "min": 10, "max": 30, "step": 1, "unit": "px",
+      "label": "Subheading Size", "default": 16
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Subheading Color",
+      "default": "#777777"
+    },
+    {
+      "type": "header",
+      "content": "✨ Product Card Typography"
+    },
+    {
+      "type": "font_picker",
+      "id": "product_title_font",
+      "label": "Product Title Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_futura_title",
+      "label": "🔥 Use Custom Futura Font?",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "product_title_size",
+      "min": 10, "max": 30, "step": 1, "unit": "px",
+      "label": "Product Title Size", "default": 16
+    },
+    {
+      "type": "color",
+      "id": "product_title_color",
+      "label": "Product Title Color",
+      "default": "#1b1b1b"
+    },
+    {
+      "type": "font_picker",
+      "id": "product_price_font",
+      "label": "Product Price Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_futura_price",
+      "label": "🔥 Use Custom Futura Font?",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "product_price_size",
+      "min": 10, "max": 30, "step": 1, "unit": "px",
+      "label": "Product Price Size", "default": 15
+    },
+    {
+      "type": "color",
+      "id": "product_price_color",
+      "label": "Product Price Color",
+      "default": "#777777"
+    },
+    {
+      "type": "header",
+      "content": "✨ Shapes & Borders"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "min": 0, "max": 50, "step": 1, "unit": "px",
+      "label": "Product Card Shape (Border Radius)", "default": 0
+    },
+    {
+      "type": "range",
+      "id": "arrow_radius",
+      "min": 0, "max": 50, "step": 1, "unit": "px",
+      "label": "Arrow Button Shape (Border Radius)", "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Content & Layout"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Best Seller Collection"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "BEST SELLER"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Shop our most loved products, curated for you."
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "desktop_show",
+      "label": "Products Visible on Desktop",
+      "min": 2, "max": 6, "step": 1, "default": 4
+    },
+    {
+      "type": "range",
+      "id": "mobile_show",
+      "label": "Products Visible on Mobile",
+      "min": 1, "max": 3, "step": 1, "default": 2
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable Autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay Speed",
+      "min": 2, "max": 10, "step": 1, "unit": "sec",
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_hover",
+      "label": "Pause Autoplay on Hover",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show Navigation Arrows",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Best Seller Slider"
+    }
+  ]
+}
+{% endschema %}

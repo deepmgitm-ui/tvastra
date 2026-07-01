@@ -1,0 +1,157 @@
+<div class="cart-title d-flex align-items-center" data-cart-title>
+  <h6 class="mb-0 alt-font">{{ 'minicart.general.title' | t }}</h6>
+  {%- if cart != empty -%}
+    <span>
+      {{- cart.item_count }}
+      {{ 'minicart.general.items' | t -}}
+    </span>
+  {%- endif -%}
+  <span data-cart-notification-close class="ms-auto cart-close-icon feather-x"></span>
+</div>
+{%- if cart != empty -%}
+  <div class="mini-cart-progress"></div>
+  <div class="free-shipping-goal-section" data-free-shipping-goal-section></div>
+  <div class="mini-cart-wrapper d-flex flex-column h-100" data-mini-cart-wrapper>
+    <ul class="cart-notification-products">
+      {%- for item in cart.items -%}
+        <li
+          id="cart-notification-product-{{ item.id }}"
+          class="cart-notification-product"
+          data-product="{{ item.product_id }}"
+          data-itemid="{{ item.id }}"
+        >
+          {%- if item.image -%}
+            <a class="product-image" href="{{ item.url }}" aria-label="link">
+              <img src="{{ item.image | image_url: width: 140 }}" alt="{{ item.image.alt | escape }}" loading="lazy" width="auto" height="auto">
+            </a>
+          {%- endif -%}
+          <div class="cart-product-info">
+            <div class="product-inner d-flex">
+              <a class="product-name alt-font mb-0 me-auto" href="{{ item.url }}" aria-label="title">{{ item.product.title | escape }}</a>
+              <a
+                data-item="cart-notification-product-{{ item.id }}"
+                data-id="{{ item.key }}"
+                href="/cart/change.js?id={{ item.key }}&quantity=0"
+                class="remove"
+                data-item-id="{{ item.id }}"
+                data-cart-notification-item-remove
+                aria-label="cart"
+                ><i class="feather-x-circle"></i
+              ></a>
+            </div>
+            {%- unless item.product.has_only_default_variant -%}
+              <div class="d-sm-flex align-items-center">
+                <div class="product-option">{{ item.options_with_values | map: 'value' | join: ' / ' }}</div>
+              </div>
+            {%- endunless -%}
+            <p class="cart-item__error" id="Line-item-error-{{ forloop.index }}">
+              <span
+                class="cart-item__error-text text-danger {% if forloop.index == 1 %} first-text {% else %} sectondddd{% endif %}"
+              ></span>
+              <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-error" viewBox="0 0 13 13">
+                <circle cx="6.5" cy="6.50049" r="5.5" stroke="white" stroke-width="2"/>
+                <circle cx="6.5" cy="6.5" r="5.5" fill="#EB001B" stroke="#EB001B" stroke-width="0.7"/>
+                <path d="M5.87413 3.52832L5.97439 7.57216H7.02713L7.12739 3.52832H5.87413ZM6.50076 9.66091C6.88091 9.66091 7.18169 9.37267 7.18169 9.00504C7.18169 8.63742 6.88091 8.34917 6.50076 8.34917C6.12061 8.34917 5.81982 8.63742 5.81982 9.00504C5.81982 9.37267 6.12061 9.66091 6.50076 9.66091Z" fill="white"/>
+                <path d="M5.87413 3.17832H5.51535L5.52424 3.537L5.6245 7.58083L5.63296 7.92216H5.97439H7.02713H7.36856L7.37702 7.58083L7.47728 3.537L7.48617 3.17832H7.12739H5.87413ZM6.50076 10.0109C7.06121 10.0109 7.5317 9.57872 7.5317 9.00504C7.5317 8.43137 7.06121 7.99918 6.50076 7.99918C5.94031 7.99918 5.46982 8.43137 5.46982 9.00504C5.46982 9.57872 5.94031 10.0109 6.50076 10.0109Z" fill="white" stroke="#EB001B" stroke-width="0.7">
+              </svg>
+            </p>
+            <div class="d-flex align-items-center quantity-wrap">
+              <span class="amount alt-font me-auto">{{ item.final_price | money }}</span>
+              <quantity-input class="quantity"> 
+                <button
+                  class="quantity-button quantity-minus feather-minus"
+                  name="minus"
+                  type="button"
+                  aria-label="minus"
+                ><span class="visually-hidden">-</span></button>  
+                <input
+                  class="quantity-input"
+                  type="number"
+                  name="quantity"
+                  min="0"
+                  value="{{ item.quantity }}"
+                  data-id="{{ item.key }}"
+                  id="quantity-input-{{ forloop.index }}"
+                >
+                <label for="quantity-input" class="visually-hidden"></label> 
+                <button
+                  id="quantity-input"
+                  class="quantity-button quantity-plus feather-plus"
+                  name="plus"
+                  type="button"
+                  aria-label="plus"
+                ><span class="visually-hidden">+</span></button> 
+              </quantity-input>
+            </div>
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>    
+    <div class="cart-notification-ymal" id="cart-notification-crosssell-products" data-crosssell_type="selection">
+      <!-- Content from cart-notification-crosssell-products.liquid section will be render here -->
+    </div>
+  </div>
+  <div class="mini-cart-bottom" data-cart-bottom>
+      {%- render 'cart-notification-addon' -%}
+      <div class="cart-notification-totals-wrapper alt-font">        
+        {%- if cart.cart_level_discount_applications.size > 0 -%}
+          <ul class="discounts list-unstyled" role="list" aria-label="{{ 'customer.order.discount' | t }}">
+            {%- for discount in cart.cart_level_discount_applications -%}
+              <li class="d-flex align-items-center">
+                <i class="feather-gift"></i>
+                <span class="discount-title">{{ discount.title }}</span>
+                <span class="ms-auto discount-money">-{{ discount.total_allocated_amount | money }}</span>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+        <div class="cart-subtotal d-flex align-items-center">
+          <label>{{ 'sections.cart.subtotal' | t }}</label>
+          <span class="ms-auto">{{ cart.total_price | money }}</span>
+        </div>
+      </div>
+      {%- if settings.show_terms_conditions == true -%}
+        <div class="cart-agreement d-flex">
+          <input
+            type="checkbox"
+            id="terms_agreement_minicart"
+            name="terms_agreement"
+            value="yes"
+            form="form-minicart"
+            required
+            autocomplete="off"
+            data-terms-trigger="minicart"
+          >
+          <label for="terms_agreement_minicart">
+            {{- settings.terms_conditions_label | default: 'I agree with the Terms & Conditions' -}}
+          </label>
+        </div>
+      {%- endif -%}
+      <div class="cart-notification-buttons-wrapper">
+        <form action="{{ routes.cart_url }}" method="post" id="form-minicart">
+          <button
+            class="btn btn-medium btn-black w-100"
+            name="checkout"
+            form="form-minicart"
+            autocomplete="off"
+            {%- if settings.show_terms_conditions == true -%}
+              disabled="disabled" data-terms-action="minicart"
+            {%- endif -%}
+          >
+            {{ 'minicart.general.checkout' | t }}
+          </button>
+        </form>
+        <a href="{{ routes.cart_url }}" class="btn btn-medium btn-black-border w-100" aria-label="{{ 'minicart.general.view' | t }}">
+          {{ 'minicart.general.view' | t }}
+        </a>
+      </div>
+    </div>
+  <div class="mini-cart-overlay"></div>
+{%- else -%}
+  <div class="empty-mini-cart d-flex flex-column align-items-center">
+    <i class="feather-shopping-cart"></i><span>{{ 'minicart.general.empty' | t }}</span>
+    <a href="/collections/all" class="btn btn-small btn-black" aria-label="{{ 'minicart.general.continue' | t }}">
+      {{ 'minicart.general.continue' | t }}
+    </a>
+  </div>
+{%- endif -%}

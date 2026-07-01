@@ -1,0 +1,121 @@
+{%- paginate search.results by 8 -%}
+  <section class="small-section-bottom search-result-wrap">
+    <div class="{{ section.settings.container_type }}">
+      {%- if search.performed -%}
+        {%- if search.results_count == 0 -%}
+          <div class="row">
+            <div class="col-12 text-center no-search-result">
+              {{ 'sections.main_search.message' | t }} <a href="{{ shop.url }}" aria-label="shop">{{ 'sections.main_search.homepage' | t }}</a>
+            </div>
+          </div>
+        {%- else -%}
+          <div
+            class="row row-cols-{{ section.settings.box_limit_mobile }} row-cols-md-{{ section.settings.box_limit_tablet }} row-cols-lg-{{ section.settings.box_limit_mini_desktop }} row-cols-xl-{{ section.settings.box_limit_desktop }} blog-modern blog-search-result {{ settings.product_card_style }} {{ settings.article_card_style }} product-grid"
+            role="list"
+          >
+            {%- for item in search.results -%}
+              {%- case item.object_type -%}
+                {%- when 'product' -%}
+                  <div class="col product-box">                    
+                    {%- render 'product-card', product: item -%}
+                  </div>
+              {%- endcase -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+      {%- if paginate.pages > 1 -%}
+        {%- render 'pagination', paginate: paginate, class: 'pagination-wrapper-small' -%}
+      {%- endif -%}
+    </div>
+  </section>
+{%- endpaginate -%}
+<style>
+  @media (min-width: 1200px) {
+    .product-box:nth-child(n+{{ section.settings.box_limit_desktop | plus: 1 }}),
+    .blog-item:nth-child(n+{{ section.settings.box_limit_desktop | plus: 1 }}) {
+      margin-top: 30px;
+    }
+  }
+  @media (max-width: 1199px) {
+    .product-box:nth-child(n+{{ section.settings.box_limit_mini_desktop | plus: 1 }}),
+    .blog-item:nth-child(n+{{ section.settings.box_limit_mini_desktop | plus: 1 }}) {
+      margin-top: 30px;
+    }
+  }
+  @media (max-width: 991px) {
+    .product-box:nth-child(n+{{ section.settings.box_limit_tablet | plus: 1 }}),
+    .blog-item:nth-child(n+{{ section.settings.box_limit_tablet | plus: 1 }}) {
+      margin-top: 30px;
+    }
+  }
+  @media (max-width: 767px) {
+    .product-box:nth-child(n+{{ section.settings.box_limit_mobile | plus: 1 }}),
+    .blog-item:nth-child(n+{{ section.settings.box_limit_mobile | plus: 1 }}) {
+      margin-top: 25px;
+    }
+  }
+</style>
+{% schema %}
+{
+  "name": "t:sections.main-search.name",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "box_limit_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 5,
+      "label": "Item per view desktop"
+    },
+    {
+      "type": "range",
+      "id": "box_limit_mini_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 5,
+      "label": "Item per view  mini desktop"
+    },
+    {
+      "type": "range",
+      "id": "box_limit_tablet",
+      "label": "Item per view tablet",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "box_limit_mobile",
+      "label": "Item per view mobile",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 2
+    }
+  ]
+}
+{% endschema %}

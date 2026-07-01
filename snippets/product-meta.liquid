@@ -1,0 +1,24 @@
+{%- if block_settings.hide_category == true or block_settings.hide_tags == true -%}
+  <div class="product-meta">
+    {%- if block_settings.hide_category == true -%}
+      {%- if product.collections.size > 0 -%}
+      <div class="meta">
+        <label>{{ 'general.product_information.category' | t }}</label>
+        {% for collection in product.collections -%}
+          <a href="/collections/{{ collection.title | handle }}" aria-label="product">{{ collection.title }}</a>{%- if forloop.last != true %}, {% endif -%}
+        {%- endfor -%}
+      </div>
+      {%- endif -%}
+    {%- endif -%}
+    {%- if block_settings.hide_tags == true -%}
+      {%- if product.tags.size > 0 -%}
+        <div class="meta">
+          <label>{{ 'general.product_information.tags' | t }}</label> 
+          {% for tag in product.tags -%}
+            <a href="/collections/all/{{ tag | handle }}" aria-label="product">{{ tag }}</a>{%- if forloop.last != true %}, {% endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%} 
+    {%- endif -%}
+  </div>
+{%- endif -%}

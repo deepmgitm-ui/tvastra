@@ -1,0 +1,217 @@
+{%- liquid
+  assign banner_image = section.settings.banner_image
+  if template contains 'collection'
+    if collection.handle == 'all'
+      assign page_title = 'sections.all_products.title' | t
+      assign description = 'sections.all_products.description' | t
+    elsif template == 'list-collections'
+      assign page_title = 'sections.collection_list.title' | t
+      assign description = 'sections.collection_list.description' | t
+    else
+      assign page_title = collection.title
+      assign banner_image = collection.metafields.custom.collection_banner
+      assign description = collection.description
+    endif  
+  else
+    assign page_title = page.title
+    assign description = page.metafields.custom.description
+  endif
+  render 'page-title', page_title: page_title, banner_image: banner_image, description: description
+-%}
+{% schema %}
+{
+  "name": "Page title",
+  "settings": [
+    {
+      "type": "select",
+      "id": "page_title_style",
+      "label": "Page title style",
+      "options": [
+        {
+          "value": "style-1",
+          "label": "Style 1"
+        },
+        {
+          "value": "style-2",
+          "label": "Style 2"
+        },
+        {
+          "value": "style-3",
+          "label": "Style 3"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_full_width",
+      "default": false,
+      "label": "Show full width"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_banner_image",
+      "label": "Show banner image",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_breadcrumb",
+      "label": "Show breadcrumb",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_parallax",
+      "label": "Enable parallax",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "title_uppercase",
+      "label": "Title uppercase",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show description",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "border_top",
+      "label": "Show border top",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "border_bottom",
+      "label": "Show border bottom",
+      "default": false
+    }, 
+    {
+      "type": "select",
+      "id": "banner_title_size",
+      "label": "Banner title size",
+      "default": "h-2",
+      "options": [
+        {
+          "value": "h-1",
+          "label": "Heading extra large"
+        },
+        {
+          "value": "h-2",
+          "label": "Heading large"
+        },
+        {
+          "value": "h-3",
+          "label": "Heading extra medium"
+        },
+        {
+          "value": "h-4",
+          "label": "Heading medium"
+        },
+        {
+          "value": "h-5",
+          "label": "Heading extra small"
+        },
+        {
+          "value": "h-6",
+          "label": "Heading small"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "breadcrumb_position",
+      "label": "Breadcrumb position",
+      "default": "on-collection-banner",
+      "options": [
+        {
+          "value": "on-collection-banner",
+          "label": "On collection banner"
+        },
+        {
+          "value": "after-collection-banner",
+          "label": "After collection banner"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "banner_height",
+      "label": "Banner height",
+      "default": "small-screen",
+      "options": [
+        {
+          "value": "very-small-screen",
+          "label": "Very small"
+        },
+        {
+          "value": "extra-small-screen",
+          "label": "Extra small"
+        },
+        {
+          "value": "small-screen",
+          "label": "Small"
+        },
+        {
+          "value": "medium-screen",
+          "label": "Medium"
+        },
+        {
+          "value": "large-screen",
+          "label": "Large"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment ",
+      "default": "center",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_color_style",
+      "label": "Content color style",
+      "default": "light-style",
+      "options": [
+        {
+          "value": "dark-style",
+          "label": "Dark"
+        },
+        {
+          "value": "light-style",
+          "label": "Light"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "banner_bg_color",
+      "label": "Banner Background color"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Banner image",
+      "info": "Recommended size 1920x300"
+    }
+  ]
+}
+{% endschema %}

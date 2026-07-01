@@ -1,0 +1,397 @@
+<section
+  id="{{ section.settings.section_id }}"
+  class="image-with-product section-{{ section.id }} {% if section.settings.section_show == false %}d-none{% endif %}{{ section.settings.section_class_name }} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }} d-md-block"
+  style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}"
+>
+  <div class="{{ section.settings.container_type }}">    
+    <div class="row {% if section.settings.gutter_show == false %}g-0{% endif %}{% if section.settings.left_product %} flex-row-reverse{% endif %}">
+      <div class="col-lg-6 product-banner{% if section.settings.left_product %} text-center text-lg-end {% else %} text-center text-lg-start{% endif %} {% if section.settings.product_bg_img != blank %}bg-image-left{% endif %}">
+        <div class="position-relative">
+          <a href="{{ section.settings.banner_url | default: '#' }}" aria-label="link">
+            {%- render 'responsive-image', image: section.settings.banner_image, placeholder_type: 'simple-image' -%}
+          </a>
+          {%- if section.settings.rotation_image != blank -%}
+            <div class="rotation-image {% if section.settings.enable_rotation_imge == true %}rotate-animation{% endif %}">
+              <img src="{{ section.settings.rotation_image | image_url }}" alt="" width="{{ section.settings.rotation_image.width }}" height="{{ section.settings.rotation_image.height }}" loading="lazy">              
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+      <div
+        class="col-lg-6 d-flex flex-column align-items-center justify-content-center image-product-wrapper {% if section.settings.product_bg_img != blank %}column-bg-image cover-background{% endif %}"
+        style="{%- if section.settings.product_bg_img != blank -%}background-image: url({{ section.settings.product_bg_img | image_url }});{% endif %}"
+      >
+      {%- if section.settings.heading != blank or section.settings.sub_heading != blank or section.settings.description != blank -%}
+        <div class="row w-100 image-product-heading d-flex flex-column align-items-center text-{{ section.settings.heading_alignment }} justify-content-{{ section.settings.heading_alignment }}">
+          <div class="col-12 image-product-inner">
+            {%- if section.settings.sub_heading != blank -%}
+              <div class="section-sub-heading">{{ section.settings.sub_heading }}</div>
+            {%- endif -%}
+            {%- if section.settings.heading != blank -%}
+              <h3 class="section-heading">{{ section.settings.heading }}</h3>
+            {%- endif -%}
+            {%- if section.settings.description != blank -%}
+              <div class="section-description">{{ section.settings.description }}</div>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+        <div class="w-100">
+          <div class="row row-cols-2{% if section.settings.left_product %} flex-row-reverse{% endif %} product-row justify-content-between align-items-center {{ settings.product_card_style }}">
+            {%- if section.settings.product_1 != blank -%}
+              <div class="col product-column">
+                <div class="product-box" slider="{{ section.settings.show_slider }}">
+                  {%- assign product = all_products[section.settings.product_1] -%}
+                  {%- render 'product-card',
+                    product: product,
+                    slider_options: '{ "loop": true, "autoplay": { "delay": 2500, "disableOnInteraction": false } }'
+                  -%}
+                </div>
+              </div>
+            {%- else -%}
+              <div class="col">
+                {%- render 'placeholder-images', placeholder_type: 'product-image' -%}
+                <div class="product-footer text-center placeholder-product" style="margin-bottom: 30px;">
+                  <span class="product-title alt-font">{{ 'onboarding.product_title' | t }}</span>
+                  <div class="price">{{ 5000 | money }}</div>
+                </div>
+              </div>
+            {%- endif -%}
+            {%- if section.settings.product_2 != blank -%}
+              <div class="col product-column">
+                <div class="product-box" slider="{{ section.settings.show_slider }}">
+                  {%- assign product2 = all_products[section.settings.product_2] -%}
+                  {%- render 'product-card',
+                    product: product2,
+                    slider_options: '{ "loop": true, "autoplay": { "delay": 3000, "disableOnInteraction": false } }'
+                  -%}
+                </div>
+              </div>
+            {%- else -%}
+              <div class="col">
+                {%- render 'placeholder-images', placeholder_type: 'product-image' -%}
+                <div class="product-footer text-center placeholder-product" style="margin-bottom: 30px;">
+                  <span class="product-title alt-font">{{ 'onboarding.product_title' | t }}</span>
+                  <div class="price">{{ 5000 | money }}</div>
+                </div>
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  {%- unless section.settings.use_default_section_typography == true -%}
+    .section-{{ section.id }} .section-heading {
+      font-size: {{ section.settings.section_heading_size }}px;
+      line-height: {{ section.settings.heading_line_height }}px;
+    }
+    .section-{{ section.id }} .section-sub-heading {
+      font-size: {{ section.settings.sub_heading_size }}px;
+      letter-spacing: {{ section.settings.subheading_letter_spacing }}px;
+      line-height: {{ section.settings.sub_heading_line_height }}px;
+    }
+  {%- endunless -%}
+  {%- if section.settings.section_heading_color != blank -%}
+    .section-{{ section.id }} .section-heading {
+      color: {{ section.settings.section_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_sub_heading_color != blank -%}
+    .section-{{ section.id }} .section-sub-heading {
+      color: {{ section.settings.section_sub_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_description_color != blank -%}
+    .section-{{ section.id }} .section-description {
+      color: {{ section.settings.section_description_color }};
+    }
+  {%- endif -%}
+</style>
+{% schema %}
+{
+  "name": "Image with product",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "textarea",
+      "id": "sub_heading",
+      "label": "Sub heading"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },    
+    {
+      "type": "checkbox",
+      "id": "gutter_show",
+      "label": "Show gutter",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Banner Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Image",
+      "info": "Recommended size 550x480"
+    },
+    {
+      "type": "url",
+      "id": "banner_url",
+      "label": "Banner URL"
+    },
+    {
+      "type": "checkbox",
+      "id": "left_product",
+      "label": "Show banner right side",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_rotation_imge",
+      "label": "Enable rotation image",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "rotation_image",
+      "label": "Rotation image",
+      "info": "Recommended size 140x140"
+    },
+    {
+      "type": "header",
+      "content": "Product settings"
+    },
+    {
+      "type": "product",
+      "id": "product_1",
+      "label": "Select product-1"
+    },
+    {
+      "type": "product",
+      "id": "product_2",
+      "label": "Select product-2"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_bg_img",
+      "label": "Product background image",
+      "info": "Recommended size 810x650"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_slider",
+      "label": "Enable product image gallery slider",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_default_section_typography",
+      "label": "Use section typography from theme settings",
+      "info": "By default section typography values will be used from theme settings. Uncheck this checkbox to use below values.",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "section_heading_size",
+      "min": 20,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 45
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "label": "Heading line height",
+      "unit": "px",
+      "min": 26,
+      "max": 120,
+      "step": 1,
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_size",
+      "min": 12,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Sub heading size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_line_height",
+      "label": "Sub heading line height",
+      "unit": "px",
+      "min": 24,
+      "max": 60,
+      "step": 1,
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "subheading_letter_spacing",
+      "min": 0,
+      "max": 10,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Sub heading letter spacing",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": "small-section-top",
+      "options": [
+        {
+          "value": "large-section-top",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-top",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-top",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-top",
+          "label": "Very small section"
+        },
+        {
+          "value": "pt-0",
+          "label": "No padding top"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": "small-section-bottom",
+      "options": [
+        {
+          "value": "large-section-bottom",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-bottom",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-bottom",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-bottom",
+          "label": "Very small section"
+        },
+        {
+          "value": "pb-0",
+          "label": "No padding bottom"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment ",
+      "default": "center",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "section_show",
+      "label": "Show section in mobile",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color"
+    },
+    {
+      "type": "color",
+      "id": "section_heading_color",
+      "label": "Section heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_sub_heading_color",
+      "label": "Section sub heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_description_color",
+      "label": "Section description color"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "section_class_name",
+      "label": "Section class name"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with product"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,476 @@
+<section
+  id="{{ section.settings.section_id }}"
+  class="section-{{ section.id }} {% if section.settings.section_show == false %}d-none{% endif %} {{ section.settings.section_class_name }} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }} d-md-block image-with-text-1"
+  style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}"
+>
+  <div class="{{ section.settings.container_type }}">
+    <div class="row align-items-center">
+      {%- if section.settings.hide_image_block == true -%}
+        <div class="col-lg-{{ section.settings.column_width }} image-wrap position-relative">
+          {%- render 'responsive-image', image: section.settings.image, placeholder_type: 'simple-image' -%}
+          <div class="support-wrap text-center">
+            {%- if section.settings.support_days != blank or section.settings.support_title != blank -%}
+              <div class="support-content">
+                {%- if section.settings.support_days != blank -%}
+                  <h4 class="mb-0 alt-font">{{ section.settings.support_days }}</h4>
+                {%- endif -%}
+                {%- if section.settings.support_title != blank -%}
+                  <span>{{ section.settings.support_title }}</span>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+            {%- if section.settings.support_phone != blank -%}
+              <div class="phone text-small">
+                <a href="tel:{{ section.settings.support_phone }}" aria-label="tel">{{ section.settings.support_phone }}</a>
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+      {%- if section.settings.hide_content_block == true -%}
+        <div class="col-lg-{{ section.settings.column_width1 }} content-wrap">
+          {%- if section.settings.block_sub_heading != blank -%}
+            <div class="section-sub-heading alt-font">{{ section.settings.block_sub_heading }}</div>
+          {%- endif -%}
+          {%- if section.settings.block_heading != blank -%}
+            <h3 class="section-heading alt-font">{{ section.settings.block_heading }}</h3>
+          {%- endif -%}
+          {%- if section.settings.block_description != blank -%}
+            <div class="section-description">{{ section.settings.block_description }}</div>
+          {%- endif -%}
+          <ul>
+            {%- for block in section.blocks -%}
+              {%- if block.settings.title != blank or block.settings.description != blank -%}
+                <li>
+                  {%- if block.settings.title != blank -%}
+                    <span class="text-small text-dark-gray alt-font">{{ block.settings.title }}</span>
+                  {%- endif -%}
+                  {%- if block.settings.description != blank -%}
+                    {{ block.settings.description }}
+                  {%- endif -%}
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+<style>
+  {%- unless section.settings.use_default_section_typography == true -%}
+    .section-{{ section.id }} .section-heading {
+      font-size: {{ section.settings.section_heading_size }}px;
+      line-height: {{ section.settings.heading_line_height }}px;
+    }
+    .section-{{ section.id }} .section-sub-heading {
+      font-size: {{ section.settings.sub_heading_size }}px;
+      letter-spacing: {{ section.settings.subheading_letter_spacing }}px;
+      line-height: {{ section.settings.sub_heading_line_height }}px;
+    }
+  {%- endunless -%}
+  {%- if section.settings.section_heading_color != blank -%}
+    .section-{{ section.id }} .section-heading {
+      color: {{ section.settings.section_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_sub_heading_color != blank -%}
+    .section-{{ section.id }} .section-sub-heading {
+      color: {{ section.settings.section_sub_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_description_color != blank -%}
+    .section-{{ section.id }} .section-description {
+      color: {{ section.settings.section_description_color }};
+    }
+  {%- endif -%}
+</style>
+{% schema %}
+{
+  "name": "Image with text 2",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "header",
+      "content": "Image block"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Recommended size 800x900"
+    },
+    {
+      "type": "text",
+      "id": "support_days",
+      "label": "Support days",
+      "default": "24/7"
+    },
+    {
+      "type": "text",
+      "id": "support_title",
+      "label": "Support title",
+      "default": "Customer support"
+    },
+    {
+      "type": "text",
+      "id": "support_phone",
+      "label": "Support phone number",
+      "default": "0222 8899900"
+    },    
+    {
+      "type": "select",
+      "id": "column_width",
+      "label": "Column width",
+      "default": "6",
+      "info": "Total columns of whole block should not be more than 12 columns",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column - 1/12"
+        },
+        {
+          "value": "2",
+          "label": "2 columns - 1/6"
+        },
+        {
+          "value": "3",
+          "label": "3 columns - 1/4"
+        },
+        {
+          "value": "4",
+          "label": "4 columns - 1/3"
+        },
+        {
+          "value": "5",
+          "label": "5 columns - 5/12"
+        },
+        {
+          "value": "6",
+          "label": "6 columns - 1/2"
+        },
+        {
+          "value": "7",
+          "label": "7 columns - 7/12"
+        },
+        {
+          "value": "8",
+          "label": "8 columns - 2/3"
+        },
+        {
+          "value": "9",
+          "label": "9 columns - 3/4"
+        },
+        {
+          "value": "10",
+          "label": "10 columns - 5/6"
+        },
+        {
+          "value": "11",
+          "label": "11 columns - 11/12"
+        },
+        {
+          "value": "12",
+          "label": "12 columns - 1/1"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_image_block",
+      "label": "Show image block",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Content block"
+    },
+    {
+      "type": "text",
+      "id": "block_heading",
+      "label": "Heading",
+      "default": "World's best customer relation services"
+    },
+    {
+      "type": "text",
+      "id": "block_sub_heading",
+      "label": "Sub heading",
+      "default": "Elegant and luxury services"
+    },
+    {
+      "type": "richtext",
+      "id": "block_description",
+      "label": "Description",
+      "default": "<p>Lorem ipsum dolor consectetur adipiscing eiusmod tempor incididunt labore dolore magna.</p>"
+    },
+    {
+      "type": "select",
+      "id": "column_width1",
+      "label": "Column width",
+      "default": "5",
+      "info": "Total columns of whole block should not be more than 12 columns",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column - 1/12"
+        },
+        {
+          "value": "2",
+          "label": "2 columns - 1/6"
+        },
+        {
+          "value": "3",
+          "label": "3 columns - 1/4"
+        },
+        {
+          "value": "4",
+          "label": "4 columns - 1/3"
+        },
+        {
+          "value": "5",
+          "label": "5 columns - 5/12"
+        },
+        {
+          "value": "6",
+          "label": "6 columns - 1/2"
+        },
+        {
+          "value": "7",
+          "label": "7 columns - 7/12"
+        },
+        {
+          "value": "8",
+          "label": "8 columns - 2/3"
+        },
+        {
+          "value": "9",
+          "label": "9 columns - 3/4"
+        },
+        {
+          "value": "10",
+          "label": "10 columns - 5/6"
+        },
+        {
+          "value": "11",
+          "label": "11 columns - 11/12"
+        },
+        {
+          "value": "12",
+          "label": "12 columns - 1/1"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_content_block",
+      "label": "Show content block",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_default_section_typography",
+      "label": "Use section typography from theme settings",
+      "info": "By default section typography values will be used from theme settings. Uncheck this checkbox to use below values.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "section_heading_size",
+      "label": "Heading size",
+      "unit": "px",
+      "min": 20,
+      "max": 70,
+      "step": 1,
+      "default": 45
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "label": "Heading line height",
+      "unit": "px",
+      "min": 35,
+      "max": 95,
+      "step": 1,
+      "default": 45
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_size",
+      "label": "Sub heading size",
+      "unit": "px",
+      "min": 12,
+      "max": 50,
+      "step": 1,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_line_height",
+      "label": "Sub heading line height",
+      "unit": "px",
+      "min": 24,
+      "max": 60,
+      "step": 1,
+      "default": 35
+    },
+    {
+      "type": "range",
+      "id": "subheading_letter_spacing",
+      "min": 0,
+      "max": 10,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Sub heading letter spacing",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": "small-section-top",
+      "options": [
+        {
+          "value": "large-section-top",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-top",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-top",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-top",
+          "label": "Very small section"
+        },
+        {
+          "value": "pt-0",
+          "label": "No padding top"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": "small-section-bottom",
+      "options": [
+        {
+          "value": "large-section-bottom",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-bottom",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-bottom",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-bottom",
+          "label": "Very small section"
+        },
+        {
+          "value": "pb-0",
+          "label": "No padding bottom"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "section_show",
+      "label": "Show section in mobile",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color"
+    },
+    {
+      "type": "color",
+      "id": "section_heading_color",
+      "label": "Section heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_sub_heading_color",
+      "label": "Section sub heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_description_color",
+      "label": "Section description color"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "section_class_name",
+      "label": "Section class name"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "list-item",
+      "name": "List item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block title",
+          "default": "Fast delivery same day"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Lorem ipsum is simply amet consectetur adipiscing elit do eiusmod tempor</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with text 2",
+      "blocks": [
+        {
+          "type": "list-item"
+        },
+        {
+          "type": "list-item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

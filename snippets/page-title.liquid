@@ -1,0 +1,89 @@
+<section class="page-title page-title-{{ section.settings.page_title_style }} {{ section.settings.content_color_style }} {% if section.settings.border_top == true %}border-tp {% endif %} {% if section.settings.border_bottom == true %}border-bt {% endif %}
+  {%- if section.settings.page_title_style == 'style-1' -%} 
+    {% if section.settings.enable_parallax == true and banner_image != null %} parallax{% elsif banner_image != null %} cover-background {% endif %}" {% if section.settings.enable_parallax == true and banner_image != null %}data-parallax-background-ratio="0.5" {% endif %} style="background-color: {{ section.settings.banner_bg_color }};
+      {% if section.settings.show_banner_image and banner_image != null %}background-image: url( {{ banner_image | image_url }} );{% endif %}">
+    <div class="{% if section.settings.show_full_width %}container-fluid {% else %}container{% endif %}">
+      <div class="row justify-content-{{ section.settings.content_alignment }} {{ section.settings.banner_height }}">
+        <div class="col-md-8 col-lg-6 d-flex flex-column text-{{ section.settings.content_alignment }} align-items-{{ section.settings.content_alignment }} justify-content-center">
+          <h1 class="{{ section.settings.banner_title_size }} {% if section.settings.title_uppercase %}text-uppercase{% endif %} alt-font">{{ page_title }}</h1>
+          {%- if description != blank and section.settings.show_description -%}
+            <div class="description">{{ description }}</div>
+          {%- endif -%}
+          {%- if section.settings.hide_breadcrumb == true and section.settings.breadcrumb_position != 'after-collection-banner' -%}
+            {%- render 'breadcrumb' -%} 
+          {%- endif -%}
+        </div>
+      </div>
+    </div>    
+  {%- endif -%}
+  {%- if section.settings.page_title_style == "style-2" -%}
+  {% if section.settings.enable_parallax == true and banner_image != null %} parallax{% elsif banner_image != null %} cover-background {% endif %}" {% if section.settings.enable_parallax == true and banner_image != null %}data-parallax-background-ratio="0.5" {% endif %} style="background-color: {{ section.settings.banner_bg_color }};
+    {% if section.settings.show_banner_image and banner_image != null %}background-image: url( {{ banner_image | image_url }} );{% endif %}">
+    <div class="{% if section.settings.show_full_width %}container-fluid {% else %}container{% endif %}">
+      <div class="row justify-content-{{ section.settings.content_alignment }} {{ section.settings.banner_height }} align-items-center align-content-center">
+        <div class="col-12 d-flex flex-md-row flex-column align-items-center justify-content-{{ section.settings.content_alignment }}">        
+          <h1 class="{{ section.settings.banner_title_size }} {% if section.settings.title_uppercase %}text-uppercase{% endif %} alt-font">{{ page_title }}</h1>
+          {%- if description != blank and section.settings.show_description -%}
+            <div class="description">{{ description }}</div>
+          {%- endif -%}
+        </div>
+        {%- if section.settings.hide_breadcrumb == true and section.settings.breadcrumb_position != 'after-collection-banner' -%}
+          <div class="col-12 d-flex justify-content-{{ section.settings.content_alignment }}">
+            {%- render 'breadcrumb' -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+    {%- if section.settings.hide_breadcrumb == true and section.settings.breadcrumb_position == 'after-collection-banner' -%}
+      <div class="{% if section.settings.show_full_width %}container-fluid {% else %}container{% endif %}">
+        <div class="row outside-breadcrumb">
+          <div class="col-12">
+            {%- render 'breadcrumb' -%}
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+  {%- if section.settings.page_title_style == "style-3" -%}
+    {% if section.settings.enable_parallax == true and banner_image != null %} parallax{% elsif banner_image != null %} cover-background {% endif %}" {% if section.settings.enable_parallax == true and banner_image != null %}data-parallax-background-ratio="0.5" {% endif %} style="background-color: {{ section.settings.banner_bg_color }};
+      {% if section.settings.show_banner_image and banner_image != null %}background-image: url( {{ banner_image | image_url }} );{% endif %}">
+      <div class="{% if section.settings.show_full_width %}container-fluid {% else %}container{% endif %}">
+        <div class="row justify-content-{{ section.settings.content_alignment }} {{ section.settings.banner_height }}">
+          <div class="col-md-8 col-lg-6 d-flex flex-column text-{{ section.settings.content_alignment }} align-items-{{ section.settings.content_alignment }} justify-content-center">
+            <h1 class="{{ section.settings.banner_title_size }} {% if section.settings.title_uppercase %}text-uppercase{% endif %} alt-font">
+            {%- assign title_words = page_title | split: " " -%}  
+            {%- assign content_text = title_words | first | strip -%}
+            {{ content_text }}
+            {%- if title_words.size > 1 -%}
+              <br><span class="second-word">{{ page_title | replace : content_text, "" | strip }}</span>
+            {%- endif -%}
+            </h1>
+            {%- if description != blank and section.settings.show_description -%}
+              <div class="description">{{ description }}</div>
+            {%- endif -%}
+            {%- if section.settings.hide_breadcrumb == true and section.settings.breadcrumb_position != 'after-collection-banner' -%}
+              {%- render 'breadcrumb' -%} 
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    {%- if section.settings.hide_breadcrumb == true and section.settings.breadcrumb_position == 'after-collection-banner' -%}
+      <div class="{% if section.settings.show_full_width %}container-fluid {% else %}container{% endif %}">
+        <div class="row outside-breadcrumb">
+          <div class="col-12">
+            {%- render 'breadcrumb' -%}
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+</section>
+{%- if section.settings.hide_breadcrumb == true and section.settings.breadcrumb_position == 'after-collection-banner' -%}
+  <div class="{% if section.settings.show_full_width %}container-fluid {% else %}container{% endif %}">
+    <div class="row outside-breadcrumb">
+      <div class="col-12">
+        {%- render 'breadcrumb' -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}

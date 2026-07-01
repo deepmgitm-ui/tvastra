@@ -1,0 +1,709 @@
+{%- capture sliderOptions -%}
+  "spaceBetween": 30,
+  "loop": {{ section.settings.loop }},
+  {%- if section.settings.autoplay == true -%}
+  "autoplay": {
+    "delay": {{ section.settings.auto_speed_delay }},
+    "disableOnInteraction": false
+  },
+  {%- endif -%} 
+  "keyboard":{
+    "enabled":true,
+    "onlyInViewport":true
+  },
+  "navigation": {
+    "nextEl": ".section-{{ section.id }} .swiper-button-next",
+    "prevEl": ".section-{{ section.id }} .swiper-button-prev"
+  },
+  "speed": {%- if section.settings.transition_speed != blank -%}{{ section.settings.transition_speed }}{%- else -%}500{%- endif -%},
+  "breakpoints": { 
+    "320": { "slidesPerView": {{ section.settings.slide_per_view_mobile }} },
+    "768": { "slidesPerView": {{ section.settings.slide_per_view_tablet }} },
+    "992": { "slidesPerView": {{ section.settings.slide_per_view_mini_desktop }} },
+    "1200": { "slidesPerView": {{ section.settings.slide_per_view_desktop }} } 
+  }
+{%- endcapture -%} 
+<section
+  id="{{ section.settings.section_id }}"
+  class="section-{{ section.id }} shop-collection-category-{{ section.settings.shop_by_category_style }}  position-relative overflow-hidden section-{{ section.id }} {% if section.settings.section_show == false %}d-none{% endif %}{{ section.settings.section_class_name }} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }} d-md-block"
+  style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}"
+>
+  <div class="{{ section.settings.container_type }}">
+    {%- if section.settings.shop_by_category_style == 'style-1' -%}
+      <div class="row justify-content-center align-items-center text-{{ section.settings.heading_alignment }}">
+        {%- if section.settings.heading != blank
+          or section.settings.sub_heading != blank
+          or section.settings.description != blank
+        -%}
+          <div class="col-lg-3 heading-wrapper position-relative">
+            {%- if section.settings.sub_heading != blank -%}
+              <div class="section-sub-heading">{{ section.settings.sub_heading }}</div>
+            {%- endif -%}
+            {%- if section.settings.heading != blank -%}
+              <h3 class="section-heading alt-font">{{ section.settings.heading }}</h3>
+            {%- endif -%}
+            {%- if section.settings.description != blank -%}
+              <div class="section-description">{{ section.settings.description }}</div>
+            {%- endif -%}
+            <div class="nav-wrapper">
+              <div class="swiper-button-prev"><i class="bi bi-arrow-left-short"></i></div>
+              <div class="swiper-button-next"><i class="bi bi-arrow-right-short"></i></div>
+            </div>
+          </div>
+        {%- endif -%}
+        <div class="col-lg-9">
+          <div class="swiper shop-colllection-slider shop-by-collection" data-slider-options='{ {{ sliderOptions }} }'>
+            <div class="swiper-wrapper">
+              {%- for block in section.blocks -%}
+                <div class="swiper-slide collection-item">
+                  {%- assign collection = block.settings['collection-item'] -%}
+                  <a href="{{ collection.url }}" style="display:block" aria-label="collection">
+                    <div class="collection-media">
+                      {%- if collection.image != blank -%}
+                        <img
+                          src="{{ collection.image | image_url }}"
+                          alt="{{ collection.title | escape }}"
+                          width="auto"
+                          height="auto"
+                          loading="lazy"
+                          class="lazyload"
+                        >
+                      {%- else -%}
+                        {%- render 'responsive-image', placeholder_type: 'collection-image' -%}
+                      {%- endif -%}
+                    </div>
+                    <div class="collection-content">
+                      <h5 class="alt-font">{{ collection.title | default: 'Collection name' }}</h5>
+                      {%- liquid
+                        assign available_products = 0
+                        for product in collection.products
+                          if product.available
+                            assign available_products = available_products | plus: 1
+                          endif
+                        endfor
+                      -%}
+                      {%- if available_products > 0 -%}
+                        <span>
+                          {%- if available_products < 10 -%}0{%- endif -%}
+                          {{ available_products }}
+                          {{ 'sections.shop_by_category.available_products_label' | t -}}
+                        </span>
+                      {%- else -%}
+                        <span>17 {{ 'sections.shop_by_category.available_products_label' | t -}}</span>
+                      {%- endif -%}
+                    </div>
+                  </a>
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    {%- elsif section.settings.shop_by_category_style == 'style-2' -%}
+      {%- if section.settings.heading != blank
+        or section.settings.sub_heading != blank
+        or section.settings.description != blank
+      -%}
+        <div class="row heading-wrapper title-{{ section.settings.title_style }} align-items-{% if section.settings.description != blank %}start{% else %}center{% endif %} text-center text-lg-start">
+          {%- render 'section-title-style', heading_alignment: section.settings.heading_alignment -%}
+        </div>
+      {%- endif -%}
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-5 justify-content-center">
+        {%- for block in section.blocks -%}
+          <div class="col collection-item d-flex align-items-center">
+            <div class="collection-item-box">
+              {%- assign collection = block.settings['collection-item'] -%}
+              <a href="{{ collection.url }}" style="display:block" aria-label="collection">
+                <div class="collection-media">
+                  {%- render 'responsive-image', image: collection.image, placeholder_type: 'collection-image' -%}
+                </div>
+                <div class="d-flex justify-content-between align-items-center collection-content"> 
+                  {%- assign available_products = 0 -%}
+                  {%- for product in collection.products -%}
+                    {%- if product.available -%}
+                      {%- assign available_products = available_products | plus: 1 -%} 
+                    {%- endif -%}
+                  {%- endfor -%}
+                  <h5 class="alt-font">{{ collection.title | default: 'Collection name' }}</h5>
+                  {%- if available_products > 0 -%}
+                    <span>
+                      <span>
+                        {{- available_products }}
+                        {{ 'sections.shop_by_category.available_products_label' | t -}}
+                      </span>
+                      <i class="bi bi-arrow-right-short"></i>
+                    </span>
+                  {%- else -%}
+                    <span>17 {{ 'sections.shop_by_category.available_products_label' | t -}}</span>
+                  {%- endif -%}
+                </div>
+              </a>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- elsif section.settings.shop_by_category_style == 'style-3' -%}
+      {%- if section.settings.heading != blank
+        or section.settings.sub_heading != blank
+        or section.settings.description != blank
+      -%}
+        <div class="row heading-wrapper title-{{ section.settings.title_style }} align-items-{% if section.settings.description != blank %}start{% else %}center{% endif %} text-center text-lg-start">
+          {%- render 'section-title-style', heading_alignment: section.settings.heading_alignment -%}
+        </div>
+      {%- endif -%}
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-center grid-row">
+        {%- for block in section.blocks -%}
+          <div class="col collection-item">
+            <div class="collection-item-box">
+              {% assign collection = block.settings['collection-item'] %}
+              <a href="{{ collection.url }}" aria-label="collection">
+                <div class="collection-media">
+                  {%- render 'responsive-image', image: collection.image, placeholder_type: 'collection-image' -%}
+                </div>
+                <div class="d-flex justify-content-between align-items-center collection-content">
+                  {% assign available_products = 0 %} 
+                  {% for product in collection.products %}
+                    {%- if product.available -%}
+                      {%- assign available_products = available_products | plus: 1 -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                  <h5 class="alt-font">{{ collection.title | default: 'Collection name' }}</h5>
+                  <div class="action-wrapper">
+                    {%- if available_products > 0 -%}
+                      <span class="item-count">
+                        {{- available_products }}
+                        {{ 'sections.shop_by_category.available_products_label' | t -}}
+                      </span>
+                    {%- else -%}
+                      <span>17 {{ 'sections.shop_by_category.available_products_label' | t -}}</span>
+                    {%- endif -%}
+                    {%- if section.settings.shop_by_category_style == 'style-3' and available_products > 0 %}
+                      <i class="bi bi-arrow-right"></i>
+                    {%- endif -%}
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- elsif section.settings.shop_by_category_style == 'style-4' -%}
+      {%- if section.settings.heading != blank
+        or section.settings.sub_heading != blank
+        or section.settings.description != blank
+      -%}
+        <div class="row heading-wrapper title-{{ section.settings.title_style }} align-items-{% if section.settings.description != blank %}start{% else %}center{% endif %} text-center text-lg-start">
+          {%- render 'section-title-style', heading_alignment: section.settings.heading_alignment -%}
+        </div>
+      {%- endif -%}
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-center">
+        {%- for block in section.blocks -%}
+          <div class="col collection-item d-flex align-items-center {{ section.settings.shop_by_category_style }}">
+            <div class="collection-item-box w-100">
+              {%- assign collection = block.settings['collection-item'] -%}
+              {%- render 'responsive-image', image: collection.image, placeholder_type: 'collection-image' -%}
+              <div class="d-flex flex-column align-items-start collection-content">
+                {%- liquid
+                  assign available_products = 0
+                  for product in collection.products
+                    if product.available
+                      assign available_products = available_products | plus: 1
+                    endif
+                  endfor
+                -%}
+                {%- if available_products > 0 -%}
+                  <span class="item-count">
+                    {{- available_products }}
+                    {{ 'sections.shop_by_category.available_products_label' | t -}}
+                  </span>
+                {%- endif -%}
+                <a href="{{ collection.url }}" aria-label="collection">
+                  <h6 class="alt-font">{{ collection.title | default: 'Collection name' }}</h6>
+                </a>
+                {%- if block.settings.button_text != blank -%}
+                  <a class="shop-btn" href="{{ collection.url }}" aria-label="btn">
+                    <span>
+                      <span class="btn-text">{{ block.settings.button_text }}</span>
+                      <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                      <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                    </span>
+                  </a>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="row align-items-start"> 
+        {%- if section.settings.heading != blank
+        or section.settings.sub_heading != blank
+        or section.settings.description != blank
+      -%}
+        <div class="row heading-wrapper title-{{ section.settings.title_style }} align-items-{% if section.settings.description != blank %}start{% else %}center{% endif %} text-center text-lg-start">
+          {%- render 'section-title-style', heading_alignment: section.settings.heading_alignment -%}
+        </div>
+      {%- endif -%}
+        <div class="col-md-5 col-lg-4 collection-title-wrapper">
+          <div class="collection-title-inner cover-background h-100" style="{% if section.settings.category_bg != blank %}background-image: url({{ section.settings.category_bg | image_url }});{% endif %}">
+            {%- for block in section.blocks -%}
+              {%- assign collection = block.settings['collection-item'] -%}
+              <span class="collection-title d-block{% if forloop.index == 1 %} active{% endif %}" >
+                <a href="{{ collection.url }}" aria-label="collection"  data-id="shop-collection-{{ forloop.index }}">
+                  {%- liquid
+                    assign available_products = 0
+                    for product in collection.products
+                      if product.available
+                        assign available_products = available_products | plus: 1
+                      endif
+                    endfor
+                  -%}
+                  <span  class="label" data-id="shop-collection-{{ forloop.index }}">{{ collection.title | default: 'Collection name' }}
+                  </span data-id="shop-collection-{{ forloop.index }}">
+                  {%- if available_products > 0 -%}
+                  <span class="count" data-id="shop-collection-{{ forloop.index }}">
+                        {{- available_products }}
+                        {{ 'sections.shop_by_category.available_products_label' | t -}}
+                  </span>                 
+                  {%- endif -%}
+                </a>
+              </span>
+            {%- endfor -%}
+          </div>
+        </div>
+        <div class="col-md-7 col-lg-8 right-banner">
+          {%- for block in section.blocks -%}
+            <div class="collection-banner{% unless forloop.index == 1 %} d-none {% else %} active{% endunless %}" id="shop-collection-{{ forloop.index }}">
+                {%- assign collection = block.settings['collection-item'] -%}
+                <a href="{{ collection.url }}">
+                  {%- render 'responsive-image', image: collection.image, placeholder_type: 'collection-image'- %}
+                </a>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+<style>
+  {%- unless section.settings.use_default_section_typography == true -%}
+    .section-{{ section.id }} .section-heading {
+      font-size: {{ section.settings.section_heading_size }}px;
+      line-height: {{ section.settings.heading_line_height }}px;
+    }
+    .section-{{ section.id }} .section-sub-heading {
+      font-size: {{ section.settings.sub_heading_size }}px;
+      letter-spacing: {{ section.settings.subheading_letter_spacing }}px;
+      line-height: {{ section.settings.sub_heading_line_height }}px;
+    }
+  {%- endunless -%}
+  {%- if section.settings.section_heading_color != blank -%}
+    .section-{{ section.id }} .section-heading {
+      color: {{ section.settings.section_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_sub_heading_color != blank -%}
+    .section-{{ section.id }} .section-sub-heading {
+      color: {{ section.settings.section_sub_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_description_color != blank -%}
+    .section-{{ section.id }} .section-description {
+      color: {{ section.settings.section_description_color }};
+    }
+  {%- endif -%}
+</style>
+{% schema %}
+{
+  "name": "Shop by category",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "shop_by_category_style",
+      "label": "Shop by category style",
+      "options": [
+        {
+          "value": "style-1",
+          "label": "Style-1"
+        },
+        {
+          "value": "style-2",
+          "label": "Style-2"
+        },
+        {
+          "value": "style-3",
+          "label": "Style-3"
+        },
+        {
+          "value": "style-4",
+          "label": "Style-4"
+        },
+        {
+          "value": "style-5",
+          "label": "Style-5"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop by category",
+      "info": "Wrap word in square bracket for stylish word. e.g. [Hello] World"
+    },
+    {
+      "type": "textarea",
+      "id": "sub_heading",
+      "label": "Sub heading",
+      "default": "COLLECTION"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "title_style",
+      "label": "Title style",
+      "default": "style-1",
+      "info": "Not applicable in shop by category style 1",
+      "options": [
+        {
+          "value": "style-1",
+          "label": "Style-1"
+        },
+        {
+          "value": "style-2",
+          "label": "Style-2"
+        },
+        {
+          "value": "style-3",
+          "label": "Style-3"
+        }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "category_bg",
+      "label": "Content background image",
+      "info": "Applicable only when shop by category style is style 5"
+    },
+    {
+      "type": "header",
+      "content": "Slider Configuration"
+    },
+    {
+      "type": "paragraph",
+      "content": "Applicable only when shop by category style is style 1"
+    },
+    {
+      "type": "range",
+      "id": "slide_per_view_desktop",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "label": "Slide per view desktop",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "slide_per_view_mini_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3,
+      "label": "Slide per view mini desktop"
+    },
+    {
+      "type": "range",
+      "id": "slide_per_view_tablet",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "label": "Slide per view tablet",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "slide_per_view_mobile",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "label": "Slide per view mobile",
+      "default": 2
+    },
+    {
+      "type": "text",
+      "id": "transition_speed",
+      "label": "Transition speed",
+      "default": "500",
+      "info": "Enter slide speed time like 500, where 1000 = 1 second"
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "auto_speed_delay",
+      "label": "Autoplay speed delay",
+      "default": "2500",
+      "info": "Enter delay time (before switching to other slide) like 500, where 1000 = 1 second"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Image",
+      "info": "Recommended size 600x465"
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_default_section_typography",
+      "label": "Use section typography from theme settings",
+      "info": "By default section typography values will be used from theme settings. Uncheck this checkbox to use below values.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "section_heading_size",
+      "min": 20,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "label": "Heading line height",
+      "unit": "px",
+      "min": 26,
+      "max": 120,
+      "step": 1,
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_size",
+      "min": 12,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Sub heading size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_line_height",
+      "label": "Sub heading line height",
+      "unit": "px",
+      "min": 24,
+      "max": 60,
+      "step": 1,
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "subheading_letter_spacing",
+      "min": 0,
+      "max": 10,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Sub heading letter spacing",
+      "default": 1
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": "small-section-top",
+      "options": [
+        {
+          "value": "large-section-top",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-top",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-top",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-top",
+          "label": "Very small section"
+        },
+        {
+          "value": "pt-0",
+          "label": "No padding top"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": "small-section-bottom",
+      "options": [
+        {
+          "value": "large-section-bottom",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-bottom",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-bottom",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-bottom",
+          "label": "Very small section"
+        },
+        {
+          "value": "pb-0",
+          "label": "No padding buttom"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment ",
+      "default": "start",
+      "info": "Not applicable in title style-2",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "section_show",
+      "label": "Show section in mobile",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color"
+    },
+    {
+      "type": "color",
+      "id": "section_heading_color",
+      "label": "Section heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_sub_heading_color",
+      "label": "Section sub heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_description_color",
+      "label": "Section description color"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "section_class_name",
+      "label": "Section class name"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection item",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection-item",
+          "label": "Select collection"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "Shop Collection",
+          "info": "Only applicable in style-4"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop by category",
+      "blocks": [
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

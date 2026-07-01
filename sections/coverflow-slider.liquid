@@ -1,0 +1,882 @@
+{% comment %} Tvastra 3D Coverflow Slider — v2 Smooth Makhan Edition {% endcomment %}
+
+<section id="tcf-{{ section.id }}" class="tcf-section" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;">
+
+  <div class="tcf-header">
+    <span class="tcf-label"> {{ section.settings.eyebrow | default: 'OUR COLLECTIONS' }}</span>
+    {% if section.settings.view_all_link != blank %}
+      <a href="{{ section.settings.view_all_link }}" class="tcf-viewall">VIEW ALL &nbsp;→</a>
+    {% endif %}
+  </div>
+
+  <div class="tcf-stage-wrap">
+    <div class="tcf-stage">
+      <div class="tcf-track">
+        {%- for block in section.blocks -%}
+          <div class="tcf-card"
+               data-idx="{{ forloop.index0 }}"
+               data-href="{{ block.settings.link }}"
+               data-product-name="{{ block.settings.product_name | escape }}"
+               {{ block.shopify_attributes }}>
+
+            <div class="tcf-card-bg">
+              {%- if block.settings.image != blank -%}
+                <img src="{{ block.settings.image | image_url: width: 700 }}"
+                     alt="{{ block.settings.title | escape }}" loading="lazy">
+              {%- else -%}
+                <div class="tcf-card-placeholder"></div>
+              {%- endif -%}
+              <div class="tcf-card-overlay"></div>
+            </div>
+
+            <div class="tcf-glass"></div>
+            <div class="tcf-neon-border"></div>
+
+            <div class="tcf-card-content">
+              <div class="tcf-card-top">
+                {%- if block.settings.badge != blank -%}
+                  <span class="tcf-badge">{{ block.settings.badge }}</span>
+                {%- endif -%}
+              </div>
+              <div class="tcf-card-body">
+                {%- if block.settings.title != blank -%}
+                  <h3 class="tcf-card-title">{{ block.settings.title }}</h3>
+                {%- endif -%}
+                {%- if block.settings.subtitle != blank -%}
+                  <p class="tcf-card-sub">{{ block.settings.subtitle }}</p>
+                {%- endif -%}
+                <a class="tcf-explore-btn"
+                   href="{{ block.settings.link | default: '#' }}"
+                   tabindex="-1"
+                   aria-hidden="true">
+                  <span class="tcf-explore-txt">{{ block.settings.button_label | default: 'EXPLORE' }}</span>
+                  <span class="tcf-explore-arrow">→</span>
+                </a>
+              </div>
+            </div>
+
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  <div class="tcf-product-name-wrap">
+    <span class="tcf-product-name-text" aria-live="polite"></span>
+  </div>
+
+  <div class="tcf-controls">
+    <button class="tcf-btn-nav tcf-btn-prev" aria-label="Prev">&#8249;</button>
+
+    <div class="tcf-dots">
+      {%- for block in section.blocks -%}
+        <button class="tcf-dot" data-goto="{{ forloop.index0 }}"></button>
+      {%- endfor -%}
+    </div>
+
+    <button class="tcf-btn-nav tcf-btn-next" aria-label="Next">&#8250;</button>
+  </div>
+
+</section>
+
+<style>
+/* ============================
+   MASTER CUSTOMIZATION STYLES
+============================ */
+{%- if section.settings.heading_font != blank -%}
+  {{ section.settings.heading_font | font_face: font_display: 'swap' }}
+{%- endif -%}
+{%- if section.settings.body_font != blank -%}
+  {{ section.settings.body_font | font_face: font_display: 'swap' }}
+{%- endif -%}
+
+/* Eyebrow (Explore By Collection) Master Control */
+#tcf-{{ section.id }} .tcf-label {
+  font-size: {{ section.settings.eyebrow_size }}px !important;
+  letter-spacing: {{ section.settings.eyebrow_spacing }}px !important;
+  {%- if section.settings.eyebrow_color != blank -%}
+    color: {{ section.settings.eyebrow_color }} !important;
+  {%- endif -%}
+  
+  {%- if section.settings.heading_font != blank -%}
+    font-family: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }} !important;
+    font-weight: {{ section.settings.heading_font.weight }} !important;
+    font-style: {{ section.settings.heading_font.style }} !important;
+  {%- endif -%}
+}
+
+#tcf-{{ section.id }} .tcf-card-title,
+#tcf-{{ section.id }} .tcf-product-name-text {
+  {%- if section.settings.heading_font != blank -%}
+    font-family: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }} !important;
+    font-weight: {{ section.settings.heading_font.weight }} !important;
+    font-style: {{ section.settings.heading_font.style }} !important;
+  {%- endif -%}
+}
+
+#tcf-{{ section.id }} .tcf-card-sub,
+#tcf-{{ section.id }} .tcf-viewall,
+#tcf-{{ section.id }} .tcf-explore-btn,
+#tcf-{{ section.id }} .tcf-badge {
+  {%- if section.settings.body_font != blank -%}
+    font-family: {{ section.settings.body_font.family }}, {{ section.settings.body_font.fallback_families }} !important;
+    font-weight: {{ section.settings.body_font.weight }} !important;
+    font-style: {{ section.settings.body_font.style }} !important;
+  {%- endif -%}
+}
+
+/* Colors */
+{%- if section.settings.card_title_color != blank -%}
+  #tcf-{{ section.id }} .tcf-card-title { color: {{ section.settings.card_title_color }} !important; }
+{%- endif -%}
+{%- if section.settings.card_subtitle_color != blank -%}
+  #tcf-{{ section.id }} .tcf-card-sub { color: {{ section.settings.card_subtitle_color }} !important; }
+{%- endif -%}
+{%- if section.settings.product_name_color != blank -%}
+  #tcf-{{ section.id }} .tcf-product-name-text { color: {{ section.settings.product_name_color }} !important; }
+{%- endif -%}
+
+/* Shapes & Borders */
+#tcf-{{ section.id }} .tcf-card,
+#tcf-{{ section.id }} .tcf-card-bg,
+#tcf-{{ section.id }} .tcf-glass,
+#tcf-{{ section.id }} .tcf-neon-border {
+  border-radius: {{ section.settings.card_border_radius }}px !important;
+}
+
+#tcf-{{ section.id }} .tcf-badge,
+#tcf-{{ section.id }} .tcf-explore-btn,
+#tcf-{{ section.id }} .tcf-explore-btn::before {
+  border-radius: {{ section.settings.element_border_radius }}px !important;
+}
+
+/* ============================
+   ROOT VARS & BASE STYLES
+============================ */
+#tcf-{{ section.id }} {
+  --neon:   #ffffff;
+  --neon2:  #7b5cff;
+  --dark:   #08080f;
+  --card-w: 280px;
+  --card-h: 420px;
+  --gap:    20px;
+}
+
+.tcf-section {
+  background: var(--dark);
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+.tcf-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 40% at 50% 60%, rgba(0,243,255,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.tcf-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0 40px 6px;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+.tcf-label {
+  text-transform: uppercase;
+}
+.tcf-viewall {
+  position: absolute;
+  right: 40px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  text-decoration: none;
+  transition: color .3s;
+}
+.tcf-viewall:hover { color: var(--neon); }
+
+@media (max-width: 600px) {
+  .tcf-header { flex-direction: column; gap: 8px; }
+  .tcf-viewall { position: relative; right: auto; }
+}
+
+.tcf-stage-wrap {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.tcf-stage {
+  flex: 1;
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+  overflow: visible;
+  position: relative;
+  height: calc(var(--card-h) + 40px);
+  touch-action: pan-y;
+  user-select: none;
+}
+.tcf-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.tcf-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--card-w);
+  height: var(--card-h);
+  cursor: pointer;
+  transform-style: preserve-3d;
+  will-change: transform, opacity, filter;
+  /* ✨ MAKHAN ANIMATION UPGRADE ✨ */
+  transition:
+    transform   0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity     0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    filter      0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tcf-card-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.tcf-card-bg img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.tcf-card:hover .tcf-card-bg img { transform: scale(1.05); }
+.tcf-card-placeholder {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg,#1a1a2e,#0f3460);
+}
+.tcf-card-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.90) 0%, rgba(0,0,0,.35) 48%, rgba(0,0,0,.04) 100%);
+}
+
+.tcf-glass {
+  position: absolute; inset: 0;
+  border: 1px solid rgba(255,255,255,.07);
+  background: linear-gradient(135deg,rgba(255,255,255,.06) 0%,rgba(255,255,255,.01) 100%);
+  pointer-events: none;
+  z-index: 3;
+  transition: border-color 0.8s, background 0.8s;
+}
+.tcf-neon-border {
+  position: absolute; inset: 0;
+  border: 1.5px solid transparent;
+  pointer-events: none;
+  z-index: 11;
+  transition: border-color 0.8s ease, box-shadow 0.8s ease;
+}
+
+.tcf-card-content {
+  position: absolute; inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px 16px 20px;
+  z-index: 5;
+}
+.tcf-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(0,243,255,.10);
+  border: 1px solid rgba(0,243,255,.30);
+  color: #fff;
+  font-size: .55rem;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  backdrop-filter: blur(6px);
+}
+.tcf-card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+}
+.tcf-card-title {
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  font-weight: 900;
+  letter-spacing: -.01em;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 1.05;
+}
+.tcf-card-sub {
+  font-size: .70rem;
+  color: rgba(255,255,255,.5);
+  line-height: 1.4;
+}
+
+.tcf-explore-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 8px;
+  padding: 4px 9px;
+  line-height: 1;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.14);
+  color: #fff;
+  font-size: .45rem;
+  font-weight: 900;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  backdrop-filter: blur(8px);
+  position: relative;
+  overflow: hidden;
+  align-self: center;
+  transition: border-color .3s, color .3s;
+}
+.tcf-explore-btn::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(0,243,255,.22), rgba(123,92,255,.18));
+  transform: translateX(-101%);
+  transition: transform .42s cubic-bezier(.22,1,.36,1);
+  border-radius: inherit;
+}
+.tcf-explore-btn:hover::before,
+.tcf-card--active .tcf-explore-btn:hover::before { transform: translateX(0); }
+.tcf-explore-btn:hover { border-color: #ffffff; color: var(--neon); }
+.tcf-explore-txt, .tcf-explore-arrow {
+  position: relative; z-index: 1;
+  transition: transform .3s ease;
+  display: inline-block;
+}
+.tcf-explore-btn:hover .tcf-explore-txt { transform: translateX(2px); }
+.tcf-explore-btn:hover .tcf-explore-arrow { transform: translateX(6px); }
+
+.tcf-card--active { opacity: 1 !important; filter: none !important; pointer-events: auto; z-index: 20; }
+.tcf-card--active .tcf-neon-border { border-color: rgba(255,255,255,0.2); box-shadow: none; }
+.tcf-card--active .tcf-glass { border-color: rgba(0,243,255,.18); background: linear-gradient(135deg,rgba(0,243,255,.07) 0%,rgba(255,255,255,.02) 100%); }
+.tcf-card--active .tcf-explore-btn { pointer-events: auto; }
+
+.tcf-card--s1 { opacity: .78 !important; pointer-events: auto; z-index: 15; filter: brightness(.72) saturate(.8); }
+.tcf-card--s2 { opacity: .42 !important; pointer-events: auto; z-index: 10; filter: brightness(.48) saturate(.6); }
+
+.tcf-product-name-wrap {
+  text-align: center;
+  padding: 5px 16px 0; 
+  line-height: 1;
+  min-height: 18px; 
+}
+.tcf-product-name-text {
+  font-size: 0.78rem;
+  font-weight: 900; 
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #ffffff;
+  display: inline-block;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 94%;
+}
+.tcf-product-name-text.tcf-name-fade { opacity: 0; }
+
+.tcf-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 4px;
+  padding-bottom: 5px;
+}
+.tcf-btn-nav {
+  flex-shrink: 0;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.04);
+  color: #fff;
+  font-size: 1.4rem;
+  line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  z-index: 30;
+  margin: 0;
+  transition: background .25s, border-color .25s, transform .2s;
+  backdrop-filter: blur(10px);
+  padding: 0;
+}
+.tcf-btn-nav:hover { background: rgba(0,243,255,.10); border-color: #ffffff; transform: scale(1.1); }
+.tcf-btn-nav:active { transform: scale(.93); }
+
+.tcf-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+}
+.tcf-dot {
+  width: 7px; height: 7px;
+  background: rgba(255,255,255,.18);
+  border: none; cursor: pointer; padding: 0;
+  transition: background .3s, width .3s, border-radius .3s;
+}
+.tcf-dot.is-active { background: var(--neon); width: 22px; border-radius: 0px; }
+
+/* Mobile Hiding Controls */
+@media (max-width: 768px) {
+  .tcf-controls {
+    display: none !important;
+  }
+}
+
+@media (max-width: 900px) {
+  #tcf-{{ section.id }} { --card-w: 270px; --card-h: 405px; }
+  .tcf-header { padding: 0 16px 8px; }
+}
+@media (max-width: 600px) {
+  #tcf-{{ section.id }} { --card-w: 260px; --card-h: 390px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tcf-card, .tcf-card-bg img, .tcf-explore-btn,
+  .tcf-explore-btn::before, .tcf-explore-txt,
+  .tcf-explore-arrow, .tcf-neon-border, .tcf-dot,
+  .tcf-product-name-text {
+    transition: none !important;
+  }
+}
+</style>
+
+<script>
+(function () {
+  'use strict';
+
+  var ROOT  = document.getElementById('cf-{{ section.id }}') ||
+              document.getElementById('tcf-{{ section.id }}');
+  if (!ROOT) return;
+
+  var cards  = Array.from(ROOT.querySelectorAll('.tcf-card'));
+  var dots   = Array.from(ROOT.querySelectorAll('.tcf-dot'));
+  var btnP   = ROOT.querySelector('.tcf-btn-prev');
+  var btnN   = ROOT.querySelector('.tcf-btn-next');
+  var stage  = ROOT.querySelector('.tcf-stage');
+  var nameEl = ROOT.querySelector('.tcf-product-name-text'); 
+  var total  = cards.length;
+  if (!total) return;
+
+  var cur = 0, busy = false, initialized = false;
+  var GAP = 20;
+  var nameFadeTimer = null; 
+  /* Reduce lock time so users can swipe rapidly and let CSS handle the butter smoothness */
+  var TRANS_SPEED = 200; 
+
+  /* Tweak values for a deeper, more premium 3D feel */
+  var P = {
+    '-2': { ry:  48, z: -160, s: .72 },
+    '-1': { ry:  32, z:  -80, s: .85 },
+     '0': { ry:   0, z:    0, s:  1  },
+     '1': { ry: -32, z:  -80, s: .85 },
+     '2': { ry: -48, z: -160, s: .72 }
+  };
+
+  function getStyle() {
+    var cs = getComputedStyle(ROOT);
+    var cw = parseFloat(cs.getPropertyValue('--card-w')) || 280;
+    var ch = parseFloat(cs.getPropertyValue('--card-h')) || 420;
+    return { cw: cw, ch: ch };
+  }
+
+  function off(i) {
+    var d = ((i - cur) % total + total) % total;
+    if (d > total / 2) d -= total;
+    return d;
+  }
+
+  function updateName() {
+    if (!nameEl) return;
+    var newName = cards[cur] ? (cards[cur].dataset.productName || '') : '';
+
+    if (!initialized) {
+      nameEl.textContent = newName;
+      return;
+    }
+
+    if (nameEl.textContent === newName) return;
+
+    clearTimeout(nameFadeTimer);
+    nameEl.classList.add('tcf-name-fade');
+    nameFadeTimer = setTimeout(function () {
+      nameEl.textContent = newName;
+      nameEl.classList.remove('tcf-name-fade');
+    }, 250);
+  }
+
+  function render() {
+    var st = getStyle();
+    var step = st.cw + GAP;
+
+    cards.forEach(function(c, i) {
+      var o = off(i), a = Math.abs(o);
+      c.classList.remove('tcf-card--active','tcf-card--s1','tcf-card--s2');
+
+      if (a > 2) {
+        c.style.opacity = '0';
+        c.style.pointerEvents = 'none';
+        var sx = Math.sign(o); if (sx === 0) sx = 1;
+        c.style.transform =
+          'translate(' + (sx*2*step - st.cw/2) + 'px,' + (-st.ch/2) + 'px)' +
+          ' translateZ(-160px) rotateY(' + (sx*48) + 'deg) scale(.72)';
+        return;
+      }
+
+      var p  = P[String(o)];
+      var tx = o * step - st.cw / 2;
+      var ty = -st.ch / 2;
+      c.style.transform =
+        'translate(' + tx + 'px,' + ty + 'px)' +
+        ' translateZ(' + p.z + 'px)' +
+        ' rotateY(' + p.ry + 'deg)' +
+        ' scale(' + p.s + ')';
+
+      c.style.opacity      = a===0 ? '1' : a===1 ? '0.78' : '0.42';
+      c.style.filter       = a===0 ? 'none'
+                           : a===1 ? 'brightness(.72) saturate(.8)'
+                           :         'brightness(.48) saturate(.6)';
+      c.style.pointerEvents = 'auto';
+
+      if      (a===0) c.classList.add('tcf-card--active');
+      else if (a===1) c.classList.add('tcf-card--s1');
+      else            c.classList.add('tcf-card--s2');
+
+      var btn = c.querySelector('.tcf-explore-btn');
+      if (btn) {
+        btn.tabIndex = a===0 ? 0 : -1;
+        btn.setAttribute('aria-hidden', a===0 ? 'false' : 'true');
+      }
+    });
+
+    dots.forEach(function(d,i){ d.classList.toggle('is-active', i===cur); });
+    updateName(); 
+  }
+
+  function go(n) {
+    if (busy || total < 2) return;
+    busy = true;
+    cur = ((n % total) + total) % total;
+    render();
+    setTimeout(function(){ busy = false; }, TRANS_SPEED); 
+  }
+
+  if (btnP) btnP.addEventListener('click', function(){ go(cur-1); });
+  if (btnN) btnN.addEventListener('click', function(){ go(cur+1); });
+  dots.forEach(function(d,i){ d.addEventListener('click', function(){ go(i); }); });
+
+  cards.forEach(function(c,i){
+    c.addEventListener('click', function(){
+      if (c.classList.contains('tcf-card--active')) {
+        var lnk = c.dataset.href;
+        if (lnk && lnk !== '#' && lnk !== '') window.location.href = lnk;
+      } else {
+        go(i);
+      }
+    });
+  });
+
+  /* Touch swipe */
+  var tx0=0, ty0=0;
+  stage.addEventListener('touchstart', function(e){ 
+    tx0=e.touches[0].clientX; ty0=e.touches[0].clientY; 
+  }, {passive:true});
+  
+  stage.addEventListener('touchend', function(e){
+    var dx=e.changedTouches[0].clientX-tx0, dy=e.changedTouches[0].clientY-ty0;
+    /* Lowered swipe threshold so small swipes trigger the smooth animation */
+    if (Math.abs(dx)>Math.abs(dy) && Math.abs(dx)>25) { dx<0?go(cur+1):go(cur-1); }
+  }, {passive:true});
+
+  /* Mouse drag */
+  var mx0=0, md=false;
+  stage.addEventListener('mousedown', function(e){ mx0=e.clientX; md=true; });
+  window.addEventListener('mouseup',  function(e){
+    if (!md) return;
+    var dx=e.clientX-mx0;
+    if (Math.abs(dx)>30) { dx<0?go(cur+1):go(cur-1); }
+    md=false;
+  });
+  window.addEventListener('mouseleave', function(){ md=false; });
+
+  /* Autoplay */
+  var delay = {{ section.settings.autoplay | default: 0 }};
+  var timer = null;
+  function startAuto(){ if(delay>0) timer=setInterval(function(){ go(cur+1); }, delay*1000); }
+  function stopAuto(){ clearInterval(timer); }
+  ROOT.addEventListener('mouseenter', stopAuto);
+  ROOT.addEventListener('mouseleave', startAuto);
+
+  /* Initial render */
+  cards.forEach(function(c){ c.style.transition='none'; });
+  render();                                      
+  stage.style.height = (getStyle().ch + 40) + 'px';
+
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      cards.forEach(function(c){ c.style.transition=''; });
+      initialized = true;                      
+      startAuto();
+    });
+  });
+
+  /* Resize handler */
+  var rt;
+  window.addEventListener('resize', function(){
+    clearTimeout(rt);
+    rt = setTimeout(function(){
+      stage.style.height = (getStyle().ch + 40) + 'px';
+      render();
+    }, 100);
+  });
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "3D Coverflow Slider",
+  "tag": "section",
+  "class": "shopify-section--tcf",
+  "settings": [
+    {
+      "type": "header",
+      "content": "✨ Master Typography (Fonts & Colors)"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Heading Font (Title, Product Name)",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "font_picker",
+      "id": "body_font",
+      "label": "Body Font (Subtitle, Badge, Buttons)",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "color",
+      "id": "card_title_color",
+      "label": "Card Title Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_subtitle_color",
+      "label": "Card Subtitle Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "product_name_color",
+      "label": "Product Name Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "✨ Top Label Styling"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Top Label Text",
+      "default": "EXPLORE BY COLLECTION",
+      "info": "Use normal text to allow custom fonts to apply. Do not use special unicode text."
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_size",
+      "min": 10, "max": 40, "step": 1, "unit": "px",
+      "label": "Top Label Font Size", "default": 18
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_spacing",
+      "min": 0, "max": 10, "step": 1, "unit": "px",
+      "label": "Top Label Letter Spacing", "default": 3
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Top Label Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View All Link"
+    },
+    {
+      "type": "header",
+      "content": "✨ Card & Button Shapes"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0, "max": 50, "step": 1, "unit": "px",
+      "label": "Card Shape (Border Radius)", "default": 0
+    },
+    {
+      "type": "range",
+      "id": "element_border_radius",
+      "min": 0, "max": 50, "step": 1, "unit": "px",
+      "label": "Badge & Button Shape (Border Radius)", "default": 0
+    },
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "range",
+      "id": "autoplay",
+      "label": "Autoplay (sec, 0 = off)",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 12
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Card Image"
+        },
+        {
+          "type": "text",
+          "id": "product_name",
+          "label": "Product Name (slide ke niche bold dikhega)"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge (top-left)",
+          "default": "⚡ NEW"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Card Title",
+          "default": "SPORT EDIT"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Card Subtitle",
+          "default": "Built for performance."
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Text",
+          "default": "EXPLORE"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Card & Button Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "3D Coverflow Slider",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "badge": "✦ LIFESTYLE",
+            "title": "LIFESTYLE EDIT",
+            "subtitle": "All day. Every day.",
+            "button_label": "EXPLORE"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "badge": "◈ BASIC",
+            "title": "BASIC EDIT",
+            "subtitle": "Your everyday essential.",
+            "button_label": "EXPLORE"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "badge": "⚡ SPORT",
+            "title": "SPORT EDIT",
+            "subtitle": "Built for performance.",
+            "button_label": "EXPLORE"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "badge": "〜 FLOW",
+            "title": "FLOW EDIT",
+            "subtitle": "Move with confidence.",
+            "button_label": "EXPLORE"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "badge": "▲ TRAIN",
+            "title": "TRAIN EDIT",
+            "subtitle": "Stronger every day.",
+            "button_label": "EXPLORE"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

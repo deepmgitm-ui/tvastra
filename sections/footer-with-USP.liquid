@@ -1,0 +1,1700 @@
+{{ 'footer.min.css' | asset_url | stylesheet_tag }}
+{{ 'footer-style-2.min.css' | asset_url | stylesheet_tag }}
+<footer class="site-footer {{ settings.footer_style }}" style="{% if section.settings.footer_bg_color != blank %}background-color: {{ section.settings.footer_bg_color }};{% endif %}">
+  <div class="{{ section.settings.container_type }}">
+    <div class="section-radius {% if section.settings.footer_bg_image != blank %}{{ section.settings.background_position }}{% endif %}" style="{% if section.settings.footer_bg_image != blank %}background-image: url({{ section.settings.footer_bg_image | image_url }});{% endif %}">
+      {%- if section.settings.show_footer_top == true -%}
+        <div class="footer-usp">
+          {%- liquid 
+            assign wrapper_class = ''
+            if section.settings.container_type == 'w-100 overflow-hidden'
+              if section.settings.show_content_container == true
+                assign wrapper_class = 'container'
+              else
+                assign wrapper_class = 'container-fluid'
+              endif
+            elsif section.settings.container_type == 'container-fluid' and section.settings.show_content_container == true
+              assign wrapper_class = 'container'
+            endif
+          -%} 
+          {%- if wrapper_class != '' -%}
+            <div class="{{ wrapper_class }}">
+          {%- endif -%}
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-center">
+              {%- for count in (1..3) -%}
+                {%- liquid
+                  assign image_icon = 'image_icon' | append : count
+                  assign icon_name = 'icon_name' | append : count
+                  assign box_heading = 'box_heading' | append : count
+                  assign box_sub_heading = 'box_sub_heading' | append : count
+                  assign heading_link = 'heading_link' | append : count
+                -%}
+                {%- if section.settings.icon_with_text_styles == 'left-icon' -%}
+                  <div class="col text-{{ section.settings.content_alignment }} d-flex justify-content-center justify-content-lg-start align-items-center featurebox featurebox-left-icon">  
+                    {%- if section.settings.icon_option == 'icon' and section.settings.show_icon == true -%}
+                      {%- if section.settings[icon_name] != blank -%}<i class="{{ section.settings[icon_name] }} {% if section.settings.icon_with_text_styles == 'left-icon' %}align-self-center{% endif %}" style="font-size: {{ section.settings.icon_font_size }}px"></i>{%- endif -%}
+                      {%- elsif section.settings.icon_option == 'image' and section.settings.icon_option != 'icon' and section.settings.show_icon == true -%}
+                        {%- if section.settings[image_icon] != blank -%}
+                          <img src="{{ section.settings[image_icon] | image_url }}" alt="" width="{{ section.settings[image_icon].width }}" height="{{ section.settings[image_icon].height }}" loading="lazy" style="width: {{ section.settings.image_size }}px;" />
+                        {%- else -%}
+                          {{ 'image' | placeholder_svg_tag: 'svg-placeholder position-static' }}
+                        {%- endif -%}
+                      {%- endif -%}
+                    <div class="box-content">
+                      {%- if section.settings[heading_link] and section.settings[box_heading] != blank -%}
+                        <a href="{{ section.settings[heading_link] }}" class="alt-font" aria-label="text">{{ section.settings[box_heading] }}</a>
+                      {%- else -%}
+                        {%- if section.settings[box_heading] != blank -%}<div class="feature-box-title alt-font">{{ section.settings[box_heading] }}</div>{%- endif -%}
+                      {%- endif -%}
+                      {%- if section.settings[box_sub_heading] != blank -%}
+                        <div class="feature-box-sub-title">{{ section.settings[box_sub_heading] }}</div>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                {%- else  -%}
+                  <div class="col text-{{ section.settings.content_alignment }} d-flex flex-column justify-content-center align-items-{{ section.settings.content_alignment }} featurebox featurebox-center-icon">
+                    {%- if section.settings.icon_option == 'icon' and section.settings.show_icon == true -%}
+                      {%- if section.settings[icon_name] != blank -%}
+                        <i class="{{ section.settings[icon_name] }}" style="font-size: {{ section.settings.icon_font_size }}px"></i>
+                      {%- endif -%}
+                    {%- elsif section.settings.icon_option == 'image' and section.settings.icon_option != 'icon' and section.settings.show_icon == true -%}
+                      {%- if section.settings[image_icon] != blank -%}
+                        <img src="{{ section.settings[image_icon] | image_url: width: 100, height: 100 }}" alt="" width="auto" height="auto" loading="lazy" style="max-width: {{ section.settings.image_size }}px;" />
+                      {%- else -%}
+                          {{ 'image' | placeholder_svg_tag: 'svg-placeholder position-static' }}
+                      {%- endif -%}
+                    {%- endif -%}
+                    {%- if section.settings[heading_link] and section.settings[box_heading] != blank -%}
+                      <a href="{{ section.settings[heading_link] }}" aria-label="text">{{ section.settings[box_heading] }}</a>
+                    {%- else -%}
+                      {%- if section.settings[box_heading] != blank -%}
+                        <div class="feature-box-title alt-font">{{ section.settings[box_heading] }}</div>
+                      {%- endif -%}
+                    {%- endif -%}
+                    {%- if section.settings[box_sub_heading] != blank -%}
+                      <div class="feature-box-sub-title">{{ section.settings[box_sub_heading] }}</div>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}           
+            </div>
+          {%- if wrapper_class != '' -%}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.show_separator -%}
+        <div class="separator">
+          {%- if wrapper_class != '' -%}
+            <div class="{{ wrapper_class }}">
+          {%- endif -%}
+            <div class="row">
+              <div class="col-12">
+                <div class="w-100" style="background-color: {{ section.settings.border_bg_color }};height: {{ section.settings.border_height }}px;"></div>
+              </div>
+            </div>
+          {%- if wrapper_class != '' -%}
+            </div>
+          {%- endif -%}
+        </div> 
+      {%- endif -%}
+      {%- if section.blocks.size != 0 -%}      
+        {%- unless section.settings.hide_footer_middle -%}
+          <div class="footer-top {% unless section.settings.middle_show_border_bottom %}border-bottom-0{% endunless %}">
+            {%- if wrapper_class != '' -%}
+              <div class="{{ wrapper_class }}">
+            {%- endif -%}
+              <div class="row"> 
+                {%- for block in section.blocks -%}
+                  {%- capture blocktitle -%}
+                    {%- if block.settings.heading != blank -%}<div class="block-heading{% if block.type == 'menu' %} mobile-toggle{% endif %}">{{ block.settings.heading }}</div>{%- endif -%}
+                  {%- endcapture -%}
+                  {%- capture column-width -%}{{ block.settings.column_width }}{%- endcapture -%}
+                  {%- case block.type -%} 
+                    {%- when 'logowithtext' -%}
+                      <div class="col-lg-{{ column-width }} text-block-content footer-block text-center text-lg-start">
+                        <a class="d-inline-block footer-logo" href="{{ shop.url }}" aria-label="logo">
+                          {%- if block.settings.logo != blank -%}
+                            <img src="{{ block.settings.logo | image_url }}" alt="" width="{{ block.settings.logo.width }}" height="{{ block.settings.logo.height }}" loading="lazy" style="max-width: {{ block.settings.logo_image_width }}px" />
+                          {%- else -%}
+                            {{ shop.name }}
+                          {%- endif -%}
+                        </a>
+                        {%- if block.settings.content_text != blank -%}
+                          <div class="logo-content">{{ block.settings.content_text }}</div>
+                        {%- endif -%}
+                        {%- if block.settings.phone != blank -%}
+                          <div class="hongo-phone-info">
+                            <label>{{ 'sections.footer_usp.phone' | t }}</label> <a href="tel:{{ block.settings.phone }}" aria-label="tel">{{ block.settings.phone }}</a>
+                          </div>
+                        {%- endif -%}
+                        {%- if block.settings.email != blank -%}
+                          <div class="footer-email-info">
+                            <label>{{ 'sections.footer_usp.email' | t }}</label> <a href="mailto:{{ block.settings.email }}" aria-label="mailto">{{ block.settings.email }}</a>
+                          </div>
+                        {%- endif -%}
+                        {%- if block.settings.show_social_icon == true -%}
+                          <div class="social-icon d-flex align-items-center justify-content-center justify-content-lg-start">
+                            {%- render 'social-follow', style_class: block.settings.social_type, social_mode: block.settings.social_style -%}  
+                          </div>
+                        {%- endif -%}                                          
+                      </div>
+                    {%- when 'menu' -%}
+                      <div class="col-md-6 col-lg-{{ column-width }} footer-block mobile-wrapper">
+                        {{ blocktitle }}
+                        <ul class="footer-menu-link">
+                          {%- for link in linklists[block.settings.selected_menu].links -%}
+                            <li class="menu-item"><a class="navigation-links" href="{{ link.url }}" target="_self" aria-label="menu">{{ link.title }}</a></li>
+                          {%- endfor -%}
+                        </ul>
+                      </div>   
+                    {%- when 'information' -%}  
+                      <div class="col-md-6 col-lg-{{ column-width }} footer-block informaiton">
+                        {%- if block.settings.heading != blank -%}
+                          <h4>{{ block.settings.heading }}</h4>
+                        {%- endif -%} 
+                        {%- if block.settings.content_text != blank -%} 
+                          {%- if block.settings.content_text != blank -%}<div class="custom-content">{{ block.settings.content_text }}</div>{%- endif -%}
+                        {%- endif -%} 
+                        {%- render 'button-settings',
+                          btn_style: block.settings.button_style,
+                          btn_size: block.settings.button_size,
+                          btn_text: block.settings.btn_text,
+                          btn_link: block.settings.btn_link,
+                          btn_radius: block.settings.btn_radius,
+                          btn_border_width: block.settings.btn_border_width,
+                          btn_icon_class: block.settings.btn_icon_class,
+                          icon_position: block.settings.icon_position
+                        -%}
+                      </div>                   
+                    {%- when 'newsletter' -%}
+                      <div class="col-md-6 col-lg-{{ column-width }} footer-newsletter footer-block">
+                        {{ blocktitle }}
+                        {%- if block.settings.newsletter_sub_heading != blank -%}
+                          <p>{{ block.settings.newsletter_sub_heading }}</p>
+                        {%- endif -%}
+                        {%- form 'customer', class: 'd-flex align-items-center position-relative' -%}
+                          <input type="hidden" name="contact[tags]" value="newsletter">
+                            <input 
+                              id="NewsletterForm--{{ section.id }}" 
+                              type="email" 
+                              name="contact[email]" 
+                              class="mb-0 {% if form.errors %}error{% endif %} newslatter-input"
+                              value="{{ form.email }}" 
+                              aria-required="true"
+                              autocorrect="off" 
+                              autocapitalize="off" 
+                              placeholder="{{ 'sections.footer_usp.placeholder_email' | t }}"
+                              autocomplete="email" 
+                              required
+                              {%- if form.errors -%} 
+                                autofocus
+                                aria-invalid="true"
+                                aria-describedby="Newsletter-error--{{ section.id }}"
+                              {% elsif form.posted_successfully? %}
+                                aria-describedby="Newsletter-success--{{ section.id }}"
+                              {% endif %}               
+                            />
+                            <button type="submit" class="btn alt-font" name="commit" aria-label="submit" {% if block.settings.show_terms_agreement_contact == true %} disabled="disabled" data-terms-action="newsletter_select" {% endif %}><i class="{{ block.settings.btn_icon_class }}"></i>{{- section.settings.btn_text -}}</button>
+                          {%- if form.posted_successfully? -%}
+                            <div class="newsletter-msg success">
+                              <h6 class="m-0">
+                                <i class="bi bi-patch-check-fill"></i>{{ 'sections.footer_usp.successfully_label' | t }}
+                              </h6>
+                            </div>
+                          {%- endif -%}
+                        {%- endform -%}
+                        {%- if block.settings.show_terms_agreement_contact == true -%}
+                          <div class="form-agreement d-flex">
+                              <input type="checkbox" id="{{ block.id }}-terms_agreement_contact" name="terms_agreement" value="yes" form="newsletter_select" required autocomplete="off" data-terms-trigger="newsletter_select" />
+                              <label for="{{ block.id }}-terms_agreement_contact">{{ settings.terms_conditions_label | default: 'I agree with the Terms & Conditions' }} </label>
+                          </div>
+                        {%- endif -%}
+                        {%- if block.settings.payment != blank -%}
+                          <div class="payment-icon">
+                            <img class="lazyload" src="{{ block.settings.payment | image_url }}" alt="" width="{{ block.settings.payment.width }}" height="{{ block.settings.payment.height }}" loading="lazy">
+                          </div>
+                        {%- endif -%}
+                      </div>
+                    {%- when 'instagram' -%}
+                      <div class="col-md-6 col-lg-{{ column-width }} footer-block instagram">
+                      {{ 'instagram.min.css' | asset_url | stylesheet_tag }}
+                          {%- if settings.access_token != blank -%}
+                            <instagram-feed>
+                              {%- if blocktitle != blank and block.settings.category_menu != blank -%}
+                                <div class="sidebar-block-title alt-font">{{ blocktitle }}</div>
+                              {%- endif -%}
+                              <div
+                                class="row row-cols-3"
+                                id="instagram-feed-{{ section.id }}"
+                                data-section-id="{{ section.id }}"
+                                data-count="{{ block.settings.count | default: 6 }}"
+                                data-instagram-feed
+                                data-element-remove=".blog-sidebar-item.instagram"
+                              ></div>
+                              <script id="instagram-token-{{ section.id }}" type="application/json">
+                                {{ settings.access_token | json }}
+                              </script>
+                            </instagram-feed>
+                          {%- else -%}
+                            <div class="row row-cols-3">
+                              {%- for i in (1..block.settings.count) -%}
+                                <div class="col insta-items">
+                                  <div class="position-relative">
+                                    {{ 'image' | placeholder_svg_tag: 'svg-placeholder position-static' }}
+                                    <span class="insta-hover"><i class="bi bi-instagram"></i></span>
+                                  </div>
+                                </div>
+                              {%- endfor -%}
+                            </div>
+                          {%- endif -%}
+                          {%- if block.settings.label_text != blank -%}
+                            <a href="{{ block.settings.insta_btn_link | default: '#' }}" target="_blank" class="insta-btn alt-font" aria-label="btn"><i class="bi bi-instagram"></i>{{- block.settings.label_text -}}</a>
+                          {%- endif -%}
+                      </div>     
+                    {%- when 'content' -%}
+                      <div class="col-md-6 col-lg-{{ column-width }} footer-block">
+                        {{ blocktitle }}
+                        {%- if block.settings.content_text != blank -%}<div class="custom-content">{{ block.settings.content_text }}</div>{%- endif -%}
+                      </div>
+                  {%- endcase -%}
+                {%- endfor -%}
+              </div>
+            {%- if wrapper_class != '' -%}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endunless -%}  
+        {%- if section.settings.show_footer_bottom == true -%}
+          <div class="footer-bottom">
+            {%- if wrapper_class != '' -%}
+              <div class="{{ wrapper_class }}">
+            {%- endif -%}
+              <div class="row justify-content-center copyright">
+                {%- if section.settings.show_block1 == true -%}
+                  {%- liquid
+                    if section.settings.social_content_alignment == 'start'
+                      assign social_order_number =  1
+                    elsif section.settings.social_content_alignment == 'center'
+                      assign social_order_number =  2
+                    else
+                      assign social_order_number =  3 
+                    endif
+                  -%}
+                  <div class="col-md-6 col-lg text-center text-md-{{ section.settings.social_content_alignment }} order-{{ social_order_number }}"> 
+                    {%- if section.settings.block1_type == 'show_social_media' -%}
+                      <div class="social-media">
+                        {%- render 'social-follow', show_type: 'label', style_class: section.settings.social_type, social_mode: section.settings.social_style -%} 
+                      </div>
+                    {%- elsif section.settings.block1_type == 'show_html_content' -%}
+                      <div class="social-html-content">
+                        {{ section.settings.social_html_content }}
+                      </div>
+                    {%- else -%}  
+                      <div class="social-media">
+                        {%- render 'social-follow', show_type: 'label', style_class: section.settings.social_type, social_mode: section.settings.social_style -%} 
+                      </div>
+                      <div class="social-html-content">
+                        {{ section.settings.social_html_content }}
+                      </div>
+                    {%- endif -%}  
+                  </div>
+                {%- endif -%}
+                {%- if section.settings.show_block2 == true -%}
+                  {%- liquid
+                    if section.settings.copyright_content_alignment == 'start'
+                      assign copyright_order_number =  1
+                    elsif section.settings.copyright_content_alignment == 'center'
+                      assign copyright_order_number =  2
+                    else -
+                      assign copyright_order_number =  3 
+                    endif
+                  -%}
+                  <div class="col-md-6 d-flex justify-content-{{ section.settings.copyright_content_alignment }} align-items-center col-lg text-center text-md-{{ section.settings.copyright_content_alignment }} order-{{ copyright_order_number }}">
+                    {%- if section.settings.block2_type == 'show_logo' -%}
+                      <div class="copy-right-logo">
+                        <a href="{{ section.settings.copy_logo_url | default: "#" }}" aria-label="logo">
+                          {%- if section.settings.copy_right_logo != blank -%}
+                            <img src="{{ section.settings.copy_right_logo | image_url }}" alt="" width="auto" height="auto" loading="lazy" style="max-width: {{ section.settings.copy_right_logo_width }}px"> 
+                          {%- else -%}
+                           {{ 'image' | placeholder_svg_tag: 'svg-placeholder position-static' }}
+                          {%- endif -%}                          
+                        </a>
+                      </div>
+                    {%- elsif section.settings.block2_type == 'show_copyright_content' -%}
+                      <div class="copyright-text">{{ section.settings.copyright_text }}</div>
+                    {%- else -%} 
+                      <div class="copy-right-logo copy-right-separator">
+                        <a href="{{ section.settings.copy_logo_url | default: "#" }}" aria-label="logo">
+                          {%- if section.settings.copy_right_logo != blank -%}
+                            <img src="{{ section.settings.copy_right_logo | image_url }}" alt="" width="auto" height="auto" loading="lazy" style="max-width: {{ section.settings.copy_right_logo_width }}px"> 
+                          {%- else -%}
+                           {{ 'image' | placeholder_svg_tag: 'svg-placeholder position-static' }}
+                          {%- endif -%}                           
+                        </a>
+                      </div>
+                      <div class="copyright-text">{{ section.settings.copyright_text }}</div>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}            
+                {%- if section.settings.show_block3 == true -%}
+                  {%- liquid
+                    if section.settings.content_position == 'start'
+                      assign payment_order_number =  1
+                    elsif section.settings.content_position == 'center'
+                      assign payment_order_number =  2
+                    else
+                      assign payment_order_number =  3
+                    endif
+                  -%}
+                  <div class="col-md-6 col-lg text-center text-md-{{ section.settings.content_position }} order-{{ payment_order_number }}">
+                    {%- if section.settings.block3_type == 'show_payment_icon' -%}
+                    {%- if section.settings.payment_icons_image != blank -%}
+                      <img src="{{ section.settings.payment_icons_image | image_url }}" alt="" width="auto" height="auto" loading="lazy" />  
+                    {%- else -%}
+                      {{ 'image' | placeholder_svg_tag: 'svg-placeholder position-static copyright-placeholder-img' }}
+                    {%- endif -%}
+                    {%- elsif section.settings.block3_type == 'show_html_content' -%}
+                      <div class="payment-content">
+                        {{ section.settings.payment_html_content }}
+                      </div>
+                    {%- else -%} 
+                      {%- if section.settings.payment_icons_image != blank -%}
+                        <img src="{{ section.settings.payment_icons_image | image_url }}" alt="" width="auto" height="auto" loading="lazy" />  
+                      {%- else -%}
+                        {{ 'image' | placeholder_svg_tag: 'svg-placeholder position-static copyright-placeholder-img' }}
+                      {%- endif -%}
+                      {%- if section.settings.payment_html_content -%}
+                        <div class="payment-content">
+                          {{ section.settings.payment_html_content }}
+                        </div>  
+                      {%- endif -%}
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- if wrapper_class != '' -%}
+              </div>
+            {%- endif -%}
+          </div>   
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+<style>  
+  {%- assign footer_text_alpha = section.settings.footer_text_color | color_extract: 'alpha' -%}
+  {%- if section.settings.footer_text_color != blank and footer_text_alpha > 0 -%}
+    footer, footer a, footer p, footer .footer-email-info a, .copyright-text a, .hongo-social-links li a {
+      color: {{ section.settings.footer_text_color }};
+    }
+    .copyright-text a {
+      border-color: {{ section.settings.footer_text_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.footer_link_hover_color != blank -%}
+    footer a:hover, footer .footer-email-info a:hover, .copyright-text a:hover, .hongo-social-links li a:hover {
+      color: {{ section.settings.footer_link_hover_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.footer_heading_color != blank -%}
+    .block-heading, .footer-newsletter h5, .informaiton h4, a.footer-logo {
+      color: {{ section.settings.footer_heading_color }}; 
+    }
+  {%- endif -%}
+  {%- if section.settings.footer_border_color != blank -%}
+    .footer-top {
+      border-color: {{ section.settings.footer_border_color }};
+    } 
+  {%- endif -%}
+  .site-footer .featurebox .feature-box-title, .site-footer .featurebox a {
+    {%- if section.settings.text_color != blank -%}color: {{ section.settings.text_color }};{%- endif -%}
+    font-size: {{ section.settings.title_font_size }}px;
+    line-height: {{ section.settings.title_line_height }}px;
+    margin-bottom: {{ section.settings.title_gap }}px;
+  }
+  .site-footer .featurebox .feature-box-sub-title {
+    {%- if section.settings.small_text_color != blank -%}color: {{ section.settings.small_text_color }};{%- endif -%}
+    width: {{ section.settings.sub_title_width }}%;
+  }
+</style>
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_content_container",
+      "label": "Show content in container",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Footer top"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_footer_top",
+      "label": "Show footer top",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "icon_with_text_styles",
+      "label": "Icon with text styles",
+      "default": "left-icon",
+      "options": [
+        {
+          "value": "left-icon",
+          "label": "Left icon"
+        },
+        {
+          "value": "top-icon",
+          "label": "Top Icon"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment ",
+      "default": "start",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "min": 10,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Box title font size",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "title_line_height",
+      "min": 10,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Box title line height",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "title_gap",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Box title bottom gap",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "sub_title_width",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Box subtitle width",
+      "default": 100
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon",
+      "label": "Show icon/image",
+      "default": true
+    },
+    {
+      "type": "radio",
+      "id": "icon_option",
+      "label": "Icon type",
+      "options": [
+        {
+          "value": "icon",
+          "label": "Icon"
+        },
+        {
+          "value": "image",
+          "label": "Image"
+        }
+      ],
+      "default": "icon"
+    },
+    {
+      "type": "range",
+      "id": "image_size",
+      "min": 10,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Icon image maximum width",
+      "default": 46
+    },
+    {
+      "type": "range",
+      "id": "icon_font_size",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Icon size",
+      "default": 42
+    },
+    {
+      "type": "paragraph",
+      "content": "===== Box item 1 ====="
+    },
+    {
+      "type": "image_picker",
+      "id": "image_icon1",
+      "label": "Image icon",
+      "info": "Recommended size 55x55"
+    },
+    {
+      "type": "text",
+      "id": "icon_name1",
+      "label": "Enter icon class",
+      "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)",
+      "default": "bi bi-box-seam"
+    },
+    {
+      "type": "text",
+      "id": "box_heading1",
+      "label": "Heading",
+      "default": "Standard shipping"
+    },
+    {
+      "type": "text",
+      "id": "box_sub_heading1",
+      "label": "Sub heading",
+      "default": "Free shipping"
+    },
+    {
+      "type": "url",
+      "id": "heading_link1",
+      "label": "Heading URL"
+    },
+    {
+      "type": "paragraph",
+      "content": "===== Box item 2 ====="
+    },
+    {
+      "type": "image_picker",
+      "id": "image_icon2",
+      "label": "Image icon",
+      "info": "Recommended size 55x55"
+    },
+    {
+      "type": "text",
+      "id": "icon_name2",
+      "label": "Enter icon class",
+      "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)",
+      "default": "bi bi-box-seam"
+    },
+    {
+      "type": "text",
+      "id": "box_heading2",
+      "label": "Heading",
+      "default": "Standard shipping"
+    },
+    {
+      "type": "text",
+      "id": "box_sub_heading2",
+      "label": "Sub heading",
+      "default": "Free shipping"
+    },
+    {
+      "type": "url",
+      "id": "heading_link2",
+      "label": "Heading URL"
+    },
+    {
+      "type": "paragraph",
+      "content": "===== Box item 3 ====="
+    },
+    {
+      "type": "image_picker",
+      "id": "image_icon3",
+      "label": "Image icon",
+      "info": "Recommended size 55x55"
+    },
+    {
+      "type": "text",
+      "id": "icon_name3",
+      "label": "Enter icon class",
+      "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)",
+      "default": "bi bi-box-seam"
+    },
+    {
+      "type": "text",
+      "id": "box_heading3",
+      "label": "Heading",
+      "default": "Standard shipping"
+    },
+    {
+      "type": "text",
+      "id": "box_sub_heading3",
+      "label": "Sub heading",
+      "default": "Free shipping"
+    },
+    {
+      "type": "url",
+      "id": "heading_link3",
+      "label": "Heading URL"
+    },
+    {
+      "type": "paragraph",
+      "content": "===== Separator ====="
+    },
+    {
+      "type": "checkbox",
+      "id": "show_separator",
+      "label": "Show separator",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "border_height",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Border height",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "border_bg_color",
+      "label": "Border background color"
+    },
+    {
+      "type": "header",
+      "content": "Footer middle"
+    },
+    {
+      "type": "checkbox",
+      "id": "middle_show_border_bottom",
+      "label": "Show border bottom",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Footer bottom"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_footer_bottom",
+      "label": "Show footer bottom",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "===== Block 1 ====="
+    },
+    {
+      "type": "checkbox",
+      "id": "show_block1",
+      "label": "Show block",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "block1_type",
+      "label": "Content type",
+      "default": "show_social_media",
+      "options": [
+        {
+          "value": "show_social_media",
+          "label": "Show social media"
+        },
+        {
+          "value": "show_html_content",
+          "label": "Show HTML content"
+        },
+        {
+          "value": "show_both",
+          "label": "Show both"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "social_content_alignment",
+      "label": "Social media alignment",
+      "default": "start",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "social_type",
+      "label": "Social media type",
+      "default": "social-icon-with-text",
+      "options": [
+        {
+          "label": "Social icon with text",
+          "value": "social-icon-with-text"
+        },
+        {
+          "label": "Social simple",
+          "value": "social-simple"
+        },
+        {
+          "label": "Social icon only",
+          "value": "social-icon-only"
+        },
+        {
+          "label": "Social short name",
+          "value": "social-short-name"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "social_style",
+      "label": "Social style",
+      "default": "dark",
+      "options": [
+        {
+          "label": "Dark",
+          "value": "dark"
+        },
+        {
+          "label": "Light",
+          "value": "light"
+        }
+      ]
+    },
+    {
+      "type": "html",
+      "id": "social_html_content",
+      "label": "HTML Content"
+    },
+    {
+      "type": "paragraph",
+      "content": "===== Block 2 ====="
+    },
+    {
+      "type": "checkbox",
+      "id": "show_block2",
+      "label": "Show block",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "block2_type",
+      "label": "Content type",
+      "default": "show_copyright_content",
+      "options": [
+        {
+          "value": "show_logo",
+          "label": "Show logo"
+        },
+        {
+          "value": "show_copyright_content",
+          "label": "Show copyright content"
+        },
+        {
+          "value": "show_both",
+          "label": "Show both"
+        }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "copy_right_logo",
+      "label": "Logo image",
+      "info": "Recommended size 110x25"
+    },
+    {
+      "type": "range",
+      "id": "copy_right_logo_width",
+      "min": 20,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Logo width",
+      "default": 105
+    },
+    {
+      "type": "url",
+      "id": "copy_logo_url",
+      "label": "Logo url"
+    },
+    {
+      "type": "select",
+      "id": "copyright_content_alignment",
+      "label": "Copyright content alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "richtext",
+      "id": "copyright_text",
+      "label": "Copyright content",
+      "default": "<p>© Copyright 2022</p>"
+    },
+    {
+      "type": "paragraph",
+      "content": "===== Block 3 ====="
+    },
+    {
+      "type": "checkbox",
+      "id": "show_block3",
+      "label": "Show block",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "block3_type",
+      "label": "Content type",
+      "default": "show_payment_icon",
+      "options": [
+        {
+          "value": "show_payment_icon",
+          "label": "Show payment icon"
+        },
+        {
+          "value": "show_html_content",
+          "label": "Show HTML content"
+        },
+        {
+          "value": "show_both",
+          "label": "Show both"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "label": "Content position",
+      "default": "end",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "payment_icons_image",
+      "label": "Payment icons image",
+      "info": "Recommended size 310x30"
+    },
+    {
+      "type": "html",
+      "id": "payment_html_content",
+      "label": "HTML Content"
+    },
+    {
+      "type": "header",
+      "content": "Footer settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "footer_bg_image",
+      "label": "Footer background image",
+      "info": "Recommended size 1920x450"
+    },
+    {
+      "type": "select",
+      "id": "background_position",
+      "label": "Background position",
+      "options": [
+        {
+          "value": "cover-background",
+          "label": "Cover"
+        },
+        {
+          "value": "fixed-background",
+          "label": "Fixed"
+        }
+      ],
+      "default": "cover-background"
+    },
+    {
+      "type": "color",
+      "id": "footer_bg_color",
+      "label": "Footer bg color"
+    },
+    {
+      "type": "color",
+      "id": "footer_text_color",
+      "label": "Footer text color"
+    },
+    {
+      "type": "color",
+      "id": "footer_heading_color",
+      "label": "Footer heading color"
+    },
+    {
+      "type": "color",
+      "id": "footer_link_hover_color",
+      "label": "Footer link hover color"
+    },
+    {
+      "type": "color",
+      "id": "footer_border_color",
+      "label": "Footer border color"
+    }
+  ],
+  "max_blocks": 10,
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Navigation",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Navigation Heading"
+        },
+        {
+          "type": "link_list",
+          "id": "selected_menu",
+          "label": "Select Navigation",
+          "default": "main-menu"
+        },
+        {
+          "type": "select",
+          "id": "column_width",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column - 1/12"
+            },
+            {
+              "value": "2",
+              "label": "2 columns - 1/6"
+            },
+            {
+              "value": "3",
+              "label": "3 columns - 1/4"
+            },
+            {
+              "value": "4",
+              "label": "4 columns - 1/3"
+            },
+            {
+              "value": "5",
+              "label": "5 columns - 5/12"
+            },
+            {
+              "value": "6",
+              "label": "6 columns - 1/2"
+            },
+            {
+              "value": "7",
+              "label": "7 columns - 7/12"
+            },
+            {
+              "value": "8",
+              "label": "8 columns - 2/3"
+            },
+            {
+              "value": "9",
+              "label": "9 columns - 3/4"
+            },
+            {
+              "value": "10",
+              "label": "10 columns - 5/6"
+            },
+            {
+              "value": "11",
+              "label": "11 columns - 11/12"
+            },
+            {
+              "value": "12",
+              "label": "12 columns - 1/1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "information",
+      "name": "Information",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Content Heading"
+        },
+        {
+          "type": "textarea",
+          "id": "content_text",
+          "label": "Content"
+        },
+        {
+          "type": "select",
+          "id": "column_width",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column - 1/12"
+            },
+            {
+              "value": "2",
+              "label": "2 columns - 1/6"
+            },
+            {
+              "value": "3",
+              "label": "3 columns - 1/4"
+            },
+            {
+              "value": "4",
+              "label": "4 columns - 1/3"
+            },
+            {
+              "value": "5",
+              "label": "5 columns - 5/12"
+            },
+            {
+              "value": "6",
+              "label": "6 columns - 1/2"
+            },
+            {
+              "value": "7",
+              "label": "7 columns - 7/12"
+            },
+            {
+              "value": "8",
+              "label": "8 columns - 2/3"
+            },
+            {
+              "value": "9",
+              "label": "9 columns - 3/4"
+            },
+            {
+              "value": "10",
+              "label": "10 columns - 5/6"
+            },
+            {
+              "value": "11",
+              "label": "11 columns - 11/12"
+            },
+            {
+              "value": "12",
+              "label": "12 columns - 1/1"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Button Settings"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "default": "btn-black",
+          "options": [
+            {
+              "value": "btn-black",
+              "label": "Solid button black"
+            },
+            {
+              "value": "btn-white",
+              "label": "Solid button white"
+            },
+            {
+              "value": "btn-base-color",
+              "label": "Solid button base"
+            },
+            {
+              "value": "btn-black-border",
+              "label": "Border button black"
+            },
+            {
+              "value": "btn-white-border",
+              "label": "Border button white"
+            },
+            {
+              "value": "btn-base-color-border",
+              "label": "Border button base"
+            },
+            {
+              "value": "btn-white-border border-opacity",
+              "label": "Border opacity button white"
+            },
+            {
+              "value": "btn-black-border border-opacity",
+              "label": "Border opacity button black"
+            },
+            {
+              "value": "btn-link btn-link-black",
+              "label": "Underlined button black"
+            },
+            {
+              "value": "btn-link btn-link-white",
+              "label": "Underlined button white"
+            },
+            {
+              "value": "btn-link btn-link-base-color",
+              "label": "Underlined button base"
+            },
+            {
+              "value": "btn-custom",
+              "label": "Custom button"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size",
+          "label": "Button size",
+          "default": "btn-medium",
+          "options": [
+            {
+              "value": "btn-extra-large",
+              "label": "Extra Large"
+            },
+            {
+              "value": "btn-large",
+              "label": "Large"
+            },
+            {
+              "value": "btn-medium",
+              "label": "Medium"
+            },
+            {
+              "value": "btn-small",
+              "label": "Small"
+            },
+            {
+              "value": "btn-very-small",
+              "label": "Very Small"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "btn_radius",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Button radius",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "btn_border_width",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "unit": "px",
+          "label": "Button border width",
+          "default": 2
+        },
+        {
+          "type": "text",
+          "id": "btn_icon_class",
+          "label": "Enter icon class",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+        },
+        {
+          "type": "select",
+          "id": "icon_position",
+          "label": "Icon position",
+          "default": "right-icon",
+          "options": [
+            {
+              "value": "left-icon",
+              "label": "Left"
+            },
+            {
+              "value": "right-icon",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "btn_text",
+          "label": "Button text",
+          "default": "SHOP COLLECTION"
+        },
+        {
+          "type": "url",
+          "id": "btn_link",
+          "label": "Button link"
+        }
+      ]
+    },
+    {
+      "type": "content",
+      "name": "Content",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Content Heading"
+        },
+        {
+          "type": "textarea",
+          "id": "content_text",
+          "label": "Content"
+        },
+        {
+          "type": "select",
+          "id": "column_width",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column - 1/12"
+            },
+            {
+              "value": "2",
+              "label": "2 columns - 1/6"
+            },
+            {
+              "value": "3",
+              "label": "3 columns - 1/4"
+            },
+            {
+              "value": "4",
+              "label": "4 columns - 1/3"
+            },
+            {
+              "value": "5",
+              "label": "5 columns - 5/12"
+            },
+            {
+              "value": "6",
+              "label": "6 columns - 1/2"
+            },
+            {
+              "value": "7",
+              "label": "7 columns - 7/12"
+            },
+            {
+              "value": "8",
+              "label": "8 columns - 2/3"
+            },
+            {
+              "value": "9",
+              "label": "9 columns - 3/4"
+            },
+            {
+              "value": "10",
+              "label": "10 columns - 5/6"
+            },
+            {
+              "value": "11",
+              "label": "11 columns - 11/12"
+            },
+            {
+              "value": "12",
+              "label": "12 columns - 1/1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "logowithtext",
+      "name": "Logo with text",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo image",
+          "info": "Recommended size 115x25"
+        },
+        {
+          "type": "range",
+          "id": "logo_image_width",
+          "min": 20,
+          "max": 200,
+          "step": 5,
+          "unit": "px",
+          "label": "Logo width",
+          "default": 105
+        },
+        {
+          "type": "textarea",
+          "id": "content_text",
+          "label": "Content"
+        },
+        {
+          "type": "text",
+          "id": "phone",
+          "label": "Phone number",
+          "default": "+61 3 8376 6284"
+        },
+        {
+          "type": "text",
+          "id": "email",
+          "label": "Email ID",
+          "default": "demo@novaworks.net"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_social_icon",
+          "label": "Show social icon",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "social_type",
+          "label": "Social media type",
+          "default": "social-icon-with-text",
+          "options": [
+            {
+              "label": "Social icon with text",
+              "value": "social-icon-with-text"
+            },
+            {
+              "label": "Social simple",
+              "value": "social-simple"
+            },
+            {
+              "label": "Social icon only",
+              "value": "social-icon-only"
+            },
+            {
+              "label": "Social short name",
+              "value": "social-short-name"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "social_style",
+          "label": "Social style",
+          "default": "dark",
+          "options": [
+            {
+              "label": "Dark",
+              "value": "dark"
+            },
+            {
+              "label": "Light",
+              "value": "light"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "column_width",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column - 1/12"
+            },
+            {
+              "value": "2",
+              "label": "2 columns - 1/6"
+            },
+            {
+              "value": "3",
+              "label": "3 columns - 1/4"
+            },
+            {
+              "value": "4",
+              "label": "4 columns - 1/3"
+            },
+            {
+              "value": "5",
+              "label": "5 columns - 5/12"
+            },
+            {
+              "value": "6",
+              "label": "6 columns - 1/2"
+            },
+            {
+              "value": "7",
+              "label": "7 columns - 7/12"
+            },
+            {
+              "value": "8",
+              "label": "8 columns - 2/3"
+            },
+            {
+              "value": "9",
+              "label": "9 columns - 3/4"
+            },
+            {
+              "value": "10",
+              "label": "10 columns - 5/6"
+            },
+            {
+              "value": "11",
+              "label": "11 columns - 11/12"
+            },
+            {
+              "value": "12",
+              "label": "12 columns - 1/1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Newsletter"
+        },
+        {
+          "type": "text",
+          "id": "newsletter_sub_heading",
+          "label": "Heading",
+          "default": "Join the hongo journey"
+        },
+        {
+          "type": "text",
+          "id": "btn_icon_class",
+          "label": "Enter icon class",
+          "default": "feather-mail",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_terms_agreement_contact",
+          "label": "Show terms and conditions checkbox",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "payment",
+          "label": "Payment Image",
+          "info": "Recommended size 115x25"
+        },
+        {
+          "type": "select",
+          "id": "column_width",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column - 1/12"
+            },
+            {
+              "value": "2",
+              "label": "2 columns - 1/6"
+            },
+            {
+              "value": "3",
+              "label": "3 columns - 1/4"
+            },
+            {
+              "value": "4",
+              "label": "4 columns - 1/3"
+            },
+            {
+              "value": "5",
+              "label": "5 columns - 5/12"
+            },
+            {
+              "value": "6",
+              "label": "6 columns - 1/2"
+            },
+            {
+              "value": "7",
+              "label": "7 columns - 7/12"
+            },
+            {
+              "value": "8",
+              "label": "8 columns - 2/3"
+            },
+            {
+              "value": "9",
+              "label": "9 columns - 3/4"
+            },
+            {
+              "value": "10",
+              "label": "10 columns - 5/6"
+            },
+            {
+              "value": "11",
+              "label": "11 columns - 11/12"
+            },
+            {
+              "value": "12",
+              "label": "12 columns - 1/1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "instagram",
+      "name": "Instagram",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "number",
+          "id": "count",
+          "default": 6,
+          "label": "No. of images to show"
+        },
+        {
+          "type": "text",
+          "id": "label_text",
+          "label": "Insta button text",
+          "default": "#Fashionstyle"
+        },
+        {
+          "type": "url",
+          "id": "insta_btn_link", 
+          "label": "Insta button link"
+        },
+        {
+          "type": "select",
+          "id": "column_width",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column - 1/12"
+            },
+            {
+              "value": "2",
+              "label": "2 columns - 1/6"
+            },
+            {
+              "value": "3",
+              "label": "3 columns - 1/4"
+            },
+            {
+              "value": "4",
+              "label": "4 columns - 1/3"
+            },
+            {
+              "value": "5",
+              "label": "5 columns - 5/12"
+            },
+            {
+              "value": "6",
+              "label": "6 columns - 1/2"
+            },
+            {
+              "value": "7",
+              "label": "7 columns - 7/12"
+            },
+            {
+              "value": "8",
+              "label": "8 columns - 2/3"
+            },
+            {
+              "value": "9",
+              "label": "9 columns - 3/4"
+            },
+            {
+              "value": "10",
+              "label": "10 columns - 5/6"
+            },
+            {
+              "value": "11",
+              "label": "11 columns - 11/12"
+            },
+            {
+              "value": "12",
+              "label": "12 columns - 1/1"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

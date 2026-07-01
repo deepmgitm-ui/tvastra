@@ -1,0 +1,468 @@
+<section
+  id="{{ section.settings.section_id }}"
+  class="top-banner-with-product section-{{ section.id }} {% if section.settings.section_show == false %}d-none{% endif %}{{ section.settings.section_class_name }} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }} d-md-block"
+  style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}"
+>
+  <div class="{{ section.settings.container_type }}">
+    {%- if section.settings.heading != blank
+      or section.settings.sub_heading != blank
+      or section.settings.description != blank
+    -%}
+      <div class="row heading-wrapper title-{{ section.settings.title_style }} align-items-{% if section.settings.description != blank %}start{% else %}center{% endif %} text-center text-lg-start">
+        {%- render 'section-title-style', heading_alignment: section.settings.heading_alignment -%}
+      </div>
+    {%- endif -%}
+    <div class="row justify-content-center">
+      {%- for block in section.blocks -%}
+        <div class="col-md-6 col-lg banner-item block-{{ block.id }}">
+            <div class="banner-item-top position-relative cover-background d-flex align-items-center" style="{% if block.settings.banner_image != blank %}background-image: url({{ block.settings.banner_image | image_url }});{% else %}background-color:{{ block.settings.banner_bg_color }}{% endif %}">
+              {%- if block.settings.banner_sub_title != blank or block.settings.banner_title != blank or block.settings.btn_text != blank -%}
+                <div class="content-inner text-{{ block.settings.text_alignment }}">
+                  {%- if block.settings.banner_sub_title != blank -%}
+                    <span class="sub-title">{{ block.settings.banner_sub_title }}</span>
+                  {%- endif -%}
+                  {%- if block.settings.banner_title != blank -%}
+                    <h2 class="title mb-0">{{ block.settings.banner_title }}</h2>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
+            <div class="product-list-item">
+               {%- if block.settings.product_list.count > 0 -%}
+                  {%- assign products = block.settings.product_list -%}
+                  {%- for product in products -%}
+                    {%- if product != blank -%}
+                      <div class="col product-box">
+                          {%- render 'product-card-list', product: product, show_rating: true, use_section_rating: true, banner_with_product : true -%}
+                      </div>
+                    {%- else -%}
+                      {% render 'product-card-placeholder' %} 
+                    {%- endif -%}
+                  {%- endfor -%}
+              {% else %}
+                <div class="dummy-product">
+                  {%- for i in (1..4) -%}
+                      <div class="item">
+                        {% render 'product-card-placeholder' %} 
+                      </div>
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+            </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+<style>
+  {%- unless section.settings.use_default_section_typography == true -%}
+    .section-{{ section.id }} .section-heading {
+      font-size: {{ section.settings.section_heading_size }}px;
+      line-height: {{ section.settings.heading_line_height }}px;
+    }
+    .section-{{ section.id }} .section-sub-heading {
+      font-size: {{ section.settings.sub_heading_size }}px;
+      letter-spacing: {{ section.settings.subheading_letter_spacing }}px;
+      line-height: {{ section.settings.sub_heading_line_height }}px;
+    }
+  {%- endunless -%}
+  {%- if section.settings.section_heading_color != blank -%}
+    .section-{{ section.id }} .section-heading {
+      color: {{ section.settings.section_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_sub_heading_color != blank -%}
+    .section-{{ section.id }} .section-sub-heading {
+      color: {{ section.settings.section_sub_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_description_color != blank -%}
+    .section-{{ section.id }} .section-description {
+      color: {{ section.settings.section_description_color }};
+    }
+  {%- endif -%}
+  .section-{{ section.id }} .banner-item-top .sub-title {
+   font-size: {{ section.settings.subtitle_fontsize }}px;
+   line-height: {{ section.settings.subtitle_lineheight }}px;
+    {%- if section.settings.block_sub_title_color != blank -%}color: {{ section.settings.block_sub_title_color }};{%- endif -%}
+  }  
+  {%- if section.settings.title_fontsize -%}
+    .section-{{ section.id }} .banner-item-top .title {
+      font-size: {{ section.settings.title_fontsize }}px;
+      line-height: {{ section.settings.title_lineheight }}px;
+      {%- if section.settings.block_title_color != blank -%}color: {{ section.settings.block_title_color }};{%- endif -%}
+    }
+  {%- endif -%}
+  @media (max-width: 1199px) {
+    .section-{{ section.id }} .banner-item-top .title {
+      font-size: var(--font_size_plus8);
+      line-height: var(--font_size_plus10);
+    }
+  }
+</style>
+{% schema %}
+{
+  "name": "Top banner with products",
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "w-100 overflow-hidden",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Wrap word in square bracket for stylish word. e.g. [Hello] World"
+    },
+    {
+      "type": "textarea",
+      "id": "sub_heading",
+      "label": "Sub heading"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "title_style",
+      "label": "Title style",
+      "default": "style-1",
+      "options": [
+        {
+          "value": "style-1",
+          "label": "Style-1"
+        },
+        {
+          "value": "style-2",
+          "label": "Style-2"
+        },
+        {
+          "value": "style-3",
+          "label": "Style-3"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Banner box settings"
+    },
+    {
+      "type": "color",
+      "id": "block_title_color",
+      "label": "Block title color"
+    },
+    {
+      "type": "color",
+      "id": "block_sub_title_color",
+      "label": "Block subtitle color"
+    },
+    {
+      "type": "range",
+      "id": "title_fontsize",
+      "label": "Title font size",
+      "unit": "px",
+      "min": 22,
+      "max": 80,
+      "step": 1,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "title_lineheight",
+      "label": "Title line height",
+      "unit": "px",
+      "min": 24,
+      "max": 95,
+      "step": 1,
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "subtitle_fontsize",
+      "label": "Subtitle font size",
+      "unit": "px",
+      "min": 12,
+      "max": 40,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "subtitle_lineheight",
+      "label": "Subtitle line height",
+      "unit": "px",
+      "min": 10,
+      "max": 60,
+      "step": 1,
+      "default": 22
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_default_section_typography",
+      "label": "Use section typography from theme settings",
+      "info": "By default section typography values will be used from theme settings. Uncheck this checkbox to use below values.",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "section_heading_size",
+      "min": 20,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 45
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "label": "Heading line height",
+      "unit": "px",
+      "min": 26,
+      "max": 120,
+      "step": 1,
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_size",
+      "min": 12,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Sub heading size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_line_height",
+      "label": "Sub heading line height",
+      "unit": "px",
+      "min": 24,
+      "max": 60,
+      "step": 1,
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "subheading_letter_spacing",
+      "min": 0,
+      "max": 10,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Sub heading letter spacing",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": "small-section-top",
+      "options": [
+        {
+          "value": "large-section-top",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-top",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-top",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-top",
+          "label": "Very small section"
+        },
+        {
+          "value": "pt-0",
+          "label": "No padding top"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": "small-section-bottom",
+      "options": [
+        {
+          "value": "large-section-bottom",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-bottom",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-bottom",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-bottom",
+          "label": "Very small section"
+        },
+        {
+          "value": "pb-0",
+          "label": "No padding button"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment ",
+      "default": "center",
+      "info": "Not applicable in title style-2",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "section_show",
+      "label": "Show section in mobile",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color"
+    },
+    {
+      "type": "color",
+      "id": "section_heading_color",
+      "label": "Section heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_sub_heading_color",
+      "label": "Section sub heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_description_color",
+      "label": "Section description color"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "section_class_name",
+      "label": "Section class name"
+    }
+
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "banner_image",
+          "label": "Image",
+          "info": "Recommended size 530x150"
+        },
+        {
+          "type": "color",
+          "id": "banner_bg_color",
+          "default": "#c2c9be",
+          "label": "Banner background color"
+        },
+        {
+          "type": "text",
+          "id": "banner_title",
+          "label": "Title",
+          "default": "Modern <br> armchair"
+        },
+        {
+          "type": "html",
+          "id": "banner_sub_title",
+          "label": "Subtitle",
+          "default": "Save up to 10% off"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text alignment",
+          "default": "start",
+          "options": [
+            {
+              "value": "start",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "end",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "product_list",
+          "id": "product_list",
+          "label": "Products"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Top banner with products",
+      "blocks": [
+        {
+          "type": "item"
+        },
+        {
+          "type": "item"
+        },
+        {
+          "type": "item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

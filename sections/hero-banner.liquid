@@ -1,0 +1,523 @@
+<section id="{{ section.settings.section_id }}" class="hero-banner cover-background overflow-hidden section-{{ section.id }}{{ section.settings.section_class_name }} d-md-block {%- if section.settings.section_bg_image != blank -%}{{ section.settings.background_position }}{% endif %}" style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}{%- if section.settings.section_bg_image != blank -%}background-image: url({{ section.settings.section_bg_image | image_url }});{% endif %}">
+  <div class="{{ section.settings.container_type }}">
+    <div class="row align-items-center{% if section.settings.right_image %} flex-row-reverse{% endif %}">
+        <div class="col-lg-{{ section.settings.column_width }} image-wrap position-relative">
+          <div class="custom-hero-image-{{ section.id }}">
+            {%- render 'responsive-image', image: section.settings.image, placeholder_type: 'simple-image' -%}
+          </div>
+        </div>
+      {%- if section.settings.hide_content_block == true -%}
+        <div class="col-lg-{{ section.settings.column_width1 }} content-wrap text-center text-lg-start">
+          {%- assign rating_vaule = section.settings.rating -%}
+            {%- assign rating_number = rating_vaule | times: 20 -%}
+            {%- if rating_vaule != blank -%}
+              <div class="rating-wrapper d-flex justify-content-center justify-content-lg-start">
+                <div class="rating-inner alt-font align-items-center d-flex">
+                  {%- assign rating_value_string = rating_vaule | append: '' -%}
+                  <span class="total-rating d-flex align-items-center">
+                    <span class="simple-rating position-relative d-flex">
+                      <i class="bi bi-star-fill"></i>
+                    </span>
+                    {{ rating_vaule }}{%- unless rating_value_string contains '.' -%}.0{%- endunless -%}
+                  </span> 
+                   {%- if section.settings.rating_text != blank -%}
+                    {{ section.settings.rating_text }}
+                    {%- endif -%}
+                </div>
+              </div> 
+            {%- endif -%}
+            {%- if section.settings.block_sub_heading != blank -%}
+              <span class="section-sub-heading">{{ section.settings.block_sub_heading }}</span>
+            {%- endif -%}
+            {%- if section.settings.block_heading != blank -%}
+              <h3 class="section-heading alt-font">{{ section.settings.block_heading }}</h3>
+            {%- endif -%}
+            {%- if section.settings.block_description != blank -%}
+              <div class="section-description">{{ section.settings.block_description }}</div>
+            {%- endif -%}
+            <div class="button-wrapper d-flex align-items-center flex-column flex-lg-row">
+              {%- render 'button-settings',
+                btn_style: section.settings.button_style,
+                btn_size: section.settings.button_size,
+                btn_text: section.settings.btn_text,
+                btn_link: section.settings.btn_link,
+                btn_radius: section.settings.btn_radius,
+                btn_border_width: section.settings.btn_border_width,
+                btn_icon_class: section.settings.btn_icon_class,
+                icon_position: section.settings.icon_position
+              -%}
+              {%- if section.settings.link_text != blank -%}
+                <a class="alt-font simple-link" href="{{ section.settings.link_url | default: "#" }}" aria-label="link">{{ section.settings.link_text }}</a>
+              {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style type="text/css">
+  /* --- CUSTOM FONT LOADING --- */
+  {%- if section.settings.heading_custom_font != blank -%}
+    {{ section.settings.heading_custom_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- if section.settings.subheading_custom_font != blank -%}
+    {{ section.settings.subheading_custom_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- if section.settings.description_custom_font != blank -%}
+    {{ section.settings.description_custom_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+
+  /* --- EXISTING SIZE OVERRIDES --- */
+  {%- unless section.settings.use_default_section_typography == true -%}
+    .section-{{ section.id }} .section-heading {
+      font-size: {{ section.settings.title_fontsize }}px !important;
+      line-height: {{ section.settings.title_lineheight }}px !important;
+    }
+    .section-{{ section.id }} .section-sub-heading {
+      font-size: {{ section.settings.sub_heading_size }}px !important;
+      letter-spacing: {{ section.settings.subheading_letter_spacing }}px !important;
+      line-height: {{ section.settings.sub_heading_line_height }}px !important;
+    }
+  {%- endunless -%}
+
+  /* --- TYPOGRAPHY & COLORS FOR HEADING --- */
+  .section-{{ section.id }} .section-heading {
+    {%- if section.settings.heading_custom_font != blank -%}
+      font-family: {{ section.settings.heading_custom_font.family }}, {{ section.settings.heading_custom_font.fallback_families }} !important;
+      font-weight: {{ section.settings.heading_custom_font.weight }} !important;
+      font-style: {{ section.settings.heading_custom_font.style }} !important;
+    {%- endif -%}
+    {%- if section.settings.heading_custom_color != blank -%}
+      color: {{ section.settings.heading_custom_color }} !important;
+    {%- endif -%}
+  }
+
+  /* --- TYPOGRAPHY & COLORS FOR SUB-HEADING --- */
+  .section-{{ section.id }} .section-sub-heading {
+    {%- if section.settings.subheading_custom_font != blank -%}
+      font-family: {{ section.settings.subheading_custom_font.family }}, {{ section.settings.subheading_custom_font.fallback_families }} !important;
+      font-weight: {{ section.settings.subheading_custom_font.weight }} !important;
+      font-style: {{ section.settings.subheading_custom_font.style }} !important;
+    {%- endif -%}
+    {%- if section.settings.subheading_custom_color != blank -%}
+      color: {{ section.settings.subheading_custom_color }} !important;
+    {%- endif -%}
+  }
+
+  /* --- TYPOGRAPHY & COLORS FOR DESCRIPTION --- */
+  .section-{{ section.id }} .section-description,
+  .section-{{ section.id }} .section-description * {
+    {%- if section.settings.description_custom_font != blank -%}
+      font-family: {{ section.settings.description_custom_font.family }}, {{ section.settings.description_custom_font.fallback_families }} !important;
+      font-weight: {{ section.settings.description_custom_font.weight }} !important;
+      font-style: {{ section.settings.description_custom_font.style }} !important;
+    {%- endif -%}
+    {%- if section.settings.description_custom_color != blank -%}
+      color: {{ section.settings.description_custom_color }} !important;
+    {%- endif -%}
+  }
+
+  /* --- IMAGE SHAPE & BORDER --- */
+  .custom-hero-image-{{ section.id }} img, 
+  .custom-hero-image-{{ section.id }} svg {
+    border-radius: {{ section.settings.image_border_radius }}px !important;
+    {% if section.settings.image_border_color != blank %}
+      border: {{ section.settings.image_border_width }}px solid {{ section.settings.image_border_color }} !important;
+    {% endif %}
+    overflow: hidden;
+  }
+</style>
+
+{%- schema -%}
+  {
+    "name": "Hero banner",
+    "settings": [
+      {
+        "type": "header",
+        "content": "✨ Master Typography & Colors"
+      },
+      {
+        "type": "font_picker",
+        "id": "heading_custom_font",
+        "label": "Heading Font",
+        "default": "helvetica_n4"
+      },
+      {
+        "type": "color",
+        "id": "heading_custom_color",
+        "label": "Heading Color"
+      },
+      {
+        "type": "font_picker",
+        "id": "subheading_custom_font",
+        "label": "Sub-heading Font",
+        "default": "helvetica_n4"
+      },
+      {
+        "type": "color",
+        "id": "subheading_custom_color",
+        "label": "Sub-heading Color"
+      },
+      {
+        "type": "font_picker",
+        "id": "description_custom_font",
+        "label": "Description Font",
+        "default": "helvetica_n4"
+      },
+      {
+        "type": "color",
+        "id": "description_custom_color",
+        "label": "Description Color"
+      },
+      {
+        "type": "header",
+        "content": "✨ Image Shape & Styling"
+      },
+      {
+        "type": "range",
+        "id": "image_border_radius",
+        "min": 0, "max": 100, "step": 1, "unit": "px",
+        "label": "Image Shape (Border Radius)", "default": 0
+      },
+      {
+        "type": "color",
+        "id": "image_border_color",
+        "label": "Image Border Color"
+      },
+      {
+        "type": "range",
+        "id": "image_border_width",
+        "min": 0, "max": 10, "step": 1, "unit": "px",
+        "label": "Image Border Width", "default": 0
+      },
+      {
+        "type": "select",
+        "id": "container_type",
+        "label": "Container type",
+        "default": "container",
+        "options": [
+          {
+            "value": "container-fluid",
+            "label": "Container fluid"
+          },
+          {
+            "value": "w-100 overflow-hidden",
+            "label": "Full width"
+          },
+          {
+            "value": "container",
+            "label": "Container"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Content block"
+      },
+      {
+        "type": "checkbox",
+        "id": "hide_content_block",
+        "label": "Show content block",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "rating",
+        "label": "Product rating",
+        "min": 0.1,
+        "max": 5,
+        "step": 0.1,
+        "default": 5
+      },
+      {
+        "type": "text",
+        "id": "rating_text",
+        "label": "Rating text",
+        "default": "Top Rating"
+      },
+      {
+        "type": "text",
+        "id": "block_heading",
+        "label": "Heading",
+        "default": "Expand your mind, regarding book."
+      },
+      {
+        "type": "textarea",
+        "id": "block_sub_heading",
+        "label": "Sub heading"
+      },
+      {
+        "type": "richtext",
+        "id": "block_description",
+        "label": "Description",
+        "default": "<p>Lorem ipsum dolor consectetur adipiscing eiusmod tempor incididunt labore dolore magna.</p>"
+      },
+      {
+        "type": "select",
+        "id": "column_width1",
+        "label": "Column width",
+        "default": "5",
+        "info": "Total columns of whole block should not be more than 12 columns",
+        "options": [
+          { "value": "1", "label": "1 column - 1/12" },
+          { "value": "2", "label": "2 columns - 1/6" },
+          { "value": "3", "label": "3 columns - 1/4" },
+          { "value": "4", "label": "4 columns - 1/3" },
+          { "value": "5", "label": "5 columns - 5/12" },
+          { "value": "6", "label": "6 columns - 1/2" },
+          { "value": "7", "label": "7 columns - 7/12" },
+          { "value": "8", "label": "8 columns - 2/3" },
+          { "value": "9", "label": "9 columns - 3/4" },
+          { "value": "10", "label": "10 columns - 5/6" },
+          { "value": "11", "label": "11 columns - 11/12" },
+          { "value": "12", "label": "12 columns - 1/1" }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Image block"
+      },
+      {
+        "type": "checkbox",
+        "id": "hide_image_block",
+        "label": "Show image block",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "right_image",
+        "label": "Show image right side",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image",
+        "info": "Recommended size 800x900"
+      },
+      {
+        "type": "select",
+        "id": "column_width",
+        "label": "Column width",
+        "default": "6",
+        "info": "Total columns of whole block should not be more than 12 columns",
+        "options": [
+          { "value": "1", "label": "1 column - 1/12" },
+          { "value": "2", "label": "2 columns - 1/6" },
+          { "value": "3", "label": "3 columns - 1/4" },
+          { "value": "4", "label": "4 columns - 1/3" },
+          { "value": "5", "label": "5 columns - 5/12" },
+          { "value": "6", "label": "6 columns - 1/2" },
+          { "value": "7", "label": "7 columns - 7/12" },
+          { "value": "8", "label": "8 columns - 2/3" },
+          { "value": "9", "label": "9 columns - 3/4" },
+          { "value": "10", "label": "10 columns - 5/6" },
+          { "value": "11", "label": "11 columns - 11/12" },
+          { "value": "12", "label": "12 columns - 1/1" }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Button settings"
+      },
+      {
+        "type": "paragraph",
+        "content": "Button 1"
+      },
+      {
+        "type": "select",
+        "id": "button_style",
+        "label": "Button style",
+        "default": "btn-black",
+        "options": [
+          { "value": "btn-black", "label": "Solid button black" },
+          { "value": "btn-white", "label": "Solid button white" },
+          { "value": "btn-base-color", "label": "Solid button base" },
+          { "value": "btn-black-border", "label": "Border button black" },
+          { "value": "btn-white-border", "label": "Border button white" },
+          { "value": "btn-base-color-border", "label": "Border button base" },
+          { "value": "btn-white-border border-opacity", "label": "Border opacity button white" },
+          { "value": "btn-black-border border-opacity", "label": "Border opacity button black" },
+          { "value": "btn-link btn-link-black", "label": "Underlined button black" },
+          { "value": "btn-link btn-link-white", "label": "Underlined button white" },
+          { "value": "btn-link btn-link-base-color", "label": "Underlined button base" },
+          { "value": "btn-custom", "label": "Custom button" }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "button_size",
+        "label": "Button size",
+        "default": "btn-large",
+        "options": [
+          { "value": "btn-extra-large", "label": "Extra Large" },
+          { "value": "btn-large", "label": "Large" },
+          { "value": "btn-medium", "label": "Medium" },
+          { "value": "btn-small", "label": "Small" },
+          { "value": "btn-very-small", "label": "Very Small" }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "btn_radius",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Button radius",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "btn_border_width",
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "unit": "px",
+        "label": "Button border width",
+        "default": 2
+      },
+      {
+        "type": "text",
+        "id": "btn_icon_class",
+        "label": "Enter icon class",
+        "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+      },
+      {
+        "type": "select",
+        "id": "icon_position",
+        "label": "Icon position",
+        "default": "right-icon",
+        "options": [
+          { "value": "left-icon", "label": "Left" },
+          { "value": "right-icon", "label": "Right" }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "btn_text",
+        "label": "Button text",
+        "default": "EXPLORE MORE"
+      },
+      {
+        "type": "url",
+        "id": "btn_link",
+        "label": "Button link"
+      },
+      {
+        "type": "paragraph",
+        "content": "Button 2"
+      },
+      {
+        "type": "text",
+        "id": "link_text",
+        "label": "Link text",
+        "default": "Download sample"
+      },
+      {
+        "type": "url",
+        "id": "link_url",
+        "label": "Link"
+      },
+      {
+        "type": "header",
+        "content": "Section Settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "use_default_section_typography",
+        "label": "Use section typography from theme settings",
+        "info": "By default section typography values will be used from theme settings. Uncheck this checkbox to use below values.",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "title_fontsize",
+        "label": "Heading size",
+        "unit": "px",
+        "min": 25,
+        "max": 80,
+        "step": 1,
+        "default": 70
+      },
+      {
+        "type": "range",
+        "id": "title_lineheight",
+        "label": "Heading line height",
+        "unit": "px",
+        "min": 35,
+        "max": 95,
+        "step": 1,
+        "default": 70
+      },
+      {
+        "type": "range",
+        "id": "sub_heading_size",
+        "min": 10,
+        "max": 70,
+        "step": 1,
+        "unit": "px",
+        "label": "Sub heading size",
+        "default": 14
+      },
+      {
+        "type": "range",
+        "id": "sub_heading_line_height",
+        "label": "Sub heading line height",
+        "unit": "px",
+        "min": 24,
+        "max": 60,
+        "step": 1,
+        "default": 24
+      },
+      {
+        "type": "range",
+        "id": "subheading_letter_spacing",
+        "min": 0,
+        "max": 10,
+        "step": 0.5,
+        "unit": "px",
+        "label": "Sub heading letter spacing",
+        "default": 0
+      },
+      {
+        "type": "image_picker",
+        "id": "section_bg_image",
+        "label": "Section background image",
+        "info": "Recommended size 1920x800"
+      },
+      {
+        "type": "select",
+        "id": "background_position",
+        "label": "Background position",
+        "options": [
+          { "value": "cover-background", "label": "Cover" },
+          { "value": "fixed-background", "label": "Fixed" }
+        ],
+        "default": "cover-background"
+      },
+      {
+        "type": "color",
+        "id": "section_bg_color",
+        "label": "Section background color"
+      },
+      {
+        "type": "text",
+        "id": "section_id",
+        "label": "Section ID"
+      },
+      {
+        "type": "text",
+        "id": "section_class_name",
+        "label": "Section class name"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Hero banner",
+        "blocks": []
+      }
+    ]
+  }
+{%- endschema -%}

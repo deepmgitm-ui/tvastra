@@ -1,0 +1,38 @@
+<div class="product-usp d-sm-flex justify-content-{{ block_settings.usp_alignment }} alt-font">
+  {%- if block_settings.icon_class1 != blank or block_settings.usp_text1 != blank -%}
+    <div class="usp-box">
+      {%- if block_settings.icon_class1 != blank -%}<i class="{{ block_settings.icon_class1 }}"></i>{%- endif -%}
+      {%- if block_settings.usp_text1 != blank -%}
+        {%- if block_settings.usp_link1 != blank -%}
+          <a href="{{ block_settings.usp_link1 }}" aria-label="usp">{{ block_settings.usp_text1 }}</a>
+        {%- else -%}
+          <span>{{ block_settings.usp_text1 }}</span>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+  {%- if block_settings.icon_class2 != blank or block_settings.usp_text2 != blank -%}
+    <div class="usp-box">
+      {%- if block_settings.icon_class2 != blank -%}<i class="{{ block_settings.icon_class2 }}"></i>{%- endif -%}
+      {%- if block_settings.usp_text2 != blank -%}
+        {%- if block_settings.usp_link2 != blank -%}
+          <a href="{{ block_settings.usp_link2 }}" aria-label="usp">{{ block_settings.usp_text2 }}</a>
+        {%- else -%}
+          <span>{{ block_settings.usp_text2 }}</span>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  {%- endif -%}    
+  {%- if block_settings.icon_class3 != blank or block_settings.usp_text3 != blank -%}
+    <div class="usp-box">
+      {%- if block_settings.icon_class3 != blank -%}<i class="{{ block_settings.icon_class3 }}"></i>{%- endif -%}
+      {%- if block_settings.usp_text3 != blank -%}
+        {%- if block_settings.usp_link3 != blank -%}
+          <a href="{{ block_settings.usp_link3 }}" aria-label="usp">{{ block_settings.usp_text3 }}</a>
+        {%- else -%}
+          <span>{{ block_settings.usp_text3 }}</span>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  {%- endif -%}                         
+</div>

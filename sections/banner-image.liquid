@@ -1,0 +1,154 @@
+<section id="{{ section.settings.section_id }}" class="section-{{ section.id }} {% if section.settings.section_show == false %}d-none{% endif %}{{ section.settings.section_class_name }} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }} d-md-block" >
+  <div class="{{ section.settings.container_type }}"> 
+    <div class="row">
+      {%- for block in section.blocks -%}
+        <div class="col">
+          <div class="banner-image-main">
+            {%- if block.settings.banner_url != blank -%}
+              <a href="{{ block.settings.banner_url }}" aria-label="link">
+            {%- endif -%}
+              {%- render 'responsive-image', image: block.settings.banner_img, placeholder_type: 'lifestyle-image' -%}
+            {%- if block.settings.banner_url != blank -%}
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}  
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Banner image",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": "small-section-top",
+      "options": [
+        {
+          "value": "large-section-top",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-top",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-top",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-top",
+          "label": "Very small section"
+        },
+        {
+          "value": "pt-0",
+          "label": "No padding top"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": "small-section-bottom",
+      "options": [
+        {
+          "value": "large-section-bottom",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-bottom",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-bottom",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-bottom",
+          "label": "Very small section"
+        },
+        {
+          "value": "pb-0",
+          "label": "No padding buttom"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "section_show",
+      "label": "Show section in mobile",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "section_class_name",
+      "label": "Section class name"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "banner_image",
+      "name": "Banner item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "banner_img",
+          "label": "Banner image",
+          "info": "Recommended size 1920x400"
+        },
+        {
+          "type": "url",
+          "id": "banner_url",
+          "label": "Banner URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner image",
+      "blocks": [
+        {
+          "type": "banner_image"
+        },
+        {
+          "type": "banner_image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

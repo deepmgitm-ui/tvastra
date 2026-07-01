@@ -1,0 +1,28 @@
+{%- if settings.enable_wishlist_hero_app_widget -%}
+	<div>{% render 'wishlisthero-header-icon' %}</div>
+{%- else -%}
+	{%- if settings.header_layout == 'style-1' -%}
+	<div class="wishlist {{ settings.menu_text_case }}">
+	<a href="{{ pages[settings.wishlist_page].url }}" class="icon-bubble position-relative no-count" aria-label="wishlist">
+		<i class="feather-heart d-inline-block"></i>
+		<span data-wishlist-counter class="count d-none"></span>
+		{%- if settings.show_icon == false -%}<span class="{% if settings.header_style == "center-navigation" %}d-none d-xxl-inline-block{% else %}d-none d-xl-inline-block{% endif %}">{{ 'sections.header.wishlist' | t }}</span>{%- endif -%}
+	</a>
+	</div>
+	{%- else-%}
+		<div class="wishlist alt-font {{ settings.menu_text_case }}">
+		<a href="{{ pages[settings.wishlist_page].url }}" class="icon-bubble position-relative no-count" aria-label="wishlist">
+			<div class="wishlist-icon">
+				<i class="bi bi-heart"></i>
+				</div>
+				{%- if settings.show_icon == false -%}
+				<div class="wishlist-text alt-font">
+					<span class="addon-title d-none d-xl-block">{{ 'sections.header.product' | t }}</span>
+				<span class="{% if settings.header_style == "center-navigation" %}d-none d-xxl-block{% else %}d-none d-xl-block{% endif %}">{{ 'sections.header.wishlist' | t }}</span>
+				<span data-wishlist-counter class="count d-none"></span>
+				</div>
+			{%- endif -%}
+		</a>
+		</div>
+	{%- endif -%}
+{%- endif -%}

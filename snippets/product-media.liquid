@@ -1,0 +1,211 @@
+{%- capture border-style -%}
+  {%- if section.settings.show_border == true -%}
+    border: 1px solid var(--extra-medium-gray);
+  {%- endif -%}
+  border-radius: {{ section.settings.image_border_radius }}px;
+{%- endcapture -%}
+{%- if section.settings.show_thumb_slider == true -%}
+  <div class="product-thumb-wrap">
+    <div class="swiper product-image-thumb slider-{{ direction }}">
+      <!-- Additional required wrapper -->
+      <div class="swiper-wrapper">
+        <!-- Slides -->
+        {%- assign image_shown = false -%}
+        {%- for media in product.media -%}
+          {%- liquid
+            assign can_show = false
+            assign variant_img_added = false
+            assign media_alt = media.alt | downcase
+            if group_image == true
+              if product_options_downcased contains media_alt
+                assign can_show = true
+                assign variant_img_added = true
+              endif
+            else
+              assign can_show = true
+            endif
+          -%}
+          {%- if can_show -%}
+            <div
+              class="swiper-slide"
+              data-media-id="{{ section_id }}-{{ media.id }}-thumb"
+              data-index="{{ forloop.index }}"
+              variant_img_added="{{ variant_img_added }}"
+            >
+              {%- render 'product-thumbnail',
+                type: 'thumb',
+                media: media,
+                position: forloop.index,
+                loop: section_settings.enable_video_looping,
+                modal_id: section_id,
+                border_style: border-style
+              -%}
+            </div>
+            {%- assign image_shown = true -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- unless image_shown -%}
+          {%- for media in product.media -%}
+            <div
+              class="swiper-slide"
+              data-media-id="{{ section_id }}-{{ media.id }}-thumb"
+              data-index="{{ forloop.index }}"
+              variant_img_added="{{ variant_img_added }}"
+            >
+              {%- render 'product-thumbnail',
+                type: 'thumb',
+                media: media,
+                position: forloop.index,
+                loop: section_settings.enable_video_looping,
+                modal_id: section_id,
+                border_style: border-style
+              -%}
+            </div>
+          {%- endfor -%}
+        {%- endunless -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+{%- liquid
+  assign initial_media_id = product.selected_or_first_available_variant.featured_media.id
+  assign initialSlide = 0
+  for media in product.media
+    if media.id == initial_media_id
+      assign initialSlide = forloop.index0
+      break
+    endif
+  endfor
+-%}
+<div class="product-main-slider">
+  <a
+    href="#"
+    class="product-gallery-photoswipe__trigger product-img-btn"
+    data-original-title="Zoom"
+    data-placement="left"
+    aria-label="product"
+  >
+    <span class="bi bi-arrows-fullscreen"></span>
+  </a>
+  <div class="badge-wrapper" id="badge-{{ section_id }}">
+    {%- render 'product-badge', product_for_badge: product -%}
+  </div>
+  {%- capture slider_thumb_options -%}  
+    {%- if section.settings.show_thumb_slider == true -%}
+      "initialSlide":{{ initialSlide }},
+      "autoHeight":true,
+      "spaceBetween":10,
+      "watchOverflow":true,
+      "navigation":{
+        "nextEl":".product-image-main .swiper-button-next",
+        "prevEl":".product-image-main .swiper-button-prev"
+      },
+      "thumbs":{
+        "swiper":{
+          "el":".product-image-thumb",
+          "slidesPerView":"auto",
+          "direction":"{{ direction }}",
+          "spaceBetween":15,
+          "slideThumbActiveClass": "swiper-slide-thumb-active",
+          "navigation":{
+            "nextEl":".swiper-button-next.thumb",
+            "prevEl":".swiper-button-prev.thumb"
+          },
+          "breakpoints":{
+            "0":{"slidesPerView":"3"},
+            "768":{"slidesPerView":"{{ slider_veiw }}"},
+            "992":{"slidesPerView":"{{ slider_veiw }}"
+            }
+          }
+        }
+      }
+    {%- else -%}
+      "initialSlide":{{ initialSlide }},
+      "autoHeight":true,
+      "spaceBetween":10,
+      "watchOverflow":true,
+      "navigation":{
+        "nextEl":".product-image-main .swiper-button-next",
+        "prevEl":".product-image-main .swiper-button-prev"
+      },
+      "breakpoints":{
+        "0":{"slidesPerView":"1"}
+      }
+    {%- endif -%}
+  {%- endcapture -%}
+  <div
+    class="swiper product-image-main"
+    data-slider-options='{ {{ slider_thumb_options }} }'
+    data-thumb-direction="horizontal"
+    data-thumb-breakpoint="767"
+    style="{{ border-style }}"
+  >
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper">
+      <!-- Slides -->
+      {%- for media in product.media -%}
+        {%- liquid
+          assign can_show = false
+          assign variant_img_added = false
+          assign media_alt = media.alt | downcase
+          if group_image == true
+            if product_options_downcased contains media_alt
+              assign can_show = true
+              assign variant_img_added = true 
+            endif
+          else
+            assign can_show = true
+          endif
+        -%}
+        {%- if can_show -%}
+          <div
+            class="swiper-slide product__media-item"
+            data-media-type="{{ media.media_type }}"
+            data-media-host="{{ media.host }}"
+            data-media-id="{{ section_id }}-{{ media.id }}-main"
+            data-index="{{ forloop.index }}"
+            variant_img_added="{{ variant_img_added }}"
+          >
+            {%- render 'product-thumbnail',
+              type: 'main',
+              media: media,
+              position: forloop.index,
+              loop: section_settings.enable_video_looping,
+              modal_id: section_id
+            -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- unless image_shown -%}
+        {%- for media in product.media -%}
+          <div
+            class="swiper-slide product__media-item"
+            data-media-type="{{ media.media_type }}"
+            data-media-host="{{ media.host }}"
+            data-media-id="{{ section_id }}-{{ media.id }}-main"
+            data-index="{{ forloop.index }}"
+            variant_img_added="{{ variant_img_added }}"
+          >
+            {%- render 'product-thumbnail',
+              type: 'main',
+              media: media,
+              position: forloop.index,
+              loop: section_settings.enable_video_looping,
+              modal_id: section_id
+            -%}
+          </div>
+        {%- endfor -%}
+      {%- endunless -%}
+    </div>
+    <div class="swiper-button-prev">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="#262626" viewBox="0 0 320 512">
+        <path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/>
+      </svg>
+    </div>
+    <div class="swiper-button-next">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="#262626" viewBox="0 0 320 512">
+        <path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/>
+      </svg>
+      </div>
+  </div>
+</div>

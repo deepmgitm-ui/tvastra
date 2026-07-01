@@ -1,0 +1,133 @@
+{%- if template.name != 'product' and section.settings.show_mobile_sticky_menu == true -%}
+  <div class="mobile-sticky-menu {% if section.settings.show_mobile_sticky_menu == true %}d-flex d-md-none{% endif %} {%- if section.settings.show_home_label == false -%} hide-label{% endif %}">
+    {%- if section.settings.show_home_icon -%}
+      <div class="sticky-menu-item">
+        <a href="{{ shop.secure_url }}" aria-label="sticky-menu">
+          <i class="feather-home"></i>
+          {%- if section.settings.show_home_label == true -%}
+            <span>{{ 'sections.mobile_sticky_menu.home_label' | t }}</span>
+          {%- endif -%}
+        </a>
+      </div>
+    {%- endif -%}
+    {%- if section.settings.show_search_icon -%}
+      <div data-mfp-src="#minisearch-popup" class="sticky-menu-item sticky-search" data-sticky-minisearch-trigger>
+        <a href="#" aria-label="search">
+          <i class="feather-search"></i>
+          {%- if section.settings.show_home_label == true -%}
+            <span>{{ 'sections.mobile_sticky_menu.search_label' | t }}</span>
+          {%- endif -%}
+        </a>
+      </div>
+    {%- endif -%}
+    {%- if section.settings.show_collection_icon -%}
+      <div class="sticky-menu-item">
+        <a href="{{ routes.all_products_collection_url }}" aria-label="sticky-menu">
+          <i class="feather-grid"></i>
+          {%- if section.settings.show_home_label == true -%}
+            <span>{{ 'sections.mobile_sticky_menu.shop_label' | t }}</span>
+          {%- endif -%}
+        </a>
+      </div>
+    {%- endif -%}
+     {%- if section.settings.show_account_icon -%}
+      <div class="sticky-menu-item">
+        <a href="{{ routes.account_url }}" aria-label="account-label">
+          <i class="feather-user"></i>
+          {%- if section.settings.show_home_label == true -%}
+            <span>{{ 'sections.mobile_sticky_menu.account_label' | t }}</span>
+          {%- endif -%}
+        </a>
+      </div>
+    {%- endif -%}    
+    {%- if section.settings.show_wishlist_icon -%}
+      <div class="sticky-menu-item"> 
+        <a href="{{ pages[settings.wishlist_page].url }}" aria-label="wishlist">
+          <span class="icon-wrap position-relative">
+            <i class="feather-heart"></i>
+            <span data-wishlist-counter class="count d-none"></span>
+          </span>
+          {%- if section.settings.show_home_label == true -%}
+            <span>{{ 'sections.mobile_sticky_menu.wishlist_label' | t }}</span>
+          {%- endif -%}
+        </a>
+      </div>
+    {%- endif -%}
+    {%- if section.settings.show_cart_icon -%}
+      <div class="sticky-menu-item sticky-cart">
+        <a href="#" cart-icon-bubble aria-label="cart">
+          <span class="icon-wrap position-relative">
+            <i class="feather-shopping-bag"></i>
+            <span data-cart-count class="count {% if cart.item_count == 0 %}d-none{% endif %}">{{ cart.item_count }}</span>
+          </span>
+          {%- if section.settings.show_home_label == true -%}
+            <span>{{ 'sections.mobile_sticky_menu.cart_label' | t }}</span>
+          {%- endif -%}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+{% schema %}
+{
+  "name": "Mobile sticky menu",
+  "class": "position-sticky bottom-0 bg-white sticky-menu-wrapper",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_mobile_sticky_menu",
+      "label": "Show sticky menu",
+      "default": true,
+      "info": "Show sticky menu at bottom on mobile."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_home_label",
+      "label": "Show label",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Menu links"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_home_icon",
+      "label": "Show home icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search_icon",
+      "label": "Show search icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_icon",
+      "label": "Show products listing",
+      "default": true
+    },        
+    {
+      "type": "checkbox",
+      "id": "show_account_icon",
+      "label": "Show account icon",
+      "default": false,
+      "info": "Customers account must be enabled. See [Check here for more information.](https://help.shopify.com/en/manual/checkout-settings/customer-accounts)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wishlist_icon",
+      "label": "Show wishlist icon",
+      "default": false,
+      "info": "Wishlist page must be specified"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart_icon",
+      "label": "Show cart icon",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,31 @@
+<div class="product-slider-wrap">
+  <div class="title-btn-wrap d-flex align-items-center">
+    <div class="custome-sidebar-title alt-font">{{ block_settings.block_title }}</div>
+    <div class="d-flex align-items-center product-slider-btn ms-auto">
+      <div class="swiper-button-prev block-{{ forloop_index }}"><i class="feather-arrow-left"></i></div>
+      <div class="swiper-button-next block-{{ forloop_index }}"><i class="feather-arrow-right"></i></div>
+    </div>
+  </div>
+  <div class="swiper" data-slider-options='{"loop": true,"spaceBetween": 10,"autoplay": {"delay": 2500,"disableOnInteraction": false},"direction":"horizontal","navigation":{"nextEl":".product-slider-wrap .block-{{ forloop_index }}.swiper-button-next","prevEl":".product-slider-wrap .block-{{ forloop_index }}.swiper-button-prev"},"keyboard":{"enabled":true,"onlyInViewport":true},"speed": 500,"breakpoints": {"320": { "slidesPerView": 1 }}}'>
+    <div class="swiper-wrapper">
+      {%- assign collections = block_settings.collection_block -%}
+      {%- if collections != blank -%} 
+        {%- for product in collections.products -%}
+          <div class="swiper-slide text-center product-box">
+            {%- render 'product-simple-card', product_card_product: product, -%}
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..5) -%}
+          <div class="swiper-slide text-center product-box">
+            {%- render 'placeholder-images', placeholder_type: 'product-image' -%}
+            <div class="product-footer text-center placeholder-product">
+              <span class="product-title alt-font">{{ 'onboarding.product_title' | t }}</span>
+              <div class="price">{{ 5000 | money }}</div>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</div>

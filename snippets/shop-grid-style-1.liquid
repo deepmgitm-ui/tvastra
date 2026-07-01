@@ -1,0 +1,53 @@
+{%- for count in (1..4) -%}
+{%- assign grid_image = 'grid_image' | append: count -%} 
+{%- if grid_style == 'shop-grid-style-3' -%}
+  <li class="grid-item{% if count == 3 or count == 4 %} grid-item-double{% endif %} item-{{ count }}{% if block_settings[grid_image] == blank %} placeholder-item{% endif %}">
+{%- else -%}
+  <li class="grid-item{% if count == 1 or count == 2 %} grid-item-double{% endif %} item-{{ count }}{% if block_settings[grid_image] == blank %} placeholder-item{% endif %}">
+{%- endif -%}
+    {%- assign bg_color = 'bg_color_section' | append: count -%}
+    <div class="shop-grid-wrap position-relative" {% if block_settings[bg_color] != blank %}style="background-color: {{ block_settings[bg_color] }}"{%- endif -%}>
+      {%- assign button_link = 'btn_link' | append: count -%}
+      <a href="{{ block_settings[button_link] | default: '#' }}" class="shop-grid-img" aria-label="link">
+        {%- render 'responsive-image', image: block_settings[grid_image], placeholder_type: 'simple-image' -%}
+      </a> 
+      {%- assign box_alignment = 'box_alignment' | append: count -%}
+      <div class="shop-grid-details d-flex {{ block_settings[box_alignment] }}">
+        {%- assign txt_alignment = 'txt_alignment' | append: count -%}
+        <div class="text-{{ block_settings[txt_alignment] }}">
+          {%- assign grid_small_title = 'grid_small_title' | append: count -%}
+          {%- unless block_name == 'shop-grid-style-3' -%}
+            {%- if block_settings[grid_small_title] != blank -%}<div class="small-title text-dark-gray alt-font">{{ block_settings[grid_small_title] }}</div>{%- endif -%}
+            {%- endunless -%}
+          {%- assign grid_title = 'grid_title' | append: count -%}
+          {%- if block_settings[grid_title] != blank -%}<div class="title alt-font {{ grid_title }}">{{ block_settings[grid_title] }}</div>{%- endif -%} 
+          {%- if block_name == 'shop-grid-style-3' -%}
+            {%- if block_settings[grid_small_title] != blank -%}<div class="small-title text-dark-gray alt-font">{{ block_settings[grid_small_title] }}</div>{%- endif -%}
+          {%- endif -%}
+          {%- liquid
+            assign button_style = 'button_style' | append: count
+            assign button_size = 'button_size' | append: count
+            assign btn_text = 'btn_text' | append: count
+            assign btn_radius = 'btn_radius' | append: count
+            assign btn_border_width = 'btn_border_width' | append: count
+            assign btn_icon_class = 'btn_icon_class' | append: count
+            assign icon_position = 'icon_position' | append: count
+          -%}
+          {%- render 'button-settings',
+            btn_style: block_settings[button_style],
+            btn_size: block_settings[button_size],
+            btn_text: block_settings[btn_text],
+            btn_link: block_settings[button_link],
+            btn_radius: block_settings[btn_radius],
+            btn_border_width: block_settings[btn_border_width],
+            btn_icon_class: block_settings[btn_icon_class],
+            icon_position: block_settings[icon_position]
+          -%}
+        </div>
+      </div>
+      {%- if section.grid_overlay == true -%}
+        <div class="grid-overlay" style="{% if section.overlay_color != blank %} background-color: {{ section.overlay_color }}; {% endif %}opacity: {{ section.overlay_opacity }};"></div>
+      {%- endif -%}
+    </div>
+  </li> 
+{%- endfor -%}

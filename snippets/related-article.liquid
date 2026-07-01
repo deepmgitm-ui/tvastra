@@ -1,0 +1,27 @@
+{%- liquid
+  assign current_article_id = article.id
+  assign related_limit = section.settings.post_limit
+  assign counter = 1
+  capture related_blog
+    for recent_article in blog.articles
+      if recent_article.id != current_article_id
+        render 'article-card', article: recent_article, style: settings.article_card_style, schema_setting: settings
+        assign counter = counter | plus: 1
+        if counter > related_limit
+          break
+        endif
+      endif
+    endfor
+  endcapture  
+-%}
+{%- if related_blog != blank -%}
+  {{ related_blog }}
+{%- else -%}
+  {%- for i in (1..section.settings.post_limit_desktop) -%}
+    <div class="col blog-item blog-placeholder text-center">
+      {%- render 'responsive-image', placeholder_type: 'simple-image' -%}
+      <h6 class="m-0 mt-3">{{ 'sections.featured_blog.onboarding_title' | t }}</h6>
+      <p class="m-0">{{ 'sections.featured_blog.onboarding_content' | t }}</p>
+    </div>
+  {%- endfor -%}
+{%- endif -%}

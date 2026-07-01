@@ -1,0 +1,139 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "page-title": {
+      "type": "page-title",
+      "settings": {
+        "page_title_style": "style-2",
+        "show_full_width": false,
+        "show_banner_image": false,
+        "hide_breadcrumb": false,
+        "enable_parallax": false,
+        "title_uppercase": false,
+        "show_description": false,
+        "border_top": false,
+        "border_bottom": false,
+        "banner_title_size": "h-5",
+        "breadcrumb_position": "on-collection-banner",
+        "banner_height": "",
+        "content_alignment": "center",
+        "content_color_style": "dark-style",
+        "banner_bg_color": "#f7f7f7"
+      }
+    },
+    "7ad6534a-e2c7-4db3-aef2-71cae81bd8ee": {
+      "type": "collection-list",
+      "blocks": {
+        "template--15786637754561__7ad6534a-e2c7-4db3-aef2-71cae81bd8ee-1675257145c1ede5b0-0": {
+          "type": "list",
+          "settings": {
+            "collection_list": "men"
+          }
+        },
+        "template--15786637754561__7ad6534a-e2c7-4db3-aef2-71cae81bd8ee-1675257145c1ede5b0-1": {
+          "type": "list",
+          "settings": {
+            "collection_list": "kids"
+          }
+        },
+        "template--15786637754561__7ad6534a-e2c7-4db3-aef2-71cae81bd8ee-1675257145c1ede5b0-2": {
+          "type": "list",
+          "settings": {
+            "collection_list": "women"
+          }
+        },
+        "template--15786637754561__7ad6534a-e2c7-4db3-aef2-71cae81bd8ee-1675257145c1ede5b0-3": {
+          "type": "list",
+          "settings": {
+            "collection_list": "new-arrivals"
+          }
+        },
+        "625efe2c-b3d0-4422-a8e4-3e5e5b42ae13": {
+          "type": "list",
+          "settings": {
+            "collection_list": "accessories"
+          }
+        },
+        "76cfad9c-5ded-4158-943e-04999baf3fbf": {
+          "type": "list",
+          "settings": {
+            "collection_list": "best-sellers"
+          }
+        }
+      },
+      "block_order": [
+        "template--15786637754561__7ad6534a-e2c7-4db3-aef2-71cae81bd8ee-1675257145c1ede5b0-0",
+        "template--15786637754561__7ad6534a-e2c7-4db3-aef2-71cae81bd8ee-1675257145c1ede5b0-1",
+        "template--15786637754561__7ad6534a-e2c7-4db3-aef2-71cae81bd8ee-1675257145c1ede5b0-2",
+        "template--15786637754561__7ad6534a-e2c7-4db3-aef2-71cae81bd8ee-1675257145c1ede5b0-3",
+        "625efe2c-b3d0-4422-a8e4-3e5e5b42ae13",
+        "76cfad9c-5ded-4158-943e-04999baf3fbf"
+      ],
+      "disabled": true,
+      "settings": {
+        "container_type": "container-fluid",
+        "heading": "",
+        "sub_heading": "",
+        "description": "",
+        "title_style": "style-1",
+        "slide_per_view_desktop": 6,
+        "slide_per_view_mini_desktop": 4,
+        "slide_per_view_tablet": 3,
+        "slide_per_view_mobile": 2,
+        "space_slide": 30,
+        "show_magic_cursor": false,
+        "magic_cursor_color_scheme": "base",
+        "use_default_section_typography": true,
+        "section_heading_size": 45,
+        "heading_line_height": 55,
+        "sub_heading_size": 24,
+        "sub_heading_line_height": 30,
+        "subheading_letter_spacing": 0,
+        "padding_top": "small-section-top",
+        "padding_bottom": "small-section-bottom",
+        "heading_alignment": "center",
+        "section_show": true,
+        "section_bg_color": "",
+        "section_heading_color": "",
+        "section_sub_heading_color": "",
+        "section_description_color": "",
+        "section_id": "",
+        "section_class_name": ""
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "container_type": "container-fluid",
+        "pagination_style": "infinite-scroll",
+        "enable_sorting": true,
+        "show_product_options": true,
+        "show_grid_bar": false,
+        "enable_sidebar": true,
+        "products_per_page": 12,
+        "sidebar_position": "off-canvas",
+        "filter_type": "simple",
+        "collection_list_title": "Collection",
+        "menu": "",
+        "show_tag": true,
+        "tag_type": "all",
+        "tag_list": "",
+        "padding_top": "pt-0",
+        "padding_bottom": "pb-0"
+      }
+    }
+  },
+  "order": [
+    "page-title",
+    "7ad6534a-e2c7-4db3-aef2-71cae81bd8ee",
+    "product-grid"
+  ]
+}

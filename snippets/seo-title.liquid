@@ -1,0 +1,25 @@
+{%- if settings.favicon != blank -%}
+  <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+{%- endif -%}
+{%- if settings.favicon_ratina != blank -%}
+  <link rel="apple-touch-icon" type="image/png" href="{{ settings.favicon_ratina | img_url: '152x' }}">
+{%- endif -%}
+{%- capture seo_title -%}
+  {%- if current_page != 1 -%}
+   {{ page_title }} &ndash; {{ current_page }}
+  {%- endif -%}
+  {%- if current_tags -%}
+    Tagged: {%- assign meta_tags = current_tags | join: ', ' -%} {{ meta_tags -}}&ndash;
+  {%- endif -%}
+  {%- if request.page_type == 'search' and search.performed == true -%}
+    {{ 'templates.search.results_with_count' | t: terms: search.terms, count: search.results_count }}
+  {%- elsif request.page_type == 'password' -%}
+    {{ shop.name }} &ndash; {{ 'general.password_page.password_page_title' | t }}
+  {%- else -%}
+    {{ page_title }}
+  {%- endif -%}
+{%- endcapture -%}
+<title>{{ seo_title }}</title>
+{%- if page_description -%}
+  <meta name="description" content="{{ page_description | escape | default: shop.name | escape }}">
+{%- endif -%}

@@ -1,0 +1,57 @@
+{%- for count in (1..5) -%}
+  <li class="grid-item{% if count == 1 %} grid-item-double{% endif %} item-{{ count }}">
+    <div
+      class="shop-grid-wrap position-relative">
+      {%- assign button_link = 'btn_link' | append: count -%}
+      <a href="{{ block_settings[button_link] | default: '#' }}" class="shop-grid-img" aria-label="link">
+        {%- assign grid_image = 'grid_image' | append: count -%}
+        {%- render 'responsive-image', image: block_settings[grid_image], placeholder_type: 'simple-image' -%}
+      </a>
+      {%- assign box_alignment = 'box_alignment' | append: count -%}
+      <div class="shop-grid-details d-flex {{ block_settings[box_alignment] }}">
+        {%- assign txt_alignment = 'txt_alignment' | append: count -%}
+        <div class="text-{{ block_settings[txt_alignment] }}">
+          {%- liquid
+            assign grid_small_title = 'grid_small_title' | append: count
+            assign grid_title = 'grid_title' | append: count
+            assign grid_label_text = 'grid_label_text' | append: count
+          -%}
+          {%- if block_settings[grid_title] != blank -%}
+            <div class="title alt-font {{ grid_title }}">{{ block_settings[grid_title] }}</div>
+          {%- endif -%}
+          {%- if block_settings[grid_small_title] != blank -%}
+            <div class="small-title text-dark-gray alt-font">{{ block_settings[grid_small_title] }}</div>
+          {%- endif -%}
+          {%- liquid
+            assign button_style = 'button_style' | append: count
+            assign button_size = 'button_size' | append: count
+            assign btn_text = 'btn_text' | append: count
+            assign btn_radius = 'btn_radius' | append: count
+            assign btn_border_width = 'btn_border_width' | append: count
+            assign btn_icon_class = 'btn_icon_class' | append: count
+            assign icon_position = 'icon_position' | append: count
+          -%}
+          {%- render 'button-settings',
+            btn_style: block_settings[button_style],
+            btn_size: block_settings[button_size],
+            btn_text: block_settings[btn_text],
+            btn_link: block_settings[button_link],
+            btn_radius: block_settings[btn_radius],
+            btn_border_width: block_settings[btn_border_width],
+            btn_icon_class: block_settings[btn_icon_class],
+            icon_position: block_settings[icon_position]
+          -%}
+        </div>
+      </div>
+      {%- if block_settings[grid_label_text] != blank -%}
+        <span class="shop-grid-badge">{{ block_settings[grid_label_text] }}</span>
+      {%- endif -%}
+      {%- if section.grid_overlay == true -%}
+        <div
+          class="grid-overlay"
+          style="{% if section.overlay_color != blank %} background-color: {{ section.overlay_color }}; {% endif %}opacity: {{ section.overlay_opacity }};"
+        ></div>
+      {%- endif -%}
+    </div>
+  </li>
+{%- endfor -%}

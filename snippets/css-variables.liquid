@@ -1,0 +1,194 @@
+{%- liquid
+  assign body_shopify_font = settings.body_shopify_font 
+  assign body_google_font = settings.body_google_fonts
+  assign alt_shopify_font = settings.alt_shopify_font
+  assign alt_google_font = settings.alt_google_fonts
+  assign font_size = settings.body_font_size
+  if settings.use_body_google_font != true
+	  assign body_font_100 = settings.body_shopify_font | font_modify: 'weight', '100'
+	  assign body_font_200 = settings.body_shopify_font | font_modify: 'weight', '200'
+	  assign body_font_300 = settings.body_shopify_font | font_modify: 'weight', '300'
+	  assign body_font_400 = settings.body_shopify_font | font_modify: 'weight', '400'
+	  assign body_font_500 = settings.body_shopify_font | font_modify: 'weight', '500'
+	  assign body_font_600 = settings.body_shopify_font | font_modify: 'weight', '600'
+	  assign body_font_700 = settings.body_shopify_font | font_modify: 'weight', '700'
+	  assign body_font_800 = settings.body_shopify_font | font_modify: 'weight', '800'
+	  assign body_font_900 = settings.body_shopify_font | font_modify: 'weight', '900'
+  endif
+  if settings.use_alt_google_font != true
+	  assign alt_body_font_100 = settings.alt_shopify_font | font_modify: 'weight', '100'
+	  assign alt_body_font_200 = settings.alt_shopify_font | font_modify: 'weight', '200'
+	  assign alt_body_font_300 = settings.alt_shopify_font | font_modify: 'weight', '300'
+	  assign alt_body_font_400 = settings.alt_shopify_font | font_modify: 'weight', '400'
+	  assign alt_body_font_500 = settings.alt_shopify_font | font_modify: 'weight', '500'
+	  assign alt_body_font_600 = settings.alt_shopify_font | font_modify: 'weight', '600'
+	  assign alt_body_font_700 = settings.alt_shopify_font | font_modify: 'weight', '700'
+	  assign alt_body_font_800 = settings.alt_shopify_font | font_modify: 'weight', '800'
+	  assign alt_body_font_900 = settings.alt_shopify_font | font_modify: 'weight', '900'
+  endif
+-%}
+{%- style -%}
+
+	{%- if settings.use_body_google_font != true -%}
+		/* Body font face	*/
+		{{ body_font_100 | font_face: font_display: 'swap' }}
+	  {{ body_font_200 | font_face: font_display: 'swap' }}
+	  {{ body_font_300 | font_face: font_display: 'swap' }}
+	  {{ body_font_400 | font_face: font_display: 'swap' }}
+	  {{ body_font_500 | font_face: font_display: 'swap' }}
+	  {{ body_font_600 | font_face: font_display: 'swap' }}
+	  {{ body_font_700 | font_face: font_display: 'swap' }}
+	  {{ body_font_800 | font_face: font_display: 'swap' }}
+	  {{ body_font_900 | font_face: font_display: 'swap' }}
+  {%- endif -%}
+
+  {%- if settings.use_alt_google_font != true -%}
+	  /* Alt body font face	*/
+	  {{ alt_body_font_100 | font_face: font_display: 'swap' }}
+	  {{ alt_body_font_200 | font_face: font_display: 'swap' }}
+	  {{ alt_body_font_300 | font_face: font_display: 'swap' }}
+	  {{ alt_body_font_400 | font_face: font_display: 'swap' }}
+	  {{ alt_body_font_500 | font_face: font_display: 'swap' }}
+	  {{ alt_body_font_600 | font_face: font_display: 'swap' }}
+	  {{ alt_body_font_700 | font_face: font_display: 'swap' }}
+	  {{ alt_body_font_800 | font_face: font_display: 'swap' }}
+	  {{ alt_body_font_900 | font_face: font_display: 'swap' }}
+  {%- endif -%}
+
+	:root {
+		/* Font size */
+		--font_size: {{ settings.body_font_size }}px;
+		--font_size_minus1: {{ font_size | minus: 1 }}px;
+		--font_size_minus2: {{ font_size | minus: 2 }}px;
+		--font_size_minus3: {{ font_size | minus: 3 }}px;
+		--font_size_minus4: {{ font_size | minus: 4 }}px;
+		--font_size_minus5: {{ font_size | minus: 5 }}px;
+	  {%- for i in (1..50) -%}
+			--font_size_plus{{ i }}: {{ font_size | plus: i }}px;
+	  {%- endfor -%}
+    --font_size_plus52: {{ font_size | plus: 52 }}px;
+    --font_size_plus82: {{ font_size | plus: 82 }}px;
+    --font_size_plus72: {{ font_size | plus: 72 }}px;
+
+  	/* Body */
+		--body-font:{% if settings.use_body_google_font == true %} {{ body_google_font }} {% else %} {{ body_shopify_font.family }}, {{ body_shopify_font.fallback_families }} {% endif %};
+		--alt-font:{% if settings.use_alt_google_font == true %} {{ alt_google_font }} {% else %} {{ alt_shopify_font.family }}, {{ alt_shopify_font.fallback_families }} {% endif %};
+		--body-line-height: {{ settings.body_line_height }}px;
+		--body-font-weight: {{ settings.body_font_weight }};
+
+		/* Header color & background color */
+		--header-bg-color: {{ settings.menu_bg_color }};
+		--header-hover-bg-color: {{ settings.menu_hover_bg_color }};
+		--menu-text-color: {{ settings.menu_text_color }};
+		--menu-text-hover-color: {{ settings.menu_text_hover_color }};
+		--menu-open-text-color: {{ settings.menu_open_text_color }};
+		--sub-menu-text-color: {{ settings.sub_menu_text_color }};
+		--count-bg-color: {{ settings.count_bg_color }};
+		--count-number-color: {{ settings.count_number_color }};
+		--addon-text-color: {{ settings.link_color }};
+		--addon-text-title-color: {{ settings.link_color | color_modify: 'alpha', 0.70 }};
+		--addon-text-hover-color: {{ settings.link_hover_color }};
+		--menu-open-child-link-color: {{ settings.menu_open_text_color | color_modify: 'alpha', 0.50 }};
+		--logo-separator-color: {{ settings.menu_text_color | color_modify: 'alpha', 0.3 }};
+
+		/* Search bar color */
+		--search-bg-color: {{ settings.search_bg_color }};
+		--search-close-icon-color: {{ settings.search_close_color }};
+		--search-icon-color: {{ settings.search_btn_color }};
+		--search-input-text-color: {{ settings.search_txt_color }};
+		--search-input-placeholder-color: {{ settings.search_txt_color | color_modify: 'alpha', 0.5 }};
+		--search-title-color: {{ settings.search_title_color }};
+		--search-input-border-color: {{ settings.search_line_color }};
+		--search-input-bg-color: {{ settings.search_input_bg_color }};
+
+		/* Header logo */
+		--logo-width-desktop: {{ settings.logo_max_width }}px;
+    --logo-width-mobile: {{ settings.logo_max_width_mobile }}px;
+    {%- if settings.transparent_header == true -%}
+      --header-height-default: 72px;
+      --miniheader-height-default: 44px;
+    {%- else -%}
+      --header-height-default: 0;
+      --miniheader-height-default: 0;
+    {%- endif -%}
+
+		/* Container */
+		--container: {{ settings.container_width }}px;
+		--container-fluid: {{ settings.container_max_width }}px;
+		--container-fluid-offset:  {{ settings.margin_left_right }}px; 
+
+		/* Box layout */
+		--box-layout-width: {{ settings.box_max_width }}px;
+
+		/* Color */
+		--base-color: {{ settings.base_color }};
+		--body-text-color: {{ settings.body_text_color }};
+		{%- if settings.body_bg_color != blank -%}
+		--body-bg-color:  {{ settings.body_bg_color }};
+		{%- endif -%}
+		--dark-color: #262626;
+		--white-color: #ffffff;
+		--extra-medium-gray: #e4e4e4;
+		--very-light-gray: #f7f7f7;
+		--red: #da3f3f;
+		--green: #16b36e;
+
+		/* Product badge label color */
+		--sale-label-color: {{ settings.sale_label_text_color }};
+		--sale-label-bg-color: {{ settings.sale_label_bg_color }};
+		--new-label-color: {{ settings.new_label_text_color }};
+		--new-label-bg-color: {{ settings.new_label_bg_color }};
+		--sold-out-label-color: {{ settings.sold_out_label_text_color }};
+		--sold-out-label-bg-color: {{ settings.sold_out_label_bg_color }};
+
+		/* Heading font size */
+		--h1-font-size: {{ settings.h1_font_size }}px;
+    --h2-font-size: {{ settings.h2_font_size }}px;
+    --h3-font-size: {{ settings.h3_font_size }}px;
+    --h4-font-size: {{ settings.h4_font_size }}px;
+    --h5-font-size: {{ settings.h5_font_size }}px;
+    --h6-font-size: {{ settings.h6_font_size }}px;
+
+    /* Heading line height */
+    --h1-line-height: {{ settings.h1_line_height }}px;
+    --h2-line-height: {{ settings.h2_line_height }}px;
+    --h3-line-height: {{ settings.h3_line_height }}px;
+    --h4-line-height: {{ settings.h4_line_height }}px;
+    --h5-line-height: {{ settings.h5_line_height }}px;
+    --h6-line-height: {{ settings.h6_line_height }}px;
+
+    /* Heading font weight */
+    --heading-font-weight: {{ settings.heading_font_weight }};
+
+		/* Section font size, line-height and color */
+		--heading-color: {{ settings.heading_color }};
+		--sub-heading-color: {{ settings.sub_heading_color }};
+		--section-heading-size: {{ settings.heading_size }}px;
+		--section-heading-line-height: {{ settings.heading_line_height }}px;
+		--section-sub-heading-size: {{ settings.sub_heading_size }}px;
+		--section-sub-heading-line-height: {{ settings.sub_heading_line_height }}px;
+		--section-sub-heading-ls: {{ settings.sub_heading_letter_spacing }}px;
+
+		/* Custom button */
+		--custom-btn-text-color: {{ settings.btn_text_color }};
+		--custom-btn-text-hover-color: {{ settings.btn_text_hover_color }};
+		--custom-btn-bg-color: {{ settings.btn_bg_color }};
+		--custom-btn-bg-hover-color: {{ settings.btn_bg_hover_color }};
+		--custom-btn-border-color: {{ settings.btn_border_color }};
+		--custom-btn-border-hover-color: {{ settings.btn_border_hover_color }};
+
+		/* Font weight */
+		--font-weight-100: 100;
+		--font-weight-200: 200;
+		--font-weight-300: 300;
+		--font-weight-400: 400;
+		--font-weight-500: 500;
+		--font-weight-600: 600;
+		--font-weight-700: 700;
+		--font-weight-800: 800;
+		--font-weight-900: 900;
+
+		/* bootstrap css */
+		scroll-behavior: unset;
+	}
+{%- endstyle -%}

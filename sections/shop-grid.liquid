@@ -1,0 +1,4157 @@
+<div
+  id="{{ section.settings.section_id }}"
+  class="overflow-hidden section-{{ section.id }} {% if section.settings.no_padding %} px-0{% endif %}{% if section.settings.section_show == false %} d-none{% endif %} d-md-block {{ section.settings.section_class_name }} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }}"
+  style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}"
+>
+  <div class="{{ section.settings.container_type }} {% if section.settings.gutter_size == 'gutter-none' %} p-0{% endif %}">
+    {%- if section.settings.heading != blank
+      or section.settings.sub_heading != blank
+      or section.settings.description != blank
+    -%}
+      <div class="row heading-wrapper title-{{ section.settings.title_style }} align-items-{% if section.settings.description != blank %}start{% else %}center{% endif %} text-center text-lg-start">
+        {%- render 'section-title-style', heading_alignment: section.settings.heading_alignment -%}
+      </div>
+    {%- endif -%}
+    {%- for block in section.blocks -%}
+      {%- assign block_name = block.type -%}
+    {%- endfor -%}
+    <div class="row {% if section.settings.gutter_size == 'gutter-none' %}g-0{% endif %}">
+      <div class="col-12">
+        <ul class="{% unless block_name == 'shop-grid-style-3' or block_name == 'shop-grid-style-4' %}grid-isotop {{ section.settings.gutter_size }}{% endunless %} shop-grid grid  {{ block_name }}">
+          {%- unless block_name == 'shop-grid-style-3' or block_name == 'shop-grid-style-4' -%}
+            <li class="grid-sizer"></li>
+          {%- endunless -%}
+          {%- liquid
+            for block in section.blocks
+              case block.type
+                when 'shop-grid-style-1'
+                  render 'shop-grid-style-1', block_settings: block.settings, section: section.settings, grid_style: block.type
+                when 'shop-grid-style-2'
+                  render 'shop-grid-style-2', block_settings: block.settings, section: section.settings
+                when 'shop-grid-style-3'
+                  render 'shop-grid-style-1', block_name: block_name, block_settings: block.settings, section: section.settings, grid_style: block.type
+                when 'shop-grid-style-4'
+                  render 'shop-grid-style-4', block_name: block_name, block_settings: block.settings, section: section.settings, grid_style: block.type
+              endcase
+            endfor
+          -%}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  {%- unless section.settings.use_default_section_typography == true -%}
+    .section-{{ section.id }} .section-heading {
+      font-size: {{ section.settings.section_heading_size }}px;
+      line-height: {{ section.settings.heading_line_height }}px;
+    }
+    .section-{{ section.id }} .section-sub-heading {
+      font-size: {{ section.settings.sub_heading_size }}px;
+      letter-spacing: {{ section.settings.subheading_letter_spacing }}px;
+      line-height: {{ section.settings.sub_heading_line_height }}px;
+    }
+  {%- endunless -%}
+  {%- if section.settings.section_heading_color != blank -%}
+    .section-{{ section.id }} .section-heading {
+      color: {{ section.settings.section_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_sub_heading_color != blank -%}
+    .section-{{ section.id }} .section-sub-heading {
+      color: {{ section.settings.section_sub_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_description_color != blank -%}
+    .section-{{ section.id }} .section-description {
+      color: {{ section.settings.section_description_color }};
+    }
+  {%- endif -%}
+  .section-{{ section.id }} .shop-grid li .shop-grid-details .title,
+  .section-{{ section.id }} .shop-grid.shop-grid-style-2 li .shop-grid-details .title {
+    font-size: {{ section.settings.grid_title_size }}px;
+    line-height: {{ section.settings.grid_title_line_height }}px;
+  }
+  .section-{{ section.id }} .shop-grid li .shop-grid-details .small-title,
+  .section-{{ section.id }} .shop-grid.shop-grid-style-2 li .shop-grid-details .small-title,
+  .section-{{ section.id }} .shop-grid.shop-grid-style-4 li .shop-grid-details .small-title {
+    font-size: {{ section.settings.grid_subtitle_size }}px;
+    line-height: {{ section.settings.grid_subtitle_line_height }}px;
+  }
+  {% for block in section.blocks %}
+    {%- if block.settings.items_padding1 != blank -%}
+      .section-{{ section.id }} .shop-grid li.item-1 .shop-grid-details {
+        padding: {{ block.settings.items_padding1 }}%;
+      }
+    {%- endif -%}
+    {%- if block.settings.items_padding != blank -%}
+    .section-{{ section.id }} .shop-grid li .shop-grid-details {
+      padding: {{ block.settings.items_padding }}%;
+    }
+    {%- endif -%}
+    {%- if block.settings.title_color != blank -%}
+      .section-{{ section.id }} .shop-grid li .shop-grid-details .title {
+        color: {{ block.settings.title_color }};
+      }
+    {%- endif -%}
+    {%- if block.settings.sub_title_color != blank -%}
+      .section-{{ section.id }} .shop-grid li .shop-grid-details .small-title {
+        color: {{ block.settings.sub_title_color }};
+      }
+    {%- endif -%}
+    {%- if block.settings.title_color1 != blank -%}
+      .section-{{ section.id }} .shop-grid li.item-1 .shop-grid-details .title {
+        color: {{ block.settings.title_color1 }};
+      }
+    {%- endif -%}
+    {%- if block.settings.sub_title_color1 != blank -%}
+      .section-{{ section.id }} .shop-grid li.item-1 .shop-grid-details .small-title {
+        color: {{ block.settings.sub_title_color1 }};
+      }
+    {%- endif -%}
+    {%- if block.settings.items_padding2 != blank -%}
+      .section-{{ section.id }} .shop-grid li.item-2 .shop-grid-details {
+        padding: {{ block.settings.items_padding2 }}%;
+      }
+    {%- endif -%}
+    {%- if block.settings.title_color2 != blank -%}
+      .section-{{ section.id }} .shop-grid li.item-2 .shop-grid-details .title {
+        color: {{ block.settings.title_color2 }};
+      }
+    {%- endif -%}
+    {%- if block.settings.sub_title_color2 != blank -%}
+      .section-{{ section.id }} .shop-grid li.item-2 .shop-grid-details .small-title {
+        color: {{ block.settings.sub_title_color2 }};
+      }
+    {%- endif -%}
+    {%- if block.settings.items_padding3 != blank -%}
+      .section-{{ section.id }} .shop-grid li.item-3 .shop-grid-details {
+        padding: {{ block.settings.items_padding3 }}%;
+      }
+    {%- endif -%}
+    {%- if block.settings.title_color3 != blank -%}
+      .section-{{ section.id }} .shop-grid li.item-3 .shop-grid-details .title {
+        color: {{ block.settings.title_color3 }};
+      }
+    {%- endif -%}
+    {%- if block.settings.sub_title_color3 != blank -%}
+      .section-{{ section.id }} .shop-grid li.item-3 .shop-grid-details .small-title {
+        color: {{ block.settings.sub_title_color3 }};
+      }
+    {%- endif -%}
+    {%- if block.settings.items_padding4 != blank -%}
+      .section-{{ section.id }} .shop-grid li.item-4 .shop-grid-details {
+        padding: {{ block.settings.items_padding4 }}%;
+      }
+    {%- endif -%}
+    {%- if block.settings.title_color4 != blank -%}
+      .section-{{ section.id }} .shop-grid li.item-4 .shop-grid-details .title {
+        color: {{ block.settings.title_color4 }};
+      }
+    {%- endif -%}
+    {%- if block.settings.sub_title_color4 != blank -%}
+      .section-{{ section.id }} .shop-grid li.item-4 .shop-grid-details .small-title {
+        color: {{ block.settings.sub_title_color4 }};
+      }
+    {%- endif -%}
+    {%- if block.settings.items_padding5 != blank -%}
+      .section-{{ section.id }} .shop-grid li.item-5 .shop-grid-details {
+        padding: {{ block.settings.items_padding5 }}%;
+      }
+    {%- endif -%}
+    {%- if block.settings.title_color5 != blank -%}
+      .section-{{ section.id }} .shop-grid li.item-5 .shop-grid-details .title {
+        color: {{ block.settings.title_color5 }};
+      }
+    {%- endif -%}
+    {%- if block.settings.sub_title_color5 != blank -%}
+      .section-{{ section.id }} .shop-grid li.item-5 .shop-grid-details .small-title {
+        color: {{ block.settings.sub_title_color5 }};
+      }
+    {%- endif -%}
+  {% endfor %}
+  @media (min-width: 992px) and (max-width: 1199px) {
+    .section-{{ section.id }} .shop-grid li .shop-grid-details .title {
+      font-size: 38px;
+      line-height: 38px;
+    }    
+    .section-{{ section.id }} .shop-grid li .shop-grid-details .small-title {
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+  }
+  @media (max-width: 1600px) {
+    .shop-grid.shop-grid-style-3 li.item-2 .shop-grid-details .title {
+      font-size: var(--font_size_plus30);
+      line-height: var(--font_size_plus30);
+    }
+  }
+  @media (max-width: 1399px) {
+    .section-{{ section.id }} .shop-grid.shop-grid-style-3 li .shop-grid-details .title {
+      font-size: 30px;
+      line-height: 36px;
+    }
+    .shop-grid.shop-grid-style-3 li.item-2 .shop-grid-details .title {
+      font-size: var(--font_size_plus26);
+      line-height: var(--font_size_plus26);
+    }
+  }
+  @media (max-width: 1199px) {
+    .section-{{ section.id }} .shop-grid.shop-grid-style-4 li .shop-grid-details .title {
+      font-size: 40px;
+      line-height: 40px;
+    }
+    .section-{{ section.id }} .shop-grid.shop-grid-style-2 li .shop-grid-details .small-title {
+      margin-bottom: 0;
+    }
+    .section-{{ section.id }} .shop-grid.shop-grid-style-3 li .shop-grid-details .title {
+      font-size: 28px;
+      line-height: 32px;
+    }
+    .section-{{ section.id }} .shop-grid.shop-grid-style-3 li .shop-grid-details .small-title {
+      font-size: 16px;
+      line-height: 18px;
+      margin-bottom: 0;
+    }
+    .section-{{ section.id }} .shop-grid.shop-grid-style-3 li .shop-grid-details {
+      padding: 14%;
+    }
+    .section-{{ section.id }} .shop-grid.shop-grid-style-3 li.item-4 .shop-grid-details,
+    .section-{{ section.id }} .shop-grid.shop-grid-style-3 li.item-3 .shop-grid-details {
+      padding: 10%;
+    }
+  }
+  @media (max-width: 991px) {
+    .section-{{ section.id }} .shop-grid.shop-grid-style-3 li.item-4 .shop-grid-details,
+    .section-{{ section.id }} .shop-grid.shop-grid-style-3 li.item-3 .shop-grid-details {
+      padding: 7%;
+    }
+    .section-{{ section.id }} .shop-grid li .shop-grid-details .title {
+      font-size: 50px;
+      line-height: 50px;
+    }
+    .section-{{ section.id }} .shop-grid li .shop-grid-details .small-title {
+      font-size: 15px;
+    }
+    .section-{{ section.id }} .shop-grid.shop-grid-style-4 li .shop-grid-details .title {
+      font-size: 30px;
+      line-height: 34px;
+    }
+    .section-{{ section.id }} .shop-grid.shop-grid-style-4 li .shop-grid-details .small-title {
+      font-size: 16px;
+      line-height: 26px;
+    }
+    .section-{{ section.id }} .shop-grid.shop-grid-style-4 li .shop-grid-details {
+      padding: 7%;
+    }
+  }
+  @media (max-width: 767px) {
+    .section-{{ section.id }} .shop-grid li.item-1 .shop-grid-details,
+    .section-{{ section.id }} .shop-grid li.item-2 .shop-grid-details,
+    .section-{{ section.id }} .shop-grid li.item-3 .shop-grid-details {
+      padding: 40px;
+    }
+  }
+  @media (max-width: 575px) {
+    .section-{{ section.id }} .shop-grid li .shop-grid-details .small-title {
+      font-size: 13px;
+    }
+    .section-{{ section.id }} .shop-grid.shop-grid-style-3 li .shop-grid-details .title {
+      font-size: 26px;
+      line-height: 32px;
+    }
+    .section-{{ section.id }} .shop-grid.shop-grid-style-3 li .shop-grid-details {
+      padding: 30px;
+    }
+    .section-{{ section.id }} .shop-grid.shop-grid-style-4 li .shop-grid-details .small-title {
+      font-size: 15px;
+      line-height: 26px;
+      margin-bottom: 5px;
+    }
+    .section-{{ section.id }} .shop-grid.shop-grid-style-4 li .shop-grid-details .title {
+      font-size: 26px;
+      line-height: 30px;
+    }
+  }
+  @media (max-width: 479px) {
+    .section-{{ section.id }} .shop-grid li.item-1 .shop-grid-details {
+      padding: 10px 15px;
+    }
+    .section-{{ section.id }} .shop-grid li.item-1 .shop-grid-details,
+    .section-{{ section.id }} .shop-grid li.item-3 .shop-grid-details,
+    .section-{{ section.id }} .shop-grid li.item-2 .shop-grid-details {
+        padding: 15px;
+    }
+    .section-{{ section.id }} .shop-grid li .shop-grid-details .title,
+    .section-{{ section.id }} .shop-grid li .shop-grid-details .title a {
+      font-size: 30px;
+      line-height: 30px;
+    }
+    .section-{{ section.id }} .shop-grid.shop-grid-style-2 li .shop-grid-details {
+      padding: 30px;
+    }
+    .section-{{ section.id }} .shop-grid.shop-grid-style-3 li.item-2 .shop-grid-details {
+      padding: 30px;
+    }
+    .section-{{ section.id }} .shop-grid.shop-grid-style-3 li .shop-grid-details .small-title {
+      font-size: 15px;
+    }
+  }
+</style>
+{% schema %}
+{
+  "name": "Shop grid",
+  "max_blocks": 1,
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container-fluid",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Wrap word in square bracket for stylish word. e.g. [Hello] World"
+    },
+    {
+      "type": "textarea",
+      "id": "sub_heading",
+      "label": "Sub heading"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "title_style",
+      "label": "Title style",
+      "default": "style-1",
+      "options": [
+        {
+          "value": "style-1",
+          "label": "Style-1"
+        },
+        {
+          "value": "style-2",
+          "label": "Style-2"
+        },
+        {
+          "value": "style-3",
+          "label": "Style-3"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "gutter_size",
+      "label": "Spacing between columns",
+      "default": "gutter-small",
+      "info": "Only applicable in grid style-1 and style-2",
+      "options": [
+        {
+          "value": "gutter-none",
+          "label": "Gutter none"
+        },
+        {
+          "value": "gutter-very-small",
+          "label": "Gutter very small"
+        },
+        {
+          "value": "gutter-small",
+          "label": "Gutter small"
+        },
+        {
+          "value": "gutter-medium",
+          "label": "Gutter medium"
+        },
+        {
+          "value": "gutter-large",
+          "label": "Gutter large"
+        },
+        {
+          "value": "gutter-extra-large",
+          "label": "Gutter extra large"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "grid_overlay",
+      "label": "Show overlay",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0.1,
+      "max": 1,
+      "step": 0.1,
+      "label": "Overlay opacity",
+      "default": 0.5
+    },
+    {
+      "type": "header",
+      "content": "Title typography settings"
+    },
+    {
+      "type": "range",
+      "id": "grid_title_size",
+      "min": 10,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "label": "Grid title size",
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "grid_title_line_height",
+      "min": 14,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Grid title line height",
+      "default": 53
+    },
+    {
+      "type": "range",
+      "id": "grid_subtitle_size",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Grid subtitle size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "grid_subtitle_line_height",
+      "min": 14,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Grid subtitle line height",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_default_section_typography",
+      "label": "Use section typography from theme settings",
+      "info": "By default section typography values will be used from theme settings. Uncheck this checkbox to use below values.",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "section_heading_size",
+      "min": 20,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 45
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "label": "Heading line height",
+      "unit": "px",
+      "min": 26,
+      "max": 120,
+      "step": 1,
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_size",
+      "min": 12,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Sub heading size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_line_height",
+      "label": "Sub heading line height",
+      "unit": "px",
+      "min": 24,
+      "max": 60,
+      "step": 1,
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "subheading_letter_spacing",
+      "min": 0,
+      "max": 10,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Sub heading letter spacing",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": "small-section-top",
+      "options": [
+        {
+          "value": "large-section-top",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-top",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-top",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-top",
+          "label": "Very small section"
+        },
+        {
+          "value": "pt-0",
+          "label": "No padding top"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": "small-section-bottom",
+      "options": [
+        {
+          "value": "large-section-bottom",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-bottom",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-bottom",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-bottom",
+          "label": "Very small section"
+        },
+        {
+          "value": "pb-0",
+          "label": "No padding bottom"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment ",
+      "default": "center",
+      "info": "Not applicable in title style-2",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "section_show",
+      "label": "Show section in mobile",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color"
+    },
+    {
+      "type": "color",
+      "id": "section_heading_color",
+      "label": "Section heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_sub_heading_color",
+      "label": "Section sub heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_description_color",
+      "label": "Section description color"
+    },
+    {
+      "type": "text",
+      "id": "element_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "extra_class_name",
+      "label": "Section class name"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "shop-grid-style-1",
+      "name": "Shop grid style 1",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Grid item 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "grid_image1",
+          "label": "Image",
+          "info": "Recommended size 1000x500"
+        },
+        {
+          "type": "select",
+          "id": "txt_alignment1",
+          "label": "Text alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "end",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "box_alignment1",
+          "label": "Content box alignment",
+          "default": "justify-content-end align-items-center",
+          "options": [
+            {
+              "value": "justify-content-start align-items-start",
+              "label": "Left Top"
+            },
+            {
+              "value": "justify-content-start align-items-center",
+              "label": "Left middle"
+            },
+            {
+              "value": "justify-content-start align-items-end",
+              "label": "Left bottom"
+            },
+            {
+              "value": "justify-content-center align-items-top",
+              "label": "Center Top"
+            },
+            {
+              "value": "justify-content-center align-items-center",
+              "label": "Center middle"
+            },
+            {
+              "value": "justify-content-center align-items-end",
+              "label": "Center bottom"
+            },
+            {
+              "value": "justify-content-end align-items-start",
+              "label": "Right top"
+            },
+            {
+              "value": "justify-content-end align-items-center",
+              "label": "Right middle"
+            },
+            {
+              "value": "justify-content-end align-items-end",
+              "label": "Right bottom"
+            }
+          ]
+        },        
+        {
+          "type": "text",
+          "id": "grid_title1",
+          "label": "Title",
+          "default": "Summer collection"
+        },
+        {
+          "type": "text",
+          "id": "grid_small_title1",
+          "label": "Subtitle",
+          "default": "LATEST DESIGN"
+        },
+        {
+          "type": "range",
+          "id": "items_padding1",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "%",
+          "label": "Box inside padding",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "title_color1",
+          "label": "Title color"
+        },
+        {
+          "type": "color",
+          "id": "sub_title_color1",
+          "label": "Subtitle color"
+        },
+        {
+          "type": "header",
+          "content": "Button Settings"
+        },
+        {
+          "type": "select",
+          "id": "button_style1",
+          "label": "Button style",
+          "default": "btn-black-border border-opacity",
+          "options": [
+            {
+              "value": "btn-black",
+              "label": "Solid button black"
+            },
+            {
+              "value": "btn-white",
+              "label": "Solid button white"
+            },
+            {
+              "value": "btn-base-color",
+              "label": "Solid button base"
+            },
+            {
+              "value": "btn-black-border",
+              "label": "Border button black"
+            },
+            {
+              "value": "btn-white-border",
+              "label": "Border button white"
+            },
+            {
+              "value": "btn-base-color-border",
+              "label": "Border button base"
+            },
+            {
+              "value": "btn-white-border border-opacity",
+              "label": "Border opacity button white"
+            },
+            {
+              "value": "btn-black-border border-opacity",
+              "label": "Border opacity button black"
+            },
+            {
+              "value": "btn-link btn-link-black",
+              "label": "Underlined button black"
+            },
+            {
+              "value": "btn-link btn-link-white",
+              "label": "Underlined button white"
+            },
+            {
+              "value": "btn-link btn-link-base-color",
+              "label": "Underlined button base"
+            },
+            {
+              "value": "btn-custom",
+              "label": "Custom button"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size1",
+          "label": "Button size",
+          "default": "btn-small",
+          "options": [
+            {
+              "value": "btn-extra-large",
+              "label": "Extra Large"
+            },
+            {
+              "value": "btn-large",
+              "label": "Large"
+            },
+            {
+              "value": "btn-medium",
+              "label": "Medium"
+            },
+            {
+              "value": "btn-small",
+              "label": "Small"
+            },
+            {
+              "value": "btn-very-small",
+              "label": "Very Small"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "btn_radius1",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Button radius",
+          "default": 4
+        },
+        {
+          "type": "range",
+          "id": "btn_border_width1",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "unit": "px",
+          "label": "Button border width",
+          "default": 1
+        },
+        {
+          "type": "text",
+          "id": "btn_icon_class1",
+          "label": "Enter icon class",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+        },
+        {
+          "type": "select",
+          "id": "icon_position1",
+          "label": "Icon position",
+          "default": "right-icon",
+          "options": [
+            {
+              "value": "left-icon",
+              "label": "Left"
+            },
+            {
+              "value": "right-icon",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "btn_text1",
+          "label": "Button text",
+          "default": "SHOP COLLECTION"
+        },
+        {
+          "type": "url",
+          "id": "btn_link1",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Grid item 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "grid_image2",
+          "label": "Image",
+          "info": "Recommended size 1000x1000"
+        },
+        {
+          "type": "select",
+          "id": "txt_alignment2",
+          "label": "Text alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "end",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "box_alignment2",
+          "label": "Content box alignment",
+          "default": "justify-content-end align-items-center",
+          "options": [
+            {
+              "value": "justify-content-start align-items-start",
+              "label": "Left Top"
+            },
+            {
+              "value": "justify-content-start align-items-center",
+              "label": "Left middle"
+            },
+            {
+              "value": "justify-content-start align-items-end",
+              "label": "Left bottom"
+            },
+            {
+              "value": "justify-content-center align-items-top",
+              "label": "Center Top"
+            },
+            {
+              "value": "justify-content-center align-items-center",
+              "label": "Center middle"
+            },
+            {
+              "value": "justify-content-center align-items-end",
+              "label": "Center bottom"
+            },
+            {
+              "value": "justify-content-end align-items-start",
+              "label": "Right top"
+            },
+            {
+              "value": "justify-content-end align-items-center",
+              "label": "Right middle"
+            },
+            {
+              "value": "justify-content-end align-items-end",
+              "label": "Right bottom"
+            }
+          ]
+        },        
+        {
+          "type": "text",
+          "id": "grid_title2",
+          "label": "Title",
+          "default": "Women collection"
+        },
+        {
+          "type": "text",
+          "id": "grid_small_title2",
+          "label": "Subtitle",
+          "default": "UPTO 20% OFF"
+        },
+        {
+          "type": "range",
+          "id": "items_padding2",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "%",
+          "label": "Box inside padding",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "title_color2",
+          "label": "Title color"
+        },
+        {
+          "type": "color",
+          "id": "sub_title_color2",
+          "label": "Subtitle color"
+        },
+        {
+          "type": "header",
+          "content": "Button Settings"
+        },
+        {
+          "type": "select",
+          "id": "button_style2",
+          "label": "Button style",
+          "default": "btn-black-border border-opacity",
+          "options": [
+            {
+              "value": "btn-black",
+              "label": "Solid button black"
+            },
+            {
+              "value": "btn-white",
+              "label": "Solid button white"
+            },
+            {
+              "value": "btn-base-color",
+              "label": "Solid button base"
+            },
+            {
+              "value": "btn-black-border",
+              "label": "Border button black"
+            },
+            {
+              "value": "btn-white-border",
+              "label": "Border button white"
+            },
+            {
+              "value": "btn-base-color-border",
+              "label": "Border button base"
+            },
+            {
+              "value": "btn-white-border border-opacity",
+              "label": "Border opacity button white"
+            },
+            {
+              "value": "btn-black-border border-opacity",
+              "label": "Border opacity button black"
+            },
+            {
+              "value": "btn-link btn-link-black",
+              "label": "Underlined button black"
+            },
+            {
+              "value": "btn-link btn-link-white",
+              "label": "Underlined button white"
+            },
+            {
+              "value": "btn-link btn-link-base-color",
+              "label": "Underlined button base"
+            },
+            {
+              "value": "btn-custom",
+              "label": "Custom button"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size2",
+          "label": "Button size",
+          "default": "btn-small",
+          "options": [
+            {
+              "value": "btn-extra-large",
+              "label": "Extra Large"
+            },
+            {
+              "value": "btn-large",
+              "label": "Large"
+            },
+            {
+              "value": "btn-medium",
+              "label": "Medium"
+            },
+            {
+              "value": "btn-small",
+              "label": "Small"
+            },
+            {
+              "value": "btn-very-small",
+              "label": "Very Small"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "btn_radius2",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Button radius",
+          "default": 4
+        },
+        {
+          "type": "range",
+          "id": "btn_border_width2",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "unit": "px",
+          "label": "Button border width",
+          "default": 1
+        },
+        {
+          "type": "text",
+          "id": "btn_icon_class2",
+          "label": "Enter icon class",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+        },
+        {
+          "type": "select",
+          "id": "icon_position2",
+          "label": "Icon position",
+          "default": "right-icon",
+          "options": [
+            {
+              "value": "left-icon",
+              "label": "Left"
+            },
+            {
+              "value": "right-icon",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "btn_text2",
+          "label": "Button text",
+          "default": "SHOP COLLECTION"
+        },
+        {
+          "type": "url",
+          "id": "btn_link2",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Grid item 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "grid_image3",
+          "label": "Image",
+          "info": "Recommended size 500x500"
+        },
+        {
+          "type": "select",
+          "id": "txt_alignment3",
+          "label": "Text alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "end",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "box_alignment3",
+          "label": "Content box alignment",
+          "default": "justify-content-start align-items-center",
+          "options": [
+            {
+              "value": "justify-content-start align-items-start",
+              "label": "Left Top"
+            },
+            {
+              "value": "justify-content-start align-items-center",
+              "label": "Left middle"
+            },
+            {
+              "value": "justify-content-start align-items-end",
+              "label": "Left bottom"
+            },
+            {
+              "value": "justify-content-center align-items-top",
+              "label": "Center Top"
+            },
+            {
+              "value": "justify-content-center align-items-center",
+              "label": "Center middle"
+            },
+            {
+              "value": "justify-content-center align-items-end",
+              "label": "Center bottom"
+            },
+            {
+              "value": "justify-content-end align-items-start",
+              "label": "Right top"
+            },
+            {
+              "value": "justify-content-end align-items-center",
+              "label": "Right middle"
+            },
+            {
+              "value": "justify-content-end align-items-end",
+              "label": "Right bottom"
+            }
+          ]
+        },        
+        {
+          "type": "text",
+          "id": "grid_title3",
+          "label": "Title",
+          "default": "Hoodies collection"
+        },
+        {
+          "type": "text",
+          "id": "grid_small_title3",
+          "label": "Subtitle",
+          "default": "HOT SEASON"
+        },
+        {
+          "type": "range",
+          "id": "items_padding3",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "%",
+          "label": "Box inside padding",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "title_color3",
+          "label": "Title color"
+        },
+        {
+          "type": "color",
+          "id": "sub_title_color3",
+          "label": "Subtitle color"
+        },
+        {
+          "type": "header",
+          "content": "Button Settings"
+        },
+        {
+          "type": "select",
+          "id": "button_style3",
+          "label": "Button style",
+          "default": "btn-black-border border-opacity",
+          "options": [
+            {
+              "value": "btn-black",
+              "label": "Solid button black"
+            },
+            {
+              "value": "btn-white",
+              "label": "Solid button white"
+            },
+            {
+              "value": "btn-base-color",
+              "label": "Solid button base"
+            },
+            {
+              "value": "btn-black-border",
+              "label": "Border button black"
+            },
+            {
+              "value": "btn-white-border",
+              "label": "Border button white"
+            },
+            {
+              "value": "btn-base-color-border",
+              "label": "Border button base"
+            },
+            {
+              "value": "btn-white-border border-opacity",
+              "label": "Border opacity button white"
+            },
+            {
+              "value": "btn-black-border border-opacity",
+              "label": "Border opacity button black"
+            },
+            {
+              "value": "btn-link btn-link-black",
+              "label": "Underlined button black"
+            },
+            {
+              "value": "btn-link btn-link-white",
+              "label": "Underlined button white"
+            },
+            {
+              "value": "btn-link btn-link-base-color",
+              "label": "Underlined button base"
+            },
+            {
+              "value": "btn-custom",
+              "label": "Custom button"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size3",
+          "label": "Button size",
+          "default": "btn-small",
+          "options": [
+            {
+              "value": "btn-extra-large",
+              "label": "Extra Large"
+            },
+            {
+              "value": "btn-large",
+              "label": "Large"
+            },
+            {
+              "value": "btn-medium",
+              "label": "Medium"
+            },
+            {
+              "value": "btn-small",
+              "label": "Small"
+            },
+            {
+              "value": "btn-very-small",
+              "label": "Very Small"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "btn_radius3",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Button radius",
+          "default": 4
+        },
+        {
+          "type": "range",
+          "id": "btn_border_width3",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "unit": "px",
+          "label": "Button border width",
+          "default": 1
+        },
+        {
+          "type": "text",
+          "id": "btn_icon_class3",
+          "label": "Enter icon class",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+        },
+        {
+          "type": "select",
+          "id": "icon_position3",
+          "label": "Icon position",
+          "default": "right-icon",
+          "options": [
+            {
+              "value": "left-icon",
+              "label": "Left"
+            },
+            {
+              "value": "right-icon",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "btn_text3",
+          "label": "Button text",
+          "default": "SHOP COLLECTION"
+        },
+        {
+          "type": "url",
+          "id": "btn_link3",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Grid item 4"
+        },
+        {
+          "type": "image_picker",
+          "id": "grid_image4",
+          "label": "Image",
+          "info": "Recommended size 500x500"
+        },
+        {
+          "type": "select",
+          "id": "txt_alignment4",
+          "label": "Text alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "end",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "box_alignment4",
+          "label": "Content box alignment",
+          "default": "justify-content-start align-items-start",
+          "options": [
+            {
+              "value": "justify-content-start align-items-start",
+              "label": "Left Top"
+            },
+            {
+              "value": "justify-content-start align-items-center",
+              "label": "Left middle"
+            },
+            {
+              "value": "justify-content-start align-items-end",
+              "label": "Left bottom"
+            },
+            {
+              "value": "justify-content-center align-items-top",
+              "label": "Center Top"
+            },
+            {
+              "value": "justify-content-center align-items-center",
+              "label": "Center middle"
+            },
+            {
+              "value": "justify-content-center align-items-end",
+              "label": "Center bottom"
+            },
+            {
+              "value": "justify-content-end align-items-start",
+              "label": "Right top"
+            },
+            {
+              "value": "justify-content-end align-items-center",
+              "label": "Right middle"
+            },
+            {
+              "value": "justify-content-end align-items-end",
+              "label": "Right bottom"
+            }
+          ]
+        },        
+        {
+          "type": "text",
+          "id": "grid_title4",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "grid_small_title4",
+          "label": "Subtitle"
+        },
+        {
+          "type": "range",
+          "id": "items_padding4",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "%",
+          "label": "Box inside padding",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "title_color4",
+          "label": "Title color"
+        },
+        {
+          "type": "color",
+          "id": "sub_title_color4",
+          "label": "Subtitle color"
+        },
+        {
+          "type": "header",
+          "content": "Button Settings"
+        },
+        {
+          "type": "select",
+          "id": "button_style4",
+          "label": "Button style",
+          "default": "btn-black-border border-opacity",
+          "options": [
+            {
+              "value": "btn-black",
+              "label": "Solid button black"
+            },
+            {
+              "value": "btn-white",
+              "label": "Solid button white"
+            },
+            {
+              "value": "btn-base-color",
+              "label": "Solid button base"
+            },
+            {
+              "value": "btn-black-border",
+              "label": "Border button black"
+            },
+            {
+              "value": "btn-white-border",
+              "label": "Border button white"
+            },
+            {
+              "value": "btn-base-color-border",
+              "label": "Border button base"
+            },
+            {
+              "value": "btn-white-border border-opacity",
+              "label": "Border opacity button white"
+            },
+            {
+              "value": "btn-black-border border-opacity",
+              "label": "Border opacity button black"
+            },
+            {
+              "value": "btn-link btn-link-black",
+              "label": "Underlined button black"
+            },
+            {
+              "value": "btn-link btn-link-white",
+              "label": "Underlined button white"
+            },
+            {
+              "value": "btn-link btn-link-base-color",
+              "label": "Underlined button base"
+            },
+            {
+              "value": "btn-custom",
+              "label": "Custom button"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size4",
+          "label": "Button size",
+          "default": "btn-small",
+          "options": [
+            {
+              "value": "btn-extra-large",
+              "label": "Extra Large"
+            },
+            {
+              "value": "btn-large",
+              "label": "Large"
+            },
+            {
+              "value": "btn-medium",
+              "label": "Medium"
+            },
+            {
+              "value": "btn-small",
+              "label": "Small"
+            },
+            {
+              "value": "btn-very-small",
+              "label": "Very Small"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "btn_radius4",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Button radius",
+          "default": 4
+        },
+        {
+          "type": "range",
+          "id": "btn_border_width4",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "unit": "px",
+          "label": "Button border width",
+          "default": 1
+        },
+        {
+          "type": "text",
+          "id": "btn_icon_class4",
+          "label": "Enter icon class",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+        },
+        {
+          "type": "select",
+          "id": "icon_position4",
+          "label": "Icon position",
+          "default": "right-icon",
+          "options": [
+            {
+              "value": "left-icon",
+              "label": "Left"
+            },
+            {
+              "value": "right-icon",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "btn_text4",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "btn_link4",
+          "label": "Button link"
+        }
+      ]
+    },
+    {
+      "type": "shop-grid-style-2",
+      "name": "Shop grid style 2",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Grid item 1"
+        },        
+        {
+          "type": "image_picker",
+          "id": "grid_image1",
+          "label": "Image",
+          "info": "Recommended size 1000x1000"
+        },
+        {
+          "type": "select",
+          "id": "txt_alignment1",
+          "label": "Text alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "end",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "box_alignment1",
+          "label": "Content box alignment",
+          "default": "justify-content-start align-items-start",
+          "options": [
+            {
+              "value": "justify-content-start align-items-start",
+              "label": "Left Top"
+            },
+            {
+              "value": "justify-content-start align-items-center",
+              "label": "Left middle"
+            },
+            {
+              "value": "justify-content-start align-items-end",
+              "label": "Left bottom"
+            },
+            {
+              "value": "justify-content-center align-items-top",
+              "label": "Center Top"
+            },
+            {
+              "value": "justify-content-center align-items-center",
+              "label": "Center middle"
+            },
+            {
+              "value": "justify-content-center align-items-end",
+              "label": "Center bottom"
+            },
+            {
+              "value": "justify-content-end align-items-start",
+              "label": "Right top"
+            },
+            {
+              "value": "justify-content-end align-items-center",
+              "label": "Right middle"
+            },
+            {
+              "value": "justify-content-end align-items-end",
+              "label": "Right bottom"
+            }
+          ]
+        },        
+        {
+          "type": "text",
+          "id": "grid_title1",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "grid_small_title1",
+          "label": "Subtitle"
+        },
+        {
+          "type": "text",
+          "id": "grid_label_text1",
+          "label": "Label text"
+        },
+        {
+          "type": "range",
+          "id": "items_padding1",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "%",
+          "label": "Box inside padding",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "title_color1",
+          "label": "Title color"
+        },
+        {
+          "type": "color",
+          "id": "sub_title_color1",
+          "label": "Subtitle color"
+        },
+        {
+          "type": "header",
+          "content": "Button Settings"
+        },
+        {
+          "type": "select",
+          "id": "button_style1",
+          "label": "Button style",
+          "default": "btn-black",
+          "options": [
+            {
+              "value": "btn-black",
+              "label": "Solid button black"
+            },
+            {
+              "value": "btn-white",
+              "label": "Solid button white"
+            },
+            {
+              "value": "btn-base-color",
+              "label": "Solid button base"
+            },
+            {
+              "value": "btn-black-border",
+              "label": "Border button black"
+            },
+            {
+              "value": "btn-white-border",
+              "label": "Border button white"
+            },
+            {
+              "value": "btn-base-color-border",
+              "label": "Border button base"
+            },
+            {
+              "value": "btn-white-border border-opacity",
+              "label": "Border opacity button white"
+            },
+            {
+              "value": "btn-black-border border-opacity",
+              "label": "Border opacity button black"
+            },
+            {
+              "value": "btn-link btn-link-black",
+              "label": "Underlined button black"
+            },
+            {
+              "value": "btn-link btn-link-white",
+              "label": "Underlined button white"
+            },
+            {
+              "value": "btn-link btn-link-base-color",
+              "label": "Underlined button base"
+            },
+            {
+              "value": "btn-custom",
+              "label": "Custom button"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size1",
+          "label": "Button size",
+          "default": "btn-small",
+          "options": [
+            {
+              "value": "btn-extra-large",
+              "label": "Extra Large"
+            },
+            {
+              "value": "btn-large",
+              "label": "Large"
+            },
+            {
+              "value": "btn-medium",
+              "label": "Medium"
+            },
+            {
+              "value": "btn-small",
+              "label": "Small"
+            },
+            {
+              "value": "btn-very-small",
+              "label": "Very Small"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "btn_radius1",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Button radius",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "btn_border_width1",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "unit": "px",
+          "label": "Button border width",
+          "default": 2
+        },
+        {
+          "type": "text",
+          "id": "btn_icon_class1",
+          "label": "Enter icon class",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+        },
+        {
+          "type": "select",
+          "id": "icon_position1",
+          "label": "Icon position",
+          "default": "right-icon",
+          "options": [
+            {
+              "value": "left-icon",
+              "label": "Left"
+            },
+            {
+              "value": "right-icon",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "btn_text1",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "btn_link1",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Grid item 2"
+        },        
+        {
+          "type": "image_picker",
+          "id": "grid_image2",
+          "label": "Image",
+          "info": "Recommended size 500x500"
+        },
+        {
+          "type": "select",
+          "id": "txt_alignment2",
+          "label": "Text alignment",
+          "default": "center",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "end",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "box_alignment2",
+          "label": "Content box alignment",
+          "default": "justify-content-center align-items-end",
+          "options": [
+            {
+              "value": "justify-content-start align-items-start",
+              "label": "Left Top"
+            },
+            {
+              "value": "justify-content-start align-items-center",
+              "label": "Left middle"
+            },
+            {
+              "value": "justify-content-start align-items-end",
+              "label": "Left bottom"
+            },
+            {
+              "value": "justify-content-center align-items-top",
+              "label": "Center Top"
+            },
+            {
+              "value": "justify-content-center align-items-center",
+              "label": "Center middle"
+            },
+            {
+              "value": "justify-content-center align-items-end",
+              "label": "Center bottom"
+            },
+            {
+              "value": "justify-content-end align-items-start",
+              "label": "Right top"
+            },
+            {
+              "value": "justify-content-end align-items-center",
+              "label": "Right middle"
+            },
+            {
+              "value": "justify-content-end align-items-end",
+              "label": "Right bottom"
+            }
+          ]
+        },        
+        {
+          "type": "text",
+          "id": "grid_title2",
+          "label": "Title",
+          "default": "Wooden table"
+        },
+        {
+          "type": "text",
+          "id": "grid_small_title2",
+          "label": "Subtitle",
+          "default": "Starting from £190.00"
+        },
+        {
+          "type": "text",
+          "id": "grid_label_text2",
+          "label": "Label text",
+          "default": "POPULAR"
+        },
+        {
+          "type": "range",
+          "id": "items_padding2",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "%",
+          "label": "Box inside padding",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "title_color2",
+          "label": "Title color"
+        },
+        {
+          "type": "color",
+          "id": "sub_title_color2",
+          "label": "Subtitle color"
+        },
+        {
+          "type": "header",
+          "content": "Button Settings"
+        },
+        {
+          "type": "select",
+          "id": "button_style2",
+          "label": "Button style",
+          "default": "btn-black",
+          "options": [
+            {
+              "value": "btn-black",
+              "label": "Solid button black"
+            },
+            {
+              "value": "btn-white",
+              "label": "Solid button white"
+            },
+            {
+              "value": "btn-base-color",
+              "label": "Solid button base"
+            },
+            {
+              "value": "btn-black-border",
+              "label": "Border button black"
+            },
+            {
+              "value": "btn-white-border",
+              "label": "Border button white"
+            },
+            {
+              "value": "btn-base-color-border",
+              "label": "Border button base"
+            },
+            {
+              "value": "btn-white-border border-opacity",
+              "label": "Border opacity button white"
+            },
+            {
+              "value": "btn-black-border border-opacity",
+              "label": "Border opacity button black"
+            },
+            {
+              "value": "btn-link btn-link-black",
+              "label": "Underlined button black"
+            },
+            {
+              "value": "btn-link btn-link-white",
+              "label": "Underlined button white"
+            },
+            {
+              "value": "btn-link btn-link-base-color",
+              "label": "Underlined button base"
+            },
+            {
+              "value": "btn-custom",
+              "label": "Custom button"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size2",
+          "label": "Button size",
+          "default": "btn-small",
+          "options": [
+            {
+              "value": "btn-extra-large",
+              "label": "Extra Large"
+            },
+            {
+              "value": "btn-large",
+              "label": "Large"
+            },
+            {
+              "value": "btn-medium",
+              "label": "Medium"
+            },
+            {
+              "value": "btn-small",
+              "label": "Small"
+            },
+            {
+              "value": "btn-very-small",
+              "label": "Very Small"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "btn_radius2",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Button radius",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "btn_border_width2",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "unit": "px",
+          "label": "Button border width",
+          "default": 2
+        },
+        {
+          "type": "text",
+          "id": "btn_icon_class2",
+          "label": "Enter icon class",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+        },
+        {
+          "type": "select",
+          "id": "icon_position2",
+          "label": "Icon position",
+          "default": "right-icon",
+          "options": [
+            {
+              "value": "left-icon",
+              "label": "Left"
+            },
+            {
+              "value": "right-icon",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "btn_text2",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "btn_link2",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Grid item 3"
+        },        
+        {
+          "type": "image_picker",
+          "id": "grid_image3",
+          "label": "Image",
+          "info": "Recommended size 500x500"
+        },
+        {
+          "type": "select",
+          "id": "txt_alignment3",
+          "label": "Text alignment",
+          "default": "center",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "end",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "box_alignment3",
+          "label": "Content box alignment",
+          "default": "justify-content-center align-items-end",
+          "options": [
+            {
+              "value": "justify-content-start align-items-start",
+              "label": "Left Top"
+            },
+            {
+              "value": "justify-content-start align-items-center",
+              "label": "Left middle"
+            },
+            {
+              "value": "justify-content-start align-items-end",
+              "label": "Left bottom"
+            },
+            {
+              "value": "justify-content-center align-items-top",
+              "label": "Center Top"
+            },
+            {
+              "value": "justify-content-center align-items-center",
+              "label": "Center middle"
+            },
+            {
+              "value": "justify-content-center align-items-end",
+              "label": "Center bottom"
+            },
+            {
+              "value": "justify-content-end align-items-start",
+              "label": "Right top"
+            },
+            {
+              "value": "justify-content-end align-items-center",
+              "label": "Right middle"
+            },
+            {
+              "value": "justify-content-end align-items-end",
+              "label": "Right bottom"
+            }
+          ]
+        },        
+        {
+          "type": "text",
+          "id": "grid_title3",
+          "label": "Title",
+          "default": "Tarro containers"
+        },
+        {
+          "type": "text",
+          "id": "grid_small_title3",
+          "label": "Subtitle",
+          "default": "Starting from £155.00"
+        },
+        {
+          "type": "text",
+          "id": "grid_label_text3",
+          "label": "Label text"
+        },
+        {
+          "type": "range",
+          "id": "items_padding3",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "%",
+          "label": "Box inside padding",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "title_color3",
+          "label": "Title color"
+        },
+        {
+          "type": "color",
+          "id": "sub_title_color3",
+          "label": "Subtitle color"
+        },
+        {
+          "type": "header",
+          "content": "Button Settings"
+        },
+        {
+          "type": "select",
+          "id": "button_style3",
+          "label": "Button style",
+          "default": "btn-black",
+          "options": [
+            {
+              "value": "btn-black",
+              "label": "Solid button black"
+            },
+            {
+              "value": "btn-white",
+              "label": "Solid button white"
+            },
+            {
+              "value": "btn-base-color",
+              "label": "Solid button base"
+            },
+            {
+              "value": "btn-black-border",
+              "label": "Border button black"
+            },
+            {
+              "value": "btn-white-border",
+              "label": "Border button white"
+            },
+            {
+              "value": "btn-base-color-border",
+              "label": "Border button base"
+            },
+            {
+              "value": "btn-white-border border-opacity",
+              "label": "Border opacity button white"
+            },
+            {
+              "value": "btn-black-border border-opacity",
+              "label": "Border opacity button black"
+            },
+            {
+              "value": "btn-link btn-link-black",
+              "label": "Underlined button black"
+            },
+            {
+              "value": "btn-link btn-link-white",
+              "label": "Underlined button white"
+            },
+            {
+              "value": "btn-link btn-link-base-color",
+              "label": "Underlined button base"
+            },
+            {
+              "value": "btn-custom",
+              "label": "Custom button"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size3",
+          "label": "Button size",
+          "default": "btn-small",
+          "options": [
+            {
+              "value": "btn-extra-large",
+              "label": "Extra Large"
+            },
+            {
+              "value": "btn-large",
+              "label": "Large"
+            },
+            {
+              "value": "btn-medium",
+              "label": "Medium"
+            },
+            {
+              "value": "btn-small",
+              "label": "Small"
+            },
+            {
+              "value": "btn-very-small",
+              "label": "Very Small"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "btn_radius3",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Button radius",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "btn_border_width3",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "unit": "px",
+          "label": "Button border width",
+          "default": 2
+        },
+        {
+          "type": "text",
+          "id": "btn_icon_class3",
+          "label": "Enter icon class",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+        },
+        {
+          "type": "select",
+          "id": "icon_position3",
+          "label": "Icon position",
+          "default": "right-icon",
+          "options": [
+            {
+              "value": "left-icon",
+              "label": "Left"
+            },
+            {
+              "value": "right-icon",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "btn_text3",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "btn_link3",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Grid item 4"
+        },        
+        {
+          "type": "image_picker",
+          "id": "grid_image4",
+          "label": "Image",
+          "info": "Recommended size 500x500"
+        },
+        {
+          "type": "select",
+          "id": "txt_alignment4",
+          "label": "Text alignment",
+          "default": "center",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "end",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "box_alignment4",
+          "label": "Content box alignment",
+          "default": "justify-content-center align-items-end",
+          "options": [
+            {
+              "value": "justify-content-start align-items-start",
+              "label": "Left Top"
+            },
+            {
+              "value": "justify-content-start align-items-center",
+              "label": "Left middle"
+            },
+            {
+              "value": "justify-content-start align-items-end",
+              "label": "Left bottom"
+            },
+            {
+              "value": "justify-content-center align-items-top",
+              "label": "Center Top"
+            },
+            {
+              "value": "justify-content-center align-items-center",
+              "label": "Center middle"
+            },
+            {
+              "value": "justify-content-center align-items-end",
+              "label": "Center bottom"
+            },
+            {
+              "value": "justify-content-end align-items-start",
+              "label": "Right top"
+            },
+            {
+              "value": "justify-content-end align-items-center",
+              "label": "Right middle"
+            },
+            {
+              "value": "justify-content-end align-items-end",
+              "label": "Right bottom"
+            }
+          ]
+        },        
+        {
+          "type": "text",
+          "id": "grid_title4",
+          "label": "Title",
+          "default": "Round bowls"
+        },
+        {
+          "type": "text",
+          "id": "grid_small_title4",
+          "label": "Subtitle",
+          "default": "Starting from £170.00"
+        },
+        {
+          "type": "text",
+          "id": "grid_label_text4",
+          "label": "Label text"
+        },
+        {
+          "type": "range",
+          "id": "items_padding4",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "%",
+          "label": "Box inside padding",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "title_color4",
+          "label": "Title color"
+        },
+        {
+          "type": "color",
+          "id": "sub_title_color4",
+          "label": "Subtitle color"
+        },
+        {
+          "type": "header",
+          "content": "Button Settings"
+        },
+        {
+          "type": "select",
+          "id": "button_style4",
+          "label": "Button style",
+          "default": "btn-black",
+          "options": [
+            {
+              "value": "btn-black",
+              "label": "Solid button black"
+            },
+            {
+              "value": "btn-white",
+              "label": "Solid button white"
+            },
+            {
+              "value": "btn-base-color",
+              "label": "Solid button base"
+            },
+            {
+              "value": "btn-black-border",
+              "label": "Border button black"
+            },
+            {
+              "value": "btn-white-border",
+              "label": "Border button white"
+            },
+            {
+              "value": "btn-base-color-border",
+              "label": "Border button base"
+            },
+            {
+              "value": "btn-white-border border-opacity",
+              "label": "Border opacity button white"
+            },
+            {
+              "value": "btn-black-border border-opacity",
+              "label": "Border opacity button black"
+            },
+            {
+              "value": "btn-link btn-link-black",
+              "label": "Underlined button black"
+            },
+            {
+              "value": "btn-link btn-link-white",
+              "label": "Underlined button white"
+            },
+            {
+              "value": "btn-link btn-link-base-color",
+              "label": "Underlined button base"
+            },
+            {
+              "value": "btn-custom",
+              "label": "Custom button"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size4",
+          "label": "Button size",
+          "default": "btn-small",
+          "options": [
+            {
+              "value": "btn-extra-large",
+              "label": "Extra Large"
+            },
+            {
+              "value": "btn-large",
+              "label": "Large"
+            },
+            {
+              "value": "btn-medium",
+              "label": "Medium"
+            },
+            {
+              "value": "btn-small",
+              "label": "Small"
+            },
+            {
+              "value": "btn-very-small",
+              "label": "Very Small"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "btn_radius4",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Button radius",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "btn_border_width4",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "unit": "px",
+          "label": "Button border width",
+          "default": 2
+        },
+        {
+          "type": "text",
+          "id": "btn_icon_class4",
+          "label": "Enter icon class",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+        },
+        {
+          "type": "select",
+          "id": "icon_position4",
+          "label": "Icon position",
+          "default": "right-icon",
+          "options": [
+            {
+              "value": "left-icon",
+              "label": "Left"
+            },
+            {
+              "value": "right-icon",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "btn_text4",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "btn_link4",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Grid item 5"
+        },        
+        {
+          "type": "image_picker",
+          "id": "grid_image5",
+          "label": "Image",
+          "info": "Recommended size 500x500"
+        },
+        {
+          "type": "select",
+          "id": "txt_alignment5",
+          "label": "Text alignment",
+          "default": "center",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "end",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "box_alignment5",
+          "label": "Content box alignment",
+          "default": "justify-content-center align-items-end",
+          "options": [
+            {
+              "value": "justify-content-start align-items-start",
+              "label": "Left Top"
+            },
+            {
+              "value": "justify-content-start align-items-center",
+              "label": "Left middle"
+            },
+            {
+              "value": "justify-content-start align-items-end",
+              "label": "Left bottom"
+            },
+            {
+              "value": "justify-content-center align-items-top",
+              "label": "Center Top"
+            },
+            {
+              "value": "justify-content-center align-items-center",
+              "label": "Center middle"
+            },
+            {
+              "value": "justify-content-center align-items-end",
+              "label": "Center bottom"
+            },
+            {
+              "value": "justify-content-end align-items-start",
+              "label": "Right top"
+            },
+            {
+              "value": "justify-content-end align-items-center",
+              "label": "Right middle"
+            },
+            {
+              "value": "justify-content-end align-items-end",
+              "label": "Right bottom"
+            }
+          ]
+        },        
+        {
+          "type": "text",
+          "id": "grid_title5",
+          "label": "Title",
+          "default": "Antique chair"
+        },
+        {
+          "type": "text",
+          "id": "grid_small_title5",
+          "label": "Subtitle",
+          "default": "Starting from £185.00"
+        },
+        {
+          "type": "text",
+          "id": "grid_label_text5",
+          "label": "Label text",
+          "default": "TRENDING"
+        },
+        {
+          "type": "range",
+          "id": "items_padding5",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "%",
+          "label": "Box inside padding",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "title_color5",
+          "label": "Title color"
+        },
+        {
+          "type": "color",
+          "id": "sub_title_color5",
+          "label": "Subtitle color"
+        },
+        {
+          "type": "header",
+          "content": "Button Settings"
+        },
+        {
+          "type": "header",
+          "content": "Button Settings"
+        },
+        {
+          "type": "select",
+          "id": "button_style5",
+          "label": "Button style",
+          "default": "btn-black",
+          "options": [
+            {
+              "value": "btn-black",
+              "label": "Solid button black"
+            },
+            {
+              "value": "btn-white",
+              "label": "Solid button white"
+            },
+            {
+              "value": "btn-base-color",
+              "label": "Solid button base"
+            },
+            {
+              "value": "btn-black-border",
+              "label": "Border button black"
+            },
+            {
+              "value": "btn-white-border",
+              "label": "Border button white"
+            },
+            {
+              "value": "btn-base-color-border",
+              "label": "Border button base"
+            },
+            {
+              "value": "btn-white-border border-opacity",
+              "label": "Border opacity button white"
+            },
+            {
+              "value": "btn-black-border border-opacity",
+              "label": "Border opacity button black"
+            },
+            {
+              "value": "btn-link btn-link-black",
+              "label": "Underlined button black"
+            },
+            {
+              "value": "btn-link btn-link-white",
+              "label": "Underlined button white"
+            },
+            {
+              "value": "btn-link btn-link-base-color",
+              "label": "Underlined button base"
+            },
+            {
+              "value": "btn-custom",
+              "label": "Custom button"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size5",
+          "label": "Button size",
+          "default": "btn-small",
+          "options": [
+            {
+              "value": "btn-extra-large",
+              "label": "Extra Large"
+            },
+            {
+              "value": "btn-large",
+              "label": "Large"
+            },
+            {
+              "value": "btn-medium",
+              "label": "Medium"
+            },
+            {
+              "value": "btn-small",
+              "label": "Small"
+            },
+            {
+              "value": "btn-very-small",
+              "label": "Very Small"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "btn_radius5",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Button radius",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "btn_border_width5",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "unit": "px",
+          "label": "Button border width",
+          "default": 2
+        },
+        {
+          "type": "text",
+          "id": "btn_icon_class5",
+          "label": "Enter icon class",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+        },
+        {
+          "type": "select",
+          "id": "icon_position5",
+          "label": "Icon position",
+          "default": "right-icon",
+          "options": [
+            {
+              "value": "left-icon",
+              "label": "Left"
+            },
+            {
+              "value": "right-icon",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "btn_text5",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "btn_link5",
+          "label": "Button link"
+        }
+      ]
+    },
+    {
+      "type": "shop-grid-style-3",
+      "name": "Shop grid style 3",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Grid item 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "grid_image1",
+          "label": "Image",
+          "info": "Recommended size 575x720"
+        },
+        {
+          "type": "select",
+          "id": "txt_alignment1",
+          "label": "Text alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "end",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "box_alignment1",
+          "label": "Content box alignment",
+          "default": "justify-content-start align-items-start",
+          "options": [
+            {
+              "value": "justify-content-start align-items-start",
+              "label": "Left Top"
+            },
+            {
+              "value": "justify-content-start align-items-center",
+              "label": "Left middle"
+            },
+            {
+              "value": "justify-content-start align-items-end",
+              "label": "Left bottom"
+            },
+            {
+              "value": "justify-content-center align-items-top",
+              "label": "Center Top"
+            },
+            {
+              "value": "justify-content-center align-items-center",
+              "label": "Center middle"
+            },
+            {
+              "value": "justify-content-center align-items-end",
+              "label": "Center bottom"
+            },
+            {
+              "value": "justify-content-end align-items-start",
+              "label": "Right top"
+            },
+            {
+              "value": "justify-content-end align-items-center",
+              "label": "Right middle"
+            },
+            {
+              "value": "justify-content-end align-items-end",
+              "label": "Right bottom"
+            }
+          ]
+        },        
+        {
+          "type": "text",
+          "id": "grid_title1",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "grid_small_title1",
+          "label": "Subtitle"
+        },
+        {
+          "type": "range",
+          "id": "items_padding1",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "%",
+          "label": "Box inside padding",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "title_color1",
+          "label": "Title color"
+        },
+        {
+          "type": "color",
+          "id": "sub_title_color1",
+          "label": "Subtitle color"
+        },
+        {
+          "type": "header",
+          "content": "Button Settings"
+        },
+        {
+          "type": "select",
+          "id": "button_style1",
+          "label": "Button style",
+          "default": "btn-black",
+          "options": [
+            {
+              "value": "btn-black",
+              "label": "Solid button black"
+            },
+            {
+              "value": "btn-white",
+              "label": "Solid button white"
+            },
+            {
+              "value": "btn-base-color",
+              "label": "Solid button base"
+            },
+            {
+              "value": "btn-black-border",
+              "label": "Border button black"
+            },
+            {
+              "value": "btn-white-border",
+              "label": "Border button white"
+            },
+            {
+              "value": "btn-base-color-border",
+              "label": "Border button base"
+            },
+            {
+              "value": "btn-white-border border-opacity",
+              "label": "Border opacity button white"
+            },
+            {
+              "value": "btn-black-border border-opacity",
+              "label": "Border opacity button black"
+            },
+            {
+              "value": "btn-link btn-link-black",
+              "label": "Underlined button black"
+            },
+            {
+              "value": "btn-link btn-link-white",
+              "label": "Underlined button white"
+            },
+            {
+              "value": "btn-link btn-link-base-color",
+              "label": "Underlined button base"
+            },
+            {
+              "value": "btn-custom",
+              "label": "Custom button"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size1",
+          "label": "Button size",
+          "default": "btn-small",
+          "options": [
+            {
+              "value": "btn-extra-large",
+              "label": "Extra Large"
+            },
+            {
+              "value": "btn-large",
+              "label": "Large"
+            },
+            {
+              "value": "btn-medium",
+              "label": "Medium"
+            },
+            {
+              "value": "btn-small",
+              "label": "Small"
+            },
+            {
+              "value": "btn-very-small",
+              "label": "Very Small"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "btn_radius1",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Button radius",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "btn_border_width1",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "unit": "px",
+          "label": "Button border width",
+          "default": 2
+        },
+        {
+          "type": "text",
+          "id": "btn_icon_class1",
+          "label": "Enter icon class",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+        },
+        {
+          "type": "select",
+          "id": "icon_position1",
+          "label": "Icon position",
+          "default": "right-icon",
+          "options": [
+            {
+              "value": "left-icon",
+              "label": "Left"
+            },
+            {
+              "value": "right-icon",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "btn_text1",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "btn_link1",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Grid item 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "grid_image2",
+          "label": "Image",
+          "info": "Recommended size 575x720"
+        },
+        {
+          "type": "select",
+          "id": "txt_alignment2",
+          "label": "Text alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "end",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "box_alignment2",
+          "label": "Content box alignment",
+          "default": "justify-content-start align-items-center",
+          "options": [
+            {
+              "value": "justify-content-start align-items-start",
+              "label": "Left Top"
+            },
+            {
+              "value": "justify-content-start align-items-center",
+              "label": "Left middle"
+            },
+            {
+              "value": "justify-content-start align-items-end",
+              "label": "Left bottom"
+            },
+            {
+              "value": "justify-content-center align-items-top",
+              "label": "Center Top"
+            },
+            {
+              "value": "justify-content-center align-items-center",
+              "label": "Center middle"
+            },
+            {
+              "value": "justify-content-center align-items-end",
+              "label": "Center bottom"
+            },
+            {
+              "value": "justify-content-end align-items-start",
+              "label": "Right top"
+            },
+            {
+              "value": "justify-content-end align-items-center",
+              "label": "Right middle"
+            },
+            {
+              "value": "justify-content-end align-items-end",
+              "label": "Right bottom"
+            }
+          ]
+        },        
+        {
+          "type": "text",
+          "id": "grid_title2",
+          "label": "Title",
+          "default": "Nike beauty skin care led face mask."
+        },
+        {
+          "type": "text",
+          "id": "grid_small_title2",
+          "label": "Subtitle",
+          "default": "Start from <span>$199.99</span>"
+        },
+        {
+          "type": "range",
+          "id": "items_padding2",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "%",
+          "label": "Box inside padding",
+          "default": 15
+        },
+        {
+          "type": "color",
+          "id": "title_color2",
+          "label": "Title color"
+        },
+        {
+          "type": "color",
+          "id": "sub_title_color2",
+          "label": "Subtitle color"
+        },
+        {
+          "type": "header",
+          "content": "Button Settings"
+        },
+        {
+          "type": "select",
+          "id": "button_style2",
+          "label": "Button style",
+          "default": "btn-black",
+          "options": [
+            {
+              "value": "btn-black",
+              "label": "Solid button black"
+            },
+            {
+              "value": "btn-white",
+              "label": "Solid button white"
+            },
+            {
+              "value": "btn-base-color",
+              "label": "Solid button base"
+            },
+            {
+              "value": "btn-black-border",
+              "label": "Border button black"
+            },
+            {
+              "value": "btn-white-border",
+              "label": "Border button white"
+            },
+            {
+              "value": "btn-base-color-border",
+              "label": "Border button base"
+            },
+            {
+              "value": "btn-white-border border-opacity",
+              "label": "Border opacity button white"
+            },
+            {
+              "value": "btn-black-border border-opacity",
+              "label": "Border opacity button black"
+            },
+            {
+              "value": "btn-link btn-link-black",
+              "label": "Underlined button black"
+            },
+            {
+              "value": "btn-link btn-link-white",
+              "label": "Underlined button white"
+            },
+            {
+              "value": "btn-link btn-link-base-color",
+              "label": "Underlined button base"
+            },
+            {
+              "value": "btn-custom",
+              "label": "Custom button"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size2",
+          "label": "Button size",
+          "default": "btn-large",
+          "options": [
+            {
+              "value": "btn-extra-large",
+              "label": "Extra Large"
+            },
+            {
+              "value": "btn-large",
+              "label": "Large"
+            },
+            {
+              "value": "btn-medium",
+              "label": "Medium"
+            },
+            {
+              "value": "btn-small",
+              "label": "Small"
+            },
+            {
+              "value": "btn-very-small",
+              "label": "Very Small"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "btn_radius2",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Button radius",
+          "default": 35
+        },
+        {
+          "type": "range",
+          "id": "btn_border_width2",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "unit": "px",
+          "label": "Button border width",
+          "default": 2
+        },
+        {
+          "type": "text",
+          "id": "btn_icon_class2",
+          "label": "Enter icon class",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+        },
+        {
+          "type": "select",
+          "id": "icon_position2",
+          "label": "Icon position",
+          "default": "left-icon",
+          "options": [
+            {
+              "value": "left-icon",
+              "label": "Left"
+            },
+            {
+              "value": "right-icon",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "btn_text2",
+          "label": "Button text",
+          "default": "SHOP NOW"
+        },
+        {
+          "type": "url",
+          "id": "btn_link2",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Grid item 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "grid_image3",
+          "label": "Image",
+          "info": "Recommended size 800x375"
+        },
+        {
+          "type": "select",
+          "id": "txt_alignment3",
+          "label": "Text alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "end",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "box_alignment3",
+          "label": "Content box alignment",
+          "default": "justify-content-end align-items-center",
+          "options": [
+            {
+              "value": "justify-content-start align-items-start",
+              "label": "Left Top"
+            },
+            {
+              "value": "justify-content-start align-items-center",
+              "label": "Left middle"
+            },
+            {
+              "value": "justify-content-start align-items-end",
+              "label": "Left bottom"
+            },
+            {
+              "value": "justify-content-center align-items-top",
+              "label": "Center Top"
+            },
+            {
+              "value": "justify-content-center align-items-center",
+              "label": "Center middle"
+            },
+            {
+              "value": "justify-content-center align-items-end",
+              "label": "Center bottom"
+            },
+            {
+              "value": "justify-content-end align-items-start",
+              "label": "Right top"
+            },
+            {
+              "value": "justify-content-end align-items-center",
+              "label": "Right middle"
+            },
+            {
+              "value": "justify-content-end align-items-end",
+              "label": "Right bottom"
+            }
+          ]
+        },        
+        {
+          "type": "text",
+          "id": "grid_title3",
+          "label": "Title",
+          "default": "Earbuds with <br> truly wireless."
+        },
+        {
+          "type": "text",
+          "id": "grid_small_title3",
+          "label": "Subtitle",
+          "default": "Start from <span>$199.99</span>"
+        },
+        {
+          "type": "range",
+          "id": "items_padding3",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "%",
+          "label": "Box inside padding",
+          "default": 11
+        },
+        {
+          "type": "color",
+          "id": "title_color3",
+          "label": "Title color"
+        },
+        {
+          "type": "color",
+          "id": "sub_title_color3",
+          "label": "Subtitle color"
+        },
+        {
+          "type": "header",
+          "content": "Button Settings"
+        },
+        {
+          "type": "select",
+          "id": "button_style3",
+          "label": "Button style",
+          "default": "btn-black-border",
+          "options": [
+            {
+              "value": "btn-black",
+              "label": "Solid button black"
+            },
+            {
+              "value": "btn-white",
+              "label": "Solid button white"
+            },
+            {
+              "value": "btn-base-color",
+              "label": "Solid button base"
+            },
+            {
+              "value": "btn-black-border",
+              "label": "Border button black"
+            },
+            {
+              "value": "btn-white-border",
+              "label": "Border button white"
+            },
+            {
+              "value": "btn-base-color-border",
+              "label": "Border button base"
+            },
+            {
+              "value": "btn-white-border border-opacity",
+              "label": "Border opacity button white"
+            },
+            {
+              "value": "btn-black-border border-opacity",
+              "label": "Border opacity button black"
+            },
+            {
+              "value": "btn-link btn-link-black",
+              "label": "Underlined button black"
+            },
+            {
+              "value": "btn-link btn-link-white",
+              "label": "Underlined button white"
+            },
+            {
+              "value": "btn-link btn-link-base-color",
+              "label": "Underlined button base"
+            },
+            {
+              "value": "btn-custom",
+              "label": "Custom button"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size3",
+          "label": "Button size",
+          "default": "btn-small",
+          "options": [
+            {
+              "value": "btn-extra-large",
+              "label": "Extra Large"
+            },
+            {
+              "value": "btn-large",
+              "label": "Large"
+            },
+            {
+              "value": "btn-medium",
+              "label": "Medium"
+            },
+            {
+              "value": "btn-small",
+              "label": "Small"
+            },
+            {
+              "value": "btn-very-small",
+              "label": "Very Small"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "btn_radius3",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Button radius",
+          "default": 30
+        },
+        {
+          "type": "range",
+          "id": "btn_border_width3",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "unit": "px",
+          "label": "Button border width",
+          "default": 1
+        },
+        {
+          "type": "text",
+          "id": "btn_icon_class3",
+          "label": "Enter icon class",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+        },
+        {
+          "type": "select",
+          "id": "icon_position3",
+          "label": "Icon position",
+          "default": "right-icon",
+          "options": [
+            {
+              "value": "left-icon",
+              "label": "Left"
+            },
+            {
+              "value": "right-icon",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "btn_text3",
+          "label": "Button text",
+          "default": "SHOP NOW"
+        },
+        {
+          "type": "url",
+          "id": "btn_link3",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Grid item 4"
+        },
+        {
+          "type": "image_picker",
+          "id": "grid_image4",
+          "label": "Image",
+          "info": "Recommended size 800x375"
+        },
+        {
+          "type": "select",
+          "id": "txt_alignment4",
+          "label": "Text alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "end",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "box_alignment4",
+          "label": "Content box alignment",
+          "default": "justify-content-center align-items-center",
+          "options": [
+            {
+              "value": "justify-content-start align-items-start",
+              "label": "Left Top"
+            },
+            {
+              "value": "justify-content-start align-items-center",
+              "label": "Left middle"
+            },
+            {
+              "value": "justify-content-start align-items-end",
+              "label": "Left bottom"
+            },
+            {
+              "value": "justify-content-center align-items-top",
+              "label": "Center Top"
+            },
+            {
+              "value": "justify-content-center align-items-center",
+              "label": "Center middle"
+            },
+            {
+              "value": "justify-content-center align-items-end",
+              "label": "Center bottom"
+            },
+            {
+              "value": "justify-content-end align-items-start",
+              "label": "Right top"
+            },
+            {
+              "value": "justify-content-end align-items-center",
+              "label": "Right middle"
+            },
+            {
+              "value": "justify-content-end align-items-end",
+              "label": "Right bottom"
+            }
+          ]
+        },        
+        {
+          "type": "text",
+          "id": "grid_title4",
+          "label": "Title",
+          "default": "Apple iPhone <br> 12 mini-blue."
+        },
+        {
+          "type": "text",
+          "id": "grid_small_title4",
+          "label": "Subtitle",
+          "default": "Start from <span>$199.99</span>"
+        },
+        {
+          "type": "range",
+          "id": "items_padding4",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "%",
+          "label": "Box inside padding",
+          "default": 11
+        },
+        {
+          "type": "color",
+          "id": "title_color4",
+          "label": "Title color"
+        },
+        {
+          "type": "color",
+          "id": "sub_title_color4",
+          "label": "Subtitle color"
+        },
+        {
+          "type": "header",
+          "content": "Button Settings"
+        },
+        {
+          "type": "select",
+          "id": "button_style4",
+          "label": "Button style",
+          "default": "btn-white",
+          "options": [
+            {
+              "value": "btn-black",
+              "label": "Solid button black"
+            },
+            {
+              "value": "btn-white",
+              "label": "Solid button white"
+            },
+            {
+              "value": "btn-base-color",
+              "label": "Solid button base"
+            },
+            {
+              "value": "btn-black-border",
+              "label": "Border button black"
+            },
+            {
+              "value": "btn-white-border",
+              "label": "Border button white"
+            },
+            {
+              "value": "btn-base-color-border",
+              "label": "Border button base"
+            },
+            {
+              "value": "btn-white-border border-opacity",
+              "label": "Border opacity button white"
+            },
+            {
+              "value": "btn-black-border border-opacity",
+              "label": "Border opacity button black"
+            },
+            {
+              "value": "btn-link btn-link-black",
+              "label": "Underlined button black"
+            },
+            {
+              "value": "btn-link btn-link-white",
+              "label": "Underlined button white"
+            },
+            {
+              "value": "btn-link btn-link-base-color",
+              "label": "Underlined button base"
+            },
+            {
+              "value": "btn-custom",
+              "label": "Custom button"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size4",
+          "label": "Button size",
+          "default": "btn-small",
+          "options": [
+            {
+              "value": "btn-extra-large",
+              "label": "Extra Large"
+            },
+            {
+              "value": "btn-large",
+              "label": "Large"
+            },
+            {
+              "value": "btn-medium",
+              "label": "Medium"
+            },
+            {
+              "value": "btn-small",
+              "label": "Small"
+            },
+            {
+              "value": "btn-very-small",
+              "label": "Very Small"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "btn_radius4",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Button radius",
+          "default": 30
+        },
+        {
+          "type": "range",
+          "id": "btn_border_width4",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "unit": "px",
+          "label": "Button border width",
+          "default": 1
+        },
+        {
+          "type": "text",
+          "id": "btn_icon_class4",
+          "label": "Enter icon class",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+        },
+        {
+          "type": "select",
+          "id": "icon_position4",
+          "label": "Icon position",
+          "default": "right-icon",
+          "options": [
+            {
+              "value": "left-icon",
+              "label": "Left"
+            },
+            {
+              "value": "right-icon",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "btn_text4",
+          "label": "Button text",
+          "default": "BOOK NOW"
+        },
+        {
+          "type": "url",
+          "id": "btn_link4",
+          "label": "Button link"
+        }
+      ]
+    },
+    {
+      "type": "shop-grid-style-4",
+      "name": "Shop grid style 4",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "image_picker",
+          "id": "grid_image",
+          "label": "Image",
+          "info": "Recommended size 850x450"
+        },
+        {
+          "type": "select",
+          "id": "txt_alignment",
+          "label": "Text alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "end",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "box_alignment",
+          "label": "Content box alignment",
+          "default": "justify-content-end align-items-center",
+          "options": [
+            {
+              "value": "justify-content-start align-items-start",
+              "label": "Left Top"
+            },
+            {
+              "value": "justify-content-start align-items-center",
+              "label": "Left middle"
+            },
+            {
+              "value": "justify-content-start align-items-end",
+              "label": "Left bottom"
+            },
+            {
+              "value": "justify-content-center align-items-top",
+              "label": "Center Top"
+            },
+            {
+              "value": "justify-content-center align-items-center",
+              "label": "Center middle"
+            },
+            {
+              "value": "justify-content-center align-items-end",
+              "label": "Center bottom"
+            },
+            {
+              "value": "justify-content-end align-items-start",
+              "label": "Right top"
+            },
+            {
+              "value": "justify-content-end align-items-center",
+              "label": "Right middle"
+            },
+            {
+              "value": "justify-content-end align-items-end",
+              "label": "Right bottom"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "grid_title",
+          "label": "Title",
+          "default": "Leather bag <br> handmade"
+        },
+        {
+          "type": "text",
+          "id": "grid_small_title",
+          "label": "Subtitle",
+          "default": "Make dreams come true"
+        },
+        {
+          "type": "range",
+          "id": "items_padding",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "%",
+          "label": "Box inside padding",
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "title_color",
+          "label": "Title color"
+        },
+        {
+          "type": "color",
+          "id": "sub_title_color",
+          "label": "Subtitle color"
+        },
+        {
+          "type": "header",
+          "content": "Button Settings"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "default": "btn-black",
+          "options": [
+            {
+              "value": "btn-black",
+              "label": "Solid button black"
+            },
+            {
+              "value": "btn-white",
+              "label": "Solid button white"
+            },
+            {
+              "value": "btn-base-color",
+              "label": "Solid button base"
+            },
+            {
+              "value": "btn-black-border",
+              "label": "Border button black"
+            },
+            {
+              "value": "btn-white-border",
+              "label": "Border button white"
+            },
+            {
+              "value": "btn-base-color-border",
+              "label": "Border button base"
+            },
+            {
+              "value": "btn-white-border border-opacity",
+              "label": "Border opacity button white"
+            },
+            {
+              "value": "btn-black-border border-opacity",
+              "label": "Border opacity button black"
+            },
+            {
+              "value": "btn-link btn-link-black",
+              "label": "Underlined button black"
+            },
+            {
+              "value": "btn-link btn-link-white",
+              "label": "Underlined button white"
+            },
+            {
+              "value": "btn-link btn-link-base-color",
+              "label": "Underlined button base"
+            },
+            {
+              "value": "btn-custom",
+              "label": "Custom button"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size",
+          "label": "Button size",
+          "default": "btn-medium",
+          "options": [
+            {
+              "value": "btn-extra-large",
+              "label": "Extra Large"
+            },
+            {
+              "value": "btn-large",
+              "label": "Large"
+            },
+            {
+              "value": "btn-medium",
+              "label": "Medium"
+            },
+            {
+              "value": "btn-small",
+              "label": "Small"
+            },
+            {
+              "value": "btn-very-small",
+              "label": "Very Small"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "btn_radius",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Button radius",
+          "default": 4
+        },
+        {
+          "type": "range",
+          "id": "btn_border_width",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "unit": "px",
+          "label": "Button border width",
+          "default": 2
+        },
+        {
+          "type": "text",
+          "id": "btn_icon_class",
+          "label": "Enter icon class",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+        },
+        {
+          "type": "select",
+          "id": "icon_position",
+          "label": "Icon position",
+          "default": "right-icon",
+          "options": [
+            {
+              "value": "left-icon",
+              "label": "Left"
+            },
+            {
+              "value": "right-icon",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "btn_text",
+          "label": "Button text",
+          "default": "Shop collection"
+        },
+        {
+          "type": "url",
+          "id": "btn_link",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Banner settings"
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image",
+          "label": "Image",
+          "info": "Recommended size 410x450"
+        },
+        {
+          "type": "url",
+          "id": "banner_link",
+          "label": "Banner link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop Grid"
+    }
+  ]
+}
+{% endschema %}

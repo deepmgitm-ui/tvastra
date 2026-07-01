@@ -1,0 +1,63 @@
+<div
+  class="newsletter-model"
+  data-newsletter_model
+  data-delay="{{ settings.popup_newsletter_delay | times: 1000 }}"
+  data-expire="{{ settings.popup_newsletter_expire }}"
+  style="z-index: {{ settings.popup_newsletter_delay | times: 1000 }}"
+>
+  <div class="model-inner">
+    <div class="model-box">
+      <span class="model-close close"><i class="feather-x"></i></span>
+      {%- if settings.popup_img != blank -%}
+        <div class="model-media">
+          <img src="{{ settings.popup_img | image_url }}" alt="" src="{{ settings.popup_img | image_url }}" srcset="{{ settings.popup_img | image_url: 320 }} 320w, {{ settings.popup_img | image_url: width: 575 }} 575w, {{ settings.popup_img | image_url: width: 767 }} 767w, {{ settings.popup_img | image_url: width: 768 }} 768w" sizes="100vw" width="{{ settings.popup_img.width }}" loading="lazy" height="{{ settings.popup_img.height }}">          
+        </div>
+      {%- endif -%}
+      <div class="model-content">
+        {%- if settings.popup_hading != blank -%}
+          <h3 class="heading">{{ settings.popup_hading }}</h3>
+        {%- endif -%}
+        {%- if settings.popup_sub_hading != blank -%}
+          <p class="sub_heading">{{ settings.popup_sub_hading }}</p>
+        {%- endif -%}
+        {%- assign formId = 'newsletter-popup' -%}
+        {%- form 'customer', class: 'newsletter-form', id: formId -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div class="input-group position-relative">
+            <input
+              id="{{ formId }}-email"
+              type="email"
+              name="contact[email]"
+              class="mb-0 {% if form.errors %}error{% endif %}"
+              value=""
+              aria-required="true"
+              autocorrect="off"
+              autocapitalize="off"
+              autocomplete="email"
+              {% if form.errors %}
+                autofocus
+                aria-invalid="true"
+                aria-describedby="newsletter-form-error-{{ section.id }}"
+              {% elsif form.posted_successfully? %}
+                aria-describedby="{{ formId }}-success"
+              {% endif %}
+              placeholder="{{ 'general.newsletter_model.newsletter_placeholder_text' | t }}"
+              required
+            >
+            {%- if settings.popup_btn != blank -%}
+              <button type="submit" class="btn alt-font">{{ settings.popup_btn }}</button>
+            {%- endif -%}
+          </div>
+        {%- endform -%}
+        <div class="model-bottom">
+          {%- if settings.popup_note != blank -%}
+            <input id="dismiss_show" type="checkbox" name="dismiss_show" autocomplete="off">
+            <label for="dismiss_show">
+              <span>{{ settings.popup_note }}</span>
+            </label>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

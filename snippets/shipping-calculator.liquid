@@ -1,0 +1,77 @@
+<div class="estimate-shipping">
+  <div class="shipping-rates-title alt-font" data-trigger>{{ 'sections.cart.shipping_estimate_heading' | t }}</div>
+  <div id="shipping-calculator" class="shipping-calculator" data-target>
+    <div class="field">
+      <label class="alt-font" for="address_country">{{ 'customer.addresses.country' | t }}</label>
+      <div class="control">
+        <select
+          id="address_country"
+          name="address[country]"
+          data-default="{% if shop.customer_accounts_enabled and customer %}{{ customer.default_address.country }}{% else %}{{ shop.address.country.name }}{% endif %}"
+        >
+          {{ country_option_tags }}
+        </select>
+      </div>
+    </div>
+    <div class="d-flex field-wrap justify-content-between">
+      <div class="field" id="address_province_container" style="display:none;">
+        <label class="alt-font" for="address_province" id="address_province_label">
+          {{- 'customer.addresses.province' | t -}}
+        </label>
+        <div class="control">
+          <select
+            id="address_province"
+            name="address[province]"
+            data-default="{% if shop.customer_accounts_enabled and customer and customer.default_address.province != '' %}{{ customer.default_address.province }}{% endif %}"
+          ></select>
+        </div>
+      </div>
+      <div class="field">
+        <label class="alt-font" for="address_zip">{{ 'customer.addresses.zip' | t }}</label>
+        <div class="control">
+          <input
+            type="text"
+            id="address_zip"
+            name="address[zip]"
+            {% if shop.customer_accounts_enabled and customer %}
+              value="{{ customer.default_address.zip }}"
+            {% endif %}
+          >
+        </div>
+      </div>
+    </div>
+    <div class="field text-center">
+      <input
+        type="button"
+        class="btn btn-black-border btn-medium get-rates w-100"
+        value="{{ section.settings.shipping_calculator_submit_button_label | default: 'Calculate shipping' }}"
+        data-button-disabled="{{ section.settings.shipping_calculator_submit_button_label_disabled | default: 'Calculating...' | json }}"
+      >
+    </div>
+    <div id="wrapper-response"></div>
+  </div>
+  <script id="shipping-calculator-response-template" type="text/template">
+    {%- raw -%}
+    <div class="wrapper-response {{#if success}}success{{else}} error {{/if}}">
+        <p id="shipping-rates-feedback">
+            {{#if success}}
+                {{#if rates}}
+                    <strong>We found {{ rates.length }} shipping rate(s) for your Postal/ZIP code:</strong>
+                    <ul class="shipping-rates">
+                    {{#rates}}
+                        <li>{{{name}}}: {{{price}}}</li>
+                    {{/rates}}
+                    </ul>
+                {{else}}
+                    {% endraw %}
+                    {{ 'No shipping rates found for your address.' }}
+                    {% raw %}
+                {{/if}}
+            {{else}}
+                {{ errorFeedback }}
+            {{/if}}
+        </p>
+    </div>
+    {%- endraw -%}
+  </script>
+</div>

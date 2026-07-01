@@ -1,0 +1,7 @@
+{%- liquid
+  layout none
+	capture html 
+		section 'vertical-menu'
+	endcapture
+	assign array = html | split:'[devide]'
+	echo array[0] -%} 
