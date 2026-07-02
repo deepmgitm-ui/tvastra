@@ -249,6 +249,7 @@
       "blocks": {
         "pin_ghCEfj": {
           "type": "pin",
+          "disabled": true,
           "settings": {
             "x_pos": 48,
             "y_pos": 27,
