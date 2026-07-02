@@ -74,64 +74,9 @@
         "section_class_name": ""
       }
     },
-    "163394727558bbdcc5": {
-      "type": "video-with-text",
-      "blocks": {
-        "5cb71f43-7775-4449-9479-53a323c45e04": {
-          "type": "list-item",
-          "settings": {
-            "title": "Soft fabric",
-            "description": "<p>Lorem ipsum is simply dolor amet consectetur adipiscing eiusmod tempor incididunt.</p>"
-          }
-        },
-        "c1064217-f630-4b3a-865d-820d1201bf46": {
-          "type": "list-item",
-          "settings": {
-            "title": "Lightweight",
-            "description": "<p>Lorem ipsum is simply dolor amet consectetur adipiscing eiusmod tempor incididunt.</p>"
-          }
-        },
-        "1ec74e13-033b-4662-b7da-f9e7e16fcbeb": {
-          "type": "list-item",
-          "settings": {
-            "title": "All day comfort",
-            "description": "<p>Lorem ipsum is simply dolor amet consectetur adipiscing eiusmod tempor incididunt.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "5cb71f43-7775-4449-9479-53a323c45e04",
-        "c1064217-f630-4b3a-865d-820d1201bf46",
-        "1ec74e13-033b-4662-b7da-f9e7e16fcbeb"
-      ],
-      "disabled": true,
-      "settings": {
-        "container_type": "container",
-        "video_column_width": "6",
-        "video_url": "https://www.youtube.com/watch?v=CiQovCRvvm0",
-        "hide_video": true,
-        "hide_video_icon": true,
-        "content_column_width": "6",
-        "block_heading": "We believe in quality products.",
-        "block_sub_heading": "",
-        "hide_rotation": true,
-        "use_default_section_typography": false,
-        "section_heading_size": 45,
-        "heading_line_height": 45,
-        "sub_heading_size": 24,
-        "sub_heading_line_height": 30,
-        "padding_top": "small-section-top",
-        "padding_bottom": "pb-0",
-        "section_show": true,
-        "section_bg_color": "",
-        "section_heading_color": "#ffffff",
-        "section_sub_heading_color": "",
-        "section_id": "",
-        "section_class_name": ""
-      }
-    },
     "image_with_text_686Jf8": {
       "type": "image-with-text",
+      "disabled": true,
       "settings": {
         "container_type": "container",
         "show_content_container": true,
@@ -272,23 +217,23 @@
         "title": "",
         "button_style": "btn-black",
         "button_size": "btn-medium",
-        "btn_radius": 5,
-        "btn_border_width": 2,
+        "btn_radius": 100,
+        "btn_border_width": 10,
         "btn_icon_class": "",
         "icon_position": "right-icon",
         "btn_text": "",
         "btn_link": "",
-        "use_default_section_typography": false,
+        "use_default_section_typography": true,
         "section_heading_size": 32,
         "heading_line_height": 50,
         "sub_heading_size": 15,
         "sub_heading_line_height": 24,
         "subheading_letter_spacing": 0,
-        "padding_top": "small-section-top",
-        "padding_bottom": "small-section-bottom",
+        "padding_top": "very-small-section-top",
+        "padding_bottom": "pb-0",
         "heading_alignment": "center",
         "section_show": true,
-        "section_bg_color": "",
+        "section_bg_color": "#E7E3E3",
         "section_heading_color": "",
         "section_sub_heading_color": "",
         "section_description_color": "",
@@ -518,7 +463,6 @@
   "order": [
     "page-title",
     "1633946636ff228416",
-    "163394727558bbdcc5",
     "image_with_text_686Jf8",
     "1633694919b8dc6f07",
     "lookbook_with_video_FzrePq",
