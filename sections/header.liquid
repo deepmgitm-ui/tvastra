@@ -590,16 +590,14 @@
   }
 
   /* ============================================================
-     SHOP MEGA MENU — force a compact HORIZONTAL dropdown at >=992px.
-     The theme only builds the desktop mega menu at >=1200px, but the
-     navbar is horizontal from 992px (navbar-expand-lg), so 992-1199px
-     showed a vertical tablet drawer. High-specificity + !important
-     selectors below win over the theme's drawer CSS no matter the
-     stylesheet load order.
+     SHOP MEGA MENU — FORCE COMPACT HORIZONTAL DROPDOWN AT >=992px
+     This CSS block has been strengthened with extra specific
+     selectors and !important to override any theme conflicts.
      ============================================================ */
   @media (min-width: 992px) {
     /* The dropdown panel: full-width bar under the header, auto height */
-    .navbar .navbar-nav .nav-item .megamenu {
+    .navbar .navbar-nav .nav-item .megamenu,
+    .navbar .navbar-nav .nav-item .dropdown-menu.megamenu {
       display: block !important;
       position: absolute !important;
       top: 100% !important;
@@ -619,6 +617,7 @@
       pointer-events: none;
       transition: opacity .25s ease, visibility .25s ease;
       z-index: 99;
+      transform: none !important;
     }
     .navbar .navbar-nav .nav-item:hover .megamenu,
     .navbar .navbar-nav .nav-item .megamenu.open {
@@ -633,9 +632,11 @@
       height: auto !important;
       padding-top: 4px !important;
       padding-bottom: 4px !important;
+      max-width: 100% !important;
     }
     /* Columns side-by-side, left-aligned, compact */
-    .navbar .megamenu ul.row {
+    .navbar .megamenu ul.row,
+    .navbar .megamenu .row {
       display: flex !important;
       flex-direction: row !important;
       flex-wrap: nowrap !important;
@@ -643,15 +644,33 @@
       align-items: flex-start !important;
       height: auto !important;
       row-gap: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100% !important;
     }
-    .navbar .megamenu ul li.level1 {
+    .navbar .megamenu ul.row > li.level1,
+    .navbar .megamenu .row > li.level1,
+    .navbar .megamenu ul.row > [class*="col-"],
+    .navbar .megamenu .row > [class*="col-"] {
       flex: 0 0 auto !important;
       width: auto !important;
-      max-width: 240px;
+      max-width: 240px !important;
+      min-width: 160px !important;
       padding: 0 26px !important;
+      margin: 0 !important;
+      float: none !important;
+      clear: none !important;
+      display: block !important;
+      border-left: 1px solid rgba(0, 0, 0, .08) !important;
+      border-bottom: none !important;
     }
-    .navbar .megamenu ul li.level1:first-child { padding-left: 6px !important; }
-    .navbar .megamenu ul li.level1 + li.level1 { border-left: 1px solid rgba(0, 0, 0, .08); }
+    .navbar .megamenu ul.row > li.level1:first-child,
+    .navbar .megamenu .row > li.level1:first-child,
+    .navbar .megamenu ul.row > [class*="col-"]:first-child,
+    .navbar .megamenu .row > [class*="col-"]:first-child {
+      border-left: none !important;
+      padding-left: 6px !important;
+    }
     /* Nested submenus stay inline (NOT the off-canvas slide-in drawer) */
     .navbar .megamenu ul li.level1 .submenu,
     .navbar .megamenu ul li.level2 .submenu {
@@ -667,6 +686,8 @@
       transform: none !important;
       overflow: visible !important;
       background: transparent !important;
+      box-shadow: none !important;
+      padding-left: 0 !important;
     }
     .navbar .megamenu .back-wrapper { display: none !important; }
     .navbar .megamenu ul li.level1 .submenu li a:hover { transform: translateX(5px); }
