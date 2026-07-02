@@ -34,12 +34,12 @@
       "settings": {
         "container_type": "container",
         "show_content_container": true,
-        "image": "shopify://shop_images/CONTACT_US.png",
-        "column_width": "6",
+        "image": "shopify://shop_images/ai8.jpg",
+        "column_width": "5",
         "hide_image": true,
         "block_heading": "The Hardest Part Is Often Starting.",
         "block_sub_heading": "",
-        "block_description": "<p>Not the workout. Not the match. Just the decision to move.</p><p>We built this brand around that moment, the in-between. The space between intention and action.</p><p>A morning gym session. An evening paddle game. A stretch between long hours. A reset walk before the day begins again.</p><p>Because movement isn't always dramatic.</p><p>But it's always personal.</p>",
+        "block_description": "<p>Not the workout. Not the match. Just the decision to move.<br/>We built this brand around that moment, the in-between. The space between intention and action.<br/>A morning gym session. An evening paddle game. A stretch between long hours. A reset walk before the day begins again.<br/>Because movement isn't always dramatic.<br/>But it's always personal.</p>",
         "column_width1": "5",
         "hide_content": true,
         "button_style": "btn-black",
@@ -69,93 +69,6 @@
         "section_bg_color": "rgba(0,0,0,0)",
         "section_heading_color": "",
         "section_sub_heading_color": "#d1ab13",
-        "section_description_color": "",
-        "section_id": "",
-        "section_class_name": ""
-      }
-    },
-    "icon_with_text_r8HeYb": {
-      "type": "icon-with-text",
-      "blocks": {
-        "item_hRenTq": {
-          "type": "item",
-          "settings": {
-            "icon_name": "bi bi-box-seam",
-            "box_heading": "Free shipping",
-            "box_sub_heading": "<p>Standard shipping</p>",
-            "heading_link": ""
-          }
-        },
-        "item_ELf3zT": {
-          "type": "item",
-          "settings": {
-            "icon_name": "bi bi-patch-check",
-            "box_heading": "Special discounts",
-            "box_sub_heading": "<p>Guaranteed saving</p>",
-            "heading_link": ""
-          }
-        },
-        "item_izHFD6": {
-          "type": "item",
-          "settings": {
-            "icon_name": "bi bi-wallet",
-            "box_heading": "Buyers protection",
-            "box_sub_heading": "<p>Secure payment</p>",
-            "heading_link": ""
-          }
-        },
-        "item_UjMJKf": {
-          "type": "item",
-          "settings": {
-            "icon_name": "bi bi-chat-left-text",
-            "box_heading": "Customer service",
-            "box_sub_heading": "<p>Give us feedback</p>",
-            "heading_link": ""
-          }
-        }
-      },
-      "block_order": [
-        "item_hRenTq",
-        "item_ELf3zT",
-        "item_izHFD6",
-        "item_UjMJKf"
-      ],
-      "settings": {
-        "container_type": "container",
-        "heading": "",
-        "sub_heading": "",
-        "description": "",
-        "title_style": "style-1",
-        "icon_with_text_styles": "left-icon",
-        "content_alignment": "start",
-        "title_font_size": 19,
-        "title_line_height": 22,
-        "title_gap": 0,
-        "sub_title_width": 100,
-        "show_icon": true,
-        "icon_option": "icon",
-        "image_size": 42,
-        "icon_font_size": 40,
-        "icon_limit_desktop": 4,
-        "icon_limit_mini_desktop": 4,
-        "icon_limit_tablet": 2,
-        "icon_limit_mobile": 2,
-        "icon_color": "",
-        "text_color": "",
-        "small_text_color": "",
-        "use_default_section_typography": true,
-        "section_heading_size": 45,
-        "heading_line_height": 55,
-        "sub_heading_size": 18,
-        "sub_heading_line_height": 30,
-        "subheading_letter_spacing": 0,
-        "padding_top": "very-small-section-top",
-        "padding_bottom": "very-small-section-bottom",
-        "heading_alignment": "center",
-        "section_show": true,
-        "section_bg_color": "",
-        "section_heading_color": "",
-        "section_sub_heading_color": "",
         "section_description_color": "",
         "section_id": "",
         "section_class_name": ""
@@ -337,8 +250,8 @@
         "pin_ghCEfj": {
           "type": "pin",
           "settings": {
-            "x_pos": 50,
-            "y_pos": 35,
+            "x_pos": 48,
+            "y_pos": 27,
             "pin_product": "pale-lavender-tank-top"
           }
         }
@@ -604,7 +517,6 @@
   "order": [
     "page-title",
     "1633946636ff228416",
-    "icon_with_text_r8HeYb",
     "163394727558bbdcc5",
     "image_with_text_686Jf8",
     "1633694919b8dc6f07",
