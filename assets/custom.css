@@ -311,15 +311,16 @@
     margin-inline: auto !important;
   }
 
-  /* Column row -> wrapping horizontal grid (about 4-5 across). */
+  /* Column row -> Reverted to horizontal grid */
   .dropdown-menu.megamenu ul.row {
     display: flex !important;
-    flex-wrap: wrap !important;
+    flex-wrap: nowrap !important; /* BAS YAHAN WRAP KO NOWRAP KIYA HAI */
     justify-content: flex-start !important;
     align-items: flex-start !important;
     gap: 10px 36px !important;
     margin: 0 !important;
     padding: 0 !important;
+  
   }
 
   /* Text / link columns: equal, readable widths regardless of the
