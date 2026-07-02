@@ -590,10 +590,22 @@
   }
 
   /* --- TEXT MEGA MENU (Shop) — modern refine --- */
-  .megamenu > .container { padding-top: 36px; padding-bottom: 36px; }
-  .megamenu ul.row { row-gap: 26px; }
-  .megamenu li.menu.level1 { padding-inline: 34px; }
+  .megamenu > .container,
+  .megamenu > .container-fluid { padding-top: 12px; padding-bottom: 12px; }
   @media (min-width: 1200px) {
+    /* Keep the three text columns side-by-side and left-aligned (like reference) */
+    .megamenu ul.row {
+      flex-wrap: nowrap !important;
+      justify-content: flex-start !important;
+      align-items: flex-start !important;
+      row-gap: 0;
+    }
+    .megamenu li.menu.level1 {
+      flex: 0 0 auto;
+      max-width: 260px;
+      padding-inline: 22px;
+    }
+    .megamenu li.menu.level1:first-child { padding-left: 8px; }
     .megamenu li.menu.level1 + li.menu.level1 {
       border-left: 1px solid rgba(0, 0, 0, 0.08);
     }
