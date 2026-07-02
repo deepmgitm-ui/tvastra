@@ -278,76 +278,114 @@
 /*************************************************************
 ** Wishlist hero css END
 *************************************************************/
-/* Tvastrafit Professional Megamenu Fix */
+/*************************************************************
+** Task 1 - Professional Megamenu layout
+** The "Shop" item is a full-width megamenu block. The theme
+** default already makes the BOX full width; the real problem was
+** the inner Bootstrap columns (Men = col-1, Women/Collection =
+** col-2) squeezing their link lists into tall vertical strips,
+** plus two earlier conflicting fixes (nowrap vs wrap). This
+** block consolidates them into one clean, wrapping grid of
+** equal, readable columns, kept inside the viewport.
+** Desktop only (>=1200px); the mobile off-canvas stays stacked.
+*************************************************************/
+@media (min-width: 1200px) {
+  /* The dropdown box: comfortable padding, clean surface, and a
+     viewport-height safety net so it can never run off-screen.
+     For this small menu the content fits and no scroll appears. */
+  .navbar .navbar-nav .megamenu-item .dropdown-menu.megamenu {
+    padding: 30px 40px !important;
+    background: #fff !important;
+    border-top: 1px solid #ececec !important;
+    box-shadow: 0 30px 45px rgba(0, 0, 0, .08) !important;
+    max-height: calc(100vh - var(--top-space, 130px)) !important;
+    overflow-y: auto !important;
+    z-index: 999 !important;
+  }
 
-/* 1. Main row ko Flexbox banakar columns ko side-by-side lana */
-.dropdown-menu.megamenu .row {
-  display: flex !important;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  gap: 40px; /* Columns ke beech ka gap */
-  padding: 20px;
+  /* Center the content and cap its width so columns don't stretch
+     edge-to-edge on very wide screens. */
+  .dropdown-menu.megamenu > .container,
+  .dropdown-menu.megamenu > .container-fluid {
+    max-width: 1280px !important;
+    margin-inline: auto !important;
+  }
+
+  /* Column row -> wrapping horizontal grid (about 4-5 across). */
+  .dropdown-menu.megamenu ul.row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    gap: 10px 36px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Text / link columns: equal, readable widths regardless of the
+     Bootstrap col-* class chosen in the editor (this is what stops
+     the vertical-strip stacking). */
+  .dropdown-menu.megamenu ul.row > li.level1 {
+    flex: 1 1 190px !important;
+    min-width: 170px !important;
+    max-width: 240px !important;
+    width: auto !important;
+    padding: 0 !important;
+  }
+
+  /* Image / banner columns keep a natural, contained size. */
+  .dropdown-menu.megamenu ul.row > li.menu-image-banner {
+    flex: 0 0 auto !important;
+    max-width: 300px !important;
+  }
 }
 
-/* 2. Har column (By Collection, Women, Men) ki setting */
-.megamenu .level1 {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  min-width: 150px; /* Minimum width har column ke liye */
-}
-
-/* Main heading (Level 1) ka style */
+/* Column heading (level 1) */
 .megamenu .level1 > .child-link-title {
   font-weight: 700;
   text-transform: uppercase;
-  margin-bottom: 15px;
+  letter-spacing: .02em;
+  margin-bottom: 14px;
+  padding-bottom: 6px;
   border-bottom: 2px solid #eaeaea;
-  padding-bottom: 5px;
   width: 100%;
+  display: block;
 }
 
-/* 3. Level 2 (The Basic Edit, Tank tops etc.) ki setting */
+/* Sub-lists */
 .megamenu ul.submenu {
   padding-left: 0;
-  list-style-type: none;
+  list-style: none;
   width: 100%;
 }
 
-.megamenu .level2 {
-  margin-bottom: 12px;
-}
-
+.megamenu .level2 { margin-bottom: 10px; }
 .megamenu .level2 > a {
   font-weight: 600;
   font-size: 15px;
   color: #333;
-  margin-bottom: 8px;
   display: block;
-}
-
-/* 4. Level 3 (Deeply nested items) ki setting */
-.megamenu .level3 {
   margin-bottom: 6px;
 }
 
+.megamenu .level3 { margin-bottom: 5px; }
 .megamenu .level3 > a {
   font-weight: 400;
   font-size: 14px;
   color: #666;
-  transition: color 0.3s ease;
   padding-left: 5px;
+  transition: color .3s ease;
 }
+.megamenu .level3 > a:hover { color: #000; }
 
-.megamenu .level3 > a:hover {
-  color: #000; /* Hover karne par text dark ho jayega */
-}
-
-/* Mobile view ko protect karne ke liye (Taki wahan bikhre na) */
+/* Mobile off-canvas drawer: keep everything stacked (correct there) */
 @media (max-width: 1199px) {
-  .dropdown-menu.megamenu .row {
-    flex-direction: column;
-    gap: 15px;
+  .dropdown-menu.megamenu ul.row {
+    display: block !important;
+  }
+  .dropdown-menu.megamenu ul.row > li.level1 {
+    max-width: none !important;
+    min-width: 0 !important;
   }
 }
 
@@ -1089,32 +1127,34 @@ body.sticky-active .chat-support-whatsapp-wrapper {
 }
 
 /* =========================================================
-** TASK 2 - "Shop" is a MEGAMENU block. All of its sub-options
-** were not showing on hover because:
-**   (a) base `.megamenu` uses `overflow:hidden` + a
-**       `max-height: calc(100vh - --top-space)` cap, and
-**   (b) the earlier custom fix sets the column row to
-**       `flex-wrap:nowrap`.
-** Together, any column/row past the menu's box gets clipped.
-** Fix: size to content, wrap columns instead of clipping, and
-** lift the menu above sibling sections. Store's menu is small,
-** so removing the height cap is safe (no giant scroll list).
+** Task 2 - About Us page spacing
+** (a) The page-title banner uses the theme's "very-small-screen"
+**     height (a fixed 200px), which leaves large empty space
+**     above/below the small "About Us" heading. Collapse it so it
+**     fits the content instead of a fixed height.
+** (b) Trim the gap between the title banner and the first content
+**     block. The intro section's top padding is ALSO editable in
+**     the Theme Editor (Padding top -> Very small); the rule below
+**     is a CSS safety net tied to that section instance.
+** Scoped to page-title style 2 so it doesn't affect other banners
+** unexpectedly. (About Us uses style-2 + very-small-screen.)
 ** ========================================================= */
-@media (min-width: 1200px) {
-  .navbar .navbar-nav .megamenu,
-  .dropdown-menu.megamenu {
-    max-height: none !important;   /* was calc(100vh - var(--top-space)) */
-    overflow: visible !important;  /* was overflow:hidden / overflow-y:auto */
-    z-index: 999 !important;       /* was 99 - removes any stacking clip   */
-  }
-
-  /* Let columns wrap to a new line instead of being cut off on
-     the right when they exceed the menu width. */
-  .dropdown-menu.megamenu .row {
-    flex-wrap: wrap !important;    /* was nowrap */
-    row-gap: 24px;
-  }
+.page-title.page-title-style-2 .very-small-screen {
+  height: auto !important;
+  min-height: 0 !important;
+  padding-top: 26px !important;
+  padding-bottom: 26px !important;
 }
+
+/* Remove any residual gap directly beneath the banner. */
+.page-title.page-title-style-2 {
+  margin-bottom: 0 !important;
+}
+
+/* Note: the title -> content gap is now handled durably in
+   templates/page.about-us.json (the intro section's "Padding top"
+   is set to "very-small-section-top" = 50px), so no CSS override is
+   needed here. Adjust it anytime via the Theme Editor. */
 
 /* =========================================================
 ** TASK 4 - General polish. Safe, self-contained defaults that
