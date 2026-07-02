@@ -582,11 +582,51 @@
     .megamenu.collection-menu .collection-name {
       line-height: normal;
     }
-    .collection-menu .collection-name {        
+    .collection-menu .collection-name {
       width: 100%;
       text-align: left;
       padding: 15px;
     }
+  }
+
+  /* --- TEXT MEGA MENU (Shop) — modern refine --- */
+  .megamenu > .container { padding-top: 36px; padding-bottom: 36px; }
+  .megamenu ul.row { row-gap: 26px; }
+  .megamenu li.menu.level1 { padding-inline: 34px; }
+  @media (min-width: 1200px) {
+    .megamenu li.menu.level1 + li.menu.level1 {
+      border-left: 1px solid rgba(0, 0, 0, 0.08);
+    }
+  }
+  .megamenu li.menu.level1 > a.child-link-title {
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 1.6px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    padding-bottom: 9px;
+    position: relative;
+  }
+  .megamenu li.menu.level1 > a.child-link-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 26px;
+    height: 2px;
+    background: {{ settings.base_color | default: '#d0af29' }};
+    transition: width 0.35s ease;
+  }
+  .megamenu li.menu.level1 > a.child-link-title:hover::after { width: 100%; }
+  .megamenu li.menu.level1 .submenu.sub-menu { padding-left: 0; margin-bottom: 6px; }
+  .megamenu li.menu.level1 .submenu.sub-menu li { list-style: none; }
+  .megamenu li.menu.level1 .submenu.sub-menu li a {
+    display: inline-block;
+    padding: 4px 0;
+    transition: transform 0.25s ease, color 0.25s ease;
+  }
+  @media (min-width: 1200px) {
+    .megamenu li.menu.level1 .submenu.sub-menu li a:hover { transform: translateX(5px); }
   }
 </style>
 <span class="d-none">[devide]</span>

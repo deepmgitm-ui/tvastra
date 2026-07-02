@@ -9,6 +9,48 @@
  */
 {
   "sections": {
+    "about_us_modern": {
+      "type": "about-us-modern",
+      "blocks": {
+        "value_1": { "type": "value", "settings": { "icon": "bi bi-wind", "title": "Breathable fabric", "text": "Lightweight materials that breathe in the heat and move naturally with your body." } },
+        "value_2": { "type": "value", "settings": { "icon": "bi bi-arrows-move", "title": "Fit that moves", "text": "Stretch that follows you — structured for performance, fluid for everyday wear." } },
+        "value_3": { "type": "value", "settings": { "icon": "bi bi-gem", "title": "Design that lasts", "text": "Clean, modern silhouettes built to feel sharp wear after wear." } },
+        "value_4": { "type": "value", "settings": { "icon": "bi bi-geo-alt", "title": "Made in India", "text": "Proudly designed and crafted for movement that fits real life." } }
+      },
+      "block_order": ["value_1", "value_2", "value_3", "value_4"],
+      "settings": {
+        "show_hero": true,
+        "hero_image": "shopify://shop_images/Slevless_17.png",
+        "hero_overlay": 62,
+        "hero_eyebrow": "Our Story",
+        "hero_heading": "Built For The In-Between.",
+        "hero_text": "<p>Not the workout. Not the match. Just the decision to move. Tvastra lives in that moment — the space between intention and action.</p>",
+        "hero_btn_text": "Shop the collection",
+        "hero_btn_link": "shopify://collections/all",
+        "show_story": true,
+        "story_image": "shopify://shop_images/ABOUT_US_1.png",
+        "story_eyebrow": "Why We Exist",
+        "story_heading": "The hardest part is often starting.",
+        "story_text": "<p>We built this brand around movement that doesn't need a stage. A morning gym session. An evening paddle game. A stretch between long hours. A reset walk before the day begins again.</p><p>Because movement isn't always dramatic — but it's always personal. Our pieces are designed to support that rhythm.</p>",
+        "show_mv": true,
+        "mission_label": "Our Mission",
+        "mission_text": "<p>To craft comfortable, high-performance activewear that empowers people to move with confidence — every single day.</p>",
+        "vision_label": "Our Vision",
+        "vision_text": "<p>To become a trusted movement brand that blends real function with modern style, and makes an active life feel effortless.</p>",
+        "show_values": true,
+        "values_eyebrow": "What We Stand For",
+        "values_heading": "Made for real-life movement.",
+        "show_cta": true,
+        "cta_image": "shopify://shop_images/Untitleddesign-2026-02-28T055443.647.png",
+        "cta_heading": "Performance without the compromise.",
+        "cta_text": "<p>This is activewear made for real life. Welcome to Tvastra.</p>",
+        "cta_btn_text": "Explore Tvastra",
+        "cta_btn_link": "shopify://collections/all",
+        "section_show": true,
+        "section_id": "",
+        "section_class_name": ""
+      }
+    },
     "page-title": {
       "type": "page-title",
       "settings": {
@@ -602,16 +644,7 @@
     }
   },
   "order": [
-    "page-title",
-    "1633946636ff228416",
-    "icon_with_text_r8HeYb",
-    "163394727558bbdcc5",
-    "image_with_text_686Jf8",
-    "1633694919b8dc6f07",
-    "lookbook_with_video_FzrePq",
-    "image_with_text_2_BGmDQY",
-    "1633958485f0f6c220",
-    "instagram_feed_kEU6RJ",
+    "about_us_modern",
     "faq_wUwmbD"
   ]
 }

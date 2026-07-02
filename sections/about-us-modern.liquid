@@ -1,0 +1,300 @@
+{%- comment -%}
+  Modern About Us — bespoke section for Tvastra.
+  Hero → Story → Mission & Vision → Values → CTA.
+  Self-contained styles scoped to .about-modern-{{ section.id }}.
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign uid = section.id
+-%}
+
+<section
+  id="{{ s.section_id | default: 'about-modern' }}"
+  class="about-modern about-modern-{{ uid }} {% if s.section_show == false %}d-none{% endif %} {{ s.section_class_name }}"
+>
+  {%- comment -%} ---------- HERO ---------- {%- endcomment -%}
+  {%- if s.show_hero -%}
+    <div class="am-hero" {% if s.hero_image != blank %}style="background-image:url({{ s.hero_image | image_url: width: 3000 }});"{% endif %}>
+      <div class="am-hero__overlay" style="opacity: {{ s.hero_overlay | divided_by: 100.0 }};"></div>
+      <div class="container am-hero__inner am-reveal">
+        {%- if s.hero_eyebrow != blank -%}
+          <span class="am-eyebrow">{{ s.hero_eyebrow }}</span>
+        {%- endif -%}
+        {%- if s.hero_heading != blank -%}
+          <h1 class="am-hero__title alt-font">{{ s.hero_heading }}</h1>
+        {%- endif -%}
+        {%- if s.hero_text != blank -%}
+          <div class="am-hero__text">{{ s.hero_text }}</div>
+        {%- endif -%}
+        {%- if s.hero_btn_text != blank -%}
+          <a href="{{ s.hero_btn_link | default: '#' }}" class="am-btn am-btn--light">{{ s.hero_btn_text }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ---------- STORY ---------- {%- endcomment -%}
+  {%- if s.show_story -%}
+    <div class="am-block am-story">
+      <div class="container">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-6 am-reveal">
+            {%- if s.story_image != blank -%}
+              <div class="am-story__media">
+                {{ s.story_image | image_url: width: 1400 | image_tag: loading: 'lazy', class: 'am-story__img', alt: s.story_heading | escape }}
+              </div>
+            {%- endif -%}
+          </div>
+          <div class="col-lg-6 am-reveal am-reveal--delay">
+            {%- if s.story_eyebrow != blank -%}<span class="am-eyebrow am-eyebrow--dark">{{ s.story_eyebrow }}</span>{%- endif -%}
+            {%- if s.story_heading != blank -%}<h2 class="am-h2 alt-font">{{ s.story_heading }}</h2>{%- endif -%}
+            {%- if s.story_text != blank -%}<div class="am-rte">{{ s.story_text }}</div>{%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ---------- MISSION & VISION ---------- {%- endcomment -%}
+  {%- if s.show_mv -%}
+    <div class="am-block am-mv">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-md-6 am-reveal">
+            <div class="am-mv__card">
+              <span class="am-mv__label">{{ s.mission_label | default: 'Our Mission' }}</span>
+              <div class="am-rte am-mv__text">{{ s.mission_text }}</div>
+            </div>
+          </div>
+          <div class="col-md-6 am-reveal am-reveal--delay">
+            <div class="am-mv__card">
+              <span class="am-mv__label">{{ s.vision_label | default: 'Our Vision' }}</span>
+              <div class="am-rte am-mv__text">{{ s.vision_text }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ---------- VALUES ---------- {%- endcomment -%}
+  {%- if s.show_values and section.blocks.size > 0 -%}
+    <div class="am-block am-values">
+      <div class="container">
+        {%- if s.values_heading != blank -%}
+          <div class="am-values__head am-reveal">
+            {%- if s.values_eyebrow != blank -%}<span class="am-eyebrow am-eyebrow--dark">{{ s.values_eyebrow }}</span>{%- endif -%}
+            <h2 class="am-h2 alt-font">{{ s.values_heading }}</h2>
+          </div>
+        {%- endif -%}
+        <div class="row g-4">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'value' -%}
+              <div class="col-md-6 col-lg-3 am-reveal" {{ block.shopify_attributes }} style="--i: {{ forloop.index0 }};">
+                <div class="am-value">
+                  {%- if block.settings.icon != blank -%}
+                    <i class="am-value__icon {{ block.settings.icon }}"></i>
+                  {%- endif -%}
+                  <h3 class="am-value__title">{{ block.settings.title }}</h3>
+                  {%- if block.settings.text != blank -%}<p class="am-value__text">{{ block.settings.text }}</p>{%- endif -%}
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ---------- CTA ---------- {%- endcomment -%}
+  {%- if s.show_cta -%}
+    <div class="am-cta am-reveal" {% if s.cta_image != blank %}style="background-image:url({{ s.cta_image | image_url: width: 2400 }});"{% endif %}>
+      <div class="am-cta__overlay"></div>
+      <div class="container am-cta__inner">
+        {%- if s.cta_heading != blank -%}<h2 class="am-cta__title alt-font">{{ s.cta_heading }}</h2>{%- endif -%}
+        {%- if s.cta_text != blank -%}<p class="am-cta__text">{{ s.cta_text }}</p>{%- endif -%}
+        {%- if s.cta_btn_text != blank -%}
+          <a href="{{ s.cta_btn_link | default: '#' }}" class="am-btn am-btn--light">{{ s.cta_btn_text }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+{%- style -%}
+  .about-modern-{{ uid }} { --am-base: var(--base-color, #d0af29); --am-ink: var(--heading-color, #1a1a1a); --am-muted: var(--body-text-color, #6b6b6b); }
+  .about-modern-{{ uid }} .am-eyebrow {
+    display: inline-block; font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+    font-weight: 600; color: var(--am-base); margin-bottom: 18px;
+  }
+  .about-modern-{{ uid }} .am-eyebrow--dark { color: var(--am-base); }
+  .about-modern-{{ uid }} .am-h2 { font-size: clamp(28px, 4vw, 44px); line-height: 1.12; color: var(--am-ink); margin: 0 0 22px; }
+  .about-modern-{{ uid }} .am-rte { color: var(--am-muted); font-size: 16px; line-height: 1.85; }
+  .about-modern-{{ uid }} .am-rte p { margin: 0 0 14px; }
+
+  /* Buttons */
+  .about-modern-{{ uid }} .am-btn {
+    display: inline-block; padding: 15px 38px; font-size: 13px; letter-spacing: 1.6px;
+    text-transform: uppercase; font-weight: 600; border-radius: 2px; transition: all .3s ease;
+    border: 1px solid transparent;
+  }
+  .about-modern-{{ uid }} .am-btn--light { background: #fff; color: var(--am-ink); }
+  .about-modern-{{ uid }} .am-btn--light:hover { background: var(--am-base); color: #fff; }
+
+  /* Hero */
+  .about-modern-{{ uid }} .am-hero {
+    position: relative; min-height: 78vh; display: flex; align-items: center;
+    background-size: cover; background-position: center; color: #fff; overflow: hidden;
+  }
+  .about-modern-{{ uid }} .am-hero__overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,10,.35), rgba(10,10,10,.85)); }
+  .about-modern-{{ uid }} .am-hero__inner { position: relative; z-index: 2; max-width: 760px; padding: 90px 0; }
+  .about-modern-{{ uid }} .am-hero .am-eyebrow { color: var(--am-base); }
+  .about-modern-{{ uid }} .am-hero__title { font-size: clamp(38px, 6vw, 76px); line-height: 1.05; margin: 0 0 22px; color: #fff; }
+  .about-modern-{{ uid }} .am-hero__text { font-size: clamp(16px, 2vw, 20px); line-height: 1.7; opacity: .9; max-width: 560px; margin-bottom: 34px; }
+  .about-modern-{{ uid }} .am-hero__text p { margin: 0 0 10px; }
+
+  /* Blocks */
+  .about-modern-{{ uid }} .am-block { padding: clamp(56px, 8vw, 110px) 0; }
+  .about-modern-{{ uid }} .am-story__media { position: relative; overflow: hidden; border-radius: 4px; }
+  .about-modern-{{ uid }} .am-story__img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .8s ease; }
+  .about-modern-{{ uid }} .am-story__media:hover .am-story__img { transform: scale(1.04); }
+
+  /* Mission / Vision */
+  .about-modern-{{ uid }} .am-mv { background: #f6f5f2; }
+  .about-modern-{{ uid }} .am-mv__card {
+    background: #fff; height: 100%; padding: 44px; border-radius: 4px; border: 1px solid #ececec;
+    transition: transform .35s ease, box-shadow .35s ease;
+  }
+  .about-modern-{{ uid }} .am-mv__card:hover { transform: translateY(-6px); box-shadow: 0 22px 50px rgba(0,0,0,.08); }
+  .about-modern-{{ uid }} .am-mv__label {
+    display: inline-block; font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+    font-weight: 700; color: var(--am-ink); padding-bottom: 12px; margin-bottom: 18px; position: relative;
+  }
+  .about-modern-{{ uid }} .am-mv__label::after { content: ""; position: absolute; left: 0; bottom: 0; width: 34px; height: 2px; background: var(--am-base); }
+  .about-modern-{{ uid }} .am-mv__text { font-size: 16px; line-height: 1.8; }
+
+  /* Values */
+  .about-modern-{{ uid }} .am-values__head { text-align: center; max-width: 640px; margin: 0 auto clamp(38px, 5vw, 60px); }
+  .about-modern-{{ uid }} .am-value {
+    height: 100%; padding: 34px 28px; border: 1px solid #ececec; border-radius: 4px; text-align: center;
+    transition: border-color .3s ease, transform .3s ease;
+  }
+  .about-modern-{{ uid }} .am-value:hover { border-color: var(--am-base); transform: translateY(-5px); }
+  .about-modern-{{ uid }} .am-value__icon { font-size: 34px; color: var(--am-base); display: block; margin-bottom: 18px; }
+  .about-modern-{{ uid }} .am-value__title { font-size: 18px; font-weight: 600; color: var(--am-ink); margin: 0 0 10px; }
+  .about-modern-{{ uid }} .am-value__text { font-size: 14.5px; line-height: 1.7; color: var(--am-muted); margin: 0; }
+
+  /* CTA */
+  .about-modern-{{ uid }} .am-cta {
+    position: relative; background-size: cover; background-position: center; color: #fff; text-align: center;
+    padding: clamp(70px, 10vw, 130px) 0; background-color: #141414;
+  }
+  .about-modern-{{ uid }} .am-cta__overlay { position: absolute; inset: 0; background: rgba(12,12,12,.6); }
+  .about-modern-{{ uid }} .am-cta__inner { position: relative; z-index: 2; max-width: 680px; margin: 0 auto; }
+  .about-modern-{{ uid }} .am-cta__title { font-size: clamp(30px, 5vw, 52px); line-height: 1.1; margin: 0 0 18px; color: #fff; }
+  .about-modern-{{ uid }} .am-cta__text { font-size: 17px; line-height: 1.7; opacity: .9; margin: 0 0 32px; }
+
+  /* Reveal animation */
+  .about-modern-{{ uid }} .am-reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+  .about-modern-{{ uid }} .am-reveal.am-in { opacity: 1; transform: none; }
+  .about-modern-{{ uid }} .am-reveal--delay { transition-delay: .12s; }
+  @media (prefers-reduced-motion: reduce) {
+    .about-modern-{{ uid }} .am-reveal { opacity: 1; transform: none; transition: none; }
+  }
+  @media (max-width: 991px) {
+    .about-modern-{{ uid }} .am-story .col-lg-6:first-child { margin-bottom: 34px; }
+  }
+{%- endstyle -%}
+
+<script>
+  (function () {
+    var root = document.querySelector('.about-modern-{{ uid }}');
+    if (!root) return;
+    var items = root.querySelectorAll('.am-reveal');
+    if (!('IntersectionObserver' in window)) {
+      items.forEach(function (el) { el.classList.add('am-in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('am-in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.15 });
+    items.forEach(function (el) { io.observe(el); });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "About Us Modern",
+  "tag": "section",
+  "class": "section-about-modern",
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "checkbox", "id": "show_hero", "label": "Show hero", "default": true },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero background image" },
+    { "type": "range", "id": "hero_overlay", "min": 0, "max": 100, "step": 5, "unit": "%", "label": "Overlay darkness", "default": 60 },
+    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "Our Story" },
+    { "type": "text", "id": "hero_heading", "label": "Heading", "default": "Built For The In-Between." },
+    { "type": "richtext", "id": "hero_text", "label": "Text", "default": "<p>Not the workout. Not the match. Just the decision to move. Tvastra lives in that moment — the space between intention and action.</p>" },
+    { "type": "text", "id": "hero_btn_text", "label": "Button text", "default": "Shop the collection" },
+    { "type": "url", "id": "hero_btn_link", "label": "Button link" },
+
+    { "type": "header", "content": "Story" },
+    { "type": "checkbox", "id": "show_story", "label": "Show story", "default": true },
+    { "type": "image_picker", "id": "story_image", "label": "Story image" },
+    { "type": "text", "id": "story_eyebrow", "label": "Eyebrow", "default": "Why We Exist" },
+    { "type": "text", "id": "story_heading", "label": "Heading", "default": "The hardest part is often starting." },
+    { "type": "richtext", "id": "story_text", "label": "Text", "default": "<p>We built this brand around movement that doesn't need a stage. A morning gym session. An evening paddle game. A stretch between long hours. A reset walk before the day begins again.</p>" },
+
+    { "type": "header", "content": "Mission & Vision" },
+    { "type": "checkbox", "id": "show_mv", "label": "Show mission & vision", "default": true },
+    { "type": "text", "id": "mission_label", "label": "Mission label", "default": "Our Mission" },
+    { "type": "richtext", "id": "mission_text", "label": "Mission text", "default": "<p>To craft comfortable, high-performance activewear that empowers people to move with confidence — every single day.</p>" },
+    { "type": "text", "id": "vision_label", "label": "Vision label", "default": "Our Vision" },
+    { "type": "richtext", "id": "vision_text", "label": "Vision text", "default": "<p>To become a trusted movement brand that blends real function with modern style, and makes an active life feel effortless.</p>" },
+
+    { "type": "header", "content": "Values" },
+    { "type": "checkbox", "id": "show_values", "label": "Show values", "default": true },
+    { "type": "text", "id": "values_eyebrow", "label": "Eyebrow", "default": "What We Stand For" },
+    { "type": "text", "id": "values_heading", "label": "Heading", "default": "Made for real-life movement." },
+
+    { "type": "header", "content": "Call to action" },
+    { "type": "checkbox", "id": "show_cta", "label": "Show CTA", "default": true },
+    { "type": "image_picker", "id": "cta_image", "label": "CTA background image" },
+    { "type": "text", "id": "cta_heading", "label": "Heading", "default": "Performance without the compromise." },
+    { "type": "richtext", "id": "cta_text", "label": "Text", "default": "<p>This is activewear made for real life. Welcome to Tvastra.</p>" },
+    { "type": "text", "id": "cta_btn_text", "label": "Button text", "default": "Explore Tvastra" },
+    { "type": "url", "id": "cta_btn_link", "label": "Button link" },
+
+    { "type": "header", "content": "Section" },
+    { "type": "checkbox", "id": "section_show", "label": "Show section", "default": true },
+    { "type": "text", "id": "section_id", "label": "Custom ID" },
+    { "type": "text", "id": "section_class_name", "label": "Custom class" }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Value",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "Icon class (Bootstrap Icons)", "default": "bi bi-wind" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Breathable fabric" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Lightweight materials that breathe in the heat and move with you." }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "About Us Modern",
+      "blocks": [
+        { "type": "value", "settings": { "icon": "bi bi-wind", "title": "Breathable fabric", "text": "Lightweight materials that breathe in the heat and move with you." } },
+        { "type": "value", "settings": { "icon": "bi bi-arrows-move", "title": "Fit that moves", "text": "Stretch that follows your body — structured for performance, fluid for everyday." } },
+        { "type": "value", "settings": { "icon": "bi bi-gem", "title": "Design that lasts", "text": "Clean, modern silhouettes built to feel sharp wear after wear." } },
+        { "type": "value", "settings": { "icon": "bi bi-geo-alt", "title": "Made in India", "text": "Proudly designed and crafted for movement that fits real life." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
