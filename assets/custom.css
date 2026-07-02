@@ -1175,3 +1175,53 @@ button:focus-visible,
   outline: 2px solid var(--base-color, #d0af29) !important;
   outline-offset: 2px !important;
 }
+/*************************************************************
+** FINAL BULLETPROOF MEGA MENU REVERT TO MATCH SCREENSHOT
+*************************************************************/
+@media (min-width: 1200px) {
+  
+  /* Dropdown container ko perfect rectangular box banana left side me */
+  .navbar .navbar-nav .nav-item .dropdown-menu.megamenu,
+  .dropdown-menu.megamenu {
+    position: absolute !important;
+    left: 0 !important;
+    right: auto !important;
+    width: 680px !important; /* Teenon columns ke liye perfect compact width jaisa photo me hai */
+    background: #ffffff !important;
+    padding: 40px 35px !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid #ececec !important;
+    max-height: calc(100vh - 120px) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Columns ko left-to-right ek line me force karna */
+  .dropdown-menu.megamenu ul.row,
+  .dropdown-menu.megamenu .row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important; /* Wrap bilkul band */
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    gap: 45px !important; /* Columns ke beech ka perfect gap */
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Saare columns (BY COLLECTION, WOMEN, MEN) ki arrangement */
+  .dropdown-menu.megamenu ul.row > li.level1,
+  .dropdown-menu.megamenu ul.row > li,
+  .dropdown-menu.megamenu .row > div,
+  .dropdown-menu.megamenu .row > li {
+    flex: 1 1 0% !important;
+    min-width: 160px !important;
+    max-width: 200px !important;
+    display: block !important;
+    padding: 0 !important;
+  }
+}
+/*************************************************************
+** MEGA MENU REVERT END
+*************************************************************/
