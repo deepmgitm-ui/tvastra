@@ -589,79 +589,90 @@
     }
   }
 
-  /* --- FIX: navbar goes horizontal at 992px (navbar-expand-lg) but the theme
-     only builds the desktop mega menu at 1200px. Recreate the desktop dropdown
-     for the 992–1199px gap so the menu never shows as a vertical drawer. --- */
-  @media (min-width: 992px) and (max-width: 1199.98px) {
-    .navbar .navbar-nav .nav-item:hover .megamenu,
-    .navbar .navbar-nav .nav-item:hover > .simple-dropdown { opacity: 1; visibility: visible; pointer-events: auto; }
-    .megamenu,
-    .navbar .navbar-nav .simple-dropdown {
-      background-color: var(--header-bg-color, #fff);
-      pointer-events: none;
-      opacity: 0;
-      visibility: hidden;
-      transition: .3s ease-in;
-    }
-    .megamenu {
+  /* ============================================================
+     SHOP MEGA MENU — force a compact HORIZONTAL dropdown at >=992px.
+     The theme only builds the desktop mega menu at >=1200px, but the
+     navbar is horizontal from 992px (navbar-expand-lg), so 992-1199px
+     showed a vertical tablet drawer. High-specificity + !important
+     selectors below win over the theme's drawer CSS no matter the
+     stylesheet load order.
+     ============================================================ */
+  @media (min-width: 992px) {
+    /* The dropdown panel: full-width bar under the header, auto height */
+    .navbar .navbar-nav .nav-item .megamenu {
       display: block !important;
       position: absolute !important;
+      top: 100% !important;
       left: 0 !important;
-      top: 100%;
+      right: 0 !important;
       width: 100% !important;
       height: auto !important;
-      max-height: calc(100vh - var(--top-space, 0px));
-      padding: 30px 40px;
-      overflow-y: auto;
-      border: none;
-      border-top: 1px solid #e7e7e7;
-      box-shadow: 0 45px 45px 0 rgba(0, 0, 0, .05);
+      max-height: calc(100vh - var(--top-space, 120px)) !important;
+      padding: 26px 40px !important;
+      overflow-y: auto !important;
+      background-color: var(--header-bg-color, #fff) !important;
+      border: none !important;
+      border-top: 1px solid #e7e7e7 !important;
+      box-shadow: 0 30px 45px rgba(0, 0, 0, .06) !important;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity .25s ease, visibility .25s ease;
       z-index: 99;
     }
-    .megamenu > .container,
-    .megamenu > .container-fluid { display: block !important; height: auto !important; }
-    .megamenu ul.row { display: flex !important; flex-direction: row !important; }
-    .megamenu ul li { flex: 0 0 auto !important; }
-    /* keep child submenus inline (not the off-canvas slide-in drawer) */
-    .megamenu ul li.level1 .submenu,
-    .megamenu ul li.level2 .submenu {
+    .navbar .navbar-nav .nav-item:hover .megamenu,
+    .navbar .navbar-nav .nav-item .megamenu.open {
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+    }
+    /* Inner wrapper back to normal flow */
+    .navbar .megamenu > .container,
+    .navbar .megamenu > .container-fluid {
+      display: block !important;
+      height: auto !important;
+      padding-top: 4px !important;
+      padding-bottom: 4px !important;
+    }
+    /* Columns side-by-side, left-aligned, compact */
+    .navbar .megamenu ul.row {
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      justify-content: flex-start !important;
+      align-items: flex-start !important;
+      height: auto !important;
+      row-gap: 0 !important;
+    }
+    .navbar .megamenu ul li.level1 {
+      flex: 0 0 auto !important;
+      width: auto !important;
+      max-width: 240px;
+      padding: 0 26px !important;
+    }
+    .navbar .megamenu ul li.level1:first-child { padding-left: 6px !important; }
+    .navbar .megamenu ul li.level1 + li.level1 { border-left: 1px solid rgba(0, 0, 0, .08); }
+    /* Nested submenus stay inline (NOT the off-canvas slide-in drawer) */
+    .navbar .megamenu ul li.level1 .submenu,
+    .navbar .megamenu ul li.level2 .submenu {
       position: static !important;
       display: block !important;
       height: auto !important;
       max-height: none !important;
       width: auto !important;
       left: auto !important;
+      top: auto !important;
       opacity: 1 !important;
       visibility: visible !important;
       transform: none !important;
       overflow: visible !important;
-      background: transparent;
+      background: transparent !important;
     }
-    .megamenu .back-wrapper { display: none !important; }
+    .navbar .megamenu .back-wrapper { display: none !important; }
+    .navbar .megamenu ul li.level1 .submenu li a:hover { transform: translateX(5px); }
   }
 
-  /* --- TEXT MEGA MENU (Shop) — modern refine --- */
-  .megamenu > .container,
-  .megamenu > .container-fluid { padding-top: 12px; padding-bottom: 12px; }
-  @media (min-width: 992px) {
-    /* Keep the three text columns side-by-side and left-aligned (like reference) */
-    .megamenu ul.row {
-      flex-wrap: nowrap !important;
-      justify-content: flex-start !important;
-      align-items: flex-start !important;
-      row-gap: 0;
-    }
-    .megamenu li.menu.level1 {
-      flex: 0 0 auto;
-      max-width: 260px;
-      padding-inline: 22px;
-    }
-    .megamenu li.menu.level1:first-child { padding-left: 8px; }
-    .megamenu li.menu.level1 + li.menu.level1 {
-      border-left: 1px solid rgba(0, 0, 0, 0.08);
-    }
-    .megamenu li.menu.level1 .submenu.sub-menu li a:hover { transform: translateX(5px); }
-  }
+  /* --- Column heading styling (gold underline) --- */
   .megamenu li.menu.level1 > a.child-link-title {
     display: inline-block;
     text-transform: uppercase;
