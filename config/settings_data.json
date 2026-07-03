@@ -460,7 +460,7 @@
             "settings": {
               "logo": "shopify://shop_images/website_transparent_logo.png",
               "logo_image_width": 105,
-              "content_text": "<p style=\"text-align: center !important; margin: 0 auto !important; width: 100%; display: block;\">Designed for active lifestyles, our Activewear combines comfort, flexibility, and modern style so you can train harder, move freely, and feel great</p>",
+              "content_text": "Designed for active lifestyles, our Activewear combines comfort, flexibility, and modern style so you can train harder, move freely, and feel great",
               "phone": "hello@tvastrafit.com",
               "email": "",
               "show_social_icon": true,
