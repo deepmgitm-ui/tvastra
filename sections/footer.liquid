@@ -27,7 +27,7 @@
                 {%- capture column-width -%}{{ block.settings.column_width }}{%- endcapture -%}
                 {%- case block.type -%}
                   {%- when 'logowithtext' -%}
-                    <div class="col-lg-{{ column-width }} text-block-content footer-block text-start">
+                    <div class="col-lg-{{ column-width }} text-block-content footer-block" style="text-align: left !important; display: flex; flex-direction: column; align-items: flex-start !important;">
                       <a class="d-inline-block footer-logo" href="{{ shop.url }}" aria-label="logo">
                         {%- if block.settings.logo != blank -%}
                           <img src="{{ block.settings.logo | image_url }}" alt="" width="{{ block.settings.logo.width }}" height="{{ block.settings.logo.height }}" loading="lazy" style="max-width: {{ block.settings.logo_image_width }}px" />
@@ -36,20 +36,20 @@
                         {%- endif -%}
                       </a>
                       {%- if block.settings.content_text != blank -%}
-                        <div class="logo-content">{{ block.settings.content_text }}</div>
+                        <div class="logo-content" style="text-align: left !important; margin-left: 0 !important; padding-left: 0 !important;">{{ block.settings.content_text }}</div>
                       {%- endif -%}
                       {%- if block.settings.phone != blank -%}
-                        <div class="hongo-phone-info">
+                        <div class="hongo-phone-info" style="text-align: left !important;">
                           <label>{{ 'sections.footer.phone' | t }}</label> <a href="mailto:{{ block.settings.phone }}" aria-label="phone">{{ block.settings.phone }}</a>
                         </div>
                       {%- endif -%}
                       {%- if block.settings.email != blank -%}
-                        <div class="footer-email-info">
+                        <div class="footer-email-info" style="text-align: left !important;">
                           <label>{{ 'sections.footer.email' | t }}</label> <a href="mailto:{{ block.settings.email }}" aria-label="mailto">{{ block.settings.email }}</a>
                         </div>
                       {%- endif -%}
                       {%- if block.settings.show_social_icon == true -%}
-                        <div class="social-icon d-flex align-items-center justify-content-start {{ block.settings.social_style }}">
+                        <div class="social-icon d-flex align-items-center" style="justify-content: flex-start !important; width: 100%;">
                           <span class="text-small alt-font">{{ block.settings.social_title }}</span>{%- render 'social-follow', style_class: block.settings.social_type, social_mode: block.settings.social_style -%}  
                         </div>
                       {%- endif -%}                                          
