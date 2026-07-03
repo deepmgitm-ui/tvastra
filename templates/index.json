@@ -183,7 +183,7 @@
           "type": "text_block",
           "settings": {
             "title": "<p>MEN</p>",
-            "link": "https://tvastrafit.com/collections/men",
+            "link": "shopify://collections/men",
             "box_font": "sans_serif_n4",
             "use_futura_font": false,
             "text_size": 18,
@@ -195,7 +195,7 @@
           "type": "text_block",
           "settings": {
             "title": "<p>WOMEN</p>",
-            "link": "https://tvastrafit.com/collections/women",
+            "link": "shopify://collections/women",
             "box_font": "sans_serif_n4",
             "use_futura_font": false,
             "text_size": 18,
@@ -238,7 +238,7 @@
             "title": "",
             "subtitle": "",
             "button_label": "EXPLORE",
-            "link": "https://tvastrafit.com/collections/sando"
+            "link": "shopify://collections/sando"
           }
         },
         "slide_AqRAVF": {
