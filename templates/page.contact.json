@@ -23,7 +23,7 @@
         "border_bottom": false,
         "banner_title_size": "h-2",
         "breadcrumb_position": "on-collection-banner",
-        "banner_height": "medium-screen",
+        "banner_height": "small-screen",
         "content_alignment": "center",
         "content_color_style": "dark-style",
         "banner_bg_color": "#f7f7f7"
