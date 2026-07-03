@@ -77,7 +77,6 @@
     {%- endif -%}
     {{ 'responsive.min.css' | asset_url | stylesheet_tag }}
     {{ 'custom.css' | asset_url | stylesheet_tag }}
-    {{ 'megamenu-fix.css' | asset_url | stylesheet_tag }}
     <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');    
     </script>
     <style>
@@ -106,7 +105,7 @@
       assign purchase_btn = false
     endif
   -%}
-  <body class="{% if purchase_btn == false %}purchase-off {% endif %}{% unless settings.show_variant_option %}product-box-no-variant {% endunless %}"{% if settings.enable_ajex_data == true  %}dat[...]
+  <body class="{% if purchase_btn == false %}purchase-off {% endif %}{% unless settings.show_variant_option %}product-box-no-variant {% endunless %}"{% if settings.enable_ajex_data == true  %}data-ajex="{{ settings.enable_ajex_data }}"{% endif %} {%- if settings.body_bg_image != blank -%} style="background-image: url('{{ settings.body_bg_image | image_url }}');background-repeat: {%- if settings.repeat_bg_image == true -%}repeat;{%- else -%}no-repeat;{%- endif -%}"{%- endif -%}>
     {%- if settings.enable_box_layout == true -%}
       <div class="box-layout">
     {%- endif -%}
@@ -210,20 +209,6 @@
       {%- if should_promotion_enable == true -%}
         <script src="{{ 'promotion.js' | asset_url }}" defer="defer"></script>
       {%- endif -%} 
-
-      <script>
-      document.addEventListener('DOMContentLoaded', function(){
-        if (window.matchMedia('(min-width:992px)').matches) {
-          document.querySelectorAll('.navbar .nav-item.megamenu-item').forEach(function(item){
-            var menu = item.querySelector('.megamenu');
-            if(!menu) return;
-            item.addEventListener('mouseenter', function(){ menu.classList.add('open'); });
-            item.addEventListener('mouseleave', function(){ menu.classList.remove('open'); });
-          });
-        }
-      });
-      </script>
-
       {%- liquid
         render 'custom-cursor'
         if settings.scroll_to_top
@@ -363,12 +348,23 @@
   .color-swatch-box-v2 { margin: 20px 0 !important; padding: 5px 0 !important; }
   .swatch-label-v2 { display: block !important; margin-bottom: 8px !important; font-weight: 700 !important; font-size: 14px !important; color: #000 !important; }
   .swatch-flex-v2 { display: flex !important; gap: 12px !important; align-items: center !important; flex-wrap: wrap !important; }
-  .gol-button-final { width: 32px !important; height: 32px !important; border-radius: 50% !important; display: block !important; border: 2px solid #ccc !important; cursor: pointer !important; tra[...]
+  .gol-button-final { width: 32px !important; height: 32px !important; border-radius: 50% !important; display: block !important; border: 2px solid #ccc !important; cursor: pointer !important; transition: all 0.2s ease !important; box-sizing: border-box !important; box-shadow: 0px 2px 4px rgba(0,0,0,0.1) !important; }
   .gol-button-final:hover { transform: scale(1.15) !important; border-color: #000 !important; box-shadow: 0px 3px 6px rgba(0,0,0,0.2) !important; }
 </style>
 
      <script src="{{ 'scroll-logo.js' | asset_url }}" defer></script>
 
     
+    <!-- 
+  ========================================== 
+        🛠️ Managed by TtStDeEp 🛠️
+  ========================================== 
+-->
+<script>
+  console.log(
+    "%c⚙️ Managed by TtStDeEp",
+    "color: #00ffcc; font-size: 14px; font-weight: bold; background: #222; padding: 6px 12px; border-radius: 4px; border: 1px solid #00ffcc;"
+  );
+</script>
   </body>
 </html>
