@@ -1,8 +1,5 @@
-<style>
-  @media (max-width: 991px) {
-    .main-product-page .product-gallery .product-media-grid-wrapper.position-sticky {
-      position: static !important;
-      top: auto !important;
-    }
-  }
-</style>
+{%- if settings.custom_style != blank -%}
+  <style>
+    {{- settings.custom_style -}}
+  </style>
+{%- endif -%}
