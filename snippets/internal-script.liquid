@@ -48,6 +48,44 @@
     'cart_total': "{{ cart.total_price }}",
     'template': "{{ template }}"
   }
+  (function(){
+    function fixMobileProductThumbs(){
+      if(window.innerWidth>767)return;
+      document.querySelectorAll('.product-gallery .product-image-main').forEach(function(mainEl){
+        var mainSwiper=mainEl.swiper;
+        var gallery=mainEl.closest('.product-gallery');
+        var thumbEl=gallery&&gallery.querySelector('.product-image-thumb');
+        var thumbSwiper=thumbEl&&thumbEl.swiper;
+        if(!mainSwiper||!thumbSwiper||thumbEl.dataset.mobileThumbFreeScroll==='true')return;
+        thumbEl.dataset.mobileThumbFreeScroll='true';
+        if(mainSwiper.thumbs){mainSwiper.thumbs.swiper=null;}
+        thumbSwiper.params.freeMode=thumbSwiper.params.freeMode||{};
+        thumbSwiper.params.freeMode.enabled=true;
+        thumbSwiper.params.freeMode.sticky=false;
+        thumbSwiper.params.slidesPerView=3;
+        if(thumbSwiper.changeDirection){thumbSwiper.changeDirection('horizontal');}
+        thumbSwiper.update();
+        function updateActiveThumb(){
+          var activeIndex=typeof mainSwiper.realIndex==='number'?mainSwiper.realIndex:mainSwiper.activeIndex;
+          thumbEl.querySelectorAll('.swiper-slide').forEach(function(slide,index){
+            slide.classList.toggle('swiper-slide-thumb-active',index===activeIndex);
+          });
+        }
+        thumbEl.addEventListener('click',function(event){
+          var slide=event.target.closest('.swiper-slide');
+          if(!slide||!thumbEl.contains(slide))return;
+          var slides=Array.prototype.slice.call(thumbEl.querySelectorAll('.swiper-slide'));
+          var index=slides.indexOf(slide);
+          if(index>=0){mainSwiper.slideTo(index);}
+        });
+        mainSwiper.on('slideChange',updateActiveThumb);
+        updateActiveThumb();
+      });
+    }
+    document.addEventListener('DOMContentLoaded',function(){setTimeout(fixMobileProductThumbs,600);});
+    document.addEventListener('shopify:section:load',function(){setTimeout(fixMobileProductThumbs,600);});
+    window.addEventListener('resize',function(){setTimeout(fixMobileProductThumbs,200);});
+  })();
   {{ settings.custom_js }}
 </script>
 <!-- END -->
