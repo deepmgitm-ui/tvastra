@@ -62,7 +62,9 @@
         thumbSwiper.params.freeMode=thumbSwiper.params.freeMode||{};
         thumbSwiper.params.freeMode.enabled=true;
         thumbSwiper.params.freeMode.sticky=false;
-        thumbSwiper.params.slidesPerView=3;
+        thumbSwiper.params.slidesPerView='auto';
+        thumbSwiper.params.spaceBetween=10;
+        thumbSwiper.params.centeredSlides=false;
         if(thumbSwiper.changeDirection){thumbSwiper.changeDirection('horizontal');}
         thumbSwiper.update();
         function updateActiveThumb(){
