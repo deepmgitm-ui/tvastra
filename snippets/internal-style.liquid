@@ -1,3 +1,9 @@
+{%- if settings.custom_style != blank -%}
+  <style>
+    {{- settings.custom_style -}}
+  </style>
+{%- endif -%}
+
 <style>
   @media (max-width: 767px) {
     .main-product-page .product-gallery .product-main-slider {
@@ -22,7 +28,8 @@
     }
 
     .main-product-page .product-gallery .product-image-thumb .swiper-wrapper {
-      align-items: stretch;
+      align-items: stretch !important;
+      justify-content: flex-start !important;
     }
 
     .main-product-page .product-gallery .product-image-thumb .swiper-slide {
@@ -47,9 +54,3 @@
     }
   }
 </style>
-
-{%- if settings.custom_style != blank -%}
-  <style>
-    {{- settings.custom_style -}}
-  </style>
-{%- endif -%}
