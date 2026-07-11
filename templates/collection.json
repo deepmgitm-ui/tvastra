@@ -113,7 +113,7 @@
       "type": "main-collection-product-grid",
       "settings": {
         "container_type": "container-fluid",
-        "pagination_style": "infinite-scroll",
+        "pagination_style": "load-more",
         "enable_sorting": true,
         "show_product_options": true,
         "show_grid_bar": false,

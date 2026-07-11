@@ -88,6 +88,66 @@
     document.addEventListener('shopify:section:load',function(){setTimeout(fixMobileProductThumbs,600);});
     window.addEventListener('resize',function(){setTimeout(fixMobileProductThumbs,200);});
   })();
+  (function(){
+    function setupCollectionLoadMore(){
+      if(document.documentElement.dataset.collectionLoadMoreBound==='true')return;
+      document.documentElement.dataset.collectionLoadMoreBound='true';
+      document.addEventListener('click',function(event){
+        var link=event.target.closest('#load-more-btn a');
+        var grid=document.querySelector('#main-collection-product-grid');
+        if(!link||!grid||grid.dataset.loadingMore==='true')return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        grid.dataset.loadingMore='true';
+        link.setAttribute('aria-busy','true');
+        link.classList.add('loading');
+        fetch(link.href,{credentials:'same-origin'})
+          .then(function(response){
+            if(!response.ok)throw new Error('Unable to load more products');
+            return response.text();
+          })
+          .then(function(markup){
+            var page=new DOMParser().parseFromString(markup,'text/html');
+            var nextGrid=page.querySelector('#main-collection-product-grid');
+            if(!nextGrid)throw new Error('Product grid was not found');
+            grid.insertAdjacentHTML('beforeend',nextGrid.innerHTML);
+            var currentButton=document.querySelector('#load-more-btn');
+            var nextButton=page.querySelector('#load-more-btn');
+            if(currentButton&&nextButton&&nextButton.querySelector('a')){
+              currentButton.replaceWith(nextButton.cloneNode(true));
+            }else if(currentButton){
+              currentButton.remove();
+            }
+            var currentCount=document.querySelector('.pegi-product-count');
+            var nextCount=page.querySelector('.pegi-product-count');
+            if(currentCount&&nextCount){
+              currentCount.innerHTML=nextCount.innerHTML;
+              currentCount.setAttribute('current-item',nextCount.getAttribute('current-item')||'');
+              currentCount.setAttribute('total-item',nextCount.getAttribute('total-item')||'');
+            }
+            var currentProgress=document.querySelector('.progress-percent');
+            var shown=parseInt(nextCount&&nextCount.getAttribute('current-item'),10);
+            var total=parseInt(nextCount&&nextCount.getAttribute('total-item'),10);
+            if(currentProgress&&shown&&total){
+              var percent=Math.min(100,Math.round(shown*100/total));
+              currentProgress.style.width=percent+'%';
+              currentProgress.setAttribute('data-percent',percent);
+            }
+            if(window.initSwatchOptionImage)window.initSwatchOptionImage();
+            if(window.initVariantChanger)window.initVariantChanger(grid);
+            if(window.initTooltips)window.initTooltips(grid.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            document.dispatchEvent(new CustomEvent('initialize:wishlist-button'));
+          })
+          .catch(function(){
+            link.removeAttribute('aria-busy');
+            link.classList.remove('loading');
+          })
+          .finally(function(){delete grid.dataset.loadingMore;});
+      },true);
+    }
+    document.addEventListener('DOMContentLoaded',setupCollectionLoadMore);
+    document.addEventListener('shopify:section:load',setupCollectionLoadMore);
+  })();
   {{ settings.custom_js }}
 </script>
 <!-- END -->
