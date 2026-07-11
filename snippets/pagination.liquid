@@ -73,7 +73,7 @@
   {%- if paginate.parts.size > 0 -%}
     <div id="load-more-btn" class="text-center">
       {% if paginate.next %}
-        <a href="{{ paginate.next.url }}" class="btn btn-black-border border-opacity btn-small" aria-label="paginate">
+        <a href="{{ paginate.next.url }}" class="btn btn-black-border border-opacity btn-small" data-collection-load-more aria-label="paginate">
           {{- 'general.pagination.loadmore_label' | t -}}
         </a>
       {% endif %}
