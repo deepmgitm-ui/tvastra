@@ -1,29 +1,35 @@
 <a class="navbar-brand" href="{{ routes.root_url }}" style="--main-logo-width: {{ settings.logo_max_width }}px;" aria-label="logo">
   {%- if settings.logo != blank -%}
     <img
-      src="{{ settings.logo | image_url }}"
+      src="{{ settings.logo | image_url: width: 480 }}"
       alt="{{ settings.logo.alt }}"
       width="{{ settings.logo.width }}"
       height="{{ settings.logo.height }}"
       class="default-logo"
-      loading="lazy"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
     >
     {%- if settings.logo_transparent != blank and settings.transparent_header != false -%}
       <img
-      src="{{ settings.logo_transparent | image_url }}"
+      src="{{ settings.logo_transparent | image_url: width: 480 }}"
       alt="{{ settings.logo_transparent.alt }}"
       width="{{ settings.logo_transparent.width }}"
       height="{{ settings.logo_transparent.height }}"
-      loading="lazy"          
-      class="lazyload alt-logo"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+      class="alt-logo"
       >
     {%- else -%}
       <img
-      src="{{ settings.logo | image_url }}"
+      src="{{ settings.logo | image_url: width: 480 }}"
       alt="{{ settings.logo.alt }}"
       width="{{ settings.logo.width }}"
       height="{{ settings.logo.height }}"
-      loading="lazy"          
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
       class="alt-logo"
       >
     {%- endif -%}            

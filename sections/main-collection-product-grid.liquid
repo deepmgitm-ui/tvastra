@@ -644,7 +644,6 @@
                 >
                   {%- for product in collection.products -%}
                     <div class="col product-box">
-                      {%- assign product = all_products[section.settings.product_1] -%}
                       {%- render 'product-card', product: product -%}
                     </div>
                   {%- endfor -%}
