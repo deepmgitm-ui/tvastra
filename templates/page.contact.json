@@ -9,312 +9,82 @@
  */
 {
   "sections": {
-    "page-title": {
-      "type": "page-title",
-      "settings": {
-        "page_title_style": "style-1",
-        "show_full_width": false,
-        "show_banner_image": false,
-        "hide_breadcrumb": false,
-        "enable_parallax": false,
-        "title_uppercase": false,
-        "show_description": false,
-        "border_top": false,
-        "border_bottom": false,
-        "banner_title_size": "h-2",
-        "breadcrumb_position": "on-collection-banner",
-        "banner_height": "very-small-screen",
-        "content_alignment": "center",
-        "content_color_style": "dark-style",
-        "banner_bg_color": "#f7f7f7"
-      }
-    },
-    "form": {
-      "type": "contact-form",
+    "main": {
+      "type": "contact-us-modern",
       "blocks": {
-        "97c40399-56e5-44f5-a591-8c1a7840f949": {
-          "type": "content-block",
-          "disabled": true,
+        "order": {
+          "type": "help",
           "settings": {
-            "icon_class": "bi bi-pin-map",
-            "title": "Office location",
-            "content": "401 Broadway, 24th Floor Iceland, Iceland 10013."
+            "icon": "bi bi-box-seam",
+            "title": "Order and delivery",
+            "text": "Share your order number and the email or phone number used at checkout.",
+            "link_label": "Contact support",
+            "link": "#contact-form"
           }
         },
-        "cff4d794-a2b3-4726-81b4-6d9fdbb2742f": {
-          "type": "content-block",
-          "disabled": true,
+        "returns": {
+          "type": "help",
           "settings": {
-            "icon_class": "bi bi-telephone-outbound",
-            "title": "Call us directly",
-            "content": "Phone: <a href=\"tel:8799729008\">8799729008</a>"
+            "icon": "bi bi-arrow-repeat",
+            "title": "Return or exchange",
+            "text": "Keep your order number ready and start your request through our returns portal.",
+            "link_label": "Start a return",
+            "link": "/apps/return_prime"
           }
         },
-        "08190f8f-0fe1-4875-b5b0-431ffa3aceb3": {
-          "type": "content-block",
-          "disabled": true,
+        "fit": {
+          "type": "help",
           "settings": {
-            "icon_class": "bi bi-envelope",
-            "title": "Sent a message",
-            "content": "<a href=\"hello@tvastrafit.com\">hello@tvastrafit.com</a>"
+            "icon": "bi bi-rulers",
+            "title": "Product and sizing",
+            "text": "Tell us the product name and the fit you prefer for more useful guidance.",
+            "link_label": "Browse activewear",
+            "link": "shopify://collections/all"
+          }
+        },
+        "collaboration": {
+          "type": "help",
+          "settings": {
+            "icon": "bi bi-people",
+            "title": "Collaborations",
+            "text": "Introduce yourself, share your profile and tell us what you would like to create together.",
+            "link_label": "Message on Instagram",
+            "link": "https://instagram.com/tvastra.fit"
           }
         }
       },
       "block_order": [
-        "97c40399-56e5-44f5-a591-8c1a7840f949",
-        "cff4d794-a2b3-4726-81b4-6d9fdbb2742f",
-        "08190f8f-0fe1-4875-b5b0-431ffa3aceb3"
+        "order",
+        "returns",
+        "fit",
+        "collaboration"
       ],
       "settings": {
-        "container_type": "container",
-        "title": "Let's get in touch",
-        "sub_title": "We're here to help you!",
-        "show_icon": false,
-        "show_social_icon": true,
-        "social_type": "social-icon-only",
-        "social_style": "dark",
-        "social_title": "Follow us",
-        "block_column_width": "12",
-        "title_fontsize": 27,
-        "title_lineheight": 40,
-        "subtitle_fontsize": 17,
-        "subtitle_lineheight": 25,
-        "form_bg": "shopify://shop_images/Untitled_design_-_2026-03-05T163147.802.png",
-        "image_column_width": "6",
-        "form_title": "Let's talk!",
-        "form_sub_title": "",
-        "show_button_text": false,
-        "show_button_arrrow": false,
-        "show_form_lable": false,
-        "content_column_width": "6",
-        "form_title_fontsize": 36,
-        "form_title_lineheight": 50,
-        "form_subtitle_fontsize": 20,
-        "form_subtitle_lineheight": 24,
-        "padding_top": "pt-0",
-        "padding_bottom": "pb-0",
-        "section_show": true,
-        "section_bg_color": "",
-        "section_id": "",
-        "section_class_name": ""
-      }
-    },
-    "1634202562662e04bc": {
-      "type": "map",
-      "disabled": true,
-      "settings": {
-        "container_type": "container",
-        "heading": "",
-        "sub_heading": "",
-        "description": "",
-        "title_style": "style-1",
-        "map_height": "large-screen",
-        "latitude": "-37.817240",
-        "longitude": "144.955820",
-        "style": "silver",
-        "zoom": 13,
-        "marker_type": "image",
-        "infowindow_html": "<div class=\"infowindow\">\n<strong class=\"title d-inline-block alt-font\">Hongo store</strong><p>16122 Collins street, Melbourne, Australia</p>\n</div><div class=\"google-maps-link alt-font\"> <a aria-label=\"View larger map\" target=\"_blank\" jstcache=\"31\" href=\"https://maps.google.com/maps?ll=-37.81721,144.955928&z=13&t=m&hl=en-US&gl=IN&mapclient=embed&cid=13153204942596594449\" jsaction=\"mouseup:placeCard.largerMap\">VIEW LARGER MAP</a>\n</div>",
-        "infowindow_default_open": false,
-        "use_default_section_typography": true,
-        "section_heading_size": 45,
-        "heading_line_height": 55,
-        "sub_heading_size": 24,
-        "sub_heading_line_height": 30,
-        "subheading_letter_spacing": 0,
-        "padding_top": "pt-0",
-        "padding_bottom": "small-section-bottom",
-        "heading_alignment": "center",
-        "section_show": true,
-        "section_bg_color": "",
-        "section_heading_color": "#262626",
-        "section_sub_heading_color": "#262626",
-        "section_description_color": "",
-        "section_id": "",
-        "section_class_name": ""
-      }
-    },
-    "1638354350d63b2ca4": {
-      "type": "icon-with-text",
-      "blocks": {
-        "16383543505f93d98e-0": {
-          "type": "item",
-          "settings": {
-            "icon_name": "bi bi-box-seam",
-            "box_heading": "Free shipping",
-            "box_sub_heading": "<p>Standard shipping</p>",
-            "heading_link": ""
-          }
-        },
-        "16383543505f93d98e-1": {
-          "type": "item",
-          "settings": {
-            "icon_name": "bi bi-patch-check",
-            "box_heading": "Special discounts",
-            "box_sub_heading": "<p>Guaranteed saving</p>",
-            "heading_link": ""
-          }
-        },
-        "16383543505f93d98e-2": {
-          "type": "item",
-          "settings": {
-            "icon_name": "bi bi-wallet",
-            "box_heading": "Buyers protection",
-            "box_sub_heading": "<p>Secure payment</p>",
-            "heading_link": ""
-          }
-        },
-        "16383543505f93d98e-3": {
-          "type": "item",
-          "settings": {
-            "icon_name": "bi bi-chat-left-text",
-            "box_heading": "Customer service",
-            "box_sub_heading": "<p>Give us feedback</p>",
-            "heading_link": ""
-          }
-        }
-      },
-      "block_order": [
-        "16383543505f93d98e-0",
-        "16383543505f93d98e-1",
-        "16383543505f93d98e-2",
-        "16383543505f93d98e-3"
-      ],
-      "disabled": true,
-      "settings": {
-        "container_type": "container",
-        "heading": "",
-        "sub_heading": "",
-        "description": "",
-        "title_style": "style-1",
-        "icon_with_text_styles": "left-icon",
-        "content_alignment": "start",
-        "title_font_size": 19,
-        "title_line_height": 26,
-        "title_gap": 0,
-        "sub_title_width": 100,
-        "show_icon": true,
-        "icon_option": "icon",
-        "image_size": 45,
-        "icon_font_size": 40,
-        "icon_limit_desktop": 4,
-        "icon_limit_mini_desktop": 4,
-        "icon_limit_tablet": 2,
-        "icon_limit_mobile": 1,
-        "icon_color": "",
-        "text_color": "",
-        "small_text_color": "",
-        "use_default_section_typography": true,
-        "section_heading_size": 60,
-        "heading_line_height": 55,
-        "sub_heading_size": 50,
-        "sub_heading_line_height": 30,
-        "subheading_letter_spacing": 0,
-        "padding_top": "pt-0",
-        "padding_bottom": "small-section-bottom",
-        "heading_alignment": "center",
-        "section_show": true,
-        "section_bg_color": "",
-        "section_heading_color": "#262626",
-        "section_sub_heading_color": "#262626",
-        "section_description_color": "",
-        "section_id": "",
-        "section_class_name": ""
-      }
-    },
-    "icon_with_text_cpnWxg": {
-      "type": "icon-with-text",
-      "blocks": {
-        "item_E9NQX3": {
-          "type": "item",
-          "settings": {
-            "icon_name": "bi bi-box-seam",
-            "box_heading": "Free shipping",
-            "box_sub_heading": "<p>Standard shipping</p>",
-            "heading_link": ""
-          }
-        },
-        "item_H8feXP": {
-          "type": "item",
-          "settings": {
-            "icon_name": "bi bi-patch-check",
-            "box_heading": "Special discounts",
-            "box_sub_heading": "<p>Guaranteed saving</p>",
-            "heading_link": ""
-          }
-        },
-        "item_PqJrLJ": {
-          "type": "item",
-          "settings": {
-            "icon_name": "bi bi-wallet",
-            "box_heading": "Buyers protection",
-            "box_sub_heading": "<p>Secure payment</p>",
-            "heading_link": ""
-          }
-        },
-        "item_T8iXTz": {
-          "type": "item",
-          "settings": {
-            "icon_name": "bi bi-chat-left-text",
-            "box_heading": "Customer service",
-            "box_sub_heading": "<p>Give us feedback</p>",
-            "heading_link": ""
-          }
-        }
-      },
-      "block_order": [
-        "item_E9NQX3",
-        "item_H8feXP",
-        "item_PqJrLJ",
-        "item_T8iXTz"
-      ],
-      "settings": {
-        "container_type": "container",
-        "heading": "",
-        "sub_heading": "",
-        "description": "",
-        "title_style": "style-1",
-        "icon_with_text_styles": "left-icon",
-        "content_alignment": "start",
-        "title_font_size": 19,
-        "title_line_height": 22,
-        "title_gap": 0,
-        "sub_title_width": 100,
-        "show_icon": true,
-        "icon_option": "icon",
-        "image_size": 42,
-        "icon_font_size": 40,
-        "icon_limit_desktop": 4,
-        "icon_limit_mini_desktop": 4,
-        "icon_limit_tablet": 2,
-        "icon_limit_mobile": 2,
-        "icon_color": "",
-        "text_color": "",
-        "small_text_color": "",
-        "use_default_section_typography": true,
-        "section_heading_size": 45,
-        "heading_line_height": 55,
-        "sub_heading_size": 18,
-        "sub_heading_line_height": 30,
-        "subheading_letter_spacing": 0,
-        "padding_top": "very-small-section-top",
-        "padding_bottom": "very-small-section-bottom",
-        "heading_alignment": "center",
-        "section_show": true,
-        "section_bg_color": "",
-        "section_heading_color": "",
-        "section_sub_heading_color": "",
-        "section_description_color": "",
-        "section_id": "",
-        "section_class_name": ""
+        "hero_image": "shopify://shop_images/Untitled_design_-_2026-03-05T163147.802.png",
+        "hero_image_position": "center 42%",
+        "hero_eyebrow": "Tvastra customer care",
+        "hero_heading": "Contact Tvastra",
+        "hero_text": "<p>Questions about an order, fit, delivery or returns? Tell us what is going on and we will help you move forward.</p>",
+        "intro_eyebrow": "We are here to help",
+        "intro_heading": "Support that keeps pace.",
+        "intro_text": "<p>From choosing the right fit to tracking an order, our team is ready to make things clear and simple.</p>",
+        "email": "hello@tvastrafit.com",
+        "whatsapp_url": "https://wa.me/918799729008?text=Hi%20Tvastra%2C%20I%20need%20help.",
+        "whatsapp_label": "+91 87997 29008",
+        "instagram_url": "https://instagram.com/tvastra.fit",
+        "instagram_label": "@tvastra.fit",
+        "support_note": "For order-related queries, include your order number so we can help you faster.",
+        "form_eyebrow": "Send a message",
+        "form_heading": "How can we help?",
+        "form_text": "<p>Share a few details below and our customer care team will take it from here.</p>",
+        "button_label": "Send message",
+        "help_eyebrow": "Find the right route",
+        "help_heading": "Get to the answer faster.",
+        "help_text": "<p>Choose the topic closest to your question and include the details listed. It helps our team resolve things with fewer back-and-forth messages.</p>"
       }
     }
   },
   "order": [
-    "page-title",
-    "form",
-    "1634202562662e04bc",
-    "1638354350d63b2ca4",
-    "icon_with_text_cpnWxg"
+    "main"
   ]
 }
