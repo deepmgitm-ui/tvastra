@@ -923,12 +923,44 @@ body.sticky-active #hongo-header .navbar.tvastra-single-header .navbar-brand .al
 }
 
 @media (max-width: 1199px) {
-  #hongo-header .navbar.tvastra-single-header {
+  body.sticky,
+  body.sticky.transparent {
+    margin-top: 0 !important;
+  }
+
+  body.sticky #shopify-section-mini-header,
+  body.sticky.transparent #shopify-section-mini-header {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    left: auto !important;
+  }
+
+  #hongo-header {
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 98 !important;
+  }
+
+  #hongo-header .navbar.tvastra-single-header,
+  body.sticky #hongo-header .navbar.tvastra-single-header {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    left: auto !important;
     min-height: 56px !important;
   }
 
   #hongo-header .navbar.tvastra-single-header > .container,
   #hongo-header .navbar.tvastra-single-header > .container-fluid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 112px minmax(0, 1fr) !important;
+    grid-template-rows: 56px !important;
+    align-items: center !important;
+    column-gap: 0 !important;
+    width: 100% !important;
+    height: 56px !important;
     min-height: 56px !important;
     padding-left: 12px !important;
     padding-right: 12px !important;
@@ -941,24 +973,63 @@ body.sticky-active #hongo-header .navbar.tvastra-single-header .navbar-brand .al
 
   #hongo-header .navbar.tvastra-single-header .menu-logo,
   #hongo-header .navbar.tvastra-single-header .logo {
-    position: absolute !important;
-    left: 50% !important;
-    top: 50% !important;
-    right: auto !important;
-    bottom: auto !important;
-    transform: translate(-50%, -50%) !important;
-    width: auto !important;
-    max-width: none !important;
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    align-self: center !important;
+    justify-self: center !important;
+    position: static !important;
+    inset: auto !important;
+    width: 112px !important;
+    max-width: 112px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    -webkit-transform: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
     z-index: 4 !important;
     pointer-events: none !important;
   }
 
   #hongo-header .navbar.tvastra-single-header .menu-logo .navbar-brand,
   #hongo-header .navbar.tvastra-single-header .logo .navbar-brand {
-    display: inline-flex !important;
+    display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    width: 112px !important;
+    max-width: 112px !important;
     pointer-events: auto !important;
+  }
+
+  #hongo-header .navbar.tvastra-single-header > .container > .menu-column,
+  #hongo-header .navbar.tvastra-single-header > .container-fluid > .menu-column {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    align-self: center !important;
+    justify-self: start !important;
+    display: flex !important;
+    align-items: center !important;
+    width: auto !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    order: initial !important;
+  }
+
+  #hongo-header .navbar.tvastra-single-header > .container > .col:last-child,
+  #hongo-header .navbar.tvastra-single-header > .container-fluid > .col:last-child {
+    grid-column: 3 !important;
+    grid-row: 1 !important;
+    align-self: center !important;
+    justify-self: end !important;
+    display: flex !important;
+    align-items: center !important;
+    width: auto !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
   #hongo-header .navbar.tvastra-single-header .navbar-toggler,
@@ -970,25 +1041,25 @@ body.sticky-active #hongo-header .navbar.tvastra-single-header .navbar-brand .al
     visibility: visible !important;
   }
 
-  #hongo-header .navbar.tvastra-single-header .menu-logo {
+  #hongo-header .navbar.tvastra-single-header .navbar-toggler-line {
+    background-color: #111 !important;
     opacity: 1 !important;
     visibility: visible !important;
-    -webkit-transform: translate(-50%, -50%) translateZ(0) !important;
-    transform: translate(-50%, -50%) translateZ(0) !important;
   }
 
   #hongo-header .navbar.tvastra-single-header .navbar-brand .default-logo {
-    -webkit-transform: translateZ(0) !important;
-    transform: translateZ(0) !important;
-    -webkit-backface-visibility: visible !important;
-    backface-visibility: visible !important;
+    display: block !important;
+    width: 112px !important;
+    max-width: 112px !important;
+    height: auto !important;
+    -webkit-transform: none !important;
+    transform: none !important;
   }
 
   #hongo-header .navbar.tvastra-single-header .collapse.navbar-collapse {
     background-color: var(--header-bg-color, #fff) !important;
   }
 }
-
 .chat-support-whatsapp-wrapper {
   opacity: 0 !important;
   visibility: hidden !important;
