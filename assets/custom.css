@@ -966,6 +966,22 @@ body.sticky-active #hongo-header .navbar.tvastra-single-header .navbar-brand .al
   #hongo-header .navbar.tvastra-single-header .search {
     position: relative !important;
     z-index: 5 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  #hongo-header .navbar.tvastra-single-header .menu-logo {
+    opacity: 1 !important;
+    visibility: visible !important;
+    -webkit-transform: translate(-50%, -50%) translateZ(0) !important;
+    transform: translate(-50%, -50%) translateZ(0) !important;
+  }
+
+  #hongo-header .navbar.tvastra-single-header .navbar-brand .default-logo {
+    -webkit-transform: translateZ(0) !important;
+    transform: translateZ(0) !important;
+    -webkit-backface-visibility: visible !important;
+    backface-visibility: visible !important;
   }
 
   #hongo-header .navbar.tvastra-single-header .collapse.navbar-collapse {
