@@ -1,105 +1,105 @@
-{%- comment -%}
-  Modern About Us — bespoke section for Tvastra.
-  Hero → Story → Mission & Vision → Values → CTA.
-  Self-contained styles scoped to .about-modern-{{ section.id }}.
-{%- endcomment -%}
-
 {%- liquid
   assign s = section.settings
   assign uid = section.id
+  assign hero_alt = s.hero_image.alt | default: s.hero_heading
+  assign story_alt = s.story_image.alt | default: s.story_heading
+  assign lifestyle_alt = s.lifestyle_image.alt | default: s.lifestyle_heading
+  assign cta_alt = s.cta_image.alt | default: s.cta_heading
 -%}
 
 <section
-  id="{{ s.section_id | default: 'about-modern' }}"
-  class="about-modern about-modern-{{ uid }} {% if s.section_show == false %}d-none{% endif %} {{ s.section_class_name }}"
+  id="about-tvastra-{{ uid }}"
+  class="about-modern about-modern-{{ uid }}"
 >
-  {%- comment -%} ---------- HERO ---------- {%- endcomment -%}
-  {%- if s.show_hero -%}
-    <div class="am-hero" {% if s.hero_image != blank %}style="background-image:url({{ s.hero_image | image_url: width: 3000 }});"{% endif %}>
-      <div class="am-hero__overlay" style="opacity: {{ s.hero_overlay | divided_by: 100.0 }};"></div>
-      <div class="container am-hero__inner am-reveal">
-        {%- if s.hero_eyebrow != blank -%}
-          <span class="am-eyebrow">{{ s.hero_eyebrow }}</span>
-        {%- endif -%}
-        {%- if s.hero_heading != blank -%}
-          <h1 class="am-hero__title alt-font">{{ s.hero_heading }}</h1>
-        {%- endif -%}
-        {%- if s.hero_text != blank -%}
-          <div class="am-hero__text">{{ s.hero_text }}</div>
-        {%- endif -%}
-        {%- if s.hero_btn_text != blank -%}
-          <a href="{{ s.hero_btn_link | default: '#' }}" class="am-btn am-btn--light">{{ s.hero_btn_text }}</a>
+  <header class="am-hero">
+    {%- if s.hero_image != blank -%}
+      {{
+        s.hero_image
+        | image_url: width: 2600
+        | image_tag:
+          class: 'am-hero__image',
+          widths: '750, 1100, 1500, 2000, 2600',
+          sizes: '100vw',
+          loading: 'eager',
+          fetchpriority: 'high',
+          alt: hero_alt
+      }}
+    {%- endif -%}
+    <div class="am-hero__overlay"></div>
+    <div class="container am-hero__content">
+      {%- if s.hero_eyebrow != blank -%}<p class="am-kicker am-kicker--light">{{ s.hero_eyebrow }}</p>{%- endif -%}
+      <h1 class="am-hero__title alt-font">{{ s.hero_heading | default: page.title }}</h1>
+      {%- if s.hero_statement != blank -%}<p class="am-hero__statement alt-font">{{ s.hero_statement }}</p>{%- endif -%}
+      {%- if s.hero_text != blank -%}<div class="am-hero__text">{{ s.hero_text }}</div>{%- endif -%}
+      {%- if s.hero_btn_text != blank -%}
+        <a class="am-button am-button--light" href="{{ s.hero_btn_link | default: routes.all_products_collection_url }}">
+          {{- s.hero_btn_text -}}
+        </a>
+      {%- endif -%}
+    </div>
+  </header>
+
+  <div class="am-band am-intro">
+    <div class="container am-intro__grid">
+      <div>
+        {%- if s.intro_eyebrow != blank -%}<p class="am-kicker">{{ s.intro_eyebrow }}</p>{%- endif -%}
+        <h2 class="am-heading alt-font">{{ s.intro_heading }}</h2>
+      </div>
+      {%- if s.intro_text != blank -%}<div class="am-copy am-copy--lead">{{ s.intro_text }}</div>{%- endif -%}
+    </div>
+  </div>
+
+  <div class="am-rhythm" aria-label="Tvastra design point of view">
+    <div class="container am-rhythm__grid">
+      <p>Move with ease.</p>
+      <p>Feel like yourself.</p>
+      <p>Wear it beyond the workout.</p>
+    </div>
+  </div>
+
+  <div class="am-band am-story">
+    <div class="container am-split">
+      <div class="am-media am-media--portrait">
+        {%- if s.story_image != blank -%}
+          {{
+            s.story_image
+            | image_url: width: 1600
+            | image_tag:
+              class: 'am-media__image',
+              widths: '550, 800, 1100, 1600',
+              sizes: '(min-width: 992px) 50vw, 100vw',
+              loading: 'lazy',
+              alt: story_alt
+          }}
         {%- endif -%}
       </div>
+      <div class="am-split__content">
+        {%- if s.story_eyebrow != blank -%}<p class="am-kicker">{{ s.story_eyebrow }}</p>{%- endif -%}
+        <h2 class="am-heading alt-font">{{ s.story_heading }}</h2>
+        {%- if s.story_text != blank -%}<div class="am-copy">{{ s.story_text }}</div>{%- endif -%}
+        {%- if s.story_quote != blank -%}<p class="am-quote alt-font">{{ s.story_quote }}</p>{%- endif -%}
+      </div>
     </div>
-  {%- endif -%}
+  </div>
 
-  {%- comment -%} ---------- STORY ---------- {%- endcomment -%}
-  {%- if s.show_story -%}
-    <div class="am-block am-story">
+  {%- if section.blocks.size > 0 -%}
+    <div class="am-band am-values">
       <div class="container">
-        <div class="row align-items-center g-5">
-          <div class="col-lg-6 am-reveal">
-            {%- if s.story_image != blank -%}
-              <div class="am-story__media">
-                {{ s.story_image | image_url: width: 1400 | image_tag: loading: 'lazy', class: 'am-story__img', alt: s.story_heading | escape }}
-              </div>
-            {%- endif -%}
-          </div>
-          <div class="col-lg-6 am-reveal am-reveal--delay">
-            {%- if s.story_eyebrow != blank -%}<span class="am-eyebrow am-eyebrow--dark">{{ s.story_eyebrow }}</span>{%- endif -%}
-            {%- if s.story_heading != blank -%}<h2 class="am-h2 alt-font">{{ s.story_heading }}</h2>{%- endif -%}
-            {%- if s.story_text != blank -%}<div class="am-rte">{{ s.story_text }}</div>{%- endif -%}
-          </div>
+        <div class="am-section-head">
+          {%- if s.values_eyebrow != blank -%}<p class="am-kicker">{{ s.values_eyebrow }}</p>{%- endif -%}
+          <h2 class="am-heading alt-font">{{ s.values_heading }}</h2>
         </div>
-      </div>
-    </div>
-  {%- endif -%}
-
-  {%- comment -%} ---------- MISSION & VISION ---------- {%- endcomment -%}
-  {%- if s.show_mv -%}
-    <div class="am-block am-mv">
-      <div class="container">
-        <div class="row g-4">
-          <div class="col-md-6 am-reveal">
-            <div class="am-mv__card">
-              <span class="am-mv__label">{{ s.mission_label | default: 'Our Mission' }}</span>
-              <div class="am-rte am-mv__text">{{ s.mission_text }}</div>
-            </div>
-          </div>
-          <div class="col-md-6 am-reveal am-reveal--delay">
-            <div class="am-mv__card">
-              <span class="am-mv__label">{{ s.vision_label | default: 'Our Vision' }}</span>
-              <div class="am-rte am-mv__text">{{ s.vision_text }}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  {%- endif -%}
-
-  {%- comment -%} ---------- VALUES ---------- {%- endcomment -%}
-  {%- if s.show_values and section.blocks.size > 0 -%}
-    <div class="am-block am-values">
-      <div class="container">
-        {%- if s.values_heading != blank -%}
-          <div class="am-values__head am-reveal">
-            {%- if s.values_eyebrow != blank -%}<span class="am-eyebrow am-eyebrow--dark">{{ s.values_eyebrow }}</span>{%- endif -%}
-            <h2 class="am-h2 alt-font">{{ s.values_heading }}</h2>
-          </div>
-        {%- endif -%}
-        <div class="row g-4">
+        <div class="am-values__grid">
           {%- for block in section.blocks -%}
             {%- if block.type == 'value' -%}
-              <div class="col-md-6 col-lg-3 am-reveal" {{ block.shopify_attributes }} style="--i: {{ forloop.index0 }};">
-                <div class="am-value">
-                  {%- if block.settings.icon != blank -%}
-                    <i class="am-value__icon {{ block.settings.icon }}"></i>
-                  {%- endif -%}
-                  <h3 class="am-value__title">{{ block.settings.title }}</h3>
-                  {%- if block.settings.text != blank -%}<p class="am-value__text">{{ block.settings.text }}</p>{%- endif -%}
-                </div>
-              </div>
+              <article class="am-value" {{ block.shopify_attributes }}>
+                {%- if block.settings.icon != blank -%}
+                  <i class="am-value__icon {{ block.settings.icon }}" aria-hidden="true"></i>
+                {%- endif -%}
+                <p class="am-value__number">0{{ forloop.index }}</p>
+                <h3 class="am-value__title alt-font">{{ block.settings.title }}</h3>
+                <p class="am-value__text">{{ block.settings.text }}</p>
+              </article>
             {%- endif -%}
           {%- endfor -%}
         </div>
@@ -107,192 +107,473 @@
     </div>
   {%- endif -%}
 
-  {%- comment -%} ---------- CTA ---------- {%- endcomment -%}
-  {%- if s.show_cta -%}
-    <div class="am-cta am-reveal" {% if s.cta_image != blank %}style="background-image:url({{ s.cta_image | image_url: width: 2400 }});"{% endif %}>
-      <div class="am-cta__overlay"></div>
-      <div class="container am-cta__inner">
-        {%- if s.cta_heading != blank -%}<h2 class="am-cta__title alt-font">{{ s.cta_heading }}</h2>{%- endif -%}
-        {%- if s.cta_text != blank -%}<p class="am-cta__text">{{ s.cta_text }}</p>{%- endif -%}
-        {%- if s.cta_btn_text != blank -%}
-          <a href="{{ s.cta_btn_link | default: '#' }}" class="am-btn am-btn--light">{{ s.cta_btn_text }}</a>
+  <div class="am-band am-lifestyle">
+    <div class="container am-lifestyle__grid">
+      <div class="am-lifestyle__content">
+        {%- if s.lifestyle_eyebrow != blank -%}<p class="am-kicker">{{ s.lifestyle_eyebrow }}</p>{%- endif -%}
+        <h2 class="am-heading alt-font">{{ s.lifestyle_heading }}</h2>
+        {%- if s.lifestyle_text != blank -%}<div class="am-copy">{{ s.lifestyle_text }}</div>{%- endif -%}
+      </div>
+      <div class="am-media am-media--lifestyle">
+        {%- if s.lifestyle_image != blank -%}
+          {{
+            s.lifestyle_image
+            | image_url: width: 1600
+            | image_tag:
+              class: 'am-media__image',
+              widths: '550, 800, 1100, 1600',
+              sizes: '(min-width: 992px) 56vw, 100vw',
+              loading: 'lazy',
+              alt: lifestyle_alt
+          }}
         {%- endif -%}
       </div>
     </div>
+  </div>
+
+  <div class="am-mission">
+    <div class="container am-mission__grid">
+      <div class="am-mission__item">
+        <p class="am-kicker am-kicker--gold">{{ s.mission_label }}</p>
+        <div class="am-mission__copy alt-font">{{ s.mission_text }}</div>
+      </div>
+      <div class="am-mission__item">
+        <p class="am-kicker am-kicker--gold">{{ s.vision_label }}</p>
+        <div class="am-mission__copy alt-font">{{ s.vision_text }}</div>
+      </div>
+    </div>
+  </div>
+
+  {%- if s.show_gallery -%}
+    <div class="am-band am-gallery">
+      <div class="container">
+        <div class="am-section-head am-section-head--wide">
+          <div>
+            {%- if s.gallery_eyebrow != blank -%}<p class="am-kicker">{{ s.gallery_eyebrow }}</p>{%- endif -%}
+            <h2 class="am-heading alt-font">{{ s.gallery_heading }}</h2>
+          </div>
+        </div>
+        <div class="am-gallery__grid">
+          {%- for index in (1..3) -%}
+            {%- assign image_key = 'gallery_image_' | append: index -%}
+            {%- assign gallery_image = s[image_key] -%}
+            {%- if gallery_image != blank -%}
+              {%- assign gallery_alt = gallery_image.alt | default: 'Tvastra activewear in motion' -%}
+              <figure class="am-gallery__item am-gallery__item--{{ index }}">
+                {{
+                  gallery_image
+                  | image_url: width: 1400
+                  | image_tag:
+                    class: 'am-gallery__image',
+                    widths: '450, 700, 1000, 1400',
+                    sizes: '(min-width: 768px) 33vw, 100vw',
+                    loading: 'lazy',
+                    alt: gallery_alt
+                }}
+              </figure>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
   {%- endif -%}
+
+  <div class="am-cta">
+    {%- if s.cta_image != blank -%}
+      {{
+        s.cta_image
+        | image_url: width: 2400
+        | image_tag:
+          class: 'am-cta__image',
+          widths: '750, 1100, 1500, 2000, 2400',
+          sizes: '100vw',
+          loading: 'lazy',
+          alt: cta_alt
+      }}
+    {%- endif -%}
+    <div class="am-cta__overlay"></div>
+    <div class="container am-cta__content">
+      {%- if s.cta_eyebrow != blank -%}<p class="am-kicker am-kicker--light">{{ s.cta_eyebrow }}</p>{%- endif -%}
+      <h2 class="am-cta__title alt-font">{{ s.cta_heading }}</h2>
+      {%- if s.cta_text != blank -%}<div class="am-cta__text">{{ s.cta_text }}</div>{%- endif -%}
+      <div class="am-cta__actions">
+        {%- if s.cta_women_text != blank -%}
+          <a class="am-button am-button--light" href="{{ s.cta_women_link }}">{{ s.cta_women_text }}</a>
+        {%- endif -%}
+        {%- if s.cta_men_text != blank -%}
+          <a class="am-button am-button--outline" href="{{ s.cta_men_link }}">{{ s.cta_men_text }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
 </section>
 
 {%- style -%}
-  .about-modern-{{ uid }} { --am-base: var(--base-color, #d0af29); --am-ink: var(--heading-color, #1a1a1a); --am-muted: var(--body-text-color, #6b6b6b); }
-  .about-modern-{{ uid }} .am-eyebrow {
-    display: inline-block; font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
-    font-weight: 600; color: var(--am-base); margin-bottom: 18px;
+  .about-modern-{{ uid }} {
+    --am-ink: #111313;
+    --am-paper: #ffffff;
+    --am-soft: #f1f3f1;
+    --am-forest: #173a35;
+    --am-gold: #d0af29;
+    --am-muted: #626766;
+    background: var(--am-paper);
+    color: var(--am-ink);
+    overflow: hidden;
   }
-  .about-modern-{{ uid }} .am-eyebrow--dark { color: var(--am-base); }
-  .about-modern-{{ uid }} .am-h2 { font-size: clamp(28px, 4vw, 44px); line-height: 1.12; color: var(--am-ink); margin: 0 0 22px; }
-  .about-modern-{{ uid }} .am-rte { color: var(--am-muted); font-size: 16px; line-height: 1.85; }
-  .about-modern-{{ uid }} .am-rte p { margin: 0 0 14px; }
 
-  /* Buttons */
-  .about-modern-{{ uid }} .am-btn {
-    display: inline-block; padding: 15px 38px; font-size: 13px; letter-spacing: 1.6px;
-    text-transform: uppercase; font-weight: 600; border-radius: 2px; transition: all .3s ease;
+  .about-modern-{{ uid }} *,
+  .about-modern-{{ uid }} *::before,
+  .about-modern-{{ uid }} *::after { letter-spacing: 0; }
+
+  .about-modern-{{ uid }} .am-kicker {
+    margin: 0 0 16px;
+    color: var(--am-forest);
+    font-size: 12px;
+    line-height: 1.4;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .about-modern-{{ uid }} .am-kicker--light { color: #ffffff; }
+  .about-modern-{{ uid }} .am-kicker--gold { color: var(--am-gold); }
+
+  .about-modern-{{ uid }} .am-heading {
+    margin: 0;
+    max-width: 720px;
+    color: var(--am-ink);
+    font-size: 48px;
+    line-height: 1.08;
+    font-weight: 500;
+  }
+
+  .about-modern-{{ uid }} .am-copy {
+    max-width: 620px;
+    color: var(--am-muted);
+    font-size: 17px;
+    line-height: 1.8;
+  }
+
+  .about-modern-{{ uid }} .am-copy p { margin: 0 0 18px; }
+  .about-modern-{{ uid }} .am-copy p:last-child { margin-bottom: 0; }
+  .about-modern-{{ uid }} .am-copy--lead { font-size: 19px; }
+
+  .about-modern-{{ uid }} .am-button {
+    display: inline-flex;
+    min-height: 50px;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 28px;
     border: 1px solid transparent;
+    border-radius: 0;
+    font-size: 13px;
+    line-height: 1.2;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: background-color .2s ease, color .2s ease, border-color .2s ease;
   }
-  .about-modern-{{ uid }} .am-btn--light { background: #fff; color: var(--am-ink); }
-  .about-modern-{{ uid }} .am-btn--light:hover { background: var(--am-base); color: #fff; }
 
-  /* Hero */
+  .about-modern-{{ uid }} .am-button--light { background: #ffffff; color: #111313; }
+  .about-modern-{{ uid }} .am-button--light:hover { background: var(--am-gold); color: #111313; }
+  .about-modern-{{ uid }} .am-button--outline { border-color: rgba(255,255,255,.75); color: #ffffff; }
+  .about-modern-{{ uid }} .am-button--outline:hover { background: #ffffff; color: #111313; }
+
   .about-modern-{{ uid }} .am-hero {
-    position: relative; min-height: 78vh; display: flex; align-items: center;
-    background-size: cover; background-position: center; color: #fff; overflow: hidden;
+    position: relative;
+    height: 680px;
+    height: calc(100svh - 150px);
+    min-height: 520px;
+    max-height: 760px;
+    overflow: hidden;
+    background: #171918;
   }
-  .about-modern-{{ uid }} .am-hero__overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,10,.35), rgba(10,10,10,.85)); }
-  .about-modern-{{ uid }} .am-hero__inner { position: relative; z-index: 2; max-width: 760px; padding: 90px 0; }
-  .about-modern-{{ uid }} .am-hero .am-eyebrow { color: var(--am-base); }
-  .about-modern-{{ uid }} .am-hero__title { font-size: clamp(38px, 6vw, 76px); line-height: 1.05; margin: 0 0 22px; color: #fff; }
-  .about-modern-{{ uid }} .am-hero__text { font-size: clamp(16px, 2vw, 20px); line-height: 1.7; opacity: .9; max-width: 560px; margin-bottom: 34px; }
-  .about-modern-{{ uid }} .am-hero__text p { margin: 0 0 10px; }
 
-  /* Blocks */
-  .about-modern-{{ uid }} .am-block { padding: clamp(56px, 8vw, 110px) 0; }
-  .about-modern-{{ uid }} .am-story__media { position: relative; overflow: hidden; border-radius: 4px; }
-  .about-modern-{{ uid }} .am-story__img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .8s ease; }
-  .about-modern-{{ uid }} .am-story__media:hover .am-story__img { transform: scale(1.04); }
-
-  /* Mission / Vision */
-  .about-modern-{{ uid }} .am-mv { background: #f6f5f2; }
-  .about-modern-{{ uid }} .am-mv__card {
-    background: #fff; height: 100%; padding: 44px; border-radius: 4px; border: 1px solid #ececec;
-    transition: transform .35s ease, box-shadow .35s ease;
+  .about-modern-{{ uid }} .am-hero__image,
+  .about-modern-{{ uid }} .am-cta__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
-  .about-modern-{{ uid }} .am-mv__card:hover { transform: translateY(-6px); box-shadow: 0 22px 50px rgba(0,0,0,.08); }
-  .about-modern-{{ uid }} .am-mv__label {
-    display: inline-block; font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
-    font-weight: 700; color: var(--am-ink); padding-bottom: 12px; margin-bottom: 18px; position: relative;
-  }
-  .about-modern-{{ uid }} .am-mv__label::after { content: ""; position: absolute; left: 0; bottom: 0; width: 34px; height: 2px; background: var(--am-base); }
-  .about-modern-{{ uid }} .am-mv__text { font-size: 16px; line-height: 1.8; }
 
-  /* Values */
-  .about-modern-{{ uid }} .am-values__head { text-align: center; max-width: 640px; margin: 0 auto clamp(38px, 5vw, 60px); }
-  .about-modern-{{ uid }} .am-value {
-    height: 100%; padding: 34px 28px; border: 1px solid #ececec; border-radius: 4px; text-align: center;
-    transition: border-color .3s ease, transform .3s ease;
-  }
-  .about-modern-{{ uid }} .am-value:hover { border-color: var(--am-base); transform: translateY(-5px); }
-  .about-modern-{{ uid }} .am-value__icon { font-size: 34px; color: var(--am-base); display: block; margin-bottom: 18px; }
-  .about-modern-{{ uid }} .am-value__title { font-size: 18px; font-weight: 600; color: var(--am-ink); margin: 0 0 10px; }
-  .about-modern-{{ uid }} .am-value__text { font-size: 14.5px; line-height: 1.7; color: var(--am-muted); margin: 0; }
+  .about-modern-{{ uid }} .am-hero__image { object-position: {{ s.hero_image_position }}; }
+  .about-modern-{{ uid }} .am-hero__overlay { position: absolute; inset: 0; background: rgba(8, 10, 10, .52); }
 
-  /* CTA */
+  .about-modern-{{ uid }} .am-hero__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    height: 100%;
+    max-width: 760px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
+
+  .about-modern-{{ uid }} .am-hero__title {
+    margin: 0 0 10px;
+    color: #ffffff;
+    font-size: 76px;
+    line-height: 1;
+    font-weight: 500;
+  }
+
+  .about-modern-{{ uid }} .am-hero__statement {
+    max-width: 700px;
+    margin: 0 0 20px;
+    color: #ffffff;
+    font-size: 32px;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .about-modern-{{ uid }} .am-hero__text {
+    max-width: 540px;
+    margin-bottom: 30px;
+    color: rgba(255,255,255,.88);
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .about-modern-{{ uid }} .am-hero__text p { margin: 0; }
+  .about-modern-{{ uid }} .am-band { padding: 104px 0; }
+
+  .about-modern-{{ uid }} .am-intro__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 80px;
+    align-items: start;
+  }
+
+  .about-modern-{{ uid }} .am-rhythm { padding: 32px 0; background: var(--am-forest); color: #ffffff; }
+  .about-modern-{{ uid }} .am-rhythm__grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .about-modern-{{ uid }} .am-rhythm p {
+    margin: 0;
+    padding: 8px 32px;
+    border-right: 1px solid rgba(255,255,255,.24);
+    font-size: 17px;
+    line-height: 1.4;
+    text-align: center;
+  }
+  .about-modern-{{ uid }} .am-rhythm p:last-child { border-right: 0; }
+
+  .about-modern-{{ uid }} .am-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 88px;
+    align-items: center;
+  }
+
+  .about-modern-{{ uid }} .am-media { position: relative; overflow: hidden; background: var(--am-soft); }
+  .about-modern-{{ uid }} .am-media--portrait { aspect-ratio: 4 / 5; }
+  .about-modern-{{ uid }} .am-media--lifestyle { aspect-ratio: 5 / 6; }
+  .about-modern-{{ uid }} .am-media__image { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .about-modern-{{ uid }} .am-media--portrait .am-media__image { object-position: center 34%; }
+  .about-modern-{{ uid }} .am-media--lifestyle .am-media__image { object-position: center; }
+
+  .about-modern-{{ uid }} .am-quote {
+    max-width: 560px;
+    margin: 38px 0 0;
+    padding: 4px 0 4px 24px;
+    border-left: 3px solid var(--am-gold);
+    color: var(--am-ink);
+    font-size: 24px;
+    line-height: 1.45;
+  }
+
+  .about-modern-{{ uid }} .am-values { background: var(--am-soft); }
+  .about-modern-{{ uid }} .am-section-head { max-width: 720px; margin-bottom: 56px; }
+  .about-modern-{{ uid }} .am-values__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; }
+  .about-modern-{{ uid }} .am-value { position: relative; padding: 30px 0 0; border-top: 2px solid #c9cecb; }
+  .about-modern-{{ uid }} .am-value__icon { display: block; margin-bottom: 34px; color: var(--am-forest); font-size: 28px; }
+  .about-modern-{{ uid }} .am-value__number { position: absolute; top: 28px; right: 0; margin: 0; color: #909795; font-size: 12px; }
+  .about-modern-{{ uid }} .am-value__title { margin: 0 0 12px; color: var(--am-ink); font-size: 21px; line-height: 1.25; }
+  .about-modern-{{ uid }} .am-value__text { margin: 0; color: var(--am-muted); font-size: 15px; line-height: 1.7; }
+
+  .about-modern-{{ uid }} .am-lifestyle__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+    gap: 88px;
+    align-items: center;
+  }
+
+  .about-modern-{{ uid }} .am-lifestyle__content { padding-left: 24px; }
+
+  .about-modern-{{ uid }} .am-mission { padding: 96px 0; background: #111313; color: #ffffff; }
+  .about-modern-{{ uid }} .am-mission__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .about-modern-{{ uid }} .am-mission__item { padding: 0 72px; border-right: 1px solid rgba(255,255,255,.2); }
+  .about-modern-{{ uid }} .am-mission__item:first-child { padding-left: 0; }
+  .about-modern-{{ uid }} .am-mission__item:last-child { padding-right: 0; border-right: 0; }
+  .about-modern-{{ uid }} .am-mission__copy { max-width: 520px; color: #ffffff; font-size: 27px; line-height: 1.45; }
+  .about-modern-{{ uid }} .am-mission__copy p { margin: 0; }
+
+  .about-modern-{{ uid }} .am-section-head--wide { max-width: 100%; }
+  .about-modern-{{ uid }} .am-gallery__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .about-modern-{{ uid }} .am-gallery__item { aspect-ratio: 3 / 4; margin: 0; overflow: hidden; background: var(--am-soft); }
+  .about-modern-{{ uid }} .am-gallery__image { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .about-modern-{{ uid }} .am-gallery__item--1 .am-gallery__image { object-position: center top; }
+  .about-modern-{{ uid }} .am-gallery__item--2 .am-gallery__image { object-position: center top; }
+
   .about-modern-{{ uid }} .am-cta {
-    position: relative; background-size: cover; background-position: center; color: #fff; text-align: center;
-    padding: clamp(70px, 10vw, 130px) 0; background-color: #141414;
+    position: relative;
+    display: flex;
+    min-height: 580px;
+    align-items: center;
+    overflow: hidden;
+    background: #111313;
   }
-  .about-modern-{{ uid }} .am-cta__overlay { position: absolute; inset: 0; background: rgba(12,12,12,.6); }
-  .about-modern-{{ uid }} .am-cta__inner { position: relative; z-index: 2; max-width: 680px; margin: 0 auto; }
-  .about-modern-{{ uid }} .am-cta__title { font-size: clamp(30px, 5vw, 52px); line-height: 1.1; margin: 0 0 18px; color: #fff; }
-  .about-modern-{{ uid }} .am-cta__text { font-size: 17px; line-height: 1.7; opacity: .9; margin: 0 0 32px; }
 
-  /* Reveal animation */
-  .about-modern-{{ uid }} .am-reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
-  .about-modern-{{ uid }} .am-reveal.am-in { opacity: 1; transform: none; }
-  .about-modern-{{ uid }} .am-reveal--delay { transition-delay: .12s; }
-  @media (prefers-reduced-motion: reduce) {
-    .about-modern-{{ uid }} .am-reveal { opacity: 1; transform: none; transition: none; }
-  }
+  .about-modern-{{ uid }} .am-cta__image { object-position: center 36%; }
+  .about-modern-{{ uid }} .am-cta__overlay { position: absolute; inset: 0; background: rgba(7, 9, 9, .62); }
+  .about-modern-{{ uid }} .am-cta__content { position: relative; z-index: 1; max-width: 720px; text-align: center; }
+  .about-modern-{{ uid }} .am-cta__title { margin: 0 0 20px; color: #ffffff; font-size: 54px; line-height: 1.08; font-weight: 500; }
+  .about-modern-{{ uid }} .am-cta__text { max-width: 560px; margin: 0 auto 32px; color: rgba(255,255,255,.88); font-size: 17px; line-height: 1.7; }
+  .about-modern-{{ uid }} .am-cta__text p { margin: 0; }
+  .about-modern-{{ uid }} .am-cta__actions { display: flex; justify-content: center; gap: 12px; }
+
   @media (max-width: 991px) {
-    .about-modern-{{ uid }} .am-story .col-lg-6:first-child { margin-bottom: 34px; }
+    .about-modern-{{ uid }} .am-heading { font-size: 40px; }
+    .about-modern-{{ uid }} .am-band { padding: 80px 0; }
+    .about-modern-{{ uid }} .am-intro__grid,
+    .about-modern-{{ uid }} .am-split,
+    .about-modern-{{ uid }} .am-lifestyle__grid { grid-template-columns: 1fr; gap: 48px; }
+    .about-modern-{{ uid }} .am-copy { max-width: 720px; }
+    .about-modern-{{ uid }} .am-lifestyle__content { padding-left: 0; }
+    .about-modern-{{ uid }} .am-lifestyle__content { order: 2; }
+    .about-modern-{{ uid }} .am-lifestyle .am-media { order: 1; }
+    .about-modern-{{ uid }} .am-values__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 44px 28px; }
+    .about-modern-{{ uid }} .am-mission__item { padding: 0 40px; }
+    .about-modern-{{ uid }} .am-mission__copy { font-size: 23px; }
+  }
+
+  @media (max-width: 767px) {
+    .about-modern-{{ uid }} .am-hero {
+      height: 560px;
+      height: calc(100svh - 150px);
+      min-height: 480px;
+      max-height: 620px;
+    }
+    .about-modern-{{ uid }} .am-hero__image { object-position: 46% center; }
+    .about-modern-{{ uid }} .am-hero__content { padding-top: 40px; padding-bottom: 40px; }
+    .about-modern-{{ uid }} .am-hero__title { font-size: 48px; }
+    .about-modern-{{ uid }} .am-hero__statement { font-size: 24px; }
+    .about-modern-{{ uid }} .am-hero__text { font-size: 15px; }
+    .about-modern-{{ uid }} .am-heading { font-size: 34px; }
+    .about-modern-{{ uid }} .am-copy,
+    .about-modern-{{ uid }} .am-copy--lead { font-size: 16px; }
+    .about-modern-{{ uid }} .am-band { padding: 64px 0; }
+    .about-modern-{{ uid }} .am-rhythm { padding: 0; }
+    .about-modern-{{ uid }} .am-rhythm__grid { grid-template-columns: 1fr; }
+    .about-modern-{{ uid }} .am-rhythm p { padding: 20px 0; border-right: 0; border-bottom: 1px solid rgba(255,255,255,.24); }
+    .about-modern-{{ uid }} .am-rhythm p:last-child { border-bottom: 0; }
+    .about-modern-{{ uid }} .am-media--portrait,
+    .about-modern-{{ uid }} .am-media--lifestyle { aspect-ratio: 4 / 5; }
+    .about-modern-{{ uid }} .am-quote { margin-top: 30px; font-size: 21px; }
+    .about-modern-{{ uid }} .am-section-head { margin-bottom: 40px; }
+    .about-modern-{{ uid }} .am-values__grid { grid-template-columns: 1fr; gap: 36px; }
+    .about-modern-{{ uid }} .am-mission { padding: 64px 0; }
+    .about-modern-{{ uid }} .am-mission__grid { grid-template-columns: 1fr; gap: 48px; }
+    .about-modern-{{ uid }} .am-mission__item,
+    .about-modern-{{ uid }} .am-mission__item:first-child,
+    .about-modern-{{ uid }} .am-mission__item:last-child { padding: 0 0 48px; border-right: 0; border-bottom: 1px solid rgba(255,255,255,.2); }
+    .about-modern-{{ uid }} .am-mission__item:last-child { padding-bottom: 0; border-bottom: 0; }
+    .about-modern-{{ uid }} .am-gallery__grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .about-modern-{{ uid }} .am-gallery__item--1 { grid-column: 1 / -1; aspect-ratio: 4 / 5; }
+    .about-modern-{{ uid }} .am-cta { min-height: 520px; }
+    .about-modern-{{ uid }} .am-cta__title { font-size: 38px; }
+    .about-modern-{{ uid }} .am-cta__actions { flex-direction: column; align-items: stretch; }
+    .about-modern-{{ uid }} .am-button { width: 100%; }
   }
 {%- endstyle -%}
 
-<script>
-  (function () {
-    var root = document.querySelector('.about-modern-{{ uid }}');
-    if (!root) return;
-    var items = root.querySelectorAll('.am-reveal');
-    if (!('IntersectionObserver' in window)) {
-      items.forEach(function (el) { el.classList.add('am-in'); });
-      return;
-    }
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add('am-in'); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.15 });
-    items.forEach(function (el) { io.observe(el); });
-  })();
-</script>
-
 {% schema %}
 {
-  "name": "About Us Modern",
+  "name": "About Tvastra",
   "tag": "section",
   "class": "section-about-modern",
   "settings": [
     { "type": "header", "content": "Hero" },
-    { "type": "checkbox", "id": "show_hero", "label": "Show hero", "default": true },
-    { "type": "image_picker", "id": "hero_image", "label": "Hero background image" },
-    { "type": "range", "id": "hero_overlay", "min": 0, "max": 100, "step": 5, "unit": "%", "label": "Overlay darkness", "default": 60 },
-    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "Our Story" },
-    { "type": "text", "id": "hero_heading", "label": "Heading", "default": "Built For The In-Between." },
-    { "type": "richtext", "id": "hero_text", "label": "Text", "default": "<p>Not the workout. Not the match. Just the decision to move. Tvastra lives in that moment — the space between intention and action.</p>" },
-    { "type": "text", "id": "hero_btn_text", "label": "Button text", "default": "Shop the collection" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image" },
+    { "type": "select", "id": "hero_image_position", "label": "Hero image position", "default": "center center", "options": [
+      { "value": "left center", "label": "Left" },
+      { "value": "center center", "label": "Center" },
+      { "value": "right center", "label": "Right" }
+    ] },
+    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "Activewear for real life" },
+    { "type": "text", "id": "hero_heading", "label": "Heading", "default": "Tvastra Fit" },
+    { "type": "text", "id": "hero_statement", "label": "Statement", "default": "Made for the decision to move." },
+    { "type": "richtext", "id": "hero_text", "label": "Text", "default": "<p>Activewear designed for training, everyday movement, and everything in between.</p>" },
+    { "type": "text", "id": "hero_btn_text", "label": "Button text", "default": "Explore the collection" },
     { "type": "url", "id": "hero_btn_link", "label": "Button link" },
 
+    { "type": "header", "content": "Introduction" },
+    { "type": "text", "id": "intro_eyebrow", "label": "Eyebrow", "default": "Our point of view" },
+    { "type": "text", "id": "intro_heading", "label": "Heading", "default": "Movement does not need a stage." },
+    { "type": "richtext", "id": "intro_text", "label": "Text", "default": "<p>It can be a morning training session, an evening game, a walk that clears your head, or a stretch between long hours.</p><p>Tvastra is built for those everyday decisions to move - with pieces that feel capable, considered, and easy to live in.</p>" },
+
     { "type": "header", "content": "Story" },
-    { "type": "checkbox", "id": "show_story", "label": "Show story", "default": true },
     { "type": "image_picker", "id": "story_image", "label": "Story image" },
-    { "type": "text", "id": "story_eyebrow", "label": "Eyebrow", "default": "Why We Exist" },
+    { "type": "text", "id": "story_eyebrow", "label": "Eyebrow", "default": "Why we exist" },
     { "type": "text", "id": "story_heading", "label": "Heading", "default": "The hardest part is often starting." },
-    { "type": "richtext", "id": "story_text", "label": "Text", "default": "<p>We built this brand around movement that doesn't need a stage. A morning gym session. An evening paddle game. A stretch between long hours. A reset walk before the day begins again.</p>" },
+    { "type": "richtext", "id": "story_text", "label": "Text", "default": "<p>We started with a simple belief: what you wear should help you move into the day, not hold you back from it.</p><p>That means breathable comfort when the pace rises, stretch that follows your body, and clean silhouettes that work long after the session ends. No costume. No compromise between function and style.</p>" },
+    { "type": "text", "id": "story_quote", "label": "Pull quote", "default": "The space between intention and action is where Tvastra begins." },
 
-    { "type": "header", "content": "Mission & Vision" },
-    { "type": "checkbox", "id": "show_mv", "label": "Show mission & vision", "default": true },
-    { "type": "text", "id": "mission_label", "label": "Mission label", "default": "Our Mission" },
-    { "type": "richtext", "id": "mission_text", "label": "Mission text", "default": "<p>To craft comfortable, high-performance activewear that empowers people to move with confidence — every single day.</p>" },
-    { "type": "text", "id": "vision_label", "label": "Vision label", "default": "Our Vision" },
-    { "type": "richtext", "id": "vision_text", "label": "Vision text", "default": "<p>To become a trusted movement brand that blends real function with modern style, and makes an active life feel effortless.</p>" },
+    { "type": "header", "content": "Product principles" },
+    { "type": "text", "id": "values_eyebrow", "label": "Eyebrow", "default": "What goes into every piece" },
+    { "type": "text", "id": "values_heading", "label": "Heading", "default": "Designed around how real life moves." },
 
-    { "type": "header", "content": "Values" },
-    { "type": "checkbox", "id": "show_values", "label": "Show values", "default": true },
-    { "type": "text", "id": "values_eyebrow", "label": "Eyebrow", "default": "What We Stand For" },
-    { "type": "text", "id": "values_heading", "label": "Heading", "default": "Made for real-life movement." },
+    { "type": "header", "content": "Lifestyle" },
+    { "type": "image_picker", "id": "lifestyle_image", "label": "Lifestyle image" },
+    { "type": "text", "id": "lifestyle_eyebrow", "label": "Eyebrow", "default": "Beyond the workout" },
+    { "type": "text", "id": "lifestyle_heading", "label": "Heading", "default": "From training to everything after." },
+    { "type": "richtext", "id": "lifestyle_text", "label": "Text", "default": "<p>Performance matters. So does feeling like yourself.</p><p>Our approach brings technical comfort into a modern wardrobe, so the same piece can move from the gym to the commute, the court to coffee, and a focused hour to the rest of your day.</p>" },
+
+    { "type": "header", "content": "Mission and vision" },
+    { "type": "text", "id": "mission_label", "label": "Mission label", "default": "Our mission" },
+    { "type": "richtext", "id": "mission_text", "label": "Mission text", "default": "<p>To make comfortable, performance-led activewear that gives people the confidence to move every day.</p>" },
+    { "type": "text", "id": "vision_label", "label": "Vision label", "default": "Our vision" },
+    { "type": "richtext", "id": "vision_text", "label": "Vision text", "default": "<p>To build an Indian movement brand where real function, modern design, and everyday life belong together.</p>" },
+
+    { "type": "header", "content": "Editorial gallery" },
+    { "type": "checkbox", "id": "show_gallery", "label": "Show gallery", "default": true },
+    { "type": "text", "id": "gallery_eyebrow", "label": "Eyebrow", "default": "On the move" },
+    { "type": "text", "id": "gallery_heading", "label": "Heading", "default": "Designed to be lived in." },
+    { "type": "image_picker", "id": "gallery_image_1", "label": "Image 1" },
+    { "type": "image_picker", "id": "gallery_image_2", "label": "Image 2" },
+    { "type": "image_picker", "id": "gallery_image_3", "label": "Image 3" },
 
     { "type": "header", "content": "Call to action" },
-    { "type": "checkbox", "id": "show_cta", "label": "Show CTA", "default": true },
-    { "type": "image_picker", "id": "cta_image", "label": "CTA background image" },
-    { "type": "text", "id": "cta_heading", "label": "Heading", "default": "Performance without the compromise." },
-    { "type": "richtext", "id": "cta_text", "label": "Text", "default": "<p>This is activewear made for real life. Welcome to Tvastra.</p>" },
-    { "type": "text", "id": "cta_btn_text", "label": "Button text", "default": "Explore Tvastra" },
-    { "type": "url", "id": "cta_btn_link", "label": "Button link" },
-
-    { "type": "header", "content": "Section" },
-    { "type": "checkbox", "id": "section_show", "label": "Show section", "default": true },
-    { "type": "text", "id": "section_id", "label": "Custom ID" },
-    { "type": "text", "id": "section_class_name", "label": "Custom class" }
+    { "type": "image_picker", "id": "cta_image", "label": "Background image" },
+    { "type": "text", "id": "cta_eyebrow", "label": "Eyebrow", "default": "Your move" },
+    { "type": "text", "id": "cta_heading", "label": "Heading", "default": "Ready when you are." },
+    { "type": "richtext", "id": "cta_text", "label": "Text", "default": "<p>However you move, Tvastra is made to meet you there.</p>" },
+    { "type": "text", "id": "cta_women_text", "label": "Women button text", "default": "Shop women" },
+    { "type": "url", "id": "cta_women_link", "label": "Women button link" },
+    { "type": "text", "id": "cta_men_text", "label": "Men button text", "default": "Shop men" },
+    { "type": "url", "id": "cta_men_link", "label": "Men button link" }
   ],
   "blocks": [
     {
       "type": "value",
-      "name": "Value",
+      "name": "Product principle",
       "settings": [
-        { "type": "text", "id": "icon", "label": "Icon class (Bootstrap Icons)", "default": "bi bi-wind" },
-        { "type": "text", "id": "title", "label": "Title", "default": "Breathable fabric" },
-        { "type": "textarea", "id": "text", "label": "Text", "default": "Lightweight materials that breathe in the heat and move with you." }
+        { "type": "text", "id": "icon", "label": "Bootstrap icon class", "default": "bi bi-wind" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Comfort first" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Breathable materials and stretch that keep movement feeling natural." }
       ]
     }
   ],
-  "max_blocks": 8,
+  "max_blocks": 4,
   "presets": [
     {
-      "name": "About Us Modern",
+      "name": "About Tvastra",
       "blocks": [
-        { "type": "value", "settings": { "icon": "bi bi-wind", "title": "Breathable fabric", "text": "Lightweight materials that breathe in the heat and move with you." } },
-        { "type": "value", "settings": { "icon": "bi bi-arrows-move", "title": "Fit that moves", "text": "Stretch that follows your body — structured for performance, fluid for everyday." } },
-        { "type": "value", "settings": { "icon": "bi bi-gem", "title": "Design that lasts", "text": "Clean, modern silhouettes built to feel sharp wear after wear." } },
-        { "type": "value", "settings": { "icon": "bi bi-geo-alt", "title": "Made in India", "text": "Proudly designed and crafted for movement that fits real life." } }
+        { "type": "value", "settings": { "icon": "bi bi-wind", "title": "Comfort first", "text": "Breathable materials and stretch that keep movement feeling natural." } },
+        { "type": "value", "settings": { "icon": "bi bi-arrows-move", "title": "Purposeful fit", "text": "Support where it matters, freedom everywhere else." } },
+        { "type": "value", "settings": { "icon": "bi bi-gem", "title": "Clean design", "text": "Modern, versatile silhouettes made to outlive a single workout." } },
+        { "type": "value", "settings": { "icon": "bi bi-geo-alt", "title": "Made in India", "text": "Proudly made in India for the way India moves." } }
       ]
     }
   ]
