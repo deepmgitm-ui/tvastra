@@ -171,6 +171,7 @@
 }
 
 .jdgm-carousel-wrapper .jdgm-widget.jdgm-carousel {
+  position: relative !important;
   width: min(100%, 1140px) !important;
   margin: 0 auto !important;
 }
@@ -236,11 +237,11 @@
   width: 100% !important;
   max-width: none !important;
   height: auto !important;
-  aspect-ratio: 4 / 3 !important;
-  object-fit: cover !important;
+  aspect-ratio: 3 / 4 !important;
+  object-fit: contain !important;
   object-position: center !important;
   border-radius: 0 !important;
-  background: #eef1ef !important;
+  background: #f3f5f2 !important;
 }
 
 .jdgm-carousel--aligned-theme span.jdgm-carousel-item__product-image:empty {
@@ -318,9 +319,55 @@
 
 .jdgm-carousel-wrapper .jdgm-carousel__left-arrow,
 .jdgm-carousel-wrapper .jdgm-carousel__right-arrow {
-  top: 50% !important;
-  margin-top: 0 !important;
-  transform: translateY(-50%) !important;
+  display: none !important;
+}
+
+.tv-jdgm-nav {
+  display: none;
+}
+
+@media (min-width: 750px) {
+  .jdgm-carousel-wrapper .jdgm-carousel__item-container {
+    cursor: default !important;
+  }
+
+  .tv-jdgm-slider-ready .tv-jdgm-nav {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(8, 43, 52, 0.14);
+    border-radius: 999px;
+    box-shadow: 0 12px 28px rgba(8, 43, 52, 0.16);
+    color: var(--tv-review-ink);
+    cursor: pointer;
+    display: flex;
+    font-size: 34px;
+    height: 44px;
+    justify-content: center;
+    line-height: 1;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+    width: 44px;
+    z-index: 3;
+  }
+
+  .tv-jdgm-slider-ready .tv-jdgm-nav:hover {
+    background: #ffffff;
+    box-shadow: 0 16px 34px rgba(8, 43, 52, 0.2);
+  }
+
+  .tv-jdgm-slider-ready .tv-jdgm-nav:active {
+    transform: translateY(-50%) scale(0.96);
+  }
+
+  .tv-jdgm-slider-ready .tv-jdgm-nav--prev {
+    left: 12px;
+  }
+
+  .tv-jdgm-slider-ready .tv-jdgm-nav--next {
+    right: 12px;
+  }
 }
 
 .jdgm-rev__author,

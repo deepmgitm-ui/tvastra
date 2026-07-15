@@ -1,6 +1,7 @@
 (function () {
   var CARD_SELECTOR = ".jdgm-carousel-item";
   var CONTAINER_SELECTOR = ".jdgm-carousel__item-container";
+  var WIDGET_SELECTOR = ".jdgm-widget.jdgm-carousel";
   var PRODUCT_LINK_SELECTOR = ".jdgm-carousel-item__product[href*='/products/']";
   var IMAGE_SELECTOR = ".jdgm-carousel-item__product-image";
   var dragState = {
@@ -164,6 +165,79 @@
     }
   }
 
+  function getVisibleCard(container, direction) {
+    var cards = Array.prototype.slice.call(container.querySelectorAll(CARD_SELECTOR));
+    if (!cards.length) return null;
+
+    var currentLeft = container.scrollLeft;
+    var currentIndex = cards.reduce(function (nearestIndex, card, index) {
+      var cardLeft = getCardScrollLeft(container, card);
+      var nearestLeft = getCardScrollLeft(container, cards[nearestIndex]);
+      return Math.abs(cardLeft - currentLeft) < Math.abs(nearestLeft - currentLeft) ? index : nearestIndex;
+    }, 0);
+
+    var nextIndex = Math.max(0, Math.min(cards.length - 1, currentIndex + direction));
+    return cards[nextIndex];
+  }
+
+  function slideContainer(container, direction) {
+    var targetCard = getVisibleCard(container, direction);
+    if (!targetCard) return;
+
+    var targetLeft = getCardScrollLeft(container, targetCard);
+
+    try {
+      container.scrollTo({ left: targetLeft, behavior: "smooth" });
+    } catch (error) {
+      container.scrollLeft = targetLeft;
+    }
+  }
+
+  function createNavButton(direction) {
+    var button = document.createElement("button");
+    button.className = "tv-jdgm-nav tv-jdgm-nav--" + (direction < 0 ? "prev" : "next");
+    button.type = "button";
+    button.setAttribute("aria-label", direction < 0 ? "Previous reviews" : "Next reviews");
+    button.innerHTML = direction < 0 ? "&#8249;" : "&#8250;";
+    return button;
+  }
+
+  function enhanceSliderControls(root) {
+    var scope = root && root.querySelectorAll ? root : document;
+    var widgets = Array.prototype.slice.call(scope.querySelectorAll(WIDGET_SELECTOR));
+
+    if (scope.matches && scope.matches(WIDGET_SELECTOR)) {
+      widgets.unshift(scope);
+    }
+
+    widgets.forEach(function (widget) {
+      if (widget.dataset.tvJdgmControlsReady === "true") return;
+
+      var container = widget.querySelector(CONTAINER_SELECTOR);
+      if (!container) return;
+
+      var prevButton = createNavButton(-1);
+      var nextButton = createNavButton(1);
+
+      widget.dataset.tvJdgmControlsReady = "true";
+      widget.classList.add("tv-jdgm-slider-ready");
+      widget.appendChild(prevButton);
+      widget.appendChild(nextButton);
+
+      prevButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        slideContainer(container, -1);
+      });
+
+      nextButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        slideContainer(container, 1);
+      });
+    });
+  }
+
   function bindCardNavigation() {
     document.addEventListener(
       "pointerdown",
@@ -280,6 +354,7 @@
   function start() {
     bindCardNavigation();
     enhanceCards(document);
+    enhanceSliderControls(document);
 
     var observer = new MutationObserver(function (mutations) {
       mutations.forEach(function (mutation) {
@@ -287,6 +362,7 @@
           if (node.nodeType !== 1) return;
           if (node.matches && node.matches(CARD_SELECTOR)) enhanceCard(node);
           enhanceCards(node);
+          enhanceSliderControls(node);
         });
       });
     });
