@@ -32,6 +32,10 @@
     return productIndex > -1 ? parts[productIndex + 1] : "";
   }
 
+  function getProductPageUrl(url) {
+    return url.pathname + url.search;
+  }
+
   function hasUsableImage(card) {
     var image = card.querySelector(IMAGE_SELECTOR);
     if (!image || image.tagName !== "IMG") return false;
@@ -106,13 +110,19 @@
   function makeCardClickable(card, productUrl) {
     if (card.dataset.tvCardLinkReady === "true") return;
 
+    var link = card.querySelector(PRODUCT_LINK_SELECTOR);
+    var cleanProductUrl = getProductPageUrl(productUrl);
     var productTitle = card.querySelector(".jdgm-carousel-item__product-title");
     card.dataset.tvCardLinkReady = "true";
     card.classList.add("tv-jdgm-card-link-ready");
-    card.dataset.tvProductUrl = productUrl.pathname + productUrl.search + productUrl.hash;
+    card.dataset.tvProductUrl = cleanProductUrl;
     card.setAttribute("role", "link");
     card.setAttribute("tabindex", "0");
     card.setAttribute("aria-label", "View " + ((productTitle && productTitle.textContent.trim()) || "product"));
+
+    if (link) {
+      link.setAttribute("href", cleanProductUrl);
+    }
   }
 
   function getLinkedCard(target) {
@@ -126,6 +136,32 @@
   function openCard(card) {
     if (!card || !card.dataset.tvProductUrl) return;
     window.location.href = card.dataset.tvProductUrl;
+  }
+
+  function getCardScrollLeft(container, card) {
+    var containerRect = container.getBoundingClientRect();
+    var cardRect = card.getBoundingClientRect();
+    return cardRect.left - containerRect.left + container.scrollLeft;
+  }
+
+  function snapToNearestCard(container) {
+    var cards = Array.prototype.slice.call(container.querySelectorAll(CARD_SELECTOR));
+    if (!cards.length) return;
+
+    var currentLeft = container.scrollLeft;
+    var nearestCard = cards.reduce(function (nearest, card) {
+      var cardLeft = getCardScrollLeft(container, card);
+      var nearestLeft = getCardScrollLeft(container, nearest);
+      return Math.abs(cardLeft - currentLeft) < Math.abs(nearestLeft - currentLeft) ? card : nearest;
+    }, cards[0]);
+
+    var targetLeft = getCardScrollLeft(container, nearestCard);
+
+    try {
+      container.scrollTo({ left: targetLeft, behavior: "smooth" });
+    } catch (error) {
+      container.scrollLeft = targetLeft;
+    }
   }
 
   function bindCardNavigation() {
@@ -173,6 +209,13 @@
     document.addEventListener(
       "pointerup",
       function () {
+        var container = dragState.container;
+        var moved = dragState.moved;
+
+        if (container && moved) {
+          snapToNearestCard(container);
+        }
+
         if (dragState.container) {
           dragState.container.classList.remove("tv-jdgm-sliding");
         }

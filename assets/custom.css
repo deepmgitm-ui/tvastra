@@ -181,7 +181,8 @@
   cursor: grab !important;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
-  scroll-snap-type: x proximity;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
   scrollbar-width: none;
 }
 
@@ -302,8 +303,17 @@
 .jdgm-carousel--aligned-theme .jdgm-carousel-item__product {
   color: #66777c !important;
   font-size: 12px !important;
-  line-height: 1.25 !important;
+  line-height: 1.35 !important;
   text-align: center !important;
+}
+
+.jdgm-carousel--aligned-theme .jdgm-carousel-item__product,
+.jdgm-carousel--aligned-theme .jdgm-carousel-item__product-title {
+  display: block !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: normal !important;
 }
 
 .jdgm-carousel-wrapper .jdgm-carousel__left-arrow,
