@@ -176,14 +176,18 @@
 }
 
 .jdgm-carousel-wrapper .jdgm-carousel__item-container {
-  overflow: hidden !important;
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
 }
 
 .jdgm-carousel-wrapper .jdgm-carousel__item-wrapper {
   display: flex !important;
   flex-direction: row !important;
   flex-wrap: nowrap !important;
-  gap: 30px !important;
+  gap: 0 !important;
   align-items: stretch !important;
   justify-content: flex-start !important;
   height: auto !important;
@@ -201,6 +205,8 @@
   padding: 0 !important;
   margin: 0 !important;
   text-align: center !important;
+  scroll-snap-align: start !important;
+  touch-action: pan-x pan-y !important;
 }
 
 .jdgm-carousel--aligned-theme .jdgm-carousel-item.tv-jdgm-card-link-ready {
@@ -452,7 +458,7 @@
   }
 
   .jdgm-carousel-wrapper .jdgm-carousel__item-wrapper {
-    gap: 16px !important;
+    gap: 0 !important;
   }
 
   .jdgm-carousel--aligned-theme .jdgm-carousel-item__review-wrapper {
