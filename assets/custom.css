@@ -3,11 +3,11 @@
 *************************************************************/
 
 :root {
-  --tv-review-bg: #050507;
+  --tv-review-bg: #f6f7f5;
   --tv-review-card: #ffffff;
-  --tv-review-ink: #071013;
-  --tv-review-muted: #5d6669;
-  --tv-review-line: #dfe3e4;
+  --tv-review-ink: #082b34;
+  --tv-review-muted: #31474d;
+  --tv-review-line: #d7ddde;
   --tv-review-accent: #006f6a;
 }
 
@@ -17,8 +17,8 @@
 .jm-review-widget,
 .jm-review-widget--minimal {
   background: var(--tv-review-bg) !important;
-  color: #ffffff !important;
-  padding: 46px 18px 52px !important;
+  color: var(--tv-review-ink) !important;
+  padding: 48px 18px 56px !important;
   overflow: hidden !important;
 }
 
@@ -30,7 +30,7 @@
     font-weight: var(--heading-font-weight) !important;
     display: block !important;
     width: 100% !important;
-    color: #ffffff !important;
+    color: var(--tv-review-ink) !important;
     letter-spacing: 0 !important;
 }
 
@@ -38,9 +38,9 @@
 .jdgm-all-reviews-widget .jdgm-widget-title,
 .jm-review-widget--minimal-header {
     padding-top: 0 !important;
-    margin-bottom: 26px !important;
+    margin-bottom: 30px !important;
     text-align: center !important;
-    color: #ffffff !important;
+    color: var(--tv-review-ink) !important;
 }
 
 .jm-cluster .jm-stack:has(.jm-text.jm-review-widget-minimal-header__title) {
@@ -53,10 +53,10 @@
 .jm-review-widget .jm-grid,
 .jm-review-widget .jm-cluster:not(:has(.jm-review-widget-minimal-header__title)) {
   display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 300px)) !important;
+  grid-template-columns: repeat(auto-fit, minmax(236px, 286px)) !important;
   justify-content: center !important;
-  gap: 18px !important;
-  max-width: 1040px !important;
+  gap: 26px !important;
+  max-width: 1110px !important;
   margin: 0 auto !important;
 }
 
@@ -68,11 +68,11 @@
   background: var(--tv-review-card) !important;
   color: var(--tv-review-ink) !important;
   border: 1px solid var(--tv-review-line) !important;
-  border-radius: 6px !important;
-  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.18) !important;
+  border-radius: 7px !important;
+  box-shadow: 0 16px 34px rgba(8, 43, 52, 0.11) !important;
   overflow: hidden !important;
   width: 100% !important;
-  max-width: 300px !important;
+  max-width: 286px !important;
   min-height: 0 !important;
   padding: 0 !important;
   margin: 0 auto !important;
@@ -133,7 +133,7 @@
   display: block !important;
   width: 100% !important;
   height: auto !important;
-  aspect-ratio: 4 / 5 !important;
+  aspect-ratio: 1 / 1 !important;
   object-fit: cover !important;
   object-position: center !important;
   border-radius: 0 !important;
@@ -225,7 +225,7 @@
 .jdgm-write-rev-link,
 .jdgm-quest,
 .jdgm-paginate {
-  border-color: rgba(255, 255, 255, 0.18) !important;
+  border-color: rgba(8, 43, 52, 0.14) !important;
 }
 
 @media (min-width: 750px) {
@@ -241,7 +241,7 @@
   .jdgm-carousel-wrapper,
   .jm-review-widget,
   .jm-review-widget--minimal {
-    padding: 34px 12px 38px !important;
+    padding: 36px 12px 42px !important;
   }
 
   .jdgm-rev-widg__reviews,
@@ -250,7 +250,7 @@
   .jm-review-widget .jm-cluster:not(:has(.jm-review-widget-minimal-header__title)) {
     display: flex !important;
     justify-content: flex-start !important;
-    gap: 12px !important;
+    gap: 16px !important;
     overflow-x: auto !important;
     scroll-snap-type: x mandatory !important;
     padding: 0 6px 10px !important;
@@ -264,8 +264,8 @@
   .jm-review-card,
   .jm-review,
   .jm-review-widget [class*="review-card"] {
-    flex: 0 0 78vw !important;
-    max-width: 286px !important;
+    flex: 0 0 76vw !important;
+    max-width: 282px !important;
     scroll-snap-align: center !important;
   }
 
