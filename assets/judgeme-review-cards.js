@@ -176,7 +176,7 @@
       return Math.abs(cardLeft - currentLeft) < Math.abs(nearestLeft - currentLeft) ? index : nearestIndex;
     }, 0);
 
-    var nextIndex = Math.max(0, Math.min(cards.length - 1, currentIndex + direction));
+    var nextIndex = (currentIndex + direction + cards.length) % cards.length;
     return cards[nextIndex];
   }
 
@@ -243,7 +243,7 @@
       "pointerdown",
       function (event) {
         var container = getSlideContainer(event.target);
-        if (!container || (event.pointerType === "mouse" && event.button !== 0)) return;
+        if (!container || event.pointerType === "mouse") return;
 
         dragState.active = true;
         dragState.moved = false;

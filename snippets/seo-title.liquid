@@ -20,6 +20,7 @@
   {%- endif -%}
 {%- endcapture -%}
 <title>{{ seo_title }}</title>
-{%- if page_description -%}
-  <meta name="description" content="{{ page_description | escape | default: shop.name | escape }}">
-{%- endif -%}
+{%- liquid
+  assign seo_description = page_description | default: shop.description | default: shop.name
+-%}
+<meta name="description" content="{{ seo_description | strip_html | escape }}">
