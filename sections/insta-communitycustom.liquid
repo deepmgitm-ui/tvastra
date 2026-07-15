@@ -1,16 +1,48 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
+{%- liquid
+  assign cta_heading = section.settings.main_heading
+  if cta_heading == blank or cta_heading == 'Join Our Community'
+    assign cta_heading = 'Join the Tvastra movement'
+  endif
+
+  assign cta_handle = section.settings.insta_handle
+  if cta_handle == blank or cta_handle == 'Instagram @tvastra.fit'
+    assign cta_handle = 'Follow @tvastra.fit'
+  endif
+
+  assign cta_bg = section.settings.bg_color
+  if cta_bg == blank or cta_bg == '#f9f9f9'
+    assign cta_bg = '#050507'
+  endif
+
+  assign cta_heading_color = section.settings.heading_color
+  if cta_heading_color == blank or cta_heading_color == '#444444'
+    assign cta_heading_color = '#ffffff'
+  endif
+
+  assign cta_icon_color = section.settings.icon_color
+  if cta_icon_color == blank or cta_icon_color == '#111111'
+    assign cta_icon_color = '#070707'
+  endif
+
+  assign cta_handle_color = section.settings.handle_color
+  if cta_handle_color == blank or cta_handle_color == '#111111'
+    assign cta_handle_color = '#070707'
+  endif
+-%}
+
 <section id="insta-cta-{{ section.id }}" class="insta-cta-section">
   <div class="insta-cta-container">
     <span class="insta-kicker">TVASTRA COMMUNITY</span>
 
-    {%- if section.settings.main_heading != blank -%}
-      <h2 class="insta-heading">{{ section.settings.main_heading }}</h2>
+    {%- if cta_heading != blank -%}
+      <h2 class="insta-heading">{{ cta_heading }}</h2>
     {%- endif -%}
 
     <p class="insta-copy">Built for everyday movement. Worn by people who train, travel, and keep showing up.</p>
 
-    {%- if section.settings.insta_handle != blank -%}
+    {%- if cta_handle != blank -%}
       <a {% if section.settings.insta_link != blank %}href="{{ section.settings.insta_link }}" target="_blank" rel="noopener"{% else %}role="link" aria-disabled="true"{% endif %} class="insta-handle">
         {%- if section.settings.show_icon -%}
           <span class="insta-icon" aria-hidden="true">
@@ -24,7 +56,7 @@
           </span>
         {%- endif -%}
 
-        <span class="insta-text">{{ section.settings.insta_handle }}</span>
+        <span class="insta-text">{{ cta_handle }}</span>
       </a>
     {%- endif -%}
   </div>
@@ -44,7 +76,7 @@
     width: 100%;
     padding-top: {{ section.settings.padding_top }}px;
     padding-bottom: {{ section.settings.padding_bottom }}px;
-    background: {{ section.settings.bg_color }} !important;
+    background: {{ cta_bg }} !important;
     color: #ffffff;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -100,7 +132,7 @@
     font-size: {{ section.settings.heading_size }}px !important;
     line-height: 1.12;
     letter-spacing: {{ section.settings.heading_spacing }}px !important;
-    color: {{ section.settings.heading_color }} !important;
+    color: {{ cta_heading_color }} !important;
     text-transform: uppercase;
   }
 
@@ -139,7 +171,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: {{ section.settings.icon_color }} !important;
+    color: {{ cta_icon_color }} !important;
   }
 
   #insta-cta-{{ section.id }} .insta-icon svg,
@@ -169,7 +201,7 @@
     font-size: {{ section.settings.handle_size }}px !important;
     line-height: 1.2;
     letter-spacing: {{ section.settings.handle_spacing }}px !important;
-    color: {{ section.settings.handle_color }} !important;
+    color: {{ cta_handle_color }} !important;
   }
 
   @media (max-width: 768px) {
