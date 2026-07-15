@@ -178,9 +178,20 @@
 .jdgm-carousel-wrapper .jdgm-carousel__item-container {
   overflow-x: auto !important;
   overflow-y: visible !important;
+  cursor: grab !important;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
   scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+
+.jdgm-carousel-wrapper .jdgm-carousel__item-container::-webkit-scrollbar {
+  display: none;
+}
+
+.jdgm-carousel-wrapper .jdgm-carousel__item-container.tv-jdgm-sliding {
+  cursor: grabbing !important;
+  scroll-snap-type: none;
 }
 
 .jdgm-carousel-wrapper .jdgm-carousel__item-wrapper {

@@ -1,12 +1,15 @@
 (function () {
   var CARD_SELECTOR = ".jdgm-carousel-item";
+  var CONTAINER_SELECTOR = ".jdgm-carousel__item-container";
   var PRODUCT_LINK_SELECTOR = ".jdgm-carousel-item__product[href*='/products/']";
   var IMAGE_SELECTOR = ".jdgm-carousel-item__product-image";
   var dragState = {
     active: false,
     moved: false,
+    container: null,
     startX: 0,
-    startY: 0
+    startY: 0,
+    startScrollLeft: 0
   };
   var productCache = new Map();
 
@@ -116,6 +119,10 @@
     return target && target.closest ? target.closest(CARD_SELECTOR + ".tv-jdgm-card-link-ready") : null;
   }
 
+  function getSlideContainer(target) {
+    return target && target.closest ? target.closest(CONTAINER_SELECTOR) : null;
+  }
+
   function openCard(card) {
     if (!card || !card.dataset.tvProductUrl) return;
     window.location.href = card.dataset.tvProductUrl;
@@ -125,11 +132,16 @@
     document.addEventListener(
       "pointerdown",
       function (event) {
-        if (!getLinkedCard(event.target)) return;
+        var container = getSlideContainer(event.target);
+        if (!container || (event.pointerType === "mouse" && event.button !== 0)) return;
+
         dragState.active = true;
         dragState.moved = false;
+        dragState.container = container;
         dragState.startX = event.clientX;
         dragState.startY = event.clientY;
+        dragState.startScrollLeft = container.scrollLeft;
+        container.classList.add("tv-jdgm-sliding");
       },
       { passive: true }
     );
@@ -138,27 +150,63 @@
       "pointermove",
       function (event) {
         if (!dragState.active) return;
-        if (Math.abs(event.clientX - dragState.startX) > 8 || Math.abs(event.clientY - dragState.startY) > 8) {
+
+        var deltaX = event.clientX - dragState.startX;
+        var deltaY = event.clientY - dragState.startY;
+        var absX = Math.abs(deltaX);
+        var absY = Math.abs(deltaY);
+
+        if (absX > 8 || absY > 8) {
           dragState.moved = true;
         }
+
+        if (dragState.container && absX > absY && absX > 4) {
+          dragState.container.scrollLeft = dragState.startScrollLeft - deltaX;
+          if (event.pointerType === "mouse") {
+            event.preventDefault();
+          }
+        }
       },
-      { passive: true }
+      { passive: false }
     );
 
     document.addEventListener(
       "pointerup",
       function () {
+        if (dragState.container) {
+          dragState.container.classList.remove("tv-jdgm-sliding");
+        }
+
         window.setTimeout(function () {
           dragState.active = false;
           dragState.moved = false;
-        }, 0);
+          dragState.container = null;
+        }, 180);
+      },
+      { passive: true }
+    );
+
+    document.addEventListener(
+      "pointercancel",
+      function () {
+        if (dragState.container) {
+          dragState.container.classList.remove("tv-jdgm-sliding");
+        }
+        dragState.active = false;
+        dragState.moved = false;
+        dragState.container = null;
       },
       { passive: true }
     );
 
     document.addEventListener("click", function (event) {
       var card = getLinkedCard(event.target);
-      if (!card || dragState.moved) return;
+      if (!card) return;
+      if (dragState.moved) {
+        event.preventDefault();
+        event.stopPropagation();
+        return;
+      }
       if (window.getSelection && window.getSelection().toString()) return;
       event.preventDefault();
       openCard(card);
