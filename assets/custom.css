@@ -156,6 +156,131 @@
   display: none !important;
 }
 
+.jdgm-carousel-title-and-link {
+  width: min(100%, 1140px) !important;
+  margin: 0 auto 26px !important;
+  text-align: center !important;
+}
+
+.jdgm-carousel-title {
+  color: var(--tv-review-ink) !important;
+  font-family: var(--alt-font) !important;
+  font-size: 30px !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0 !important;
+}
+
+.jdgm-carousel-wrapper .jdgm-widget.jdgm-carousel {
+  width: min(100%, 1140px) !important;
+  margin: 0 auto !important;
+}
+
+.jdgm-carousel-wrapper .jdgm-carousel__item-container {
+  overflow: hidden !important;
+}
+
+.jdgm-carousel-wrapper .jdgm-carousel__item-wrapper {
+  align-items: stretch !important;
+  height: auto !important;
+}
+
+.jdgm-carousel--aligned-theme .jdgm-carousel-item {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  width: 308px !important;
+  max-width: 308px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 15px !important;
+  text-align: center !important;
+}
+
+.jdgm-carousel--aligned-theme .jdgm-carousel-item__product-image {
+  display: block !important;
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: auto !important;
+  aspect-ratio: 4 / 3 !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: 0 !important;
+  background: #eef1ef !important;
+}
+
+.jdgm-carousel--aligned-theme span.jdgm-carousel-item__product-image:empty {
+  display: none !important;
+}
+
+.jdgm-carousel--aligned-theme .jdgm-carousel-item__review-wrapper {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  height: auto !important;
+  padding: 16px 20px 22px !important;
+  text-align: center !important;
+}
+
+.jdgm-carousel--aligned-theme .jdgm-carousel-item__review {
+  display: flex !important;
+  flex-direction: column !important;
+  height: auto !important;
+  text-align: center !important;
+}
+
+.jdgm-carousel--aligned-theme .jdgm-carousel-item__review-rating {
+  display: block !important;
+  margin: 0 auto 12px !important;
+  color: var(--tv-review-accent) !important;
+  text-align: center !important;
+}
+
+.jdgm-carousel--aligned-theme .jdgm-carousel-item__review-content {
+  color: var(--tv-review-muted) !important;
+  text-align: center !important;
+}
+
+.jdgm-carousel--aligned-theme .jdgm-carousel-item__review-body {
+  color: var(--tv-review-muted) !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  min-height: 88px !important;
+  text-align: center !important;
+}
+
+.jdgm-carousel--aligned-theme .jdgm-carousel-item__review-body p {
+  margin: 0 !important;
+}
+
+.jdgm-carousel--aligned-theme .jdgm-carousel-item__reviewer-name-wrapper {
+  margin-top: 16px !important;
+  text-align: center !important;
+}
+
+.jdgm-carousel--aligned-theme .jdgm-carousel-item__reviewer-name {
+  color: var(--tv-review-ink) !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  line-height: 1.25 !important;
+  opacity: 1 !important;
+}
+
+.jdgm-carousel--aligned-theme .jdgm-carousel-item__product {
+  color: #66777c !important;
+  font-size: 12px !important;
+  line-height: 1.25 !important;
+  text-align: center !important;
+}
+
+.jdgm-carousel-wrapper .jdgm-carousel__left-arrow,
+.jdgm-carousel-wrapper .jdgm-carousel__right-arrow {
+  top: 50% !important;
+  margin-top: 0 !important;
+  transform: translateY(-50%) !important;
+}
+
 .jdgm-rev__author,
 .jdgm-rev__buyer-badge,
 .jm-review-card [class*="author"],
@@ -290,6 +415,32 @@
   .jdgm-rev__body,
   .jm-review-card [class*="body"],
   .jm-review [class*="body"] {
+    font-size: 13.5px !important;
+    min-height: 96px !important;
+  }
+
+  .jdgm-carousel-title-and-link,
+  .jdgm-carousel-wrapper .jdgm-widget.jdgm-carousel {
+    width: calc(100% - 24px) !important;
+  }
+
+  .jdgm-carousel-title {
+    font-size: 22px !important;
+    line-height: 1.18 !important;
+  }
+
+  .jdgm-carousel--aligned-theme .jdgm-carousel-item {
+    flex: 0 0 82vw !important;
+    width: 82vw !important;
+    max-width: 312px !important;
+    margin: 0 8px !important;
+  }
+
+  .jdgm-carousel--aligned-theme .jdgm-carousel-item__review-wrapper {
+    padding: 15px 18px 20px !important;
+  }
+
+  .jdgm-carousel--aligned-theme .jdgm-carousel-item__review-body {
     font-size: 13.5px !important;
     min-height: 96px !important;
   }
