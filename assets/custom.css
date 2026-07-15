@@ -180,7 +180,12 @@
 }
 
 .jdgm-carousel-wrapper .jdgm-carousel__item-wrapper {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  gap: 30px !important;
   align-items: stretch !important;
+  justify-content: flex-start !important;
   height: auto !important;
 }
 
@@ -188,12 +193,13 @@
   display: flex !important;
   flex-direction: column !important;
   align-items: stretch !important;
+  flex: 0 0 308px !important;
   width: 308px !important;
   max-width: 308px !important;
   height: auto !important;
   min-height: 0 !important;
   padding: 0 !important;
-  margin: 0 15px !important;
+  margin: 0 !important;
   text-align: center !important;
 }
 
@@ -433,7 +439,11 @@
     flex: 0 0 82vw !important;
     width: 82vw !important;
     max-width: 312px !important;
-    margin: 0 8px !important;
+    margin: 0 !important;
+  }
+
+  .jdgm-carousel-wrapper .jdgm-carousel__item-wrapper {
+    gap: 16px !important;
   }
 
   .jdgm-carousel--aligned-theme .jdgm-carousel-item__review-wrapper {
