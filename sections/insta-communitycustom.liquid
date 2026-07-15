@@ -1,26 +1,25 @@
-<!-- 👇 Icon Libraries 👇 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 <section id="insta-cta-{{ section.id }}" class="insta-cta-section">
   <div class="insta-cta-container">
-    
-    <!-- 1. Ab Heading Upar Aayegi -->
+    <span class="insta-kicker">TVASTRA COMMUNITY</span>
+
     {%- if section.settings.main_heading != blank -%}
       <h2 class="insta-heading">{{ section.settings.main_heading }}</h2>
     {%- endif -%}
 
-    <!-- 2. Instagram Handle aur Logo Neeche Aayega -->
+    <p class="insta-copy">Built for everyday movement. Worn by people who train, travel, and keep showing up.</p>
+
     {%- if section.settings.insta_handle != blank -%}
-      <a {% if section.settings.insta_link != blank %}href="{{ section.settings.insta_link }}" target="_blank"{% else %}role="link" aria-disabled="true"{% endif %} class="insta-handle">
-        
+      <a {% if section.settings.insta_link != blank %}href="{{ section.settings.insta_link }}" target="_blank" rel="noopener"{% else %}role="link" aria-disabled="true"{% endif %} class="insta-handle">
         {%- if section.settings.show_icon -%}
-          <span class="insta-icon">
+          <span class="insta-icon" aria-hidden="true">
             {%- if section.settings.icon_image != blank -%}
-              <img src="{{ section.settings.icon_image | image_url: width: 100 }}" alt="Instagram" loading="lazy">
+              <img src="{{ section.settings.icon_image | image_url: width: 100 }}" alt="" loading="lazy">
             {%- elsif section.settings.icon_class != blank -%}
               <i class="{{ section.settings.icon_class }}"></i>
             {%- else -%}
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+              <i class="bi bi-instagram"></i>
             {%- endif -%}
           </span>
         {%- endif -%}
@@ -28,14 +27,10 @@
         <span class="insta-text">{{ section.settings.insta_handle }}</span>
       </a>
     {%- endif -%}
-
   </div>
 </section>
 
 <style>
-  /* =========================================
-     ✨ MASTER FONTS LOADING ✨
-  ========================================= */
   {%- if section.settings.handle_font != blank and section.settings.use_futura_handle == false -%}
     {{ section.settings.handle_font | font_face: font_display: 'swap' }}
   {%- endif -%}
@@ -43,36 +38,54 @@
     {{ section.settings.heading_font | font_face: font_display: 'swap' }}
   {%- endif -%}
 
-  /* =========================================
-     SECTION LAYOUT & BACKGROUND
-  ========================================= */
   #insta-cta-{{ section.id }} {
-    background-color: {{ section.settings.bg_color }} !important;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
     padding-top: {{ section.settings.padding_top }}px;
     padding-bottom: {{ section.settings.padding_bottom }}px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background: {{ section.settings.bg_color }} !important;
+    color: #ffffff;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  #insta-cta-{{ section.id }}::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.06), transparent 24%, transparent 76%, rgba(255, 255, 255, 0.06));
   }
 
   #insta-cta-{{ section.id }} .insta-cta-container {
-    display: flex;
-    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    width: calc(100% - 32px);
+    max-width: 980px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "kicker handle"
+      "heading handle"
+      "copy handle";
+    gap: 10px 34px;
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    gap: {{ section.settings.text_gap }}px; 
-    max-width: 800px;
-    padding: 0 20px;
   }
 
-  /* =========================================
-     TYPOGRAPHY & ICON STYLING
-  ========================================= */
-  
-  /* Top Text (Main Heading) */
+  #insta-cta-{{ section.id }} .insta-kicker {
+    grid-area: kicker;
+    font-size: 10px;
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: rgba(255, 255, 255, 0.66);
+    text-transform: uppercase;
+  }
+
   #insta-cta-{{ section.id }} .insta-heading {
+    grid-area: heading;
     {%- if section.settings.use_futura_heading -%}
       font-family: 'FuturaCustom', sans-serif !important;
     {%- else -%}
@@ -82,47 +95,67 @@
         font-style: {{ section.settings.heading_font.style }} !important;
       {%- endif -%}
     {%- endif -%}
-    font-size: {{ section.settings.heading_size }}px !important;
-    color: {{ section.settings.heading_color }} !important;
-    letter-spacing: {{ section.settings.heading_spacing }}px !important;
+    max-width: 620px;
     margin: 0 !important;
-    line-height: 1.2;
+    font-size: {{ section.settings.heading_size }}px !important;
+    line-height: 1.12;
+    letter-spacing: {{ section.settings.heading_spacing }}px !important;
+    color: {{ section.settings.heading_color }} !important;
+    text-transform: uppercase;
   }
 
-  /* Bottom Text Box (Icon + Handle) */
+  #insta-cta-{{ section.id }} .insta-copy {
+    grid-area: copy;
+    max-width: 560px;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.68);
+  }
+
   #insta-cta-{{ section.id }} .insta-handle {
-    display: flex;
+    grid-area: handle;
+    min-height: 48px;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: {{ section.settings.icon_gap }}px;
+    padding: 0 20px;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    background: rgba(255, 255, 255, 0.96);
+    color: #070707;
     text-decoration: none;
-    transition: opacity 0.3s ease;
+    white-space: nowrap;
+    transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease;
   }
 
   #insta-cta-{{ section.id }} .insta-handle[href]:hover {
-    opacity: 0.7;
+    transform: translateY(-2px);
+    background: #ffffff;
+    border-color: #ffffff;
   }
 
-  /* Icon Control */
   #insta-cta-{{ section.id }} .insta-icon {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     color: {{ section.settings.icon_color }} !important;
   }
+
   #insta-cta-{{ section.id }} .insta-icon svg,
   #insta-cta-{{ section.id }} .insta-icon i {
     width: {{ section.settings.icon_size }}px;
     height: {{ section.settings.icon_size }}px;
     font-size: {{ section.settings.icon_size }}px;
+    line-height: 1;
   }
+
   #insta-cta-{{ section.id }} .insta-icon img {
     width: {{ section.settings.icon_size }}px;
     height: {{ section.settings.icon_size }}px;
     object-fit: contain;
   }
 
-  /* Handle Text */
   #insta-cta-{{ section.id }} .insta-text {
     {%- if section.settings.use_futura_handle -%}
       font-family: 'FuturaCustom', sans-serif !important;
@@ -134,38 +167,61 @@
       {%- endif -%}
     {%- endif -%}
     font-size: {{ section.settings.handle_size }}px !important;
-    color: {{ section.settings.handle_color }} !important;
-    letter-spacing: {{ section.settings.handle_spacing }}px !important;
     line-height: 1.2;
+    letter-spacing: {{ section.settings.handle_spacing }}px !important;
+    color: {{ section.settings.handle_color }} !important;
   }
 
-  /* =========================================
-     MOBILE RESPONSIVE
-  ========================================= */
   @media (max-width: 768px) {
     #insta-cta-{{ section.id }} {
       padding-top: {{ section.settings.padding_top_mobile }}px !important;
       padding-bottom: {{ section.settings.padding_bottom_mobile }}px !important;
     }
+
     #insta-cta-{{ section.id }} .insta-cta-container {
-      gap: calc({{ section.settings.text_gap }}px * 0.7); 
+      width: calc(100% - 28px);
+      max-width: 620px;
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "kicker"
+        "heading"
+        "copy"
+        "handle";
+      gap: 12px;
+      text-align: center;
+      justify-items: center;
     }
-    #insta-cta-{{ section.id }} .insta-text {
-      font-size: calc({{ section.settings.handle_size }}px * 0.85) !important;
+
+    #insta-cta-{{ section.id }} .insta-kicker {
+      font-size: 10px;
+      letter-spacing: 3px;
     }
+
     #insta-cta-{{ section.id }} .insta-heading {
-      font-size: calc({{ section.settings.heading_size }}px * 0.8) !important;
+      max-width: 340px;
+      font-size: 22px !important;
+      line-height: 1.18;
     }
-    #insta-cta-{{ section.id }} .insta-icon svg,
-    #insta-cta-{{ section.id }} .insta-icon i,
-    #insta-cta-{{ section.id }} .insta-icon img {
-      width: calc({{ section.settings.icon_size }}px * 0.85);
-      height: calc({{ section.settings.icon_size }}px * 0.85);
-      font-size: calc({{ section.settings.icon_size }}px * 0.85);
+
+    #insta-cta-{{ section.id }} .insta-copy {
+      max-width: 330px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    #insta-cta-{{ section.id }} .insta-handle {
+      width: 100%;
+      max-width: 300px;
+      min-height: 46px;
+      margin-top: 4px;
+      padding: 0 16px;
+    }
+
+    #insta-cta-{{ section.id }} .insta-text {
+      font-size: 14px !important;
     }
   }
 </style>
-
 {% schema %}
 {
   "name": "Insta Community CTA",

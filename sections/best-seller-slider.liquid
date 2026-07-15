@@ -165,145 +165,216 @@
 }
 
 /* ================================================
-  BEST SELLER SLIDER CSS (Clean Solid Background)
+  BEST SELLER SLIDER CSS
 ================================================ */
 
-.bss-section, .bss-container, .bss-header, .bss-slider {
+#bss-{{ section.id }},
+#bss-{{ section.id }} .bss-container,
+#bss-{{ section.id }} .bss-header,
+#bss-{{ section.id }} .bss-slider,
+#bss-{{ section.id }} .bss-card {
   box-sizing: border-box;
 }
 
-.bss-section {
-  padding: 50px 0; 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  overflow: hidden;
+#bss-{{ section.id }}.bss-section {
   position: relative;
   z-index: 1;
+  width: 100%;
+  overflow: hidden;
+  padding: 58px 0 62px;
+  background: {{ section.settings.bg }} !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Glow hataya gaya - Ab clean background aayega */
-.bss-section::before,
-.bss-section::after {
+#bss-{{ section.id }}.bss-section::before,
+#bss-{{ section.id }}.bss-section::after,
+#bss-{{ section.id }} .bss-pattern {
   display: none !important;
 }
 
-.bss-pattern {
-  position: absolute;
-  top: 10px;
-  width: 25vw;
-  max-width: 350px;
-  height: 160px;
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1.5px, transparent 1.5px);
-  background-size: 14px 14px; 
-  pointer-events: none;
-  z-index: 0;
-}
-.bss-pattern-left { left: 0; }
-.bss-pattern-right { right: 0; }
-
-.bss-container {
+#bss-{{ section.id }} .bss-container {
   position: relative;
   z-index: 1;
-  width: 94%;
-  max-width: 1250px; 
+  width: calc(100% - 32px);
+  max-width: 1240px;
   margin: 0 auto;
 }
 
-.bss-header {
-  text-align: center;
-  margin-bottom: 12px; 
+#bss-{{ section.id }} .bss-header {
   position: relative;
+  text-align: center;
+  margin: 0 0 10px;
 }
 
-.bss-heading {
+#bss-{{ section.id }} .bss-header::after {
+  content: "";
+  display: block;
+  width: 42px;
+  height: 1px;
+  margin: 16px auto 0;
+  background: rgba(255, 255, 255, 0.42);
+}
+
+#bss-{{ section.id }} .bss-heading {
   margin: 0;
   line-height: 1.15;
+  text-transform: uppercase;
+  font-weight: 600 !important;
 }
 
-.bss-subheading {
+#bss-{{ section.id }} .bss-subheading {
   text-align: center;
-  max-width: 600px;
-  margin: 0 auto 30px; 
-  line-height: 1.5;
+  max-width: 560px;
+  margin: 0 auto 28px;
+  line-height: 1.6;
+  opacity: 0.74;
 }
 
-/* -- Slider Core -- */
-.bss-slider {
+#bss-{{ section.id }} .bss-slider {
   position: relative;
-  padding: 0; 
+  padding: 0 6px;
 }
 
-.bss-viewport {
+#bss-{{ section.id }} .bss-viewport {
   width: 100%;
   overflow: hidden;
-  padding: 0; 
+  padding: 0;
 }
 
-.bss-track {
+#bss-{{ section.id }} .bss-track {
   display: flex !important;
   flex-wrap: nowrap !important;
-  gap: 20px; 
+  gap: 18px;
   margin: 0 !important;
+  align-items: stretch;
 }
 
-.bss-card {
-  flex: 0 0 calc((100% - (20px * ({{ section.settings.desktop_show | minus: 1 }}))) / {{ section.settings.desktop_show }}) !important;
-  max-width: calc((100% - (20px * ({{ section.settings.desktop_show | minus: 1 }}))) / {{ section.settings.desktop_show }}) !important;
+#bss-{{ section.id }} .bss-card {
+  flex: 0 0 calc((100% - (18px * ({{ section.settings.desktop_show | minus: 1 }}))) / {{ section.settings.desktop_show }}) !important;
+  max-width: calc((100% - (18px * ({{ section.settings.desktop_show | minus: 1 }}))) / {{ section.settings.desktop_show }}) !important;
   margin: 0 !important;
-  padding-bottom: 0 !important; 
+  padding: 8px !important;
+  background: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.22);
 }
-.bss-card > div {
+
+#bss-{{ section.id }} .bss-card > div {
+  height: 100%;
   margin-bottom: 0 !important;
 }
 
-.bss-arrow {
+#bss-{{ section.id }} .bss-card .product-image,
+#bss-{{ section.id }} .bss-card .product-image > a,
+#bss-{{ section.id }} .bss-card .product-image img,
+#bss-{{ section.id }} .bss-card img {
+  border-radius: {{ section.settings.card_radius }}px !important;
+}
+
+#bss-{{ section.id }} .bss-card .product-image img {
+  display: block;
+  width: 100%;
+}
+
+#bss-{{ section.id }} .product-box .product-title,
+#bss-{{ section.id }} .product-box .product-title a,
+#bss-{{ section.id }} .product-box .product-name,
+#bss-{{ section.id }} .product-box .product-name a {
+  line-height: 1.35 !important;
+  letter-spacing: 0 !important;
+}
+
+#bss-{{ section.id }} .product-box .price,
+#bss-{{ section.id }} .product-box .price-item,
+#bss-{{ section.id }} .product-box .amount {
+  line-height: 1.35 !important;
+}
+
+#bss-{{ section.id }} .bss-arrow {
   position: absolute;
-  top: 45%;
+  top: 43%;
   transform: translateY(-50%);
   z-index: 10;
-  width: 44px; height: 44px; 
-  border: none;
-  background: #fff;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: {{ section.settings.arrow_radius }}px !important;
+  background: rgba(10, 10, 12, 0.82);
+  color: #ffffff;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 3px 12px rgba(0,0,0,.1);
-  color: #222;
-  transition: background .25s, color .25s;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.28);
+  transition: background 0.22s ease, border-color 0.22s ease, transform 0.22s ease;
 }
-.bss-arrow:hover {
-  background: #bb9553;
-  color: #fff;
-}
-.bss-arrow--prev { left: -22px; }
-.bss-arrow--next { right: -22px; }
 
-.bss-empty {
+#bss-{{ section.id }} .bss-arrow:hover {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #050507;
+  transform: translateY(-50%) scale(1.04);
+}
+
+#bss-{{ section.id }} .bss-arrow--prev { left: -10px; }
+#bss-{{ section.id }} .bss-arrow--next { right: -10px; }
+
+#bss-{{ section.id }} .bss-empty {
   width: 100%;
   text-align: center;
-  color: #999;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 @media (max-width: 991px) {
-  .bss-pattern { display: none; } 
-  .bss-arrow--prev { left: -10px; }
-  .bss-arrow--next { right: -10px; }
-  .bss-track { gap: 15px; }
-  .bss-card {
-    flex: 0 0 calc((100% - (15px * ({{ section.settings.mobile_show | minus: 1 }}))) / {{ section.settings.mobile_show }}) !important;
-    max-width: calc((100% - (15px * ({{ section.settings.mobile_show | minus: 1 }}))) / {{ section.settings.mobile_show }}) !important;
+  #bss-{{ section.id }}.bss-section {
+    padding: 46px 0 50px;
   }
+
+  #bss-{{ section.id }} .bss-container {
+    width: calc(100% - 24px);
+    max-width: 920px;
+  }
+
+  #bss-{{ section.id }} .bss-track {
+    gap: 12px;
+  }
+
+  #bss-{{ section.id }} .bss-card {
+    flex: 0 0 calc((100% - (12px * ({{ section.settings.mobile_show | minus: 1 }}))) / {{ section.settings.mobile_show }}) !important;
+    max-width: calc((100% - (12px * ({{ section.settings.mobile_show | minus: 1 }}))) / {{ section.settings.mobile_show }}) !important;
+    padding: 6px !important;
+  }
+
+  #bss-{{ section.id }} .bss-arrow--prev { left: -4px; }
+  #bss-{{ section.id }} .bss-arrow--next { right: -4px; }
 }
 
 @media (max-width: 767px) {
-  .bss-section { 
-      padding: 30px 0;
-  } 
-  .bss-header { margin-bottom: 8px; }
-  .bss-subheading { margin-bottom: 20px; font-size: 14px !important; }
-  .bss-arrow { display: none; }
+  #bss-{{ section.id }}.bss-section {
+    padding: 38px 0 42px;
+  }
+
+  #bss-{{ section.id }} .bss-header {
+    margin-bottom: 8px;
+  }
+
+  #bss-{{ section.id }} .bss-header::after {
+    margin-top: 12px;
+  }
+
+  #bss-{{ section.id }} .bss-subheading {
+    margin-bottom: 22px;
+    font-size: 13px !important;
+  }
+
+  #bss-{{ section.id }} .bss-slider {
+    padding: 0;
+  }
+
+  #bss-{{ section.id }} .bss-arrow {
+    display: none;
+  }
 }
 </style>
 
@@ -322,12 +393,12 @@ document.addEventListener('DOMContentLoaded', function () {
   var mobileCount = {{ section.settings.mobile_show | default: 2 }};
   
   var visible = window.innerWidth < 768 ? mobileCount : desktopCount;
-  var gap = window.innerWidth <= 991 ? 15 : 20; 
+  var gap = window.innerWidth <= 991 ? 12 : 18;
   var cardW = 0;
 
   function updateDimensions() {
     visible = window.innerWidth < 768 ? mobileCount : desktopCount;
-    gap = window.innerWidth <= 991 ? 15 : 20;
+    gap = window.innerWidth <= 991 ? 12 : 18;
     var viewportW = root.querySelector('.bss-viewport').offsetWidth;
     cardW = (viewportW - gap * (visible - 1)) / visible;
   }
