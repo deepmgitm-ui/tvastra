@@ -13,6 +13,7 @@
     startScrollLeft: 0
   };
   var productCache = new Map();
+  var productImageObserver = null;
 
   function getProductUrl(card) {
     var link = card.querySelector(PRODUCT_LINK_SELECTOR);
@@ -106,6 +107,47 @@
         card.insertBefore(image, reviewWrapper || card.firstChild);
       }
     });
+  }
+
+  function loadProductImageSoon(card, productUrl) {
+    var load = function () {
+      addProductImage(card, productUrl);
+    };
+
+    if ("requestIdleCallback" in window) {
+      window.requestIdleCallback(load, { timeout: 1200 });
+    } else {
+      window.setTimeout(load, 80);
+    }
+  }
+
+  function queueProductImage(card, productUrl) {
+    if (hasUsableImage(card) || card.dataset.tvProductImageQueued === "true") return;
+
+    if (!("IntersectionObserver" in window)) {
+      loadProductImageSoon(card, productUrl);
+      return;
+    }
+
+    if (!productImageObserver) {
+      productImageObserver = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+
+            productImageObserver.unobserve(entry.target);
+            var queuedUrl = getProductUrl(entry.target);
+            if (queuedUrl) {
+              loadProductImageSoon(entry.target, queuedUrl);
+            }
+          });
+        },
+        { rootMargin: "700px 0px" }
+      );
+    }
+
+    card.dataset.tvProductImageQueued = "true";
+    productImageObserver.observe(card);
   }
 
   function makeCardClickable(card, productUrl) {
@@ -342,7 +384,7 @@
     var productUrl = getProductUrl(card);
     if (!productUrl) return;
 
-    addProductImage(card, productUrl);
+    queueProductImage(card, productUrl);
     makeCardClickable(card, productUrl);
   }
 
