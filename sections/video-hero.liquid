@@ -115,12 +115,22 @@
   @media (max-width: 767px) {
     .desktop-video-wrapper { display: none; }
     .mobile-video-wrapper { display: block; }
-    
-    /* Yahan phone ke liye 1:1 (Square) fix kiya hai */
+
+    .section-{{ section.id }} {
+      background: #050507;
+    }
+
     .section-{{ section.id }} .video-hero-wrap {
-      aspect-ratio: 1 / 1 !important;
-      height: auto !important; 
-      min-height: unset !important;
+      aspect-ratio: 4 / 5 !important;
+      height: auto !important;
+      min-height: 420px !important;
+      max-height: 560px !important;
+      background: #050507;
+    }
+
+    .section-{{ section.id }} .video-hero video,
+    .section-{{ section.id }} .video-hero iframe {
+      object-position: center center;
     }
   }
 

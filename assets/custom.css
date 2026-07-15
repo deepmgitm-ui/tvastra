@@ -1351,3 +1351,46 @@ button:focus-visible,
   }
 }
 /* ======================================================================= */
+
+}
+
+/*************************************************************
+** Tvastra homepage mobile premium polish
+*************************************************************/
+@media (max-width: 767px) {
+  html,
+  body,
+  #MainContent {
+    overflow-x: hidden !important;
+  }
+
+  .product-marquee-box {
+    padding: 9px 0 !important;
+    background: #f8f8f7 !important;
+    border-color: #e9e9e7 !important;
+  }
+
+  .product-marquee-inner {
+    animation-duration: 34s !important;
+  }
+
+  .product-marquee-item span {
+    padding: 0 18px !important;
+    gap: 7px !important;
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    color: #111111 !important;
+  }
+
+  .product-marquee-item svg {
+    width: 15px !important;
+    height: 15px !important;
+    stroke-width: 1.9 !important;
+  }
+
+  .whatsapp-floating,
+  .wa__widget_container,
+  [class*="whatsapp"] {
+    z-index: 80;
+  }
+}

@@ -376,6 +376,32 @@
     display: none;
   }
 }
+
+@media (max-width: 767px) {
+  #bss-{{ section.id }}.bss-section {
+    padding: 34px 0 38px;
+  }
+
+  #bss-{{ section.id }} .bss-container {
+    width: calc(100% - 18px);
+  }
+
+  #bss-{{ section.id }} .bss-heading {
+    font-size: 11px !important;
+    letter-spacing: 3.4px !important;
+  }
+
+  #bss-{{ section.id }} .bss-track {
+    gap: 10px;
+  }
+
+  #bss-{{ section.id }} .bss-card {
+    flex-basis: calc((100% - (10px * ({{ section.settings.mobile_show | minus: 1 }}))) / {{ section.settings.mobile_show }}) !important;
+    max-width: calc((100% - (10px * ({{ section.settings.mobile_show | minus: 1 }}))) / {{ section.settings.mobile_show }}) !important;
+    padding: 5px !important;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  }
+}
 </style>
 
 <script>
@@ -393,12 +419,12 @@ document.addEventListener('DOMContentLoaded', function () {
   var mobileCount = {{ section.settings.mobile_show | default: 2 }};
   
   var visible = window.innerWidth < 768 ? mobileCount : desktopCount;
-  var gap = window.innerWidth <= 991 ? 12 : 18;
+  var gap = window.innerWidth < 768 ? 10 : (window.innerWidth <= 991 ? 12 : 18);
   var cardW = 0;
 
   function updateDimensions() {
     visible = window.innerWidth < 768 ? mobileCount : desktopCount;
-    gap = window.innerWidth <= 991 ? 12 : 18;
+    gap = window.innerWidth < 768 ? 10 : (window.innerWidth <= 991 ? 12 : 18);
     var viewportW = root.querySelector('.bss-viewport').offsetWidth;
     cardW = (viewportW - gap * (visible - 1)) / visible;
   }

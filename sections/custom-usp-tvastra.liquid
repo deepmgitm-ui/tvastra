@@ -209,6 +209,49 @@
       font-size: calc({{ section.settings.icon_size }}px * 0.75) !important;
     }
   }
+
+  @media (max-width: 768px) {
+    #custom-features-{{ section.id }} {
+      padding-top: 20px !important;
+      padding-bottom: 18px !important;
+      border-top: 1px solid #eeeeee;
+      border-bottom: 1px solid #eeeeee;
+    }
+
+    #custom-features-{{ section.id }} .features-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      row-gap: 18px;
+    }
+
+    #custom-features-{{ section.id }} .feature-item:nth-child(odd)::after {
+      top: 12%;
+      height: 76%;
+      background-color: rgba(0, 0, 0, 0.14) !important;
+    }
+
+    #custom-features-{{ section.id }} .feature-item {
+      min-height: 112px;
+      padding: 0 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #custom-features-{{ section.id }} .feature-title {
+      font-size: {{ section.settings.title_size | at_least: 10 }}px !important;
+      margin-bottom: 6px !important;
+      line-height: 1.2 !important;
+      letter-spacing: 0.3px !important;
+    }
+
+    #custom-features-{{ section.id }} .feature-text {
+      font-size: {{ section.settings.text_size | at_least: 10 }}px !important;
+      line-height: 1.35 !important;
+      max-width: 132px;
+      margin: 0 auto;
+    }
+  }
 </style>
 
 {% schema %}

@@ -253,6 +253,33 @@
       font-size: 14px !important;
     }
   }
+
+  @media (max-width: 768px) {
+    #insta-cta-{{ section.id }} {
+      padding-top: 38px !important;
+      padding-bottom: 40px !important;
+    }
+
+    #insta-cta-{{ section.id }} .insta-cta-container {
+      gap: 10px;
+    }
+
+    #insta-cta-{{ section.id }} .insta-heading {
+      max-width: 320px;
+      font-size: 21px !important;
+      line-height: 1.16;
+    }
+
+    #insta-cta-{{ section.id }} .insta-copy {
+      max-width: 310px;
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    #insta-cta-{{ section.id }} .insta-handle {
+      min-height: 48px;
+      border-radius: 0;
+    }
+  }
 </style>
 {% schema %}
 {

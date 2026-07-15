@@ -155,8 +155,8 @@
 ============================ */
 #tcf-{{ section.id }} {
   --neon:   #ffffff;
-  --neon2:  #7b5cff;
-  --dark:   #08080f;
+  --neon2:  #ffffff;
+  --dark:   #050507;
   --card-w: 280px;
   --card-h: 420px;
   --gap:    20px;
@@ -172,7 +172,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 60% 40% at 50% 60%, rgba(0,243,255,0.05) 0%, transparent 70%);
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent 48%, rgba(255,255,255,0.025));
   pointer-events: none;
 }
 
@@ -296,8 +296,8 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  background: rgba(0,243,255,.10);
-  border: 1px solid rgba(0,243,255,.30);
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.28);
   color: #fff;
   font-size: .55rem;
   font-weight: 700;
@@ -352,7 +352,7 @@
 .tcf-explore-btn::before {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(90deg, rgba(0,243,255,.22), rgba(123,92,255,.18));
+  background: linear-gradient(90deg, rgba(255,255,255,.2), rgba(255,255,255,.08));
   transform: translateX(-101%);
   transition: transform .42s cubic-bezier(.22,1,.36,1);
   border-radius: inherit;
@@ -370,7 +370,7 @@
 
 .tcf-card--active { opacity: 1 !important; filter: none !important; pointer-events: auto; z-index: 20; }
 .tcf-card--active .tcf-neon-border { border-color: rgba(255,255,255,0.2); box-shadow: none; }
-.tcf-card--active .tcf-glass { border-color: rgba(0,243,255,.18); background: linear-gradient(135deg,rgba(0,243,255,.07) 0%,rgba(255,255,255,.02) 100%); }
+.tcf-card--active .tcf-glass { border-color: rgba(255,255,255,.18); background: linear-gradient(135deg,rgba(255,255,255,.08) 0%,rgba(255,255,255,.02) 100%); }
 .tcf-card--active .tcf-explore-btn { pointer-events: auto; }
 
 .tcf-card--s1 { opacity: .78 !important; pointer-events: auto; z-index: 15; filter: brightness(.72) saturate(.8); }
@@ -423,7 +423,7 @@
   backdrop-filter: blur(10px);
   padding: 0;
 }
-.tcf-btn-nav:hover { background: rgba(0,243,255,.10); border-color: #ffffff; transform: scale(1.1); }
+.tcf-btn-nav:hover { background: rgba(255,255,255,.12); border-color: #ffffff; transform: scale(1.1); }
 .tcf-btn-nav:active { transform: scale(.93); }
 
 .tcf-dots {
@@ -453,7 +453,44 @@
   .tcf-header { padding: 0 16px 8px; }
 }
 @media (max-width: 600px) {
-  #tcf-{{ section.id }} { --card-w: 260px; --card-h: 390px; }
+  #tcf-{{ section.id }} {
+    --card-w: 236px;
+    --card-h: 350px;
+    padding-top: 28px !important;
+    padding-bottom: 28px !important;
+  }
+
+  #tcf-{{ section.id }} .tcf-header {
+    padding: 0 18px 12px;
+  }
+
+  #tcf-{{ section.id }} .tcf-stage {
+    height: 374px;
+  }
+
+  #tcf-{{ section.id }} .tcf-card-content {
+    padding: 14px 14px 18px;
+  }
+
+  #tcf-{{ section.id }} .tcf-card-title {
+    font-size: 1.05rem;
+    line-height: 1.08;
+  }
+
+  #tcf-{{ section.id }} .tcf-card-sub {
+    font-size: 0.68rem;
+    line-height: 1.35;
+  }
+
+  #tcf-{{ section.id }} .tcf-product-name-wrap {
+    padding-top: 0;
+    min-height: 16px;
+  }
+
+  #tcf-{{ section.id }} .tcf-product-name-text {
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .tcf-card, .tcf-card-bg img, .tcf-explore-btn,

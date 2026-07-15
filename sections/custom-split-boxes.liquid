@@ -25,18 +25,27 @@
     justify-content: center;
     padding: 10px;
     box-sizing: border-box; /* Isse padding width ke andar hi rehti hai, layout nahi tootti */
-    transition: opacity 0.2s ease;
+    transition: opacity 0.2s ease, background-color 0.2s ease;
   }
 
   .split-item-{{ section.id }}:hover {
     opacity: 0.85; /* Hover pe halka sa fade hoga taaki click feel aaye */
   }
 
-  /* Mobile Layout - Mobile pe bhi 50-50 aur full edge-to-edge */
   @media screen and (max-width: 768px) {
+    .custom-split-{{ section.id }} {
+      background: #050507;
+    }
+
     .split-item-{{ section.id }} {
-      width: 50%; 
-      min-height: {{ section.settings.box_height_mobile }}px;
+      width: 50%;
+      min-height: {{ section.settings.box_height_mobile | plus: 8 }}px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .split-item-{{ section.id }}:first-child {
+      border-right: 1px solid rgba(255, 255, 255, 0.12);
     }
   }
 
@@ -72,7 +81,9 @@
       .split-item-{{ block.id }} .box-text,
       .split-item-{{ block.id }} .box-text p,
       .split-item-{{ block.id }} .box-text a {
-        font-size: calc({{ block.settings.text_size }}px * 0.75) !important; 
+        font-size: calc({{ block.settings.text_size }}px * 0.82) !important;
+        line-height: 1.2 !important;
+        letter-spacing: 0.5px !important;
       }
     }
   {% endfor %}
