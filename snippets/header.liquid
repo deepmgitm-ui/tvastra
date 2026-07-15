@@ -1,6 +1,6 @@
 <script type="application/ld+json">
 {
-  "@context": "http://schema.org",
+  "@context": "https://schema.org",
   "@type": "Organization",
   "name": {{ shop.name | json }},
   {%- if settings.logo -%}
@@ -24,7 +24,7 @@
   {%- assign potential_action_target = shop.url | append: routes.search_url | append: "?q={search_term_string}" -%}
   <script type="application/ld+json">
     {
-      "@context": "http://schema.org",
+      "@context": "https://schema.org",
       "@type": "WebSite",
       "name": {{ shop.name | json }},
       "potentialAction": {
