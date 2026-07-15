@@ -203,6 +203,15 @@
   text-align: center !important;
 }
 
+.jdgm-carousel--aligned-theme .jdgm-carousel-item.tv-jdgm-card-link-ready {
+  cursor: pointer !important;
+}
+
+.jdgm-carousel--aligned-theme .jdgm-carousel-item.tv-jdgm-card-link-ready:focus-visible {
+  outline: 2px solid var(--tv-review-accent) !important;
+  outline-offset: 4px !important;
+}
+
 .jdgm-carousel--aligned-theme .jdgm-carousel-item__product-image {
   display: block !important;
   flex: 0 0 auto !important;
