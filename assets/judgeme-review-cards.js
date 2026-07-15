@@ -60,6 +60,28 @@
     return src;
   }
 
+  function getSizedImageUrl(src, width) {
+    if (!src || src.indexOf("cdn.shopify.com") === -1) return src;
+
+    try {
+      var url = new URL(src);
+      url.searchParams.set("width", width);
+      return url.toString();
+    } catch (error) {
+      return src;
+    }
+  }
+
+  function getImageSrcset(src) {
+    if (!src || src.indexOf("cdn.shopify.com") === -1) return "";
+
+    return [320, 480, 640]
+      .map(function (width) {
+        return getSizedImageUrl(src, width) + " " + width + "w";
+      })
+      .join(", ");
+  }
+
   function fetchProduct(handle) {
     if (!handle) return Promise.resolve(null);
     if (!productCache.has(handle)) {
@@ -98,7 +120,9 @@
       image.alt = (titleEl && titleEl.textContent.trim()) || product.title || "Product image";
       image.loading = "lazy";
       image.decoding = "async";
-      image.src = src;
+      image.sizes = "(max-width: 749px) 76vw, 276px";
+      image.srcset = getImageSrcset(src);
+      image.src = getSizedImageUrl(src, 480);
 
       if (existingImage) {
         existingImage.replaceWith(image);
