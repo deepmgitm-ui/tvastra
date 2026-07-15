@@ -53,10 +53,10 @@
 .jm-review-widget .jm-grid,
 .jm-review-widget .jm-cluster:not(:has(.jm-review-widget-minimal-header__title)) {
   display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(236px, 286px)) !important;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 308px)) !important;
   justify-content: center !important;
-  gap: 26px !important;
-  max-width: 1110px !important;
+  gap: 30px !important;
+  max-width: 1140px !important;
   margin: 0 auto !important;
 }
 
@@ -72,7 +72,7 @@
   box-shadow: 0 16px 34px rgba(8, 43, 52, 0.11) !important;
   overflow: hidden !important;
   width: 100% !important;
-  max-width: 286px !important;
+  max-width: 308px !important;
   min-height: 0 !important;
   padding: 0 !important;
   margin: 0 auto !important;
@@ -83,18 +83,18 @@
 .jdgm-rev__actions,
 .jm-review-card__content,
 .jm-review [class*="content"] {
-  padding-left: 18px !important;
-  padding-right: 18px !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
 }
 
 .jdgm-rev__header,
 .jm-review-card__content,
 .jm-review [class*="content"] {
-  padding-top: 14px !important;
+  padding-top: 16px !important;
 }
 
 .jdgm-rev__content {
-  padding-bottom: 18px !important;
+  padding-bottom: 22px !important;
 }
 
 .jdgm-rev__pics,
@@ -133,7 +133,7 @@
   display: block !important;
   width: 100% !important;
   height: auto !important;
-  aspect-ratio: 1 / 1 !important;
+  aspect-ratio: 4 / 3 !important;
   object-fit: cover !important;
   object-position: center !important;
   border-radius: 0 !important;
@@ -163,9 +163,9 @@
 .jm-review [class*="author"],
 .jm-review [class*="name"] {
   color: var(--tv-review-ink) !important;
-  font-size: 13px !important;
+  font-size: 14px !important;
   line-height: 1.25 !important;
-  font-weight: 700 !important;
+  font-weight: 800 !important;
   text-align: center !important;
 }
 
@@ -187,7 +187,7 @@
 
 .jdgm-rev__rating {
   display: block !important;
-  margin: 6px auto 10px !important;
+  margin: 7px auto 12px !important;
 }
 
 .jdgm-rev__title,
@@ -203,10 +203,11 @@
 .jdgm-rev__body,
 .jm-review-card [class*="body"],
 .jm-review [class*="body"] {
-  font-size: 13px !important;
-  line-height: 1.55 !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
   color: var(--tv-review-muted) !important;
-  margin-top: 8px !important;
+  margin-top: 10px !important;
+  min-height: 88px !important;
 }
 
 .jdgm-rev__timestamp,
@@ -264,8 +265,8 @@
   .jm-review-card,
   .jm-review,
   .jm-review-widget [class*="review-card"] {
-    flex: 0 0 76vw !important;
-    max-width: 282px !important;
+    flex: 0 0 82vw !important;
+    max-width: 312px !important;
     scroll-snap-align: center !important;
   }
 
@@ -282,8 +283,15 @@
   .jdgm-rev__actions,
   .jm-review-card__content,
   .jm-review [class*="content"] {
-    padding-left: 15px !important;
-    padding-right: 15px !important;
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+
+  .jdgm-rev__body,
+  .jm-review-card [class*="body"],
+  .jm-review [class*="body"] {
+    font-size: 13.5px !important;
+    min-height: 96px !important;
   }
 }
 
