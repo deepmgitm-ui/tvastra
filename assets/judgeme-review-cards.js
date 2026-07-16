@@ -120,7 +120,7 @@
       image.alt = (titleEl && titleEl.textContent.trim()) || product.title || "Product image";
       image.loading = "lazy";
       image.decoding = "async";
-      image.sizes = "(max-width: 749px) 76vw, 276px";
+      image.sizes = "(max-width: 749px) 70vw, 248px";
       image.srcset = getImageSrcset(src);
       image.src = getSizedImageUrl(src, 480);
 
