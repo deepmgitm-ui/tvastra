@@ -2056,3 +2056,50 @@ button:focus-visible,
 .jdgm-carousel-wrapper .jdgm-carousel__item-container {
   scroll-snap-type: none !important;
 }
+
+/*************************************************************
+** Final Judge.me star shape fallback
+*************************************************************/
+.jdgm-rev-widg .jdgm-star,
+.jdgm-all-reviews-widget .jdgm-star,
+.jdgm-prev-badge .jdgm-star,
+.jdgm-carousel-wrapper .jdgm-star {
+  display: inline-block !important;
+  width: 16px !important;
+  min-width: 16px !important;
+  height: 16px !important;
+  margin: 0 1px !important;
+  padding: 0 !important;
+  color: transparent !important;
+  font-size: 0 !important;
+  line-height: 1 !important;
+  vertical-align: middle !important;
+  background: none !important;
+}
+
+.jdgm-rev-widg .jdgm-star:before,
+.jdgm-rev-widg .jdgm-star:after,
+.jdgm-all-reviews-widget .jdgm-star:before,
+.jdgm-all-reviews-widget .jdgm-star:after,
+.jdgm-prev-badge .jdgm-star:before,
+.jdgm-prev-badge .jdgm-star:after,
+.jdgm-carousel-wrapper .jdgm-star:before,
+.jdgm-carousel-wrapper .jdgm-star:after {
+  content: "" !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23f5a623' d='m12 2.2 2.95 5.98 6.6.96-4.78 4.66 1.13 6.58L12 17.27l-5.9 3.11 1.13-6.58-4.78-4.66 6.6-.96L12 2.2Z'/%3E%3C/svg%3E") center / contain no-repeat !important;
+}
+
+.jdgm-rev-widg .jdgm-star.jdgm--off:before,
+.jdgm-rev-widg .jdgm-star.jdgm--off:after,
+.jdgm-all-reviews-widget .jdgm-star.jdgm--off:before,
+.jdgm-all-reviews-widget .jdgm-star.jdgm--off:after,
+.jdgm-prev-badge .jdgm-star.jdgm--off:before,
+.jdgm-prev-badge .jdgm-star.jdgm--off:after,
+.jdgm-carousel-wrapper .jdgm-star.jdgm--off:before,
+.jdgm-carousel-wrapper .jdgm-star.jdgm--off:after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23f5a623' stroke-width='1.8' d='m12 2.2 2.95 5.98 6.6.96-4.78 4.66 1.13 6.58L12 17.27l-5.9 3.11 1.13-6.58-4.78-4.66 6.6-.96L12 2.2Z'/%3E%3C/svg%3E") !important;
+}
