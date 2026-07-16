@@ -2103,3 +2103,35 @@ button:focus-visible,
 .jdgm-carousel-wrapper .jdgm-star.jdgm--off:after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23f5a623' stroke-width='1.8' d='m12 2.2 2.95 5.98 6.6.96-4.78 4.66 1.13 6.58L12 17.27l-5.9 3.11 1.13-6.58-4.78-4.66 6.6-.96L12 2.2Z'/%3E%3C/svg%3E") !important;
 }
+
+/*************************************************************
+** Final Judge.me single-star override
+*************************************************************/
+.jdgm-rev-widg .jdgm-star:before,
+.jdgm-rev-widg .jdgm-star:after,
+.jdgm-all-reviews-widget .jdgm-star:before,
+.jdgm-all-reviews-widget .jdgm-star:after,
+.jdgm-prev-badge .jdgm-star:before,
+.jdgm-prev-badge .jdgm-star:after,
+.jdgm-carousel-wrapper .jdgm-star:before,
+.jdgm-carousel-wrapper .jdgm-star:after {
+  content: none !important;
+  display: none !important;
+}
+
+.jdgm-rev-widg .jdgm-star,
+.jdgm-all-reviews-widget .jdgm-star,
+.jdgm-prev-badge .jdgm-star,
+.jdgm-carousel-wrapper .jdgm-star {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23f5a623' d='m12 2.2 2.95 5.98 6.6.96-4.78 4.66 1.13 6.58L12 17.27l-5.9 3.11 1.13-6.58-4.78-4.66 6.6-.96L12 2.2Z'/%3E%3C/svg%3E") !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
+}
+
+.jdgm-rev-widg .jdgm-star.jdgm--off,
+.jdgm-all-reviews-widget .jdgm-star.jdgm--off,
+.jdgm-prev-badge .jdgm-star.jdgm--off,
+.jdgm-carousel-wrapper .jdgm-star.jdgm--off {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23f5a623' stroke-width='1.8' d='m12 2.2 2.95 5.98 6.6.96-4.78 4.66 1.13 6.58L12 17.27l-5.9 3.11 1.13-6.58-4.78-4.66 6.6-.96L12 2.2Z'/%3E%3C/svg%3E") !important;
+}
