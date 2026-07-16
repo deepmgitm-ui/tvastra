@@ -53,9 +53,9 @@
 .jm-review-widget .jm-grid,
 .jm-review-widget .jm-cluster:not(:has(.jm-review-widget-minimal-header__title)) {
   display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 248px)) !important;
+  grid-template-columns: repeat(auto-fit, minmax(196px, 220px)) !important;
   justify-content: center !important;
-  gap: 30px !important;
+  gap: 26px !important;
   max-width: 1140px !important;
   margin: 0 auto !important;
 }
@@ -72,7 +72,7 @@
   box-shadow: 0 16px 34px rgba(8, 43, 52, 0.11) !important;
   overflow: hidden !important;
   width: 100% !important;
-  max-width: 248px !important;
+  max-width: 220px !important;
   min-height: 0 !important;
   padding: 0 !important;
   margin: 0 auto !important;
@@ -182,8 +182,8 @@
   cursor: grab !important;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
+  scroll-behavior: auto;
+  scroll-snap-type: x proximity;
   scrollbar-width: none;
 }
 
@@ -210,9 +210,9 @@
   display: flex !important;
   flex-direction: column !important;
   align-items: stretch !important;
-  flex: 0 0 248px !important;
-  width: 248px !important;
-  max-width: 248px !important;
+  flex: 0 0 220px !important;
+  width: 220px !important;
+  max-width: 220px !important;
   height: auto !important;
   min-height: 0 !important;
   padding: 0 !important;
@@ -236,8 +236,8 @@
   flex: 0 0 auto !important;
   width: 100% !important;
   max-width: none !important;
-  height: auto !important;
-  aspect-ratio: 1 / 1 !important;
+  height: 176px !important;
+  aspect-ratio: auto !important;
   object-fit: contain !important;
   object-position: center !important;
   border-radius: 0 !important;
@@ -479,8 +479,8 @@
   .jm-review-card,
   .jm-review,
   .jm-review-widget [class*="review-card"] {
-    flex: 0 0 70vw !important;
-    max-width: 252px !important;
+    flex: 0 0 62vw !important;
+    max-width: 224px !important;
     scroll-snap-align: center !important;
   }
 
@@ -519,14 +519,14 @@
   }
 
   .jdgm-carousel--aligned-theme .jdgm-carousel-item {
-    flex: 0 0 70vw !important;
-    width: 70vw !important;
-    max-width: 252px !important;
+    flex: 0 0 62vw !important;
+    width: 62vw !important;
+    max-width: 224px !important;
     margin: 0 !important;
   }
 
   .jdgm-carousel-wrapper .jdgm-carousel__item-wrapper {
-    gap: 0 !important;
+    gap: 16px !important;
   }
 
   .jdgm-carousel--aligned-theme .jdgm-carousel-item__review-wrapper {
@@ -1903,5 +1903,76 @@ button:focus-visible,
   .wa__widget_container,
   [class*="whatsapp"] {
     z-index: 80;
+  }
+}
+
+@media (max-width: 749px) {
+  .jdgm-carousel--aligned-theme .jdgm-carousel-item__product-image {
+    height: 170px !important;
+  }
+}
+
+/*************************************************************
+** Tvastra product media video autoplay polish
+*************************************************************/
+.main-product-page .product-gallery .media-video,
+.main-product-page .product-gallery .media-video .plyr,
+.main-product-page .product-gallery .media-video .plyr__video-wrapper,
+.main-product-page .product-gallery .media-video video {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.main-product-page .product-gallery .media-video video {
+  display: block !important;
+  object-fit: contain !important;
+  background: #f6f7f5 !important;
+}
+
+.main-product-page .product-gallery .media-video .plyr__controls,
+.main-product-page .product-gallery .media-video .plyr__control--overlaid,
+.main-product-page .product-gallery .media-video .plyr__poster,
+.main-product-page .product-gallery .media-video button[data-plyr="play"] {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.main-product-page .product-gallery .media-video video::-webkit-media-controls,
+.main-product-page .product-gallery .media-video video::-webkit-media-controls-panel,
+.main-product-page .product-gallery .media-video video::-webkit-media-controls-play-button,
+.main-product-page .product-gallery .media-video video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+@media (min-width: 768px) {
+  .main-product-page .product-main-slider .product-image-main .swiper-button-prev,
+  .main-product-page .product-main-slider .product-image-main .swiper-button-next {
+    display: flex !important;
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 999px !important;
+    background: rgba(255, 255, 255, 0.88) !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 6 !important;
+  }
+
+  .main-product-page .product-main-slider .product-image-main .swiper-button-prev {
+    left: 12px !important;
+  }
+
+  .main-product-page .product-main-slider .product-image-main .swiper-button-next {
+    right: 12px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .main-product-page .product-main-slider .product-image-main .swiper-button-prev,
+  .main-product-page .product-main-slider .product-image-main .swiper-button-next {
+    display: none !important;
   }
 }

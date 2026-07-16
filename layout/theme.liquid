@@ -210,6 +210,9 @@
       <script src="{{ 'cart-notification.js' | asset_url }}" defer="defer"></script>
       <script src="{{ 'compare.js' | asset_url }}" defer="defer"></script>
       <script src="{{ 'product-detail.js' | asset_url }}" defer="defer"></script>
+      {%- if template.name == 'product' -%}
+        <script src="{{ 'product-gallery-video-autoplay.js' | asset_url }}" defer="defer"></script>
+      {%- endif -%}
       {%- if should_promotion_enable == true -%}
         <script src="{{ 'promotion.js' | asset_url }}" defer="defer"></script>
       {%- endif -%} 

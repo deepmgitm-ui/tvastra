@@ -68,10 +68,12 @@
         {{
           media
           | video_tag:
-            controls: true,
-            preload: 'none',
+            controls: false,
+            autoplay: true,
+            preload: 'auto',
             loop: true,
             muted: true,
+            playsinline: true,
             image_size: '535x',
             class: 'no-control',
             id: video_id

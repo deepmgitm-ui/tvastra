@@ -9,8 +9,7 @@
     moved: false,
     container: null,
     startX: 0,
-    startY: 0,
-    startScrollLeft: 0
+    startY: 0
   };
   var productCache = new Map();
   var productImageObserver = null;
@@ -120,7 +119,7 @@
       image.alt = (titleEl && titleEl.textContent.trim()) || product.title || "Product image";
       image.loading = "lazy";
       image.decoding = "async";
-      image.sizes = "(max-width: 749px) 70vw, 248px";
+      image.sizes = "(max-width: 749px) 62vw, 220px";
       image.srcset = getImageSrcset(src);
       image.src = getSizedImageUrl(src, 480);
 
@@ -211,25 +210,6 @@
     return cardRect.left - containerRect.left + container.scrollLeft;
   }
 
-  function snapToNearestCard(container) {
-    var cards = Array.prototype.slice.call(container.querySelectorAll(CARD_SELECTOR));
-    if (!cards.length) return;
-
-    var currentLeft = container.scrollLeft;
-    var nearestCard = cards.reduce(function (nearest, card) {
-      var cardLeft = getCardScrollLeft(container, card);
-      var nearestLeft = getCardScrollLeft(container, nearest);
-      return Math.abs(cardLeft - currentLeft) < Math.abs(nearestLeft - currentLeft) ? card : nearest;
-    }, cards[0]);
-
-    var targetLeft = getCardScrollLeft(container, nearestCard);
-
-    try {
-      container.scrollTo({ left: targetLeft, behavior: "smooth" });
-    } catch (error) {
-      container.scrollLeft = targetLeft;
-    }
-  }
 
   function getVisibleCard(container, direction) {
     var cards = Array.prototype.slice.call(container.querySelectorAll(CARD_SELECTOR));
@@ -242,7 +222,7 @@
       return Math.abs(cardLeft - currentLeft) < Math.abs(nearestLeft - currentLeft) ? index : nearestIndex;
     }, 0);
 
-    var nextIndex = (currentIndex + direction + cards.length) % cards.length;
+    var nextIndex = Math.max(0, Math.min(cards.length - 1, currentIndex + direction));
     return cards[nextIndex];
   }
 
@@ -316,8 +296,6 @@
         dragState.container = container;
         dragState.startX = event.clientX;
         dragState.startY = event.clientY;
-        dragState.startScrollLeft = container.scrollLeft;
-        container.classList.add("tv-jdgm-sliding");
       },
       { passive: true }
     );
@@ -336,30 +314,15 @@
           dragState.moved = true;
         }
 
-        if (dragState.container && absX > absY && absX > 4) {
-          dragState.container.scrollLeft = dragState.startScrollLeft - deltaX;
-          if (event.pointerType === "mouse") {
-            event.preventDefault();
-          }
-        }
+        // Native touch scrolling is smoother on mobile; we only track movement
+        // here so a swipe does not accidentally open the product link.
       },
-      { passive: false }
+      { passive: true }
     );
 
     document.addEventListener(
       "pointerup",
       function () {
-        var container = dragState.container;
-        var moved = dragState.moved;
-
-        if (container && moved) {
-          snapToNearestCard(container);
-        }
-
-        if (dragState.container) {
-          dragState.container.classList.remove("tv-jdgm-sliding");
-        }
-
         window.setTimeout(function () {
           dragState.active = false;
           dragState.moved = false;
@@ -372,9 +335,6 @@
     document.addEventListener(
       "pointercancel",
       function () {
-        if (dragState.container) {
-          dragState.container.classList.remove("tv-jdgm-sliding");
-        }
         dragState.active = false;
         dragState.moved = false;
         dragState.container = null;
