@@ -234,14 +234,15 @@
 .jdgm-carousel--aligned-theme .jdgm-carousel-item__product-image {
   display: block !important;
   flex: 0 0 auto !important;
-  width: 100% !important;
+  width: 88% !important;
   max-width: none !important;
-  height: 176px !important;
+  height: 156px !important;
   aspect-ratio: auto !important;
   object-fit: contain !important;
   object-position: center !important;
   border-radius: 0 !important;
   background: #f3f5f2 !important;
+  margin: 10px auto 0 !important;
 }
 
 .jdgm-carousel--aligned-theme span.jdgm-carousel-item__product-image:empty {
@@ -1908,7 +1909,9 @@ button:focus-visible,
 
 @media (max-width: 749px) {
   .jdgm-carousel--aligned-theme .jdgm-carousel-item__product-image {
-    height: 170px !important;
+    width: 88% !important;
+    height: 148px !important;
+    margin-top: 8px !important;
   }
 }
 
