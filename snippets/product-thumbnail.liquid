@@ -59,11 +59,29 @@
       </div>
     {%- when 'external_video' -%}
       <div class="product-media overflow-hidden media-video" data-media-id="{{ media.id }}">
+        <a
+          href="#"
+          class="product-gallery-photoswipe__trigger product-img-btn product-media-fullscreen-trigger"
+          data-original-title="Fullscreen"
+          data-placement="left"
+          aria-label="View video fullscreen"
+        >
+          <span class="bi bi-arrows-fullscreen"></span>
+        </a>
         {%- assign video_id = 'video-' | append: media.id -%}
         <div class="plyr-external-video" id="{{ video_id }}">{{ media | external_video_tag }}</div>
       </div>
     {%- when 'video' -%}
       <div class="product-media overflow-hidden media-video local-video" data-media-id="{{ media.id }}">
+        <a
+          href="#"
+          class="product-gallery-photoswipe__trigger product-img-btn product-media-fullscreen-trigger"
+          data-original-title="Fullscreen"
+          data-placement="left"
+          aria-label="View video fullscreen"
+        >
+          <span class="bi bi-arrows-fullscreen"></span>
+        </a>
         {%- assign video_id = 'video-' | append: media.id -%}
         {{
           media

@@ -203,11 +203,21 @@
     if (!card || !card.dataset.tvProductUrl) return;
     window.location.href = card.dataset.tvProductUrl;
   }
-
   function getCardScrollLeft(container, card) {
     var containerRect = container.getBoundingClientRect();
     var cardRect = card.getBoundingClientRect();
-    return cardRect.left - containerRect.left + container.scrollLeft;
+    var targetLeft = cardRect.left - containerRect.left + container.scrollLeft;
+    var maxScrollLeft = Math.max(0, container.scrollWidth - container.clientWidth);
+    return Math.max(0, Math.min(maxScrollLeft, targetLeft));
+  }
+
+  function updateNavState(container, prevButton, nextButton) {
+    var maxScrollLeft = Math.max(0, container.scrollWidth - container.clientWidth);
+    var atStart = container.scrollLeft <= 1;
+    var atEnd = container.scrollLeft >= maxScrollLeft - 1;
+
+    prevButton.disabled = atStart;
+    nextButton.disabled = atEnd;
   }
 
 
@@ -270,16 +280,25 @@
       widget.appendChild(prevButton);
       widget.appendChild(nextButton);
 
+      var refreshNavState = function () {
+        updateNavState(container, prevButton, nextButton);
+      };
+
+      container.addEventListener("scroll", refreshNavState, { passive: true });
+      window.setTimeout(refreshNavState, 0);
+
       prevButton.addEventListener("click", function (event) {
         event.preventDefault();
         event.stopPropagation();
         slideContainer(container, -1);
+        window.setTimeout(refreshNavState, 350);
       });
 
       nextButton.addEventListener("click", function (event) {
         event.preventDefault();
         event.stopPropagation();
         slideContainer(container, 1);
+        window.setTimeout(refreshNavState, 350);
       });
     });
   }

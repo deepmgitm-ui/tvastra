@@ -1979,3 +1979,58 @@ button:focus-visible,
     display: none !important;
   }
 }
+/*************************************************************
+** Tvastra fullscreen video and review icon polish
+*************************************************************/
+.jdgm-star,
+.jdgm-carousel-item__review-rating .jdgm-star,
+.jdgm-rev__rating .jdgm-star,
+.jdgm-prev-badge__stars .jdgm-star {
+  display: inline-block !important;
+  min-width: 14px !important;
+  color: #f5a623 !important;
+  font-family: "Segoe UI Symbol", "Arial Unicode MS", Arial, Helvetica, sans-serif !important;
+  line-height: 1 !important;
+}
+
+.jdgm-star:before {
+  content: "\2605" !important;
+  font-family: "Segoe UI Symbol", "Arial Unicode MS", Arial, Helvetica, sans-serif !important;
+  line-height: 1 !important;
+}
+
+.jdgm-star.jdgm--off:before,
+.spr-icon-star-empty:before {
+  content: "\2606" !important;
+}
+
+.spr-icon-star:before {
+  content: "\2605" !important;
+  font-family: "Segoe UI Symbol", "Arial Unicode MS", Arial, Helvetica, sans-serif !important;
+}
+
+.tv-jdgm-nav:disabled {
+  opacity: 0.28 !important;
+  cursor: default !important;
+  pointer-events: none !important;
+}
+
+.pswp .tv-pswp-video,
+.pswp .tv-pswp-video-frame {
+  display: block !important;
+  width: min(92vw, 1000px) !important;
+  height: auto !important;
+  max-width: 92vw !important;
+  max-height: 86vh !important;
+  margin: 0 auto !important;
+  background: #000 !important;
+  object-fit: contain !important;
+}
+
+.pswp .tv-pswp-video-frame {
+  height: min(78vh, 720px) !important;
+  border: 0 !important;
+}
+.jdgm-carousel-wrapper .jdgm-carousel__item-container {
+  scroll-snap-type: none !important;
+}

@@ -1,10 +1,10 @@
 jQuery( function( $ ) {
 	var ProductPhotoswipe = function( $target ) {
 		this.$target = $target;
-		this.$images = $( '.product__media-item[data-media-type="image"]', $target );
+		this.$media = $( '.product__media-item[data-media-type]', $target );
 
 		// No images? Abort.
-		if ( 0 === this.$images.length ) {
+		if ( 0 === this.$media.length ) {
 			return;
 		}
 
@@ -40,19 +40,64 @@ jQuery( function( $ ) {
 	 * Get product gallery image items.
 	 */
 	ProductPhotoswipe.prototype.getGalleryItems = function() {
-		var $slides = this.$images,
+		var $slides = this.$media,
 			items   = [];
+		var escapeAttribute = function( value ) {
+			return String( value || '' )
+				.replace( /&/g, '&amp;' )
+				.replace( /"/g, '&quot;' )
+				.replace( /</g, '&lt;' )
+				.replace( />/g, '&gt;' );
+		};
 
 		if ( $slides.length > 0 ) {
 			$slides.each( function( i, el ) {
-				var img = $( el ).find( 'img' );
-				if ( img.length ) {
+				var $slide = $( el ),
+					mediaType = $slide.attr( 'data-media-type' ),
+					img = $slide.find( 'img' ).first(),
+					video = $slide.find( 'video' ).get( 0 );
+
+				if ( 'image' === mediaType && img.length ) {
+					var imageSrc = img.attr( 'data-master-image' ) || img.attr( 'src' ) || img.attr( 'data-src' );
+					if ( ! imageSrc ) {
+						return;
+					}
 					items.push({
-						src  : img.attr( 'data-master-image' ),
-						w    : img.attr( 'data-master-image-width' ),
-						h    : img.attr( 'data-master-image-height' ),
+						src  : imageSrc,
+						w    : img.attr( 'data-master-image-width' ) || img.attr( 'width' ) || 1,
+						h    : img.attr( 'data-master-image-height' ) || img.attr( 'height' ) || 1,
 						title: img.attr( 'data-caption' ) ? img.attr( 'data-caption' ) : ''
 					});
+				} else if ( 'video' === mediaType && video ) {
+					var sourceElement = $( video ).find( 'source[src]' ).first(),
+						source = sourceElement.attr( 'src' ) || video.getAttribute( 'src' ) || video.currentSrc,
+						poster = video.getAttribute( 'poster' ),
+						sourceType = sourceElement.attr( 'type' ),
+						videoHtml;
+
+					if ( ! source ) {
+						return;
+					}
+
+					videoHtml = '<video class="tv-pswp-video" controls autoplay muted playsinline loop preload="metadata"';
+					if ( poster ) {
+						videoHtml += ' poster="' + escapeAttribute( poster ) + '"';
+					}
+					videoHtml += '><source src="' + escapeAttribute( source ) + '"';
+					if ( sourceType ) {
+						videoHtml += ' type="' + escapeAttribute( sourceType ) + '"';
+					}
+					videoHtml += '></video>';
+					items.push({ html: videoHtml });
+				} else if ( 'external_video' === mediaType ) {
+					var iframe = $slide.find( 'iframe' ).get( 0 ),
+						iframeSrc = iframe && iframe.getAttribute( 'src' );
+
+					if ( iframeSrc ) {
+						items.push({
+							html: '<iframe class="tv-pswp-video-frame" src="' + escapeAttribute( iframeSrc ) + '" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>'
+						});
+					}
 				}
 			});
 		}
@@ -83,12 +128,17 @@ jQuery( function( $ ) {
 			"bgOpacity": 0.85,
 			"closeOnVerticalDrag": false
 		};
+		var index = this.$media.index( clicked );
 		if ($(this.$target).hasClass('product-style-2')) {
-			var index = parseInt($(eventTarget).closest(".gallary-item.product__media-item").attr("data-swiper-slide-index"));
+			var styleTwoIndex = parseInt($(eventTarget).closest(".gallary-item.product__media-item").attr("data-swiper-slide-index"), 10);
+			if ( ! isNaN( styleTwoIndex ) ) {
+				index = styleTwoIndex;
+			}
 		}
-		else{
-			var index = $( clicked ).index()
+		if ( index < 0 ) {
+			index = 0;
 		}
+		index = Math.min( index, Math.max( 0, items.length - 1 ) );
 			var options = $.extend( {
 				index: index,
 				addCaptionHTMLFn: function( item, captionEl ) {
