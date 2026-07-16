@@ -4,6 +4,7 @@
   var WIDGET_SELECTOR = ".jdgm-widget.jdgm-carousel";
   var PRODUCT_LINK_SELECTOR = ".jdgm-carousel-item__product[href*='/products/']";
   var IMAGE_SELECTOR = ".jdgm-carousel-item__product-image";
+  var STAR_SELECTOR = ".jdgm-star, .spr-icon-star, .spr-icon-star-empty";
   var dragState = {
     active: false,
     moved: false,
@@ -13,6 +14,13 @@
   };
   var productCache = new Map();
   var productImageObserver = null;
+
+  function normalizeReviewStars(root) {
+    var scope = root && root.querySelectorAll ? root : document;
+    scope.querySelectorAll(STAR_SELECTOR).forEach(function (star) {
+      star.classList.add("tv-star-fixed");
+    });
+  }
 
   function getProductUrl(card) {
     var link = card.querySelector(PRODUCT_LINK_SELECTOR);
@@ -398,6 +406,7 @@
 
   function start() {
     bindCardNavigation();
+    normalizeReviewStars(document);
     enhanceCards(document);
     enhanceSliderControls(document);
 
@@ -405,6 +414,7 @@
       mutations.forEach(function (mutation) {
         mutation.addedNodes.forEach(function (node) {
           if (node.nodeType !== 1) return;
+          normalizeReviewStars(node);
           if (node.matches && node.matches(CARD_SELECTOR)) enhanceCard(node);
           enhanceCards(node);
           enhanceSliderControls(node);

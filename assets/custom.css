@@ -2009,6 +2009,28 @@ button:focus-visible,
   font-family: "Segoe UI Symbol", "Arial Unicode MS", Arial, Helvetica, sans-serif !important;
 }
 
+
+
+/* Judge.me and Shopify Product Reviews can load their icon font late. The higher-specificity class keeps a real star glyph even when that font fails. */
+.jdgm-star.tv-star-fixed,
+.spr-icon-star.tv-star-fixed,
+.spr-icon-star-empty.tv-star-fixed {
+  font-family: Arial, "Segoe UI Symbol", "Arial Unicode MS", sans-serif !important;
+  font-weight: 700 !important;
+}
+
+.jdgm-star.tv-star-fixed:before,
+.spr-icon-star.tv-star-fixed:before {
+  content: "\2605" !important;
+  font-family: Arial, "Segoe UI Symbol", "Arial Unicode MS", sans-serif !important;
+  font-weight: 700 !important;
+}
+
+.jdgm-star.jdgm--off.tv-star-fixed:before,
+.spr-icon-star-empty.tv-star-fixed:before {
+  content: "\2606" !important;
+}
+
 .tv-jdgm-nav:disabled {
   opacity: 0.28 !important;
   cursor: default !important;
