@@ -12,7 +12,7 @@
 }
 
 .main-product-page .product-summary > .position-sticky {
-  padding: 12px 0 28px;
+  padding: 8px 0 16px;
 }
 
 .main-product-page .product-info {
@@ -21,11 +21,11 @@
 }
 
 .main-product-page .product-title {
-  margin: 0 0 10px !important;
+  margin: 0 0 6px !important;
   color: var(--product-ink) !important;
-  font-size: 32px !important;
+  font-size: 28px !important;
   font-weight: 600 !important;
-  line-height: 1.14 !important;
+  line-height: 1.12 !important;
   letter-spacing: 0 !important;
 }
 
@@ -46,7 +46,7 @@
 }
 
 .main-product-page .product-info > .panel-group.accordion-event:first-child {
-  margin: 0 0 12px !important;
+  margin: 0 0 6px !important;
   padding: 0 !important;
 }
 
@@ -58,8 +58,8 @@
 }
 
 .main-product-page .product-info > .panel-group.accordion-event:first-child .panel-title {
-  min-height: 38px !important;
-  padding: 8px 0 !important;
+  min-height: 32px !important;
+  padding: 6px 0 !important;
   color: var(--product-ink) !important;
   font-size: 13px !important;
   font-weight: 600 !important;
@@ -80,8 +80,8 @@
 }
 
 .main-product-page [id^="price-"] {
-  margin: 0 0 18px !important;
-  padding: 14px 0 16px !important;
+  margin: 0 0 12px !important;
+  padding: 10px 0 12px !important;
   border-top: 1px solid var(--product-line) !important;
   border-bottom: 1px solid var(--product-line) !important;
 }
@@ -357,7 +357,7 @@
   }
 
   .main-product-page .product-summary > .position-sticky {
-    padding: 10px 0 16px !important;
+    padding: 6px 0 10px !important;
   }
 
   .main-product-page .product-media-grid-wrapper,
@@ -382,16 +382,23 @@
   }
 
   .main-product-page .product-info > .panel-group.accordion-event:first-child {
-    margin-bottom: 8px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .main-product-page .product-info > .panel-group.accordion-event:first-child .panel-title {
+    min-height: 30px !important;
+    padding: 5px 0 !important;
   }
 
   .main-product-page .product-title {
-    font-size: 26px !important;
+    margin-bottom: 4px !important;
+    font-size: 23px !important;
+    line-height: 1.1 !important;
   }
 
   .main-product-page [id^="price-"] {
-    margin-bottom: 14px !important;
-    padding: 12px 0 14px !important;
+    margin-bottom: 10px !important;
+    padding: 8px 0 10px !important;
   }
 
   .main-product-page [id^="price-"] .price {
@@ -423,7 +430,7 @@
   }
 
   .main-product-page .product-title {
-    font-size: 24px !important;
+    font-size: 21px !important;
   }
 
   .main-product-page .product-colour-family__options {
