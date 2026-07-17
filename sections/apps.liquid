@@ -10,7 +10,7 @@
     {% if section.settings.app_border_color != blank %}border: {{ section.settings.app_border_width }}px solid {{ section.settings.app_border_color }} !important;{% endif %}
     border-radius: {{ section.settings.app_border_radius }}px !important;
     padding: {{ section.settings.app_padding }}px !important;
-    overflow: hidden; /* Ye border-radius ko bahar nikalne nahi dega */
+    overflow: hidden;
   }
 
   /* --- FORCE FONT AND TEXT COLOR ON APP ELEMENTS --- */
@@ -52,7 +52,7 @@
     },
     {
       "type": "header",
-      "content": "✨ Master Typography & Colors"
+      "content": "Master Typography & Colors"
     },
     {
       "type": "font_picker",
@@ -67,7 +67,7 @@
     },
     {
       "type": "header",
-      "content": "✨ Box Shape & Styling"
+      "content": "Box Shape & Styling"
     },
     {
       "type": "color",
@@ -82,20 +82,32 @@
     {
       "type": "range",
       "id": "app_border_width",
-      "min": 0, "max": 10, "step": 1, "unit": "px",
-      "label": "Border Width", "default": 0
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Border Width",
+      "default": 0
     },
     {
       "type": "range",
       "id": "app_border_radius",
-      "min": 0, "max": 50, "step": 1, "unit": "px",
-      "label": "Shape (Border Radius)", "default": 0
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Shape (Border Radius)",
+      "default": 0
     },
     {
       "type": "range",
       "id": "app_padding",
-      "min": 0, "max": 100, "step": 2, "unit": "px",
-      "label": "Inner Padding", "default": 0
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Inner Padding",
+      "default": 0
     }
   ],
   "blocks": [
