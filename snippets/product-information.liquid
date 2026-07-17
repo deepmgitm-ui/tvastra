@@ -326,7 +326,7 @@
                 <div class="product-form-buttons {% if product.selected_or_first_available_variant.available == false and block.settings.collect_back_in_stock == false %}disabled-btn sold-out{% endif %}">
                   <div class="action-btn d-flex {% if block.settings.show_add_to_cart == true %}justify-content-between{% endif %} align-items-end">
                     {%- unless product_group != blank -%} 
-                    <div class="quantity-btn d-flex flex-md-column align-items-center align-items-md-start {% unless block.settings.show_qty %} d-none{% endunless %}">
+                    <div class="quantity-btn d-flex flex-md-column align-items-center align-items-md-start">
                       <label>{{ 'general.product_information.quantity' | t }}</label>
                       <quantity-input class="quantity">
                         <button class="quantity-button quantity-minus feather-minus" name="minus" type="button" aria-label="minus"><span class="visually-hidden">-</span></button>
