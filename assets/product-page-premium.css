@@ -24,7 +24,7 @@
   margin: 0 0 10px !important;
   color: var(--product-ink) !important;
   font-size: 32px !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   line-height: 1.14 !important;
   letter-spacing: 0 !important;
 }
@@ -62,7 +62,7 @@
   padding: 8px 0 !important;
   color: var(--product-ink) !important;
   font-size: 13px !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
 }
 
 .main-product-page .product-info > .panel-group.accordion-event:first-child .panel-title i {
@@ -89,7 +89,7 @@
 .main-product-page [id^="price-"] .price {
   color: var(--product-ink) !important;
   font-size: 24px !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   line-height: 1.2 !important;
 }
 
@@ -115,7 +115,7 @@
   margin: 0 0 12px !important;
   color: var(--product-ink) !important;
   font-size: 14px !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   line-height: 1.25 !important;
 }
 
@@ -199,7 +199,7 @@
   margin: 0 0 9px !important;
   color: var(--product-ink) !important;
   font-size: 14px !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
 }
 
 .main-product-page .product-variants .form-label span {
@@ -247,7 +247,7 @@
   background: var(--product-ink) !important;
   color: #fff !important;
   font-size: 14px !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   letter-spacing: .02em !important;
   transition: background-color .2s ease, transform .2s ease !important;
 }
@@ -273,7 +273,7 @@
   background: var(--product-accent) !important;
   color: #fff !important;
   font-size: 14px !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   letter-spacing: .02em !important;
 }
 
@@ -331,6 +331,78 @@
 }
 
 @media (max-width: 991px) {
+  .main-product-page {
+    padding-bottom: 76px !important;
+  }
+
+  /* Keep both primary purchase actions reachable from the first viewport. */
+  .main-product-page .sticky-addtocart {
+    position: fixed !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    z-index: 98 !important;
+    display: block !important;
+    padding: 8px 10px calc(8px + env(safe-area-inset-bottom)) !important;
+    background: #fff !important;
+    box-shadow: 0 -8px 24px rgba(8, 43, 52, .12) !important;
+    transform: translate3d(0, 0, 0) !important;
+  }
+
+  .main-product-page .sticky-addtocart .sticky-addtocart-inner,
+  .main-product-page .sticky-addtocart .sticky-product-form {
+    width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .main-product-page .sticky-addtocart .product-form-buttons {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    gap: 8px !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .main-product-page .sticky-addtocart .product-form-buttons .quantity,
+  .main-product-page .sticky-addtocart .product-form-buttons .wishlist-btn,
+  .main-product-page .sticky-addtocart .product-form-buttons .compare-btn {
+    display: none !important;
+  }
+
+  .main-product-page .sticky-addtocart .product-form-buttons .cart-btn,
+  .main-product-page .sticky-addtocart .product-form-buttons .shopify-payment-button {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 46px !important;
+    margin: 0 !important;
+  }
+
+  .main-product-page .sticky-addtocart .product-form-buttons .cart-btn {
+    padding: 10px 8px !important;
+    border-radius: 6px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0 !important;
+  }
+
+  .main-product-page .sticky-addtocart .product-form-buttons .shopify-payment-button {
+    display: block !important;
+  }
+
+  .main-product-page .sticky-addtocart .shopify-payment-button__button,
+  .main-product-page .sticky-addtocart shopify-accelerated-checkout {
+    display: block !important;
+    width: 100% !important;
+    min-height: 46px !important;
+    margin: 0 !important;
+  }
+
+  .main-product-page .sticky-addtocart .shopify-payment-button__button {
+    border-radius: 6px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+  }
+
   .main-product-page > div > .product {
     display: flex !important;
     flex-direction: column !important;
