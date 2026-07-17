@@ -369,7 +369,7 @@
     display: none !important;
   }
 
-  .main-product-page .sticky-addtocart .product-form-buttons .cart-btn,
+  .main-product-page .sticky-addtocart .product-form-buttons > button[type="submit"],
   .main-product-page .sticky-addtocart .product-form-buttons .shopify-payment-button {
     width: 100% !important;
     min-width: 0 !important;
@@ -377,7 +377,7 @@
     margin: 0 !important;
   }
 
-  .main-product-page .sticky-addtocart .product-form-buttons .cart-btn {
+  .main-product-page .sticky-addtocart .product-form-buttons > button[type="submit"] {
     padding: 10px 8px !important;
     border-radius: 6px !important;
     font-size: 13px !important;
