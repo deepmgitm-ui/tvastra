@@ -59,13 +59,14 @@
           endif
         -%}
 
-        {%- if _has_swatches -%}
-          <div style="margin-bottom: 8px; margin-top: 0px;">
-            <div style="font-size: 14px; font-weight: 600; color: #000; margin-bottom: 10px; line-height: 1.2;">
+        {%- capture colour_family_markup -%}
+          {%- if _has_swatches -%}
+          <div class="product-colour-family" style="margin-bottom: 8px; margin-top: 0px;">
+            <div class="product-colour-family__label" style="font-size: 14px; font-weight: 600; color: #000; margin-bottom: 10px; line-height: 1.2;">
               Colour:&nbsp;<span style="font-weight: 400; color: #555; text-transform: capitalize;">{{ _name }}</span>
             </div>
             
-            <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+            <div class="product-colour-family__options" style="display: flex; flex-wrap: wrap; gap: 15px;">
               {%- comment -%} CURRENT PRODUCT (ALWAYS FIRST) {%- endcomment -%}
               <div style="display: inline-flex; flex-direction: column; align-items: center; gap: 6px; cursor: default;" title="{{ _name }}">
                 {%- liquid 
@@ -101,7 +102,8 @@
               {%- endfor -%}
             </div>
           </div>
-        {%- endif -%}
+          {%- endif -%}
+        {%- endcapture -%}
 
         <h1 class="product-title alt-font h-5">{{ product.title | escape }}</h1>
         <div class="rating-sku-wrap flex-wrap d-flex w-100 align-items-center">                  
@@ -123,6 +125,8 @@
             {%- render 'main-price', product: product, use_variant: true, show_badges: true, price_class: 'price--large', save_label: block.settings.show_save_label -%}
           </div>
         {%- endif -%}
+
+        {{- colour_family_markup -}}
 
         {%- form 'product', product, id: 'product-form-installment', class: 'installment caption-large' -%}
           <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">{{ form | payment_terms }}

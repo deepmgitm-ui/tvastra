@@ -401,8 +401,36 @@
 }
 
 .jdgm-rev__rating {
-  display: block !important;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 2px !important;
   margin: 7px auto 12px !important;
+  white-space: nowrap !important;
+  writing-mode: horizontal-tb !important;
+}
+
+.jm-review-card [class*="rating"],
+.jm-review-card [class*="stars"],
+.jm-review [class*="rating"],
+.jm-review [class*="stars"] {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 2px !important;
+  white-space: nowrap !important;
+  writing-mode: horizontal-tb !important;
+}
+
+.jm-review-card [class*="rating"] > *,
+.jm-review-card [class*="stars"] > *,
+.jm-review [class*="rating"] > *,
+.jm-review [class*="stars"] > * {
+  flex: 0 0 auto !important;
 }
 
 .jdgm-rev__title,
