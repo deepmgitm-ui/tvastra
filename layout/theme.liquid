@@ -432,7 +432,7 @@
   .gol-button-final:hover { transform: scale(1.15) !important; border-color: #000 !important; box-shadow: 0px 3px 6px rgba(0,0,0,0.2) !important; }
 </style>
 
-     <script src="{{ 'scroll-logo.js' | asset_url }}" defer></script>
+     <script src="{{ 'scroll-logo.js' | asset_url | split: '?' | first }}?v=review-stars-v1" defer></script>
      <script src="{{ 'review-stars.js' | asset_url }}" defer></script>
      {%- if template.name == 'index' -%}
        <script src="{{ 'judgeme-review-cards.js' | asset_url }}" defer></script>
