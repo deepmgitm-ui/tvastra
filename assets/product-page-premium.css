@@ -365,6 +365,96 @@
   border-radius: 8px !important;
 }
 
+.main-product-page .product-main-slider,
+.main-product-page .product-image-main {
+  overflow: hidden !important;
+  border-radius: 8px !important;
+  background: var(--product-surface) !important;
+}
+
+.main-product-page .product-image-main .swiper-slide {
+  background: var(--product-surface) !important;
+}
+
+.main-product-page .product-image-main .product-media {
+  background: var(--product-surface) !important;
+}
+
+.main-product-page .product-image-main .preview-image,
+.main-product-page .product-gallery .product-main-slider .product-media img {
+  object-fit: contain !important;
+  background: var(--product-surface) !important;
+}
+
+.main-product-page .product-image-main .media-video video,
+.main-product-page .product-image-main .media-video iframe {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  background: #111 !important;
+}
+
+.main-product-page .product-gallery-photoswipe__trigger.product-img-btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 42px !important;
+  height: 42px !important;
+  right: 14px !important;
+  top: 14px !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, .92) !important;
+  color: var(--product-ink) !important;
+  box-shadow: 0 8px 20px rgba(8, 43, 52, .16) !important;
+}
+
+.pswp .pswp__bg {
+  background: #080b0c !important;
+}
+
+.pswp .pswp__top-bar,
+.pswp .pswp__caption,
+.pswp .pswp__ui--fit .pswp__top-bar,
+.pswp .pswp__ui--fit .pswp__caption {
+  background: transparent !important;
+}
+
+.pswp .pswp__counter,
+.pswp .pswp__top-bar .pswp__button:before,
+.pswp .pswp__button--arrow--left:before,
+.pswp .pswp__button--arrow--right:before {
+  color: #fff !important;
+}
+
+.pswp .pswp__button_wrapper {
+  right: 10px !important;
+  top: 10px !important;
+}
+
+.pswp .pswp__button {
+  border-radius: 50% !important;
+}
+
+.pswp .pswp__button--arrow--left,
+.pswp .pswp__button--arrow--right {
+  opacity: .9 !important;
+}
+
+.pswp .tv-pswp-video,
+.pswp .tv-pswp-video-frame {
+  position: absolute !important;
+  inset: 50% auto auto 50% !important;
+  width: min(96vw, 1080px) !important;
+  height: min(86vh, 760px) !important;
+  transform: translate(-50%, -50%) !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: #000 !important;
+  object-fit: contain !important;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, .35) !important;
+}
+
 /* Keep review stars in a real row even when a review app injects vertical flex styles. */
 #judgeme_product_reviews [class*="rating"],
 #judgeme_product_reviews [class*="stars"],
@@ -454,6 +544,34 @@
 
   .main-product-page .product-gallery .product-thumb-wrap {
     margin-top: 8px !important;
+  }
+
+  .main-product-page .product-gallery .product-thumb-wrap .product-image-thumb {
+    margin-top: 8px !important;
+  }
+
+  .main-product-page .product-gallery .product-thumb-wrap .swiper-slide {
+    width: 62px !important;
+  }
+
+  .main-product-page .product-gallery .product-thumb-wrap .product-media {
+    width: 62px !important;
+    height: 62px !important;
+    border-radius: 6px !important;
+    background: var(--product-surface) !important;
+  }
+
+  .main-product-page .product-gallery .product-thumb-wrap .product-media img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+  }
+
+  .main-product-page .product-gallery .product-thumb-wrap .media-icon {
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 14px !important;
+    background: rgba(8, 43, 52, .86) !important;
   }
 
   .main-product-page .product-info {

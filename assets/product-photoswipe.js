@@ -29,11 +29,9 @@ jQuery( function( $ ) {
 		$(document).on( 'click', '.product-gallery-photoswipe__trigger', function (e) {
 			$this.openPhotoswipe(e);
 		});
-		if (!window.ZOOM) {
-			$(document).on( 'click', '.product-image-main .product-media.media-image > img', function (e) {
-				$this.openPhotoswipe(e);
-			});
-		}
+		$(document).on( 'click', '.product-image-main .product-media.media-image > img:not(.zoomImg)', function (e) {
+			$this.openPhotoswipe(e);
+		});
 	};
 
 	/**
@@ -57,11 +55,13 @@ jQuery( function( $ ) {
 					img = $slide.find( 'img' ).first(),
 					video = $slide.find( 'video' ).get( 0 );
 
+				$slide.attr( 'data-pswp-index', '-1' );
 				if ( 'image' === mediaType && img.length ) {
 					var imageSrc = img.attr( 'data-master-image' ) || img.attr( 'src' ) || img.attr( 'data-src' );
 					if ( ! imageSrc ) {
 						return;
 					}
+					$slide.attr( 'data-pswp-index', items.length );
 					items.push({
 						src  : imageSrc,
 						w    : img.attr( 'data-master-image-width' ) || img.attr( 'width' ) || 1,
@@ -88,12 +88,14 @@ jQuery( function( $ ) {
 						videoHtml += ' type="' + escapeAttribute( sourceType ) + '"';
 					}
 					videoHtml += '></video>';
+					$slide.attr( 'data-pswp-index', items.length );
 					items.push({ html: videoHtml });
 				} else if ( 'external_video' === mediaType ) {
 					var iframe = $slide.find( 'iframe' ).get( 0 ),
 						iframeSrc = iframe && iframe.getAttribute( 'src' );
 
 					if ( iframeSrc ) {
+						$slide.attr( 'data-pswp-index', items.length );
 						items.push({
 							html: '<iframe class="tv-pswp-video-frame" src="' + escapeAttribute( iframeSrc ) + '" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>'
 						});
@@ -125,17 +127,17 @@ jQuery( function( $ ) {
 			"shareEl": false,
 			"history": false,
 			"closeOnScroll": false,
-			"bgOpacity": 0.85,
+			"bgOpacity": 0.92,
 			"closeOnVerticalDrag": false
 		};
-		var index = this.$media.index( clicked );
+		var index = parseInt( clicked.attr( 'data-pswp-index' ), 10 );
 		if ($(this.$target).hasClass('product-style-2')) {
-			var styleTwoIndex = parseInt($(eventTarget).closest(".gallary-item.product__media-item").attr("data-swiper-slide-index"), 10);
-			if ( ! isNaN( styleTwoIndex ) ) {
-				index = styleTwoIndex;
+			var styleTwoGalleryIndex = parseInt($(eventTarget).closest(".gallary-item.product__media-item").attr("data-pswp-index"), 10);
+			if ( ! isNaN( styleTwoGalleryIndex ) ) {
+				index = styleTwoGalleryIndex;
 			}
 		}
-		if ( index < 0 ) {
+		if ( isNaN( index ) || index < 0 ) {
 			index = 0;
 		}
 		index = Math.min( index, Math.max( 0, items.length - 1 ) );
