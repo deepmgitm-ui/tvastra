@@ -484,6 +484,7 @@
   background: rgba(255, 255, 255, .92) !important;
   color: var(--product-ink) !important;
   box-shadow: 0 8px 20px rgba(8, 43, 52, .16) !important;
+  z-index: 4 !important;
 }
 
 .pswp .pswp__bg {

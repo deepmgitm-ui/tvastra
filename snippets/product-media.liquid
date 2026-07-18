@@ -69,6 +69,10 @@
 {%- endif -%}
 {%- liquid
   assign initial_media_id = product.selected_or_first_available_variant.featured_media.id
+  assign initial_preview_media = product.selected_or_first_available_variant.featured_media
+  if initial_preview_media == blank
+    assign initial_preview_media = product.featured_media
+  endif
   assign initialSlide = 0
   for media in product.media
     if media.id == initial_media_id
@@ -77,7 +81,18 @@
     endif
   endfor
 -%}
-<div class="product-main-slider">
+<div class="product-main-slider{% if initial_preview_media.media_type == 'image' %} has-inline-image-preview{% endif %}">
+  {%- if initial_preview_media.media_type == 'image' -%}
+    <button type="button" class="tv-inline-product-preview" aria-label="Selected product image">
+      <img
+        src="{{ initial_preview_media | image_url: width: 1400 }}"
+        alt="{{ initial_preview_media.alt | escape }}"
+        width="{{ initial_preview_media.width }}"
+        height="{{ initial_preview_media.height }}"
+        loading="eager"
+      >
+    </button>
+  {%- endif -%}
   <a
     href="#"
     class="product-gallery-photoswipe__trigger product-img-btn"
