@@ -124,6 +124,10 @@
           <div class="no-js-hidden" id="price-{{ section_id }}">
             {%- render 'main-price', product: product, use_variant: true, show_badges: true, price_class: 'price--large', save_label: block.settings.show_save_label -%}
           </div>
+          <div class="product-purchase-note" aria-label="Purchase information">
+            <span>Inclusive of all taxes</span>
+            <span>Free shipping on prepaid & COD*</span>
+          </div>
         {%- endif -%}
 
         {{- colour_family_markup -}}
