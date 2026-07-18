@@ -1323,3 +1323,28 @@
     flex-basis: 42px !important;
   }
 }
+
+/* Mobile media frame: show the full product image without letting the frame become too tall. */
+@media (max-width: 767px) {
+  .main-product-page .tv-inline-product-preview,
+  .main-product-page .product-image-main .product-media,
+  .main-product-page .product-image-main image-srcset.res-image,
+  .main-product-page .product-image-main .product-media.media-image > .h-100 {
+    aspect-ratio: 1 / 1 !important;
+  }
+
+  .main-product-page .product-main-slider,
+  .main-product-page .product-image-main,
+  .main-product-page .product-image-main .swiper-slide {
+    max-height: min(82vw, 390px) !important;
+  }
+
+  .main-product-page .tv-inline-product-preview img,
+  .main-product-page .product-image-main .preview-image,
+  .main-product-page .product-image-main .product-frame-image,
+  .main-product-page .product-gallery .product-main-slider .product-media img,
+  .main-product-page .product-image-main .media-video video,
+  .main-product-page .product-image-main .media-video iframe {
+    object-fit: contain !important;
+  }
+}
