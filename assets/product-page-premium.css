@@ -378,6 +378,8 @@
 
 .main-product-page .tv-inline-product-preview {
   display: none;
+  position: relative;
+  z-index: 1;
   width: 100%;
   aspect-ratio: 4 / 5;
   padding: 0;
@@ -385,6 +387,7 @@
   border-radius: 8px;
   background: var(--product-surface);
   overflow: hidden;
+  pointer-events: none;
 }
 
 .main-product-page .tv-inline-product-preview img {

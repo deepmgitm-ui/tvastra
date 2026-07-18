@@ -26,8 +26,7 @@
     if (!mainSlider) return null;
 
     if (!preview) {
-      preview = document.createElement('button');
-      preview.type = 'button';
+      preview = document.createElement('div');
       preview.className = 'tv-inline-product-preview';
       preview.setAttribute('aria-label', 'Selected product image');
       preview.innerHTML = '<img alt="">';
@@ -105,17 +104,29 @@
   }
 
   ready(function () {
-    document.addEventListener('click', function (event) {
+    var lastThumb;
+    var lastRun = 0;
+    var onThumbEvent = function (event) {
       var thumb = event.target.closest('.product-thumb-wrap .swiper-slide[data-index]');
-      if (thumb) {
-        setTimeout(function () {
-          activateThumb(thumb);
-        }, 0);
-      }
-    }, true);
+      var now = Date.now();
+
+      if (!thumb) return;
+      if (thumb === lastThumb && now - lastRun < 120) return;
+
+      lastThumb = thumb;
+      lastRun = now;
+      setTimeout(function () {
+        activateThumb(thumb);
+      }, 0);
+    };
+
+    ['touchstart', 'pointerup', 'click'].forEach(function (eventName) {
+      document.addEventListener(eventName, onThumbEvent, true);
+    });
 
     document.addEventListener('click', function (event) {
-      if (event.target.closest('.tv-inline-product-preview')) {
+      var preview = event.target.closest('.tv-inline-product-preview');
+      if (preview) {
         event.preventDefault();
       }
     });

@@ -89,7 +89,7 @@
 -%}
 <div class="product-main-slider{% if initial_preview_media.media_type == 'image' %} has-inline-image-preview{% endif %}">
   {%- if initial_preview_media.media_type == 'image' -%}
-    <button type="button" class="tv-inline-product-preview" aria-label="Selected product image">
+    <div class="tv-inline-product-preview" aria-label="Selected product image">
       <img
         src="{{ initial_preview_media.preview_image | image_url: width: 1400 }}"
         alt="{{ initial_preview_media.alt | escape }}"
@@ -97,7 +97,7 @@
         height="{{ initial_preview_media.preview_image.height }}"
         loading="eager"
       >
-    </button>
+    </div>
   {%- endif -%}
   <a
     href="#"
