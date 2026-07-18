@@ -1,5 +1,5 @@
 {{ 'product-detail.min.css' | asset_url | stylesheet_tag }}
-{{ 'product-page-premium.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="{{ 'product-page-premium.css' | asset_url | split: '?' | first }}?v=inline-media-v6">
 {%- liquid
   assign section_id = section.id  
   assign variant_colors = settings.product_colors | strip_newlines | downcase | split: ','
@@ -114,7 +114,8 @@
   <script src="{{ 'product-model.js' | asset_url }}" defer></script>
 {%- endif -%}
 {%- render 'product-photoswipe' -%}
-<script src="{{ 'product-photoswipe.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'product-photoswipe.js' | asset_url | split: '?' | first }}?v=inline-media-v6" defer="defer"></script>
+<script src="{{ 'product-inline-media.js' | asset_url | split: '?' | first }}?v=inline-media-v1" defer="defer"></script>
 <script type="text/javascript">
     window._themeProducts = window._themeProducts || {}
     window.productPrice = '{{ product.selected_or_first_available_variant.price | money }}';

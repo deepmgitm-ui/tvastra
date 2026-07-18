@@ -29,6 +29,9 @@
             <div
               class="swiper-slide"
               data-media-id="{{ section_id }}-{{ media.id }}-thumb"
+              data-media-type="{{ media.media_type }}"
+              data-preview-src="{{ media.preview_image | image_url: width: 1400 }}"
+              data-preview-alt="{{ media.alt | escape }}"
               data-index="{{ forloop.index }}"
               variant_img_added="{{ variant_img_added }}"
             >
@@ -49,6 +52,9 @@
             <div
               class="swiper-slide"
               data-media-id="{{ section_id }}-{{ media.id }}-thumb"
+              data-media-type="{{ media.media_type }}"
+              data-preview-src="{{ media.preview_image | image_url: width: 1400 }}"
+              data-preview-alt="{{ media.alt | escape }}"
               data-index="{{ forloop.index }}"
               variant_img_added="{{ variant_img_added }}"
             >

@@ -400,7 +400,13 @@
 }
 
 .main-product-page .product-main-slider.has-inline-image-preview .product-image-main {
-  display: none !important;
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 .main-product-page .product-image-main,
