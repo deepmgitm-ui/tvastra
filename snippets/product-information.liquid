@@ -334,8 +334,8 @@
                       <label>{{ 'general.product_information.quantity' | t }}</label>
                       <quantity-input class="quantity">
                         <button class="quantity-button quantity-minus feather-minus" name="minus" type="button" aria-label="minus"><span class="visually-hidden">-</span></button>
-                        <input id="quantity-box" class="quantity-input" type="number" name="quantity" id="Quantity-{{ section_id }}" min="1" value="1" form="product-form-{{ section_id }}" /> 
-                         <label for="quantity-box" class="visually-hidden"></label>
+                        <input id="Quantity-{{ section_id }}" class="quantity-input" type="number" name="quantity" min="1" value="1" form="product-form-{{ section_id }}" />
+                         <label for="Quantity-{{ section_id }}" class="visually-hidden"></label>
                         <button class="quantity-button quantity-plus feather-plus" name="plus" type="button" aria-label="plus"><span class="visually-hidden">+</span></button>
                       </quantity-input>
                     </div>
@@ -369,6 +369,11 @@
                     <custom-btn type="button" class="custom-payment-btn shopify-payment-button__button shopify-payment-button__button--unbranded" data-testid="Checkout-button">{{ 'general.product_information.by_it_now' | t }}</custom-btn>
                   </div>
                   {%- endif -%}
+                  <div class="product-assurance-strip" aria-label="Purchase benefits">
+                    <span>Secure checkout</span>
+                    <span>COD available</span>
+                    <span>Easy 7 day exchange</span>
+                  </div>
                 </div>
               {%- endform -%}
             {%- else -%}

@@ -1131,3 +1131,195 @@
     padding-inline: 8px !important;
   }
 }
+
+/* Final premium purchase polish: clear hierarchy, fast buying, no bulky cards. */
+.main-product-page .product-info {
+  isolation: isolate;
+}
+
+.main-product-page .product-form {
+  margin-top: 0 !important;
+}
+
+.main-product-page .product-form-buttons {
+  border-top: 1px solid var(--product-line) !important;
+  padding-top: 10px !important;
+}
+
+.main-product-page .product-form-buttons .action-btn {
+  display: grid !important;
+  grid-template-columns: 72px minmax(0, 1fr) 48px !important;
+  gap: 8px !important;
+  align-items: stretch !important;
+}
+
+.main-product-page .product-form-buttons .quantity-btn,
+.main-product-page .product-form-buttons .cart-btn,
+.main-product-page .product-form-buttons .wishlist-btn {
+  min-width: 0 !important;
+}
+
+.main-product-page .product-form-buttons .quantity {
+  width: 72px !important;
+  height: 48px !important;
+  flex-basis: 72px !important;
+  border-color: #cfd8d5 !important;
+  background: #fff !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .65) !important;
+}
+
+.main-product-page .product-form-buttons .quantity-input {
+  height: 48px !important;
+  color: var(--product-ink) !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+}
+
+.main-product-page .product-form-buttons .quantity-button {
+  height: 48px !important;
+  opacity: .82 !important;
+}
+
+.main-product-page .product-form-buttons .cart-btn {
+  height: 48px !important;
+  min-height: 48px !important;
+  justify-content: center !important;
+  border-radius: 6px !important;
+  box-shadow: 0 10px 18px rgba(8, 43, 52, .16) !important;
+}
+
+.main-product-page .product-form-buttons .cart-btn span {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.main-product-page .product-form-buttons .wishlist-btn {
+  width: 48px !important;
+  height: 48px !important;
+  flex-basis: 48px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid #d7ddda !important;
+  border-radius: 6px !important;
+  background: #fff !important;
+  color: var(--product-ink) !important;
+}
+
+.main-product-page .product-form-buttons .wishlist-btn:hover,
+.main-product-page .product-form-buttons .wishlist-btn:focus-visible {
+  border-color: var(--product-ink) !important;
+  color: var(--product-ink) !important;
+}
+
+.main-product-page .product-form-buttons .shopify-payment-button {
+  margin-top: 8px !important;
+}
+
+.main-product-page .product-form-buttons .shopify-payment-button__button {
+  height: 50px !important;
+  min-height: 50px !important;
+  border-radius: 6px !important;
+  background: linear-gradient(135deg, #d0a73a 0%, #bd8c22 100%) !important;
+  box-shadow: 0 10px 18px rgba(189, 140, 34, .18) !important;
+}
+
+.main-product-page .product-assurance-strip {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 6px 8px !important;
+  margin: 9px 0 0 !important;
+  color: var(--product-muted) !important;
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+}
+
+.main-product-page .product-assurance-strip span {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+}
+
+.main-product-page .product-assurance-strip span::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--product-accent);
+}
+
+@media (min-width: 992px) {
+  .main-product-page .product-form-buttons .action-btn {
+    grid-template-columns: 78px minmax(0, 1fr) 50px !important;
+  }
+
+  .main-product-page .product-form-buttons .quantity {
+    width: 78px !important;
+    flex-basis: 78px !important;
+  }
+
+  .main-product-page .product-title {
+    max-width: 92% !important;
+  }
+}
+
+@media (max-width: 991px) {
+  .main-product-page .product-form-buttons {
+    padding-top: 8px !important;
+  }
+
+  .main-product-page .product-form-buttons .action-btn {
+    grid-template-columns: 64px minmax(0, 1fr) 46px !important;
+    gap: 6px !important;
+  }
+
+  .main-product-page .product-form-buttons .quantity {
+    width: 64px !important;
+    flex-basis: 64px !important;
+  }
+
+  .main-product-page .product-form-buttons .cart-btn,
+  .main-product-page .product-form-buttons .wishlist-btn,
+  .main-product-page .product-form-buttons .quantity,
+  .main-product-page .product-form-buttons .quantity-input,
+  .main-product-page .product-form-buttons .quantity-button {
+    height: 46px !important;
+    min-height: 46px !important;
+  }
+
+  .main-product-page .product-form-buttons .wishlist-btn {
+    width: 46px !important;
+    flex-basis: 46px !important;
+  }
+
+  .main-product-page .product-assurance-strip {
+    margin-top: 7px !important;
+    font-size: 10px !important;
+  }
+
+  .main-product-page .shipping-info,
+  .main-product-page .trust-badge,
+  .main-product-page .product-usp {
+    margin-top: 8px !important;
+    margin-bottom: 10px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .main-product-page .product-form-buttons .action-btn {
+    grid-template-columns: 58px minmax(0, 1fr) 42px !important;
+  }
+
+  .main-product-page .product-form-buttons .quantity {
+    width: 58px !important;
+    flex-basis: 58px !important;
+  }
+
+  .main-product-page .product-form-buttons .wishlist-btn {
+    width: 42px !important;
+    flex-basis: 42px !important;
+  }
+}
