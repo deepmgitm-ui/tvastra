@@ -1,5 +1,5 @@
 {{ 'product-detail.min.css' | asset_url | stylesheet_tag }}
-<link rel="stylesheet" href="{{ 'product-page-premium.css' | asset_url | split: '?' | first }}?v=product-layout-v2">
+<link rel="stylesheet" href="{{ 'product-page-premium-layout.css' | asset_url }}">
 {%- liquid
   assign section_id = section.id  
   assign variant_colors = settings.product_colors | strip_newlines | downcase | split: ','
