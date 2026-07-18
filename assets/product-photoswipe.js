@@ -29,9 +29,6 @@ jQuery( function( $ ) {
 		$(document).on( 'click', '.product-gallery-photoswipe__trigger', function (e) {
 			$this.openPhotoswipe(e);
 		});
-		$(document).on( 'click', '.product-image-main .product-media.media-image > img:not(.zoomImg)', function (e) {
-			$this.openPhotoswipe(e);
-		});
 	};
 
 	/**
@@ -164,5 +161,35 @@ jQuery( function( $ ) {
 	 */
 	$('.product-image-main, .product-style-2-main-img').each(function(){
 		var psws = new ProductPhotoswipe($(this));
+	});
+
+	var syncProductMediaFrame = function(thumb) {
+		var $thumb = $(thumb),
+			$gallery = $thumb.closest('.product-gallery'),
+			index = $thumb.attr('data-index'),
+			$main = $gallery.find('.product-image-main').first(),
+			swiper = $main.get(0) && $main.get(0).swiper,
+			$targetSlide;
+
+		if (!index || !$main.length) {
+			return;
+		}
+
+		$targetSlide = $main.find('.swiper-slide[data-index="' + index + '"]').first();
+		if (!$targetSlide.length) {
+			return;
+		}
+
+		if (swiper && typeof swiper.slideTo === 'function') {
+			swiper.slideTo($targetSlide.index());
+			return;
+		}
+
+		$main.find('.swiper-slide').removeClass('swiper-slide-active').hide();
+		$targetSlide.addClass('swiper-slide-active').show();
+	};
+
+	$(document).on('click', '.product-thumb-wrap .swiper-slide[data-index]', function() {
+		syncProductMediaFrame(this);
 	});
 });

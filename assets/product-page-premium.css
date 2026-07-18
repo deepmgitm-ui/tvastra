@@ -392,6 +392,11 @@
   background: var(--product-surface) !important;
 }
 
+.main-product-page .product-image-main [data-media-type="image"] .product-media,
+.main-product-page.zoom-disable .product-image-main [data-media-type="image"] .product-media:hover {
+  cursor: default !important;
+}
+
 .main-product-page .product-image-main .product-media.media-image,
 .main-product-page .product-image-main .product-media.media-video,
 .main-product-page .product-image-main .product-media.local-video {
