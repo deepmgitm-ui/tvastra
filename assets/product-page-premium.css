@@ -406,7 +406,13 @@
   aspect-ratio: 4 / 5 !important;
 }
 
+.main-product-page .product-image-main .product-media.media-image > .h-100 {
+  position: absolute !important;
+  inset: 0 !important;
+}
+
 .main-product-page .product-image-main .preview-image,
+.main-product-page .product-image-main .product-frame-image,
 .main-product-page .product-gallery .product-main-slider .product-media img {
   position: absolute !important;
   inset: 0 !important;

@@ -55,7 +55,12 @@
             <span class="bi bi-arrows-fullscreen"></span>
           </a>
         {%- endif -%}
-        {%- render 'responsive-image', image: media, zoom_image: true, include_srcset: include_srcset -%}        
+        {%- render 'responsive-image',
+          image: media,
+          zoom_image: true,
+          include_srcset: false,
+          image_width: 1400
+        -%}
       </div>
     {%- when 'external_video' -%}
       <div class="product-media overflow-hidden media-video" data-media-id="{{ media.id }}">

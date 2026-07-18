@@ -35,7 +35,20 @@
       assign image_url = image | img_url: image_size
     -%}
     {%- if include_srcset == false -%}
-      <img src="{{ image_url }}" loading="lazy" alt="{{ image.alt | escape }}" width="{{ image_width }}" height="auto" />
+      <img
+        src="{{ image_url }}"
+        loading="lazy"
+        alt="{{ image.alt | escape }}"
+        width="{{ image_width }}"
+        height="{{ image.height | default: image_width }}"
+        class="{% if zoom_image == true %}preview-image product-frame-image{% endif %}"
+        {%- if zoom_image == true %}
+          data-master-image="{{ image | image_url }}"
+          data-master-image-width="{{ image.preview_image.width | default: image.width }}"
+          data-master-image-height="{{ image.preview_image.height | default: image.height }}"
+          data-caption="{{ image.alt }}"
+        {% endif -%}
+      />
     {%- elsif image != blank -%}
       <img srcset="
         {%- if image.width >= 165 -%}{{ image | image_url: width: 165 }} 165w,{%- endif -%}
