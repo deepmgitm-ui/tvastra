@@ -40,7 +40,16 @@ class ProductForm extends HTMLElement {
         }
         else{
           $('.product-form__error-message-wrapper').addClass('d-none');
-          (parsedState && this.cartNotification) && this.cartNotification.renderContents(parsedState);
+          if (parsedState && this.cartNotification) {
+            parsedState.sections && this.cartNotification.updateContent(parsedState.sections);
+            fetch(window.Shopify.routes.root + 'cart.js')
+              .then((response) => response.json())
+              .then((cart) => {
+                window.initFreeshippingGoal && window.initFreeshippingGoal(cart);
+                window.cartCount && window.cartCount(cart);
+              })
+              .catch((e) => { console.error(e); });
+          }
           document.dispatchEvent(new CustomEvent('tvastra:product-added', {
             detail: {
               productForm: this,

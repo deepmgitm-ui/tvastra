@@ -40,7 +40,7 @@
   function renderCart(response) {
     var cartNotification = document.querySelector('cart-notification');
     if (cartNotification && response && response.sections) {
-      cartNotification.renderContents(response);
+      cartNotification.updateContent(response.sections);
     }
     if (window.cartCount) {
       if (response && typeof response.item_count !== 'undefined') {
