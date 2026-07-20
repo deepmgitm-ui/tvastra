@@ -5,8 +5,8 @@
   .main-product-page .product-image-main .swiper-wrapper,
   .main-product-page .product-image-main .swiper-slide {
     height: auto !important;
-    max-height: none !important;
-    overflow: visible !important;
+    max-height: min(82vw, 390px) !important;
+    overflow: hidden !important;
   }
 
   .main-product-page .product-main-slider,
@@ -19,10 +19,10 @@
   .main-product-page .product-image-main .product-media,
   .main-product-page .product-image-main image-srcset.res-image,
   .main-product-page .product-image-main .product-media.media-image > .h-100 {
-    aspect-ratio: 3 / 4 !important;
+    aspect-ratio: 1 / 1 !important;
     height: auto !important;
     min-height: 0 !important;
-    max-height: none !important;
+    max-height: min(82vw, 390px) !important;
     background: var(--product-surface, #f7f8f6) !important;
   }
 
