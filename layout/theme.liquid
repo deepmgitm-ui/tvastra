@@ -192,7 +192,7 @@
           }
         </script>
       <script src="{{ 'jquery.min.js' | asset_url }}"></script>
-      <script src="{{ 'variants.js' | asset_url | split: '?' | first }}?v=smooth-variant-v1" defer="defer"></script>
+      <script src="{{ 'variants.js' | asset_url | split: '?' | first }}?v=smooth-variant-v2" defer="defer"></script>
       <script src="{{ 'theme-vendors.min.js' | asset_url }}" defer="defer"></script>
       {%- if settings.enable_popup_newsletter == true or settings.enable_promotion == true or settings.enable_cookie_consent == true -%}
         <script src="{{ 'cookie.js' | asset_url }}" defer="defer"></script>
@@ -213,7 +213,7 @@
       <script src="{{ 'compare.js' | asset_url }}" defer="defer"></script>
       <script src="{{ 'product-detail.js' | asset_url }}" defer="defer"></script>
       {%- if template.name == 'product' -%}
-        <script src="{{ 'product-gallery-video-autoplay.js' | asset_url }}" defer="defer"></script>
+        <script src="{{ 'product-inline-media.js' | asset_url | split: '?' | first }}?v=gallery-controller-v1" defer="defer"></script>
       {%- endif -%}
       {%- if should_promotion_enable == true -%}
         <script src="{{ 'promotion.js' | asset_url }}" defer="defer"></script>

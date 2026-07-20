@@ -7,6 +7,12 @@ class VariantSelects extends HTMLElement {
       
     });
   }
+  connectedCallback() {
+    this.updateOptions();
+    this.updateMasterId();
+    this.previousVariantMediaId = this.currentVariant?.featured_media?.id || null;
+  }
+
   setupData() {
     const themeProducts = window._themeProducts || {};
     this.productData = themeProducts[this.dataset.productId];
@@ -20,8 +26,15 @@ class VariantSelects extends HTMLElement {
 
   onVariantChange(event) {
     this.previousVariantMediaId = this.currentVariant?.featured_media?.id || null;
+    const changedField = event.target.closest('.product-filter');
+    const changedOptionName = event.target.name || changedField?.querySelector('.form-label')?.textContent || '';
+    this.isSizeChange = Boolean(changedField?.classList.contains('size-filter') || /size/i.test(changedOptionName));
     this.updateOptions();
     this.updateMasterId();
+    const currentVariantMediaId = this.currentVariant?.featured_media?.id || null;
+    this.variantMediaChanged = Boolean(
+      currentVariantMediaId && currentVariantMediaId !== this.previousVariantMediaId
+    );
     this.updatePickupAvailability();
     this.updateOptionValue(event);
     if (!this.currentVariant) {
@@ -29,7 +42,9 @@ class VariantSelects extends HTMLElement {
       this.setUnavailable();
     } else {
       this.updateVariantOptions();
-      this.updateMedia();
+      if (!this.isSizeChange && this.variantMediaChanged) {
+        this.updateMedia();
+      }
       if(! $('body').find('.single-product').length > 0){
         this.updateURL();
       }
@@ -163,9 +178,17 @@ class VariantSelects extends HTMLElement {
 
   renderProductInfo() {
     var _this = this;
-    fetch(`${this.dataset.url}?variant=${this.currentVariant.id}&section_id=${this.dataset.section}`)
+    const requestedVariantId = this.currentVariant.id;
+    const shouldRefreshGallery = !this.isSizeChange && this.variantMediaChanged;
+
+    if (this.productInfoController) this.productInfoController.abort();
+    this.productInfoController = new AbortController();
+    fetch(`${this.dataset.url}?variant=${requestedVariantId}&section_id=${this.dataset.section}`, {
+      signal: this.productInfoController.signal
+    })
       .then((response) => response.text())
       .then((responseText) => {
+        if (this.currentVariant?.id !== requestedVariantId) return;
         const html = new DOMParser().parseFromString(responseText, 'text/html')
         const updateSections = ['product-gallery', 'price', 'sku', 'stock', 'pre-order', 'stock-label', 'cart-btn', 'badge'];
         const sectionId = this.dataset.section;
@@ -181,8 +204,7 @@ class VariantSelects extends HTMLElement {
             const destElem = document.getElementById(sectionSelector);
             if (sourceElem && destElem) {
               if (updateSection == 'product-gallery') {
-                const currentMediaId = _this.currentVariant?.featured_media?.id || null;
-                if (_this.previousVariantMediaId && currentMediaId && _this.previousVariantMediaId === currentMediaId) return;
+                if (!shouldRefreshGallery) return;
                 const group_image = destElem.dataset.groupImage || false;
                 if (group_image === 'true') {
                   destElem.innerHTML = sourceElem.innerHTML;
@@ -304,6 +326,9 @@ class VariantSelects extends HTMLElement {
           stickyVariantDropdown.value = this.currentVariant.id;
           window.updateStickyAddtocartInfo(this.currentVariant.id);
         }
+      })
+      .catch((error) => {
+        if (error.name !== 'AbortError') console.error('Unable to update product variant', error);
       });
   }
 
