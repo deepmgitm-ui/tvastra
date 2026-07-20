@@ -1975,3 +1975,155 @@
     padding-top: 4px !important;
   }
 }
+
+/* Ultra compact mobile-first PDP: less text height, smaller chips, tighter buying flow. */
+.main-product-page .product-info,
+.main-product-page .product-summary {
+  --product-compact-gap: 3px;
+}
+
+.main-product-page .product-summary > .position-sticky {
+  padding-top: 1px !important;
+  padding-bottom: 2px !important;
+}
+
+.main-product-page .block-name.vendor {
+  margin-bottom: 1px !important;
+  font-size: 9px !important;
+  line-height: 1.05 !important;
+}
+
+.main-product-page .product-title {
+  margin-bottom: 1px !important;
+  font-size: 24px !important;
+  line-height: 1.02 !important;
+}
+
+.main-product-page .rating-sku-wrap {
+  gap: 3px 8px !important;
+  margin-bottom: 2px !important;
+  font-size: 10px !important;
+  line-height: 1.1 !important;
+}
+
+.main-product-page [id^="price-"] {
+  padding: 1px 0 0 !important;
+}
+
+.main-product-page [id^="price-"] .price {
+  font-size: 20px !important;
+  line-height: 1.05 !important;
+}
+
+.main-product-page [id^="price-"] .price-item--regular {
+  font-size: 12px !important;
+}
+
+.main-product-page .product-purchase-note {
+  gap: 2px 8px !important;
+  margin-bottom: 3px !important;
+  font-size: 9px !important;
+  line-height: 1.1 !important;
+}
+
+.main-product-page .product-purchase-note span:not(:last-child)::after {
+  margin-left: 8px !important;
+}
+
+.main-product-page .product-colour-family,
+.main-product-page .product-variants,
+.main-product-page .product-variants fieldset.product-filter {
+  margin-bottom: 3px !important;
+}
+
+.main-product-page .product-colour-family__label,
+.main-product-page .product-variants .form-label {
+  margin-bottom: 2px !important;
+  font-size: 11px !important;
+  line-height: 1.05 !important;
+}
+
+.main-product-page .product-colour-family__options {
+  gap: 4px 6px !important;
+}
+
+.main-product-page .product-colour-family__options > div,
+.main-product-page .product-colour-family__options > a {
+  min-width: 34px !important;
+  gap: 1px !important;
+}
+
+.main-product-page .product-colour-family__options > div > div,
+.main-product-page .product-colour-family__options > a > div {
+  width: 25px !important;
+  height: 25px !important;
+  padding: 1px !important;
+}
+
+.main-product-page .product-colour-family__options > div > div > span,
+.main-product-page .product-colour-family__options > a > div > span {
+  width: 21px !important;
+  height: 21px !important;
+}
+
+.main-product-page .product-colour-family__options > div > span,
+.main-product-page .product-colour-family__options > a > span {
+  max-width: 46px !important;
+  font-size: 8px !important;
+  line-height: 1.05 !important;
+}
+
+.main-product-page .product-variants .variant-option {
+  margin: 0 4px 2px 0 !important;
+}
+
+.main-product-page .product-variants .variant-option label,
+.main-product-page .product-variants fieldset.size-filter > .variant-option label {
+  min-width: 29px !important;
+  min-height: 27px !important;
+  padding: 6px 8px !important;
+  border-radius: 4px !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+.main-product-page .product-variants fieldset.size-filter .modal-popup {
+  top: -1px !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+.main-product-page .product-summary .panel-group.accordion-event,
+.main-product-page .product-info > .panel-group.accordion-event:first-child {
+  margin-bottom: 2px !important;
+}
+
+.main-product-page .product-summary .panel-group.accordion-event .panel-title,
+.main-product-page .product-info > .panel-group.accordion-event:first-child .panel-title {
+  padding: 1px 0 !important;
+  font-size: 11px !important;
+  line-height: 1.1 !important;
+}
+
+.main-product-page .product-form-buttons {
+  padding-top: 3px !important;
+}
+
+@media (max-width: 767px) {
+  .main-product-page .product-title {
+    font-size: 19px !important;
+    line-height: 1.03 !important;
+  }
+
+  .main-product-page [id^="price-"] .price {
+    font-size: 18px !important;
+  }
+
+  .main-product-page .product-variants .variant-option label,
+  .main-product-page .product-variants fieldset.size-filter > .variant-option label {
+    min-width: 28px !important;
+    min-height: 26px !important;
+    padding: 5px 7px !important;
+    font-size: 10px !important;
+  }
+}
