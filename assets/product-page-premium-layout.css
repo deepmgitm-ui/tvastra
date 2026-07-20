@@ -1774,3 +1774,87 @@
     width: 60px !important;
   }
 }
+
+/* Clean premium detail spacing: no divider clutter under name, price, size or accordions. */
+.main-product-page .product-info,
+.main-product-page .product-summary {
+  --product-compact-gap: 7px;
+}
+
+.main-product-page .product-title {
+  margin-bottom: 4px !important;
+}
+
+.main-product-page .rating-sku-wrap {
+  margin-bottom: 5px !important;
+}
+
+.main-product-page [id^="price-"] {
+  padding: 4px 0 1px !important;
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+}
+
+.main-product-page .product-purchase-note {
+  margin-bottom: var(--product-compact-gap) !important;
+  padding-bottom: 0 !important;
+  border-bottom: 0 !important;
+}
+
+.main-product-page .product-colour-family {
+  margin-bottom: var(--product-compact-gap) !important;
+}
+
+.main-product-page .product-variants {
+  margin-bottom: var(--product-compact-gap) !important;
+}
+
+.main-product-page .product-variants fieldset.product-filter {
+  margin-bottom: var(--product-compact-gap) !important;
+}
+
+.main-product-page .product-variants .form-label {
+  margin-bottom: 5px !important;
+}
+
+.main-product-page .product-summary .panel-group.accordion-event,
+.main-product-page .product-info > .panel-group.accordion-event:first-child {
+  margin-bottom: 5px !important;
+}
+
+.main-product-page .product-summary .panel-group.accordion-event .panel-heading,
+.main-product-page .product-info > .panel-group.accordion-event:first-child .panel-heading {
+  border-bottom: 0 !important;
+}
+
+.main-product-page .product-summary .panel-group.accordion-event .panel-title,
+.main-product-page .product-info > .panel-group.accordion-event:first-child .panel-title {
+  min-height: 0 !important;
+  padding: 3px 0 !important;
+}
+
+.main-product-page .product-form-buttons {
+  margin-top: 0 !important;
+  padding-top: 7px !important;
+  border-top: 0 !important;
+}
+
+@media (max-width: 767px) {
+  .main-product-page .product-info,
+  .main-product-page .product-summary {
+    --product-compact-gap: 5px;
+  }
+
+  .main-product-page .product-title {
+    margin-bottom: 3px !important;
+  }
+
+  .main-product-page [id^="price-"] {
+    padding-top: 3px !important;
+    padding-bottom: 0 !important;
+  }
+
+  .main-product-page .product-form-buttons {
+    padding-top: 6px !important;
+  }
+}
