@@ -60,8 +60,13 @@
 
     if (!mainSwiper || !targetSlide) return;
 
+    if (swiper && typeof swiper.slideToLoop === 'function') {
+      swiper.slideToLoop(Math.max(Number(index) - 1, 0), 260);
+      return;
+    }
+
     if (swiper && typeof swiper.slideTo === 'function') {
-      swiper.slideTo(Array.prototype.indexOf.call(mainSwiper.querySelectorAll('.swiper-slide'), targetSlide), 0);
+      swiper.slideTo(Math.max(Number(index) - 1, 0), 260);
       return;
     }
 
@@ -73,6 +78,53 @@
     targetSlide.style.display = '';
   }
 
+  function setActiveThumb(gallery, index) {
+    gallery.querySelectorAll('.product-thumb-wrap .swiper-slide[data-index]').forEach(function (thumb) {
+      var isActive = thumb.getAttribute('data-index') === String(index);
+      thumb.classList.toggle('swiper-slide-thumb-active', isActive);
+      thumb.classList.toggle('is-active', isActive);
+    });
+  }
+
+  function updateActiveMedia(gallery, index) {
+    var mainSwiper = getMainSwiper(gallery);
+
+    if (!mainSwiper) return;
+
+    mainSwiper.querySelectorAll('video').forEach(function (video) {
+      if (!video.closest('.swiper-slide[data-index="' + index + '"]')) {
+        try { video.pause(); } catch (error) {}
+      }
+    });
+
+    mainSwiper.querySelectorAll('.swiper-slide[data-index="' + index + '"] video').forEach(function (video) {
+      video.muted = true;
+      video.playsInline = true;
+      var playPromise = video.play && video.play();
+      if (playPromise && playPromise.catch) playPromise.catch(function () {});
+    });
+  }
+
+  function getActiveIndex(gallery) {
+    var mainSwiper = getMainSwiper(gallery);
+    var swiper = mainSwiper && mainSwiper.swiper;
+    var activeSlide = mainSwiper && mainSwiper.querySelector('.swiper-slide-active[data-index]');
+
+    if (activeSlide) return activeSlide.getAttribute('data-index');
+    if (swiper && typeof swiper.realIndex === 'number') return String(swiper.realIndex + 1);
+
+    return null;
+  }
+
+  function syncFromMain(gallery) {
+    var index = getActiveIndex(gallery);
+    if (!index) return;
+
+    setActiveThumb(gallery, index);
+    showNativeMedia(gallery);
+    updateActiveMedia(gallery, index);
+  }
+
   function activateThumb(thumb) {
     var gallery = getGallery(thumb);
     var mediaType = thumb.getAttribute('data-media-type');
@@ -82,11 +134,9 @@
 
     slideNativeMedia(gallery, index);
 
-    if (mediaType === 'image') {
-      showImage(gallery, thumb.getAttribute('data-preview-src'), thumb.getAttribute('data-preview-alt'));
-    } else {
-      showNativeMedia(gallery);
-    }
+    setActiveThumb(gallery, index);
+    showNativeMedia(gallery);
+    updateActiveMedia(gallery, index);
   }
 
   function syncInitialGallery(gallery) {
@@ -96,8 +146,7 @@
     var slide = activeSlide || firstSlide;
     var thumb;
 
-    if (!mainSlider || mainSlider.classList.contains('has-inline-image-preview')) return;
-    if (!slide || slide.getAttribute('data-media-type') !== 'image') return;
+    if (!mainSlider || !slide) return;
 
     thumb = gallery.querySelector('.product-thumb-wrap .swiper-slide[data-index="' + slide.getAttribute('data-index') + '"]');
     if (thumb) activateThumb(thumb);
@@ -120,7 +169,7 @@
       }, 0);
     };
 
-    ['touchstart', 'pointerup', 'click'].forEach(function (eventName) {
+    ['click'].forEach(function (eventName) {
       document.addEventListener(eventName, onThumbEvent, true);
     });
 
@@ -132,7 +181,19 @@
     });
 
     setTimeout(function () {
-      document.querySelectorAll('.main-product-page .product-gallery').forEach(syncInitialGallery);
+      document.querySelectorAll('.main-product-page .product-gallery').forEach(function (gallery) {
+        var mainSwiper = getMainSwiper(gallery);
+        var swiper = mainSwiper && mainSwiper.swiper;
+
+        syncInitialGallery(gallery);
+        syncFromMain(gallery);
+
+        if (swiper && swiper.on) {
+          swiper.on('slideChange transitionEnd', function () {
+            syncFromMain(gallery);
+          });
+        }
+      });
     }, 500);
   });
 })();

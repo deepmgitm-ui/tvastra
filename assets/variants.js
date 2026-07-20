@@ -19,6 +19,7 @@ class VariantSelects extends HTMLElement {
   }
 
   onVariantChange(event) {
+    this.previousVariantMediaId = this.currentVariant?.featured_media?.id || null;
     this.updateOptions();
     this.updateMasterId();
     this.updatePickupAvailability();
@@ -180,6 +181,8 @@ class VariantSelects extends HTMLElement {
             const destElem = document.getElementById(sectionSelector);
             if (sourceElem && destElem) {
               if (updateSection == 'product-gallery') {
+                const currentMediaId = _this.currentVariant?.featured_media?.id || null;
+                if (_this.previousVariantMediaId && currentMediaId && _this.previousVariantMediaId === currentMediaId) return;
                 const group_image = destElem.dataset.groupImage || false;
                 if (group_image === 'true') {
                   destElem.innerHTML = sourceElem.innerHTML;
