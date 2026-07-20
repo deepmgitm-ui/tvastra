@@ -30,11 +30,15 @@
   function setButtonsState(buttons, item) {
     var input = getQuantityInput(buttons);
     buttons.classList.toggle('is-cart-active', !!item);
-    buttons.classList.remove('is-cart-updating');
-    buttons.classList.remove('is-cart-removing');
     if (!input) return;
     input.value = item ? item.quantity : 1;
     input.dataset.cartLineKey = item ? item.key : '';
+  }
+
+  function hideQuantity(buttons) {
+    var input = getQuantityInput(buttons);
+    buttons.classList.remove('is-cart-active');
+    if (input) input.value = 1;
   }
 
   function renderCart(response) {
@@ -85,8 +89,8 @@
     };
 
     quantity = Math.max(0, parseInt(quantity, 10) || 0);
-    buttons.classList.add('is-cart-updating');
-    buttons.classList.toggle('is-cart-removing', quantity === 0);
+    buttons._smartCtaRequestId = (buttons._smartCtaRequestId || 0) + 1;
+    var requestId = buttons._smartCtaRequestId;
     return fetch('/cart/change.js', {
       method: 'POST',
       headers: {
@@ -98,16 +102,21 @@
       .then(function (response) { return response.json(); })
       .then(function (response) {
         renderCart(response);
+        if (requestId !== buttons._smartCtaRequestId) return;
         var item = getCartItem(response, getVariantId(getForm(buttons)));
         setButtonsState(buttons, item);
       })
       .catch(function () {
         syncButtons(buttons);
-      })
-      .finally(function () {
-        buttons.classList.remove('is-cart-updating');
-        buttons.classList.remove('is-cart-removing');
       });
+  }
+
+  function scheduleCartQuantity(buttons, quantity, immediate) {
+    window.clearTimeout(buttons._smartCtaTimer);
+    if (quantity === 0) hideQuantity(buttons);
+    buttons._smartCtaTimer = window.setTimeout(function () {
+      updateCartQuantity(buttons, quantity);
+    }, immediate ? 0 : 320);
   }
 
   function initButtons(buttons) {
@@ -125,7 +134,7 @@
           event.preventDefault();
           event.stopImmediatePropagation();
           input.value = 0;
-          updateCartQuantity(buttons, 0);
+          scheduleCartQuantity(buttons, 0, true);
         }, true);
       });
 
@@ -133,7 +142,7 @@
         if (!buttons.classList.contains('is-cart-active')) return;
         var quantity = Math.max(0, parseInt(input.value, 10) || 0);
         input.value = quantity;
-        updateCartQuantity(buttons, quantity);
+        scheduleCartQuantity(buttons, quantity, quantity === 0);
       });
     }
 

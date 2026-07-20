@@ -105,7 +105,7 @@
 <script>window.ZOOM = true;</script>
 {%- endif -%}
 <script src="{{ 'product-form.js' | asset_url | split: '?' | first }}?v=silent-cart-v1" defer="defer"></script>
-<script src="{{ 'product-purchase-cta.js' | asset_url | split: '?' | first }}?v=silent-cart-v1" defer="defer"></script>
+<script src="{{ 'product-purchase-cta.js' | asset_url | split: '?' | first }}?v=instant-qty-v1" defer="defer"></script>
 {%- assign first_3d_model = product.media | where: "media_type", "model" | first -%}
 {%- if first_3d_model -%}
   <link id="ModelViewerStyle" rel="stylesheet" href="https://cdn.shopify.com/shopifycloud/model-viewer-ui/assets/v1.0/model-viewer-ui.css" media="print" onload="this.media='all'">
