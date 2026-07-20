@@ -2127,3 +2127,62 @@
     font-size: 10px !important;
   }
 }
+
+/* Sleek size chips only: compact, premium, and still easy to tap. */
+.main-product-page .product-variants fieldset.size-filter {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 4px !important;
+  overflow: visible !important;
+}
+
+.main-product-page .product-variants fieldset.size-filter > .form-label {
+  flex: 0 0 100% !important;
+  margin-bottom: 1px !important;
+}
+
+.main-product-page .product-variants fieldset.size-filter > .variant-option {
+  display: inline-flex !important;
+  margin: 0 !important;
+}
+
+.main-product-page .product-variants fieldset.size-filter > .variant-option label {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  min-width: 27px !important;
+  height: 25px !important;
+  min-height: 25px !important;
+  padding: 0 7px !important;
+  border: 1px solid #d8dfdc !important;
+  border-radius: 999px !important;
+  background: #fff !important;
+  color: var(--product-ink) !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  box-shadow: 0 3px 8px rgba(8, 43, 52, .035) !important;
+}
+
+.main-product-page .product-variants fieldset.size-filter > .variant-option input:checked + label {
+  border-color: var(--product-ink) !important;
+  background: var(--product-ink) !important;
+  color: #fff !important;
+  box-shadow: 0 6px 14px rgba(8, 43, 52, .14) !important;
+}
+
+@media (max-width: 767px) {
+  .main-product-page .product-variants fieldset.size-filter {
+    gap: 3px !important;
+  }
+
+  .main-product-page .product-variants fieldset.size-filter > .variant-option label {
+    min-width: 25px !important;
+    height: 24px !important;
+    min-height: 24px !important;
+    padding: 0 6px !important;
+    font-size: 9.5px !important;
+  }
+}
