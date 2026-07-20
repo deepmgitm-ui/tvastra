@@ -41,6 +41,13 @@ class ProductForm extends HTMLElement {
         else{
           $('.product-form__error-message-wrapper').addClass('d-none');
           (parsedState && this.cartNotification) && this.cartNotification.renderContents(parsedState);
+          document.dispatchEvent(new CustomEvent('tvastra:product-added', {
+            detail: {
+              productForm: this,
+              form: this.form,
+              response: parsedState
+            }
+          }));
         }
       })
       .catch((e) => {

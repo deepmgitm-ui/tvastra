@@ -327,7 +327,7 @@
                     <input type="hidden" name="properties[_isPreorder]" value="Yes" autocomplete="off" readonly />
                   {%- endif -%} 
                 {%- endif -%}
-                <div class="product-form-buttons {% if product.selected_or_first_available_variant.available == false and block.settings.collect_back_in_stock == false %}disabled-btn sold-out{% endif %}">
+                <div class="product-form-buttons product-cta-smart {% if product.selected_or_first_available_variant.available == false and block.settings.collect_back_in_stock == false %}disabled-btn sold-out{% endif %}">
                   <div class="action-btn d-flex {% if block.settings.show_add_to_cart == true %}justify-content-between{% endif %} align-items-end">
                     {%- unless product_group != blank -%} 
                     <div class="quantity-btn d-flex flex-md-column align-items-center align-items-md-start">

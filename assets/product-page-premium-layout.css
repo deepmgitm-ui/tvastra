@@ -1711,3 +1711,74 @@
     padding-inline: 8px !important;
   }
 }
+
+/* Smart cart quantity: hidden until the product is actually in cart. */
+.main-product-page .product-form-buttons.product-cta-smart .action-btn {
+  grid-template-columns: minmax(0, 1fr) 52px !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .quantity-btn {
+  display: none !important;
+  width: 0 !important;
+  min-width: 0 !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateX(-6px) !important;
+  transition: width .22s ease, opacity .18s ease, transform .22s ease !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .quantity {
+  min-width: 0 !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart.is-cart-active .action-btn {
+  grid-template-columns: 74px minmax(0, 1fr) 52px !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart.is-cart-active .quantity-btn {
+  display: flex !important;
+  width: 74px !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transform: translateX(0) !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart.is-cart-syncing .cart-btn,
+.main-product-page .product-form-buttons.product-cta-smart.is-cart-updating .cart-btn,
+.main-product-page .product-form-buttons.product-cta-smart.is-cart-updating .quantity,
+.main-product-page .product-form-buttons.product-cta-smart.is-cart-updating .wishlist-btn {
+  opacity: .72 !important;
+  pointer-events: none !important;
+}
+
+@media (max-width: 767px) {
+  .main-product-page .product-form-buttons.product-cta-smart .action-btn {
+    grid-template-columns: minmax(0, 1fr) 48px !important;
+  }
+
+  .main-product-page .product-form-buttons.product-cta-smart .quantity-btn {
+    height: 48px !important;
+    min-height: 48px !important;
+  }
+
+  .main-product-page .product-form-buttons.product-cta-smart.is-cart-active .action-btn {
+    grid-template-columns: 66px minmax(0, 1fr) 48px !important;
+  }
+
+  .main-product-page .product-form-buttons.product-cta-smart.is-cart-active .quantity-btn {
+    width: 66px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .main-product-page .product-form-buttons.product-cta-smart.is-cart-active .action-btn {
+    grid-template-columns: 60px minmax(0, 1fr) 44px !important;
+  }
+
+  .main-product-page .product-form-buttons.product-cta-smart.is-cart-active .quantity-btn {
+    width: 60px !important;
+  }
+}
