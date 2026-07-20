@@ -1754,6 +1754,11 @@
   pointer-events: none !important;
 }
 
+.main-product-page .product-form-buttons.product-cta-smart.is-cart-removing .quantity {
+  opacity: .45 !important;
+  transform: scale(.98) !important;
+}
+
 @media (max-width: 767px) {
   .main-product-page .product-form-buttons.product-cta-smart .action-btn {
     grid-template-columns: minmax(0, 1fr) 48px !important;

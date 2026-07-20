@@ -334,7 +334,7 @@
                       <label>{{ 'general.product_information.quantity' | t }}</label>
                       <quantity-input class="quantity">
                         <button class="quantity-button quantity-minus feather-minus" name="minus" type="button" aria-label="minus"><span class="visually-hidden">-</span></button>
-                        <input id="Quantity-{{ section_id }}" class="quantity-input" type="number" name="quantity" min="1" value="1" form="product-form-{{ section_id }}" />
+                        <input id="Quantity-{{ section_id }}" class="quantity-input" type="number" name="quantity" min="0" value="1" form="product-form-{{ section_id }}" />
                          <label for="Quantity-{{ section_id }}" class="visually-hidden"></label>
                         <button class="quantity-button quantity-plus feather-plus" name="plus" type="button" aria-label="plus"><span class="visually-hidden">+</span></button>
                       </quantity-input>

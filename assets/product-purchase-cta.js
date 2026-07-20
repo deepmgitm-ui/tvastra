@@ -31,6 +31,7 @@
     var input = getQuantityInput(buttons);
     buttons.classList.toggle('is-cart-active', !!item);
     buttons.classList.remove('is-cart-updating');
+    buttons.classList.remove('is-cart-removing');
     if (!input) return;
     input.value = item ? item.quantity : 1;
     input.dataset.cartLineKey = item ? item.key : '';
@@ -83,7 +84,9 @@
       sections_url: window.location.pathname
     };
 
+    quantity = Math.max(0, parseInt(quantity, 10) || 0);
     buttons.classList.add('is-cart-updating');
+    buttons.classList.toggle('is-cart-removing', quantity === 0);
     return fetch('/cart/change.js', {
       method: 'POST',
       headers: {
@@ -103,6 +106,7 @@
       })
       .finally(function () {
         buttons.classList.remove('is-cart-updating');
+        buttons.classList.remove('is-cart-removing');
       });
   }
 
@@ -112,9 +116,22 @@
 
     var input = getQuantityInput(buttons);
     if (input) {
+      buttons.querySelectorAll('.quantity-button').forEach(function (button) {
+        button.addEventListener('click', function (event) {
+          if (!buttons.classList.contains('is-cart-active')) return;
+          if (button.name !== 'minus') return;
+          var currentQuantity = parseInt(input.value, 10) || 0;
+          if (currentQuantity > 1) return;
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          input.value = 0;
+          updateCartQuantity(buttons, 0);
+        }, true);
+      });
+
       input.addEventListener('change', function () {
         if (!buttons.classList.contains('is-cart-active')) return;
-        var quantity = Math.max(1, parseInt(input.value, 10) || 1);
+        var quantity = Math.max(0, parseInt(input.value, 10) || 0);
         input.value = quantity;
         updateCartQuantity(buttons, quantity);
       });
