@@ -1858,3 +1858,120 @@
     padding-top: 6px !important;
   }
 }
+
+/* Extra compact premium PDP: smaller size chips and less empty air. */
+.main-product-page .product-info,
+.main-product-page .product-summary {
+  --product-compact-gap: 5px;
+}
+
+.main-product-page .product-summary > .position-sticky {
+  padding-top: 3px !important;
+  padding-bottom: 4px !important;
+}
+
+.main-product-page .block-name.vendor {
+  margin-bottom: 3px !important;
+}
+
+.main-product-page .product-title {
+  margin-bottom: 2px !important;
+}
+
+.main-product-page .rating-sku-wrap {
+  margin-bottom: 3px !important;
+}
+
+.main-product-page [id^="price-"] {
+  padding-top: 2px !important;
+}
+
+.main-product-page .product-purchase-note {
+  gap: 3px 10px !important;
+  margin-bottom: 5px !important;
+  line-height: 1.2 !important;
+}
+
+.main-product-page .product-colour-family,
+.main-product-page .product-variants,
+.main-product-page .product-variants fieldset.product-filter {
+  margin-bottom: 5px !important;
+}
+
+.main-product-page .product-colour-family__label,
+.main-product-page .product-variants .form-label {
+  margin-bottom: 4px !important;
+  font-size: 12px !important;
+  line-height: 1.15 !important;
+}
+
+.main-product-page .product-variants .variant-option {
+  margin: 0 5px 3px 0 !important;
+}
+
+.main-product-page .product-variants .variant-option label {
+  min-width: 34px !important;
+  min-height: 31px !important;
+  padding: 7px 10px !important;
+  border-radius: 5px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+}
+
+.main-product-page .product-variants fieldset.size-filter > .variant-option label {
+  min-width: 34px !important;
+  white-space: nowrap !important;
+}
+
+.main-product-page .product-variants fieldset.size-filter .modal-popup {
+  top: 0 !important;
+  font-size: 11px !important;
+}
+
+.main-product-page .product-form-buttons {
+  padding-top: 5px !important;
+}
+
+@media (max-width: 767px) {
+  .main-product-page .product-info,
+  .main-product-page .product-summary {
+    --product-compact-gap: 4px;
+  }
+
+  .main-product-page .product-summary > .position-sticky {
+    padding-top: 2px !important;
+  }
+
+  .main-product-page .block-name.vendor {
+    margin-bottom: 2px !important;
+  }
+
+  .main-product-page .product-title {
+    margin-bottom: 2px !important;
+    line-height: 1.05 !important;
+  }
+
+  .main-product-page .product-purchase-note,
+  .main-product-page .product-colour-family,
+  .main-product-page .product-variants,
+  .main-product-page .product-variants fieldset.product-filter {
+    margin-bottom: 4px !important;
+  }
+
+  .main-product-page .product-colour-family__label,
+  .main-product-page .product-variants .form-label {
+    margin-bottom: 3px !important;
+  }
+
+  .main-product-page .product-variants .variant-option label {
+    min-width: 32px !important;
+    min-height: 30px !important;
+    padding: 7px 9px !important;
+    font-size: 11px !important;
+  }
+
+  .main-product-page .product-form-buttons {
+    padding-top: 4px !important;
+  }
+}
