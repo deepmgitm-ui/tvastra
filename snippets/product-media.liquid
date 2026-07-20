@@ -87,18 +87,7 @@
     endif
   endfor
 -%}
-<div class="product-main-slider{% if initial_preview_media.media_type == 'image' %} has-inline-image-preview{% endif %}">
-  {%- if initial_preview_media.media_type == 'image' -%}
-    <div class="tv-inline-product-preview" aria-label="Selected product image">
-      <img
-        src="{{ initial_preview_media.preview_image | image_url: width: 1400 }}"
-        alt="{{ initial_preview_media.alt | escape }}"
-        width="{{ initial_preview_media.preview_image.width }}"
-        height="{{ initial_preview_media.preview_image.height }}"
-        loading="eager"
-      >
-    </div>
-  {%- endif -%}
+<div class="product-main-slider">
   <a
     href="#"
     class="product-gallery-photoswipe__trigger product-img-btn"
