@@ -2427,6 +2427,69 @@
   margin-top: 5px !important;
 }
 
+/* Keep Add to cart, Buy now and Wishlist together as one balanced action row. */
+.main-product-page .product-form-buttons.product-cta-smart .action-btn {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 40px !important;
+  align-items: stretch !important;
+  gap: 6px !important;
+  width: 100% !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .action-btn:not(.has-wishlist) {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart.is-cart-active .action-btn {
+  grid-template-columns: 58px minmax(0, 1fr) minmax(0, 1fr) 40px !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart.is-cart-active .action-btn:not(.has-wishlist) {
+  grid-template-columns: 58px minmax(0, 1fr) minmax(0, 1fr) !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .product-buy-now-inline {
+  display: flex !important;
+  align-items: stretch !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .product-buy-now-inline .shopify-payment-button {
+  display: flex !important;
+  align-items: stretch !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .cart-btn,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .product-buy-now-inline,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .wishlist-btn {
+  width: 100% !important;
+  min-width: 0 !important;
+  align-self: stretch !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .wishlist-btn {
+  height: 36px !important;
+  min-height: 36px !important;
+  padding: 0 !important;
+}
+
+/* Remove the remaining air around the price and its purchase note. */
+.main-product-page [id^="price-"] {
+  margin: 0 !important;
+  padding-block: 0 !important;
+}
+
+.main-product-page .product-purchase-note {
+  margin: 0 0 4px !important;
+  padding: 0 !important;
+  line-height: 1.15 !important;
+}
+
 /* Give the product title its natural word width instead of breaking every word. */
 .main-product-page .product-title-share-row {
   width: 100% !important;

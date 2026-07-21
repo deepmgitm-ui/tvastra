@@ -338,7 +338,7 @@
                   {%- endif -%} 
                 {%- endif -%}
                 <div class="product-form-buttons product-cta-smart {% if product.selected_or_first_available_variant.available == false and block.settings.collect_back_in_stock == false %}disabled-btn sold-out{% endif %}">
-                  <div class="action-btn d-flex {% if block.settings.show_add_to_cart == true %}justify-content-between{% endif %} align-items-end">
+                  <div class="action-btn d-flex {% if block.settings.show_add_to_cart == true %}justify-content-between{% endif %} align-items-end{% if block.settings.show_wishlist %} has-wishlist{% endif %}{% if block.settings.show_dynamic_checkout %} has-buy-now{% endif %}">
                     {%- unless product_group != blank -%} 
                     <div class="quantity-btn d-flex flex-md-column align-items-center align-items-md-start">
                       <label>{{ 'general.product_information.quantity' | t }}</label>
@@ -368,17 +368,17 @@
                           {%- endif -%}
                       </button>
                     {%- endif -%}
+                    {%- if block.settings.show_dynamic_checkout and product_group == blank -%}
+                      <div class="product-buy-now-inline">{{ form | payment_button }}</div>
+                    {%- elsif block.settings.show_dynamic_checkout -%}
+                      <div class="shopify-payment-button product-buy-now-inline">
+                        <custom-btn type="button" class="custom-payment-btn shopify-payment-button__button shopify-payment-button__button--unbranded" data-testid="Checkout-button">{{ 'general.product_information.by_it_now' | t }}</custom-btn>
+                      </div>
+                    {%- endif -%}
                     {%- if block.settings.show_wishlist -%}
                       {%- render 'button-wishlist', product: product, tooltip_position: 'top' -%}
-                    {%- endif -%}
-                  </div>
-                  {%- if block.settings.show_dynamic_checkout and product_group == blank -%}
-                    {{ form | payment_button }}
-                 {%- elsif block.settings.show_dynamic_checkout -%}  
-                  <div class="shopify-payment-button">
-                    <custom-btn type="button" class="custom-payment-btn shopify-payment-button__button shopify-payment-button__button--unbranded" data-testid="Checkout-button">{{ 'general.product_information.by_it_now' | t }}</custom-btn>
-                  </div>
                   {%- endif -%}
+                  </div>
                   <div class="product-assurance-strip" aria-label="Purchase benefits">
                     <span>Secure checkout</span>
                     <span>Prepaid orders ship faster</span>
