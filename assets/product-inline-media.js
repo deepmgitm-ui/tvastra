@@ -5,6 +5,8 @@
   var boundGalleries = new WeakSet();
   var boundSwipers = new WeakSet();
   var preparedIframes = new WeakSet();
+  var swipeGuardInstalled = false;
+  var swipeGesture = null;
 
   function getMainElement(gallery) {
     return gallery && gallery.querySelector('.product-image-main');
@@ -305,9 +307,111 @@
     if (thumb) slideToMedia(gallery, thumb);
   }
 
-  function bindGallery(gallery) {
-    var touchStartX = null;
+  function getGestureGallery(event) {
+    var path = typeof event.composedPath === 'function' ? event.composedPath() : [];
+    var main = path.find(function (node) {
+      return node && node.classList && node.classList.contains('product-image-main');
+    });
 
+    if (!main && event.target && event.target.closest) {
+      main = event.target.closest(GALLERY_SELECTOR + ' .product-image-main');
+    }
+
+    return main && main.closest ? main.closest(GALLERY_SELECTOR) : null;
+  }
+
+  function getSwiperIndex(swiper, gallery) {
+    if (swiper) {
+      return typeof swiper.realIndex === 'number' ? swiper.realIndex : swiper.activeIndex;
+    }
+    return getSlides(gallery).indexOf(getActiveSlide(gallery));
+  }
+
+  function installSwipeGuard() {
+    if (swipeGuardInstalled) return;
+    swipeGuardInstalled = true;
+
+    window.addEventListener('touchstart', function (event) {
+      var gallery;
+      var point;
+      var swiper;
+
+      if (event.touches.length !== 1) {
+        swipeGesture = null;
+        return;
+      }
+
+      gallery = getGestureGallery(event);
+      if (!gallery) {
+        swipeGesture = null;
+        return;
+      }
+
+      point = event.touches[0];
+      swiper = getMainSwiper(gallery);
+      swipeGesture = {
+        gallery: gallery,
+        startX: point.clientX,
+        startY: point.clientY,
+        startIndex: getSwiperIndex(swiper, gallery)
+      };
+    }, { passive: true, capture: true });
+
+    window.addEventListener('touchend', function (event) {
+      var gesture = swipeGesture;
+      var point;
+      var distanceX;
+      var distanceY;
+      var direction;
+
+      swipeGesture = null;
+      if (!gesture || !event.changedTouches.length) return;
+
+      point = event.changedTouches[0];
+      distanceX = point.clientX - gesture.startX;
+      distanceY = point.clientY - gesture.startY;
+
+      if (Math.abs(distanceX) <= 36 || Math.abs(distanceX) <= Math.abs(distanceY) * 1.15) return;
+      direction = distanceX < 0 ? 1 : -1;
+
+      window.setTimeout(function () {
+        var swiper;
+        var currentIndex;
+        var targetIndex;
+        var slides;
+
+        if (!document.documentElement.contains(gesture.gallery)) return;
+
+        swiper = getMainSwiper(gesture.gallery);
+        if (!swiper) {
+          moveWithoutSwiper(gesture.gallery, direction);
+          return;
+        }
+
+        currentIndex = getSwiperIndex(swiper, gesture.gallery);
+        slides = getSlides(gesture.gallery);
+
+        // Native Swiper already handled the gesture, so the guard must not move twice.
+        if (currentIndex !== gesture.startIndex || slides.length < 2) return;
+
+        targetIndex = Math.min(Math.max(currentIndex + direction, 0), slides.length - 1);
+        if (targetIndex === currentIndex) return;
+
+        if (swiper.params && swiper.params.loop && typeof swiper.slideToLoop === 'function') {
+          swiper.slideToLoop(targetIndex, 260);
+        } else if (typeof swiper.slideTo === 'function') {
+          swiper.slideTo(targetIndex, 260);
+        }
+        scheduleSync(gesture.gallery, 280);
+      }, 80);
+    }, { passive: true, capture: true });
+
+    window.addEventListener('touchcancel', function () {
+      swipeGesture = null;
+    }, { passive: true, capture: true });
+  }
+
+  function bindGallery(gallery) {
     if (!gallery || boundGalleries.has(gallery)) return;
     boundGalleries.add(gallery);
 
@@ -335,17 +439,7 @@
       }
     });
 
-    gallery.addEventListener('touchstart', function (event) {
-      if (getMainSwiper(gallery) || !event.touches.length) return;
-      touchStartX = event.touches[0].clientX;
-    }, { passive: true });
-
-    gallery.addEventListener('touchend', function (event) {
-      if (getMainSwiper(gallery) || touchStartX === null || !event.changedTouches.length) return;
-      var distance = event.changedTouches[0].clientX - touchStartX;
-      touchStartX = null;
-      if (Math.abs(distance) > 40) moveWithoutSwiper(gallery, distance < 0 ? 1 : -1);
-    }, { passive: true });
+    installSwipeGuard();
 
     gallery.querySelectorAll('.product-thumb-wrap .swiper-slide').forEach(function (thumb) {
       thumb.setAttribute('role', 'button');

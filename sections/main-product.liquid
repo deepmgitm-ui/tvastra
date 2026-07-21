@@ -1,6 +1,6 @@
 {{ 'product-detail.min.css' | asset_url | stylesheet_tag }}
 <link rel="stylesheet" href="{{ 'product-page-premium-layout.css' | asset_url }}">
-<link rel="stylesheet" href="{{ 'product-media-full-view.css' | asset_url | split: '?' | first }}?v=gallery-controller-v1">
+<link rel="stylesheet" href="{{ 'product-media-full-view.css' | asset_url | split: '?' | first }}?v=gallery-controller-v2">
 {%- liquid
   assign section_id = section.id  
   assign variant_colors = settings.product_colors | strip_newlines | downcase | split: ','

@@ -517,42 +517,6 @@
   position: relative !important;
 }
 
-.main-product-page .tv-inline-product-preview {
-  display: none;
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  padding: 0;
-  border: 0;
-  border-radius: 8px;
-  background: var(--product-surface);
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.main-product-page .tv-inline-product-preview img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  background: var(--product-surface);
-}
-
-.main-product-page .product-main-slider.has-inline-image-preview .tv-inline-product-preview {
-  display: block !important;
-}
-
-.main-product-page .product-main-slider.has-inline-image-preview .product-image-main {
-  position: absolute !important;
-  inset: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-}
-
 .main-product-page .product-image-main,
 .main-product-page .product-image-main .swiper-wrapper,
 .main-product-page .product-image-main .swiper-slide {
