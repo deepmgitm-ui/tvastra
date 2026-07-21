@@ -368,17 +368,17 @@
                           {%- endif -%}
                       </button>
                     {%- endif -%}
-                    {%- if block.settings.show_dynamic_checkout and product_group == blank -%}
-                      <div class="product-buy-now-inline">{{ form | payment_button }}</div>
-                    {%- elsif block.settings.show_dynamic_checkout -%}
-                      <div class="shopify-payment-button product-buy-now-inline">
-                        <custom-btn type="button" class="custom-payment-btn shopify-payment-button__button shopify-payment-button__button--unbranded" data-testid="Checkout-button">{{ 'general.product_information.by_it_now' | t }}</custom-btn>
-                      </div>
-                    {%- endif -%}
                     {%- if block.settings.show_wishlist -%}
                       {%- render 'button-wishlist', product: product, tooltip_position: 'top' -%}
-                  {%- endif -%}
+                    {%- endif -%}
                   </div>
+                  {%- if block.settings.show_dynamic_checkout and product_group == blank -%}
+                    <div class="product-buy-now-inline">{{ form | payment_button }}</div>
+                  {%- elsif block.settings.show_dynamic_checkout -%}
+                    <div class="shopify-payment-button product-buy-now-inline">
+                      <custom-btn type="button" class="custom-payment-btn shopify-payment-button__button shopify-payment-button__button--unbranded" data-testid="Checkout-button">{{ 'general.product_information.by_it_now' | t }}</custom-btn>
+                    </div>
+                  {%- endif -%}
                   <div class="product-assurance-strip" aria-label="Purchase benefits">
                     <span>Secure checkout</span>
                     <span>Prepaid orders ship faster</span>

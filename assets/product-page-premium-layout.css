@@ -2490,6 +2490,54 @@
   line-height: 1.15 !important;
 }
 
+/* Keep cart + wishlist together; Buy now stays on its own compact line below. */
+.main-product-page .product-form-buttons.product-cta-smart .action-btn,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn:not(.has-wishlist) {
+  grid-template-columns: minmax(0, 1fr) 36px !important;
+  gap: 5px !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart.is-cart-active .action-btn,
+.main-product-page .product-form-buttons.product-cta-smart.is-cart-active .action-btn:not(.has-wishlist) {
+  grid-template-columns: 52px minmax(0, 1fr) 36px !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .cart-btn,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .wishlist-btn,
+.main-product-page .product-form-buttons.product-cta-smart .quantity,
+.main-product-page .product-form-buttons.product-cta-smart .quantity-input,
+.main-product-page .product-form-buttons.product-cta-smart .quantity-button {
+  height: 36px !important;
+  min-height: 36px !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .wishlist-btn {
+  width: 36px !important;
+  min-width: 36px !important;
+  padding: 0 !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart > .product-buy-now-inline {
+  display: flex !important;
+  width: 100% !important;
+  margin: 4px 0 0 !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart > .product-buy-now-inline > .shopify-payment-button,
+.main-product-page .product-form-buttons.product-cta-smart > .shopify-payment-button.product-buy-now-inline {
+  display: flex !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart > .product-buy-now-inline .shopify-payment-button__button,
+.main-product-page .product-form-buttons.product-cta-smart > .product-buy-now-inline .custom-payment-btn {
+  width: 100% !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  margin: 0 !important;
+}
+
 /* Give the product title its natural word width instead of breaking every word. */
 .main-product-page .product-title-share-row {
   width: 100% !important;
