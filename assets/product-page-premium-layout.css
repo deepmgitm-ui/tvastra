@@ -2400,3 +2400,29 @@
     text-overflow: ellipsis !important;
   }
 }
+
+/* Keep the sticky purchase bar focused; the product name is already visible above. */
+.main-product-page .sticky-product-title {
+  display: none !important;
+}
+
+.main-product-page .sticky-product .product-info {
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Keep both purchase actions aligned and easy to tap after the compact spacing overrides. */
+.main-product-page .product-form-buttons.product-cta-smart .cart-btn,
+.main-product-page .product-form-buttons.product-cta-smart .shopify-payment-button__button,
+.main-product-page .product-form-buttons.product-cta-smart .custom-payment-btn {
+  min-height: 44px !important;
+  height: 44px !important;
+  margin: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .shopify-payment-button {
+  margin-top: 5px !important;
+}
