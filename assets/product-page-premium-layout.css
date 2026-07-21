@@ -2566,6 +2566,69 @@
   }
 }
 
+/* Final aligned CTA rules, intentionally last in the stylesheet. */
+.main-product-page .product-form-buttons.product-cta-smart .action-btn,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn:not(.has-wishlist) {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 36px !important;
+  align-items: stretch !important;
+  gap: 5px !important;
+  width: 100% !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart.is-cart-active .action-btn,
+.main-product-page .product-form-buttons.product-cta-smart.is-cart-active .action-btn:not(.has-wishlist) {
+  grid-template-columns: 52px minmax(0, 1fr) minmax(0, 1fr) 36px !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .cart-btn,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .wishlist-btn,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .product-buy-now-inline,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .product-buy-now-inline .shopify-payment-button,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .product-buy-now-inline .shopify-payment-button__button,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .product-buy-now-inline .custom-payment-btn,
+.main-product-page .product-form-buttons.product-cta-smart .quantity,
+.main-product-page .product-form-buttons.product-cta-smart .quantity-input,
+.main-product-page .product-form-buttons.product-cta-smart .quantity-button {
+  height: 36px !important;
+  min-height: 36px !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .cart-btn,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .product-buy-now-inline,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .product-buy-now-inline .shopify-payment-button,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .product-buy-now-inline .shopify-payment-button__button,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .product-buy-now-inline .custom-payment-btn {
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  align-self: stretch !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .wishlist-btn {
+  width: 36px !important;
+  min-width: 36px !important;
+  padding: 0 !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .product-buy-now-inline {
+  display: flex !important;
+  align-items: stretch !important;
+}
+
+@media (max-width: 767px) {
+  .main-product-page .product-form-buttons.product-cta-smart .action-btn,
+  .main-product-page .product-form-buttons.product-cta-smart .action-btn:not(.has-wishlist) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 36px !important;
+    gap: 4px !important;
+  }
+
+  .main-product-page .product-form-buttons.product-cta-smart.is-cart-active .action-btn,
+  .main-product-page .product-form-buttons.product-cta-smart.is-cart-active .action-btn:not(.has-wishlist) {
+    grid-template-columns: 52px minmax(0, 1fr) minmax(0, 1fr) 36px !important;
+  }
+}
+
 /* Give the product title its natural word width instead of breaking every word. */
 .main-product-page .product-title-share-row {
   width: 100% !important;
@@ -2621,6 +2684,69 @@
   }
 }
 
+/* Exact aligned action-row design: cart, Buy now and wishlist share one slim row. */
+.main-product-page .product-form-buttons.product-cta-smart .action-btn,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn:not(.has-wishlist) {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 36px !important;
+  align-items: stretch !important;
+  gap: 5px !important;
+  width: 100% !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart.is-cart-active .action-btn,
+.main-product-page .product-form-buttons.product-cta-smart.is-cart-active .action-btn:not(.has-wishlist) {
+  grid-template-columns: 52px minmax(0, 1fr) minmax(0, 1fr) 36px !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .cart-btn,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .wishlist-btn,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .product-buy-now-inline,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .product-buy-now-inline .shopify-payment-button,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .product-buy-now-inline .shopify-payment-button__button,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .product-buy-now-inline .custom-payment-btn,
+.main-product-page .product-form-buttons.product-cta-smart .quantity,
+.main-product-page .product-form-buttons.product-cta-smart .quantity-input,
+.main-product-page .product-form-buttons.product-cta-smart .quantity-button {
+  height: 36px !important;
+  min-height: 36px !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .cart-btn,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .product-buy-now-inline,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .product-buy-now-inline .shopify-payment-button,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .product-buy-now-inline .shopify-payment-button__button,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .product-buy-now-inline .custom-payment-btn {
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  align-self: stretch !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .wishlist-btn {
+  width: 36px !important;
+  min-width: 36px !important;
+  padding: 0 !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .product-buy-now-inline {
+  display: flex !important;
+  align-items: stretch !important;
+}
+
+@media (max-width: 767px) {
+  .main-product-page .product-form-buttons.product-cta-smart .action-btn,
+  .main-product-page .product-form-buttons.product-cta-smart .action-btn:not(.has-wishlist) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 36px !important;
+    gap: 4px !important;
+  }
+
+  .main-product-page .product-form-buttons.product-cta-smart.is-cart-active .action-btn,
+  .main-product-page .product-form-buttons.product-cta-smart.is-cart-active .action-btn:not(.has-wishlist) {
+    grid-template-columns: 52px minmax(0, 1fr) minmax(0, 1fr) 36px !important;
+  }
+}
+
 /* Final product CTA override: keep these rules last so older theme rules cannot win. */
 .main-product-page .product-title-share-row {
   margin: 0 !important;
@@ -2658,7 +2784,7 @@
 .main-product-page .product-form-buttons.product-cta-smart .action-btn,
 .main-product-page .product-form-buttons.product-cta-smart .action-btn:not(.has-wishlist) {
   display: grid !important;
-  grid-template-columns: minmax(0, 1fr) 36px !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 36px !important;
   align-items: stretch !important;
   gap: 5px !important;
   width: 100% !important;
@@ -2666,7 +2792,7 @@
 
 .main-product-page .product-form-buttons.product-cta-smart.is-cart-active .action-btn,
 .main-product-page .product-form-buttons.product-cta-smart.is-cart-active .action-btn:not(.has-wishlist) {
-  grid-template-columns: 52px minmax(0, 1fr) 36px !important;
+  grid-template-columns: 52px minmax(0, 1fr) minmax(0, 1fr) 36px !important;
 }
 
 .main-product-page .product-form-buttons.product-cta-smart .action-btn .cart-btn,
