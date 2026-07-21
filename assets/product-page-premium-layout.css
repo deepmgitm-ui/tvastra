@@ -2431,13 +2431,26 @@
 .main-product-page .product-title-share-row {
   width: 100% !important;
   flex-wrap: nowrap !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  border-bottom: 0 !important;
 }
 
 .main-product-page .product-title-share-row > .product-title {
   min-width: 0 !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  border-bottom: 0 !important;
   word-break: normal !important;
   overflow-wrap: normal !important;
   white-space: normal !important;
+}
+
+.main-product-page .rating-sku-wrap:empty {
+  display: none !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .main-product-page .product-title-actions {
@@ -2448,8 +2461,8 @@
 .main-product-page .product-form-buttons.product-cta-smart .cart-btn,
 .main-product-page .product-form-buttons.product-cta-smart .shopify-payment-button__button,
 .main-product-page .product-form-buttons.product-cta-smart .custom-payment-btn {
-  min-height: 40px !important;
-  height: 40px !important;
+  min-height: 36px !important;
+  height: 36px !important;
   padding-block: 0 !important;
   font-size: 12px !important;
 }
