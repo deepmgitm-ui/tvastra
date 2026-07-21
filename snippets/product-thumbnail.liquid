@@ -27,7 +27,7 @@
     <img
       srcset="{{ media.preview_image | image_url }}"
       src="{{ media | image_url }}"
-      alt="image"
+      alt="{{ media.alt | default: product.title | default: shop.name | escape }}"
       width="576"
       height="{{ 576 | divided_by: media.preview_image.aspect_ratio | ceil }}"        
       {% if gellery_type == 'grid-2-columns' or gellery_type == 'grid-1-columns' or section.settings.product_gellery == 'combined-grid' %}
@@ -55,11 +55,18 @@
             <span class="bi bi-arrows-fullscreen"></span>
           </a>
         {%- endif -%}
+        {%- liquid
+          assign media_loading = 'lazy'
+          if position == 1 or position == '1'
+            assign media_loading = 'eager'
+          endif
+        -%}
         {%- render 'responsive-image',
           image: media,
           zoom_image: true,
           include_srcset: false,
-          image_width: 1400
+          image_width: 1400,
+          loading: media_loading
         -%}
       </div>
     {%- when 'external_video' -%}

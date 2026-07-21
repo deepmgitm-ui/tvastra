@@ -9,7 +9,7 @@
       assign description = 'sections.collection_list.description' | t
     else
       assign page_title = collection.title
-      assign banner_image = collection.metafields.custom.collection_banner
+      assign banner_image = collection.metafields.custom.collection_banner.value
       assign description = collection.description
     endif  
   else

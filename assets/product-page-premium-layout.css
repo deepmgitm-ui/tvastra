@@ -2331,3 +2331,72 @@
   visibility: visible !important;
   opacity: 1 !important;
 }
+/* Premium product title actions and live interest chip. */
+.main-product-page .product-title-share-row {
+  align-items: flex-start !important;
+  gap: 12px !important;
+}
+
+.main-product-page .product-title-share-row > .product-title {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
+.main-product-page .product-title-actions {
+  display: flex !important;
+  flex: 0 0 auto !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+}
+
+.main-product-page .product-title-actions #smart-share-block {
+  flex: 0 0 auto !important;
+}
+
+.main-product-page .product-title-actions .product-live-viewers {
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+  padding: 6px 9px !important;
+  border: 1px solid #d9e2df !important;
+  border-radius: 999px !important;
+  background: #f7faf9 !important;
+  color: #49615d !important;
+  font-size: 11px !important;
+  line-height: 1.15 !important;
+  white-space: nowrap !important;
+}
+
+.main-product-page .product-title-actions .product-live-viewers i {
+  color: #0d4148 !important;
+  font-size: 13px !important;
+}
+
+.main-product-page .product-title-actions .live-visitors-count {
+  color: #0d4148 !important;
+  font-weight: 700 !important;
+}
+
+@media (max-width: 767px) {
+  .main-product-page .product-title-share-row {
+    gap: 8px !important;
+  }
+
+  .main-product-page .product-title-actions {
+    gap: 5px !important;
+    flex-wrap: wrap !important;
+  }
+
+  .main-product-page .product-title-actions .product-live-viewers {
+    padding: 5px 7px !important;
+    font-size: 10px !important;
+  }
+
+  .main-product-page .product-title-actions .live-visitors-copy {
+    max-width: 88px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+}

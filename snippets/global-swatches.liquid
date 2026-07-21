@@ -11,14 +11,6 @@
   if _siblings != blank and _siblings.size > 0
     assign _show = true
   endif
-
-  # Task 3 (2026-07-01): suppress swatches for these two products only.
-  # Hides the UI regardless of their metafields; no product data is changed.
-  # Remove a handle from this list to bring its swatch back.
-  assign _tv_hidden_swatches = 'black-crop-top-gym-wear,olive-crop-top-gym-wear' | split: ','
-  if _tv_hidden_swatches contains _p.handle
-    assign _show = false
-  endif
 -%}
 
 {%- if _show -%}
@@ -33,7 +25,7 @@
       <div style="display: flex; flex-wrap: wrap; gap: 10px;">
         {%- comment -%} CURRENT PRODUCT (ACTIVE PILL) {%- endcomment -%}
         {%- if _hex != blank -%}
-          <a href="javascript:void(0);" style="display: inline-flex; align-items: center; gap: 8px; padding: 4px 14px 4px 4px; border: 1px solid #000; border-radius: 40px; text-decoration: none; background: #f9f9f9; box-shadow: inset 0 0 0 1px #000; cursor: default;" title="{{ _name }}">
+          <a href="{{ _p.url }}" style="display: inline-flex; align-items: center; gap: 8px; padding: 4px 14px 4px 4px; border: 1px solid #000; border-radius: 40px; text-decoration: none; background: #f9f9f9; box-shadow: inset 0 0 0 1px #000; cursor: default;" title="{{ _name }}">
             <span style="width: 24px; height: 24px; border-radius: 50%; display: block; background-color: {{ _hex }}; border: 1px solid rgba(0,0,0,0.15); flex-shrink: 0;"></span>
             <span style="font-size: 13px; font-weight: 700; color: #000; text-transform: capitalize; line-height: 1; padding-bottom: 1px;">{{ _name }}</span>
           </a>

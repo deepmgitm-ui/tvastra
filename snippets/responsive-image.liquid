@@ -33,12 +33,18 @@
       endif
       assign image_size = image_width | append: 'x'
       assign image_url = image | img_url: image_size
+      assign image_loading = loading | default: 'lazy'
+      assign image_priority = ''
+      if image_loading == 'eager'
+        assign image_priority = 'high'
+      endif
     -%}
     {%- if include_srcset == false -%}
       <img
         src="{{ image_url }}"
-        loading="lazy"
-        alt="{{ image.alt | escape }}"
+        loading="{{ image_loading }}"
+        {% if image_priority != blank %}fetchpriority="{{ image_priority }}"{% endif %}
+        alt="{{ image.alt | default: product.title | default: shop.name | escape }}"
         width="{{ image_width }}"
         height="{{ image.height | default: image_width }}"
         class="{% if zoom_image == true %}preview-image product-frame-image{% endif %}"
@@ -60,8 +66,10 @@
         {{ image | image_url }} {{ image.width }}w"
       src="{{ image_url }}"
       sizes="(min-width: {{ settings.container_width }}px) {{ settings.container_width | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)"
-      alt="{{ image.alt | escape }}"
-      loading="lazy"
+      alt="{{ image.alt | default: product.title | default: shop.name | escape }}"
+      loading="{{ image_loading }}"
+      {% if image_priority != blank %}fetchpriority="{{ image_priority }}"{% endif %}
+      decoding="async"
       width="{{ image.width }}"
       height="{{ image.height }}"
       {%- if zoom_image == true %}

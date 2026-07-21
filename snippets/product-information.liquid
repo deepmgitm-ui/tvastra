@@ -46,13 +46,13 @@
           </div>
         {%- endif -%}
       {%- when 'title' -%}
-        
+
         {%- comment -%} 🔴 STANDALONE SIBLING SWATCHES (ZERO GAP, PERFECT ALIGNMENT) 🔴 {%- endcomment -%}
         {%- liquid
           assign _hex = product.metafields.custom.swatch_color.value
           assign _name = product.metafields.custom.swatch_name.value
           assign _siblings = product.metafields.custom.sibling_products.value
-          
+
           assign _has_swatches = false
           if _hex != blank or _siblings.size > 0
             assign _has_swatches = true
@@ -65,7 +65,7 @@
             <div class="product-colour-family__label" style="font-size: 14px; font-weight: 600; color: #000; margin-bottom: 10px; line-height: 1.2;">
               Colour:&nbsp;<span style="font-weight: 400; color: #555; text-transform: capitalize;">{{ _name }}</span>
             </div>
-            
+
             <div class="product-colour-family__options" style="display: flex; flex-wrap: wrap; gap: 15px;">
               {%- comment -%} CURRENT PRODUCT (ALWAYS FIRST) {%- endcomment -%}
               <div style="display: inline-flex; flex-direction: column; align-items: center; gap: 6px; cursor: default;" title="{{ _name }}">
@@ -86,7 +86,7 @@
                 {%- if s.handle == product.handle -%}{%- continue -%}{%- endif -%}
                 {%- assign _sh = s.metafields.custom.swatch_color.value -%}
                 {%- assign _sn = s.metafields.custom.swatch_name.value -%}
-                
+
                 <a href="{{ s.url }}" style="display: inline-flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none;" title="{{ _sn }}" onmouseover="this.children[0].style.borderColor='#999'; this.children[1].style.color='#000';" onmouseout="this.children[0].style.borderColor='transparent'; this.children[1].style.color='#555';">
                   {%- liquid 
                     assign sibling_bg = _sh
@@ -135,9 +135,7 @@
         {%- form 'product', product, id: 'product-form-installment', class: 'installment caption-large' -%}
           <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">{{ form | payment_terms }}
         {%- endform -%}
-        {%- form 'product', product, id: 'product-form-installment', class: 'installment caption-large' -%}
-          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">{{ form | payment_terms }}
-        {%- endform -%}          
+
       {%- when 'short_description' -%}
         <div class="product-info-overview">
           {{ block.settings.liquid_code }}
@@ -147,12 +145,24 @@
             <button id="ProductPopup-{{ block.id }}" class="product-popup-modal__button link" type="button" aria-haspopup="dialog">{{ block.settings.link_label | default: block.settings.page.title }}</button>
           </modal-opener>
           <a href="{{ block.settings.page.url }}" class="product-popup-modal__button link no-js" aria-label="popup">{{ block.settings.link_label }}</a>
-      
+
       {%- when 'variant_picker' -%}
         {%- unless login_to_see == false or product_group != blank %}      
           {%- assign size_guide_option_label = block.settings.size_guide_option_label -%}
           {%- assign size_guide_content = block.settings.size_guide_content -%}
           {%- assign size_guide_image = block.settings.size_guide_image -%}
+          {%- assign size_guide_metafield = product.metafields.custom.size_cart.value -%}
+          {%- if size_guide_image == blank and size_guide_metafield != blank -%}
+            {%- assign size_guide_image = size_guide_metafield -%}
+          {%- endif -%}
+          {%- assign size_guide_image_url = '' -%}
+          {%- if size_guide_image != blank -%}
+            {%- if size_guide_image.width != blank -%}
+              {%- assign size_guide_image_url = size_guide_image | image_url: width: 800 -%}
+            {%- elsif size_guide_image contains '://' -%}
+              {%- assign size_guide_image_url = size_guide_image -%}
+            {%- endif -%}
+          {%- endif -%}
           <div class="product-variants{% if current_variant.available == false and current_variant.inventory_quantity < 1 %} sold-out-product{% endif %}" id="variants-{{ section_id }}">
             {%- unless product.has_only_default_variant -%}
               {%- liquid
@@ -274,11 +284,11 @@
                         {%- endfor -%}
                     {%- endif -%}
                     {%- if option.name == size_guide_option_label and block.settings.show_size_guide -%}
-                      {%- if size_guide_content != null and size_guide_content != blank or size_guide_image != blank -%}
-                        <a class="modal-popup" href="#size-guide-popup">{{ block.settings.size_guide_button_text | default: 'Size guide' }}</a>
-                        <div id="size-guide-popup" class="modal-popup-main mfp-hide size-guide-popup" aria-label="text">
-                          {%- if size_guide_image != blank -%}
-                            <img src="{{ size_guide_image | image_url: width: 800 }}" loading="lazy" width="{{ size_guide_image.width }}" height="{{ size_guide_image.height }}" alt="Size Guide">
+                      {%- if size_guide_content != null and size_guide_content != blank or size_guide_image_url != blank -%}
+                        <a class="modal-popup" href="#size-guide-popup-{{ section_id }}">{{ block.settings.size_guide_button_text | default: 'Size guide' }}</a>
+                        <div id="size-guide-popup-{{ section_id }}" class="modal-popup-main mfp-hide size-guide-popup" aria-label="Size guide">
+                          {%- if size_guide_image_url != blank -%}
+                            <img src="{{ size_guide_image_url }}" loading="lazy" width="{{ size_guide_image.width | default: 800 }}" height="{{ size_guide_image.height | default: 800 }}" alt="Size guide">
                           {%- else -%}
                             {{ size_guide_content }}
                           {%- endif -%}
@@ -448,10 +458,20 @@
           <div class="text-wrapper"><span>{{ total_number }} {{ 'general.product_information.products_sold' | t }}</span> {{ 'general.product_information.in_last' | t }} {{ total_time }} {{ 'general.product_information.hours' | t }}</div>
         </div>
       {%- when 'live-visitors' -%}
-        <div class="live-visitors"><i class="feather-eye"></i> 
-          <div class="text-wrapper">{{ block.settings.visitors_text | replace: '[visitors]', '<span id="visitorsView"></span>' }}</div>
+        {%- assign visitors_copy = block.settings.visitors_text | replace: '[visitors]', '' | strip_html | strip -%}
+        <div
+          class="live-visitors product-live-viewers"
+          data-live-viewers
+          data-max="{{ block.settings.visitors | default: 50 }}"
+          data-interval="{{ block.settings.visitors_time | times: 1000 }}"
+          aria-label="Live product interest"
+        >
+          <i class="feather-eye" aria-hidden="true"></i>
+          <div class="text-wrapper">
+            <span class="live-visitors-count" aria-live="polite"></span>
+            <span class="live-visitors-copy">{{ visitors_copy | escape }}</span>
+          </div>
         </div>
-        <script>document.getElementById("visitorsView").innerHTML = Math.floor(Math.random() * {{ block.settings.visitors }}) + 1;setInterval(function(){ document.getElementById("visitorsView").innerHTML = Math.floor(Math.random() * {{block.settings.visitors}}) + 1 }, {{ block.settings.visitors_time | times: 1000 }});</script>              
       {%- when 'trust-badge' -%}
         {%- render 'trust-badge-block', block_settings: block.settings -%}
       {%- when 'product-usp' -%}
@@ -505,7 +525,7 @@
     function alignShareAndTitle() {
       var shareBtnWrapper = document.getElementById("smart-share-block");
       var titleElement = document.querySelector(".product-title") || document.querySelector("h1") || document.querySelector(".product__title");
-      
+
       if(shareBtnWrapper && titleElement && !shareBtnWrapper.classList.contains('aligned')) {
         var flexWrapper = document.createElement("div"); flexWrapper.className = "product-title-share-row";
         flexWrapper.style.display = "flex";
@@ -514,24 +534,24 @@
         flexWrapper.style.flexWrap = "nowrap"; 
         flexWrapper.style.gap = "8px";
         flexWrapper.style.marginBottom = "3px";
-        
+
         titleElement.parentNode.insertBefore(flexWrapper, titleElement);
         flexWrapper.appendChild(titleElement);
         flexWrapper.appendChild(shareBtnWrapper);
-        
+
         // Allowed Title to WRAP properly so it doesn't get pushed left
         titleElement.style.margin = "0";
         titleElement.style.whiteSpace = "normal"; 
         titleElement.style.wordBreak = "break-word";
         titleElement.style.lineHeight = "1.08";
-        
+
         shareBtnWrapper.style.margin = "0";
         shareBtnWrapper.style.flexShrink = "0"; 
-        
+
         shareBtnWrapper.classList.add('aligned');
       }
     }
-    
+
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", alignShareAndTitle);
     } else {

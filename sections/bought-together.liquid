@@ -1,4 +1,8 @@
-{%- if product.metafields.custom.select_for_product_bundle_item != blank -%}
+{%- assign bundle_collection = product.metafields.custom.select_for_product_bundle_item.value -%}
+{%- if bundle_collection == blank -%}
+  {%- assign bundle_collection = collections[product.metafields.custom.select_for_product_bundle_item] -%}
+{%- endif -%}
+{%- if bundle_collection != blank -%}
 	<section
 	  id="{{ section.settings.section_id }}"
 	  class="section-{{ section.id }} {% if section.settings.section_show == false %}d-none{% endif %}{{ section.settings.section_class_name }} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }} d-md-block"
@@ -100,7 +104,7 @@
 					            <div class="col-auto plus-icon px-0">
 					              <span><i class="bi bi-plus"></i></span>
 					            </div>
-					            {%- assign boughtTogetherCollection = collections[product.metafields.custom.select_for_product_bundle_item] -%}
+					            {%- assign boughtTogetherCollection = bundle_collection -%}
 					            {%- assign boughtTogether = boughtTogetherCollection.products -%}
 					            {%- for product in boughtTogether -%}
 					              {%- liquid
