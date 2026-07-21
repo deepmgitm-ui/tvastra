@@ -14,6 +14,15 @@
     return buttons && buttons.querySelector('.quantity-input');
   }
 
+  // Keep the plus control available when Shopify clamps the line to inventory.
+  function keepPlusControl(buttons) {
+    if (!buttons) return;
+    buttons.querySelectorAll('.quantity-button[name="plus"]').forEach(function (button) {
+      button.hidden = false;
+      button.removeAttribute('aria-hidden');
+    });
+  }
+
   function getCartItem(cart, variantId) {
     if (!cart || !cart.items || !variantId) return null;
     var numericVariantId = Number(variantId);
@@ -33,6 +42,7 @@
     if (!input) return;
     input.value = item ? item.quantity : 1;
     input.dataset.cartLineKey = item ? item.key : '';
+    if (item) keepPlusControl(buttons);
   }
 
   function hideQuantity(buttons) {
@@ -104,6 +114,12 @@
         renderCart(response);
         if (requestId !== buttons._smartCtaRequestId) return;
         var item = getCartItem(response, getVariantId(getForm(buttons)));
+        // A quantity-limit response can omit cart items; keep the control active and
+        // sync the server-clamped quantity instead of hiding the whole quantity group.
+        if (!item && response && response.status) {
+          syncButtons(buttons);
+          return;
+        }
         setButtonsState(buttons, item);
       })
       .catch(function () {

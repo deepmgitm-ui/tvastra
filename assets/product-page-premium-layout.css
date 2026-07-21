@@ -2325,3 +2325,9 @@
 .main-product-page [id^="price-"] .price__sale {
   margin: 0 !important;
 }
+/* Keep plus visible at the inventory limit; the input remains clamped by Shopify. */
+.main-product-page .product-form-buttons.product-cta-smart.is-cart-active .quantity-button.quantity-plus {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
