@@ -2538,6 +2538,34 @@
   margin: 0 !important;
 }
 
+/* Give the product name a calm full-width line on mobile; actions sit below without crowding it. */
+@media (max-width: 767px) {
+  .main-product-page .product-title-share-row {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .main-product-page .product-title-share-row > .product-title {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    line-height: 1.12 !important;
+    letter-spacing: 0 !important;
+  }
+
+  .main-product-page .product-title-actions {
+    display: flex !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin-top: 4px !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
+  }
+}
+
 /* Give the product title its natural word width instead of breaking every word. */
 .main-product-page .product-title-share-row {
   width: 100% !important;
