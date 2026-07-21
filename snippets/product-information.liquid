@@ -507,7 +507,7 @@
       var titleElement = document.querySelector(".product-title") || document.querySelector("h1") || document.querySelector(".product__title");
       
       if(shareBtnWrapper && titleElement && !shareBtnWrapper.classList.contains('aligned')) {
-        var flexWrapper = document.createElement("div");
+        var flexWrapper = document.createElement("div"); flexWrapper.className = "product-title-share-row";
         flexWrapper.style.display = "flex";
         flexWrapper.style.justifyContent = "space-between"; 
         flexWrapper.style.alignItems = "center";
