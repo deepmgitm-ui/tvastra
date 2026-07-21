@@ -2620,3 +2620,117 @@
     max-width: 38% !important;
   }
 }
+
+/* Final product CTA override: keep these rules last so older theme rules cannot win. */
+.main-product-page .product-title-share-row {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+.main-product-page .product-title-share-row > .product-title {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+}
+
+.main-product-page .rating-sku-wrap:empty {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.main-product-page [id^="price-"] {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.main-product-page .product-purchase-note {
+  margin: 0 0 4px !important;
+  padding: 0 !important;
+  line-height: 1.15 !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .action-btn,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn:not(.has-wishlist) {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 36px !important;
+  align-items: stretch !important;
+  gap: 5px !important;
+  width: 100% !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart.is-cart-active .action-btn,
+.main-product-page .product-form-buttons.product-cta-smart.is-cart-active .action-btn:not(.has-wishlist) {
+  grid-template-columns: 52px minmax(0, 1fr) 36px !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .cart-btn,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .wishlist-btn,
+.main-product-page .product-form-buttons.product-cta-smart .quantity,
+.main-product-page .product-form-buttons.product-cta-smart .quantity-input,
+.main-product-page .product-form-buttons.product-cta-smart .quantity-button,
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .product-buy-now-inline,
+.main-product-page .product-form-buttons.product-cta-smart > .product-buy-now-inline .shopify-payment-button__button,
+.main-product-page .product-form-buttons.product-cta-smart > .product-buy-now-inline .custom-payment-btn {
+  height: 36px !important;
+  min-height: 36px !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .action-btn .wishlist-btn {
+  width: 36px !important;
+  min-width: 36px !important;
+  padding: 0 !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart > .product-buy-now-inline {
+  display: flex !important;
+  width: 100% !important;
+  margin: 4px 0 0 !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart > .product-buy-now-inline,
+.main-product-page .product-form-buttons.product-cta-smart > .product-buy-now-inline > .shopify-payment-button,
+.main-product-page .product-form-buttons.product-cta-smart > .shopify-payment-button.product-buy-now-inline {
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart > .product-buy-now-inline .shopify-payment-button__button,
+.main-product-page .product-form-buttons.product-cta-smart > .product-buy-now-inline .custom-payment-btn {
+  width: 100% !important;
+  margin: 0 !important;
+  padding-block: 0 !important;
+  font-size: 12px !important;
+}
+
+@media (max-width: 767px) {
+  .main-product-page .product-title-share-row {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .main-product-page .product-title-share-row > .product-title {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    line-height: 1.12 !important;
+    letter-spacing: 0 !important;
+  }
+
+  .main-product-page .product-title-actions {
+    display: flex !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin-top: 4px !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
+  }
+}
