@@ -458,7 +458,6 @@
           <div class="text-wrapper"><span>{{ total_number }} {{ 'general.product_information.products_sold' | t }}</span> {{ 'general.product_information.in_last' | t }} {{ total_time }} {{ 'general.product_information.hours' | t }}</div>
         </div>
       {%- when 'live-visitors' -%}
-        {%- assign visitors_copy = block.settings.visitors_text | replace: '[visitors]', '' | strip_html | strip -%}
         <div
           class="live-visitors product-live-viewers"
           data-live-viewers
@@ -469,7 +468,7 @@
           <i class="feather-eye" aria-hidden="true"></i>
           <div class="text-wrapper">
             <span class="live-visitors-count" aria-live="polite"></span>
-            <span class="live-visitors-copy">{{ visitors_copy | escape }}</span>
+            <span class="live-visitors-copy">viewing now</span>
           </div>
         </div>
       {%- when 'trust-badge' -%}

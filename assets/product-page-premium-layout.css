@@ -2426,3 +2426,45 @@
 .main-product-page .product-form-buttons.product-cta-smart .shopify-payment-button {
   margin-top: 5px !important;
 }
+
+/* Give the product title its natural word width instead of breaking every word. */
+.main-product-page .product-title-share-row {
+  width: 100% !important;
+  flex-wrap: nowrap !important;
+}
+
+.main-product-page .product-title-share-row > .product-title {
+  min-width: 0 !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  white-space: normal !important;
+}
+
+.main-product-page .product-title-actions {
+  max-width: 40% !important;
+}
+
+/* Slimmer purchase actions while keeping a comfortable tap target. */
+.main-product-page .product-form-buttons.product-cta-smart .cart-btn,
+.main-product-page .product-form-buttons.product-cta-smart .shopify-payment-button__button,
+.main-product-page .product-form-buttons.product-cta-smart .custom-payment-btn {
+  min-height: 40px !important;
+  height: 40px !important;
+  padding-block: 0 !important;
+  font-size: 12px !important;
+}
+
+@media (max-width: 767px) {
+  .main-product-page .product-title-share-row {
+    gap: 5px !important;
+  }
+
+  .main-product-page .product-title-share-row > .product-title {
+    font-size: 18px !important;
+    line-height: 1.12 !important;
+  }
+
+  .main-product-page .product-title-actions {
+    max-width: 38% !important;
+  }
+}
