@@ -2318,3 +2318,10 @@
     font-size: 10px !important;
   }
 }
+
+/* Keep the tax note attached to the product price. */
+.main-product-page [id^="price-"] .price,
+.main-product-page [id^="price-"] .price__regular,
+.main-product-page [id^="price-"] .price__sale {
+  margin: 0 !important;
+}
