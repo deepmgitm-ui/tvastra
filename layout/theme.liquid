@@ -440,18 +440,8 @@
      {%- endif -%}
 
     
-    {% unless customer %}
-<script>
+    <script>
 (function () {
-  if (window.__tvastraSpurCleanLoaded) return;
-  window.__tvastraSpurCleanLoaded = true;
-
-  var FIRST_DELAY = 3000;
-  var REPEAT_DELAY = 60000;
-  var SUBMITTED_KEY = 'tvastra_spur_submitted_clean_v1';
-
-  if (localStorage.getItem(SUBMITTED_KEY) === 'yes') return;
-
   function textOf(el) {
     return (
       (el.innerText || '') + ' ' +
@@ -472,162 +462,35 @@
     return false;
   }
 
-  function isVisible(el) {
-    if (!el) return false;
-    var style = window.getComputedStyle(el);
-    var rect = el.getBoundingClientRect();
-    return style.display !== 'none' &&
-      style.visibility !== 'hidden' &&
-      rect.width > 20 &&
-      rect.height > 20;
-  }
-
-  function clearSpurDismissMemory() {
-    try {
-      Object.keys(localStorage).forEach(function (key) {
-        var k = key.toLowerCase();
-        if (
-          k.indexOf('spur') > -1 &&
-          (
-            k.indexOf('dismiss') > -1 ||
-            k.indexOf('close') > -1 ||
-            k.indexOf('shown') > -1 ||
-            k.indexOf('seen') > -1 ||
-            k.indexOf('display') > -1 ||
-            k.indexOf('frequency') > -1 ||
-            k.indexOf('popup') > -1
-          ) &&
-          k.indexOf('submit') === -1 &&
-          k.indexOf('success') === -1
-        ) {
-          localStorage.removeItem(key);
-        }
-      });
-    } catch (e) {}
-  }
-
-  function findSpurForms() {
-    return Array.prototype.slice.call(document.querySelectorAll('form')).filter(function (form) {
-      return isSpurElement(form) && isVisible(form);
-    });
-  }
-
-  function compactSpurFormOnly() {
-    findSpurForms().forEach(function (form) {
-      form.style.setProperty('padding', '8px 10px 10px', 'important');
-      form.style.setProperty('gap', '6px', 'important');
-
-      form.querySelectorAll('h1,h2,h3').forEach(function (el) {
-        el.style.setProperty('font-size', '17px', 'important');
-        el.style.setProperty('line-height', '1.16', 'important');
-        el.style.setProperty('margin-bottom', '4px', 'important');
-      });
-
-      form.querySelectorAll('p,label').forEach(function (el) {
-        el.style.setProperty('font-size', '10.5px', 'important');
-        el.style.setProperty('line-height', '1.28', 'important');
-      });
-
-      form.querySelectorAll('input:not([type="checkbox"]),select,button').forEach(function (el) {
-        el.style.setProperty('height', '36px', 'important');
-        el.style.setProperty('min-height', '36px', 'important');
-        el.style.setProperty('font-size', '12.5px', 'important');
-      });
-
-      form.querySelectorAll('input[type="checkbox"]').forEach(function (el) {
-        el.style.setProperty('width', '12px', 'important');
-        el.style.setProperty('height', '12px', 'important');
-        el.style.setProperty('min-height', '12px', 'important');
-      });
-    });
-
-    document.querySelectorAll('button').forEach(function (btn) {
+  function hideSpurCloseButton() {
+    document.querySelectorAll('button,a,[role="button"]').forEach(function (btn) {
       if (!isSpurElement(btn)) return;
 
       var t = textOf(btn).trim();
-      var isClose = t.indexOf('close') > -1 || t === 'x' || t === '×';
+      var isClose =
+        t.indexOf('close') > -1 ||
+        t === 'x' ||
+        t === '×' ||
+        t.indexOf('dismiss') > -1;
 
       if (!isClose) return;
 
-      btn.style.setProperty('width', '22px', 'important');
-      btn.style.setProperty('height', '22px', 'important');
-      btn.style.setProperty('min-height', '22px', 'important');
-      btn.style.setProperty('padding', '0', 'important');
-      btn.style.setProperty('border', '1px solid rgba(0,0,0,.08)', 'important');
-      btn.style.setProperty('border-radius', '50%', 'important');
-      btn.style.setProperty('background', 'rgba(255,255,255,.94)', 'important');
-      btn.style.setProperty('color', '#222', 'important');
-      btn.style.setProperty('box-shadow', 'none', 'important');
-      btn.style.setProperty('font-size', '15px', 'important');
-      btn.style.setProperty('font-weight', '400', 'important');
-      btn.style.setProperty('line-height', '1', 'important');
-      btn.style.setProperty('display', 'flex', 'important');
-      btn.style.setProperty('align-items', 'center', 'important');
-      btn.style.setProperty('justify-content', 'center', 'important');
-      btn.style.setProperty('opacity', '1', 'important');
+      btn.style.setProperty('display', 'none', 'important');
+      btn.style.setProperty('visibility', 'hidden', 'important');
+      btn.style.setProperty('opacity', '0', 'important');
+      btn.style.setProperty('pointer-events', 'none', 'important');
+      btn.setAttribute('aria-hidden', 'true');
+      btn.setAttribute('tabindex', '-1');
     });
   }
 
-  function spurPopupVisible() {
-    return findSpurForms().length > 0;
-  }
+  hideSpurCloseButton();
 
-  function clickSpurTrigger() {
-    var triggers = Array.prototype.slice.call(
-      document.querySelectorAll('button,a,[role="button"]')
-    ).filter(function (el) {
-      if (!isSpurElement(el) || !isVisible(el)) return false;
-
-      var t = textOf(el);
-
-      if (t.indexOf('close') > -1 || t.trim() === 'x' || t.trim() === '×') return false;
-      if (t.indexOf('privacy') > -1 || t.indexOf('terms') > -1) return false;
-
-      return (
-        t.indexOf('offer') > -1 ||
-        t.indexOf('get') > -1 ||
-        t.indexOf('sign') > -1 ||
-        t.indexOf('subscribe') > -1 ||
-        t.indexOf('discount') > -1 ||
-        t.indexOf('unlock') > -1
-      );
-    });
-
-    if (triggers[0]) triggers[0].click();
-  }
-
-  function triggerSpurPopup() {
-    if (localStorage.getItem(SUBMITTED_KEY) === 'yes') return;
-
-    compactSpurFormOnly();
-
-    if (spurPopupVisible()) return;
-
-    clearSpurDismissMemory();
-
-    setTimeout(function () {
-      clickSpurTrigger();
-      setTimeout(compactSpurFormOnly, 500);
-      setTimeout(compactSpurFormOnly, 1200);
-      setTimeout(compactSpurFormOnly, 2500);
-    }, 300);
-  }
-
-  document.addEventListener('submit', function (event) {
-    if (isSpurElement(event.target)) {
-      localStorage.setItem(SUBMITTED_KEY, 'yes');
-    }
-  }, true);
-
-  setTimeout(triggerSpurPopup, FIRST_DELAY);
-  setInterval(triggerSpurPopup, REPEAT_DELAY);
-
-  new MutationObserver(compactSpurFormOnly).observe(document.body, {
+  new MutationObserver(hideSpurCloseButton).observe(document.body, {
     childList: true,
     subtree: true
   });
 })();
 </script>
-{% endunless %}
   </body>
 </html>
