@@ -1301,11 +1301,6 @@
         "disabled": true,
         "settings": {}
       },
-      "11329748873528424255": {
-        "type": "shopify://apps/spur-popups/blocks/popup-embed/019ad4fe-6d99-708f-9bf9-047b2e248391",
-        "disabled": false,
-        "settings": {}
-      },
       "1366455014531238847": {
         "type": "shopify://apps/wishlist-hero/blocks/customize-style-block/a9a5079b-59e8-47cb-b659-ecf1c60b9b72",
         "disabled": false,
@@ -1358,6 +1353,11 @@
           "emailHeading": "Spur Customer Query",
           "emailBody": "Hey Team, could you please help me with"
         }
+      },
+      "11329748873528424255": {
+        "type": "shopify://apps/spur-popups/blocks/popup-embed/019ad4fe-6d99-708f-9bf9-047b2e248391",
+        "disabled": true,
+        "settings": {}
       }
     }
   },
