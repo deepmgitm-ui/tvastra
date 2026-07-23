@@ -108,6 +108,27 @@
       assign purchase_btn = false
     endif
   -%}
+  {% if customer %}
+  <style>
+    html body [id*="spur" i],
+    html body [class*="spur" i] {
+      display: none !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+  </style>
+
+  <script>
+    window.addEventListener('load', function () {
+      document.querySelectorAll('[id*="spur" i], [class*="spur" i]').forEach(function (el) {
+        el.style.display = 'none';
+        el.style.visibility = 'hidden';
+        el.style.pointerEvents = 'none';
+      });
+    });
+  </script>
+{% endif %}
+
   <body class="{% if purchase_btn == false %}purchase-off {% endif %}{% unless settings.show_variant_option %}product-box-no-variant {% endunless %}"{% if settings.enable_ajex_data == true  %}data-ajex="{{ settings.enable_ajex_data }}"{% endif %} {%- if settings.body_bg_image != blank -%} style="background-image: url('{{ settings.body_bg_image | image_url }}');background-repeat: {%- if settings.repeat_bg_image == true -%}repeat;{%- else -%}no-repeat;{%- endif -%}"{%- endif -%}>
     {%- if settings.enable_box_layout == true -%}
       <div class="box-layout">
