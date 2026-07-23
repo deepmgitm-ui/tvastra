@@ -2163,3 +2163,76 @@ button:focus-visible,
 .jdgm-carousel-wrapper .jdgm-star.jdgm--off {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23f5a623' stroke-width='1.8' d='m12 2.2 2.95 5.98 6.6.96-4.78 4.66 1.13 6.58L12 17.27l-5.9 3.11 1.13-6.58-4.78-4.66 6.6-.96L12 2.2Z'/%3E%3C/svg%3E") !important;
 }
+/*************************************************************
+** Spur Popups compact Tvastra styling
+*************************************************************/
+
+[id*="spur" i],
+[class*="spur" i] {
+  box-sizing: border-box;
+}
+
+[id*="spur" i][class*="modal" i],
+[id*="spur" i][class*="popup" i],
+[class*="spur" i][class*="modal" i],
+[class*="spur" i][class*="popup" i],
+[class*="spur" i] [role="dialog"],
+[id*="spur" i] [role="dialog"] {
+  width: min(390px, calc(100vw - 28px)) !important;
+  max-width: 390px !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+
+[id*="spur" i] h1,
+[id*="spur" i] h2,
+[class*="spur" i] h1,
+[class*="spur" i] h2 {
+  font-size: 21px !important;
+  line-height: 1.2 !important;
+}
+
+[id*="spur" i] input,
+[class*="spur" i] input {
+  min-height: 42px !important;
+  height: 42px !important;
+  border-radius: 8px !important;
+}
+
+[id*="spur" i] button,
+[class*="spur" i] button {
+  min-height: 42px !important;
+  border-radius: 8px !important;
+}
+
+[id*="spur" i] form,
+[class*="spur" i] form {
+  gap: 10px !important;
+}
+
+[id*="spur" i] p,
+[id*="spur" i] label,
+[class*="spur" i] p,
+[class*="spur" i] label {
+  font-size: 12px !important;
+  line-height: 1.35 !important;
+}
+
+@media screen and (max-width: 749px) {
+  [id*="spur" i][class*="modal" i],
+  [id*="spur" i][class*="popup" i],
+  [class*="spur" i][class*="modal" i],
+  [class*="spur" i][class*="popup" i],
+  [class*="spur" i] [role="dialog"],
+  [id*="spur" i] [role="dialog"] {
+    width: min(340px, calc(100vw - 20px)) !important;
+    max-width: 340px !important;
+  }
+
+  [id*="spur" i] h1,
+  [id*="spur" i] h2,
+  [class*="spur" i] h1,
+  [class*="spur" i] h2 {
+    font-size: 19px !important;
+  }
+}
