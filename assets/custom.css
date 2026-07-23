@@ -2163,3 +2163,149 @@ button:focus-visible,
 .jdgm-carousel-wrapper .jdgm-star.jdgm--off {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23f5a623' stroke-width='1.8' d='m12 2.2 2.95 5.98 6.6.96-4.78 4.66 1.13 6.58L12 17.27l-5.9 3.11 1.13-6.58-4.78-4.66 6.6-.96L12 2.2Z'/%3E%3C/svg%3E") !important;
 }
+/*************************************************************
+** Tvastra x Spur Popup - Premium Compact Styling
+*************************************************************/
+
+/* Popup box - desktop centered premium look */
+html body [id*="spur" i] [role="dialog"],
+html body [class*="spur" i] [role="dialog"],
+html body [id*="spur" i][class*="popup" i],
+html body [class*="spur" i][class*="popup" i],
+html body [id*="spur" i][class*="modal" i],
+html body [class*="spur" i][class*="modal" i] {
+  width: min(420px, calc(100vw - 32px)) !important;
+  max-width: 420px !important;
+  margin: auto !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.22) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Main spacing */
+html body [id*="spur" i] form,
+html body [class*="spur" i] form {
+  padding: 18px 20px 20px !important;
+  gap: 10px !important;
+}
+
+/* Header/title area */
+html body [id*="spur" i] h1,
+html body [id*="spur" i] h2,
+html body [id*="spur" i] h3,
+html body [class*="spur" i] h1,
+html body [class*="spur" i] h2,
+html body [class*="spur" i] h3 {
+  font-size: 22px !important;
+  line-height: 1.15 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  margin-bottom: 6px !important;
+}
+
+/* Subtitle / description */
+html body [id*="spur" i] p,
+html body [class*="spur" i] p {
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+  margin-bottom: 8px !important;
+}
+
+/* Inputs */
+html body [id*="spur" i] input,
+html body [class*="spur" i] input {
+  height: 43px !important;
+  min-height: 43px !important;
+  border-radius: 10px !important;
+  font-size: 14px !important;
+  padding: 0 13px !important;
+  border: 1px solid #d8d8d8 !important;
+  background: #ffffff !important;
+}
+
+/* Country code box if phone field exists */
+html body [id*="spur" i] select,
+html body [class*="spur" i] select {
+  height: 43px !important;
+  min-height: 43px !important;
+  border-radius: 10px !important;
+  font-size: 14px !important;
+}
+
+/* Button */
+html body [id*="spur" i] button,
+html body [class*="spur" i] button {
+  min-height: 43px !important;
+  border-radius: 10px !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+}
+
+/* Consent text */
+html body [id*="spur" i] label,
+html body [class*="spur" i] label {
+  font-size: 11.5px !important;
+  line-height: 1.35 !important;
+}
+
+/* Checkbox */
+html body [id*="spur" i] input[type="checkbox"],
+html body [class*="spur" i] input[type="checkbox"] {
+  width: 14px !important;
+  height: 14px !important;
+  min-height: 14px !important;
+  padding: 0 !important;
+}
+
+/* Close button */
+html body [id*="spur" i] button[aria-label*="close" i],
+html body [class*="spur" i] button[aria-label*="close" i] {
+  width: 28px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  border-radius: 50% !important;
+  padding: 0 !important;
+}
+
+/* Mobile - clean and not too big */
+@media screen and (max-width: 749px) {
+  html body [id*="spur" i] [role="dialog"],
+  html body [class*="spur" i] [role="dialog"],
+  html body [id*="spur" i][class*="popup" i],
+  html body [class*="spur" i][class*="popup" i],
+  html body [id*="spur" i][class*="modal" i],
+  html body [class*="spur" i][class*="modal" i] {
+    width: min(335px, calc(100vw - 22px)) !important;
+    max-width: 335px !important;
+    border-radius: 14px !important;
+  }
+
+  html body [id*="spur" i] form,
+  html body [class*="spur" i] form {
+    padding: 15px 16px 17px !important;
+    gap: 9px !important;
+  }
+
+  html body [id*="spur" i] h1,
+  html body [id*="spur" i] h2,
+  html body [id*="spur" i] h3,
+  html body [class*="spur" i] h1,
+  html body [class*="spur" i] h2,
+  html body [class*="spur" i] h3 {
+    font-size: 19px !important;
+  }
+
+  html body [id*="spur" i] input,
+  html body [class*="spur" i] input,
+  html body [id*="spur" i] select,
+  html body [class*="spur" i] select,
+  html body [id*="spur" i] button,
+  html body [class*="spur" i] button {
+    min-height: 41px !important;
+    height: 41px !important;
+    font-size: 13.5px !important;
+  }
+}
