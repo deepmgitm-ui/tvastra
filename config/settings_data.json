@@ -1296,9 +1296,19 @@
           "searchAndFilterApp": "none"
         }
       },
+      "16570313350976326094": {
+        "type": "shopify://apps/floaty-icons-social-buttons/blocks/floaty-buttons/019a0c1b-e238-76e2-8cb0-244c03a5c2a7",
+        "disabled": true,
+        "settings": {}
+      },
+      "11329748873528424255": {
+        "type": "shopify://apps/spur-popups/blocks/popup-embed/019ad4fe-6d99-708f-9bf9-047b2e248391",
+        "disabled": false,
+        "settings": {}
+      },
       "1366455014531238847": {
         "type": "shopify://apps/wishlist-hero/blocks/customize-style-block/a9a5079b-59e8-47cb-b659-ecf1c60b9b72",
-        "disabled": true,
+        "disabled": false,
         "settings": {
           "Btn_color": "",
           "WishlistButtonTextColor": "",
@@ -1310,20 +1320,44 @@
           "PriceColor": ""
         }
       },
-      "16570313350976326094": {
-        "type": "shopify://apps/floaty-icons-social-buttons/blocks/floaty-buttons/019a0c1b-e238-76e2-8cb0-244c03a5c2a7",
+      "13047258039897440615": {
+        "type": "shopify://apps/judge-me-reviews/blocks/cart_drawer_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+        "disabled": false,
+        "settings": {
+          "widget_type": "review-widget"
+        }
+      },
+      "5489146446080840863": {
+        "type": "shopify://apps/spur-instagram-whatsapp/blocks/spur-ai-chat/3aab60ce-a1e6-42d5-8a06-8d357d878ce4",
         "disabled": true,
         "settings": {}
       },
-      "1219337400145039034": {
-        "type": "shopify://apps/kwikpass/blocks/kp_login/603e209b-d585-47ff-8592-837a4faa325b",
-        "disabled": false,
-        "settings": {}
-      },
-      "11329748873528424255": {
-        "type": "shopify://apps/spur-popups/blocks/popup-embed/019ad4fe-6d99-708f-9bf9-047b2e248391",
-        "disabled": false,
-        "settings": {}
+      "1512324647879277805": {
+        "type": "shopify://apps/spur-instagram-whatsapp/blocks/app-embed/3aab60ce-a1e6-42d5-8a06-8d357d878ce4",
+        "disabled": true,
+        "settings": {
+          "position": "right",
+          "icon": "whatsapp",
+          "bottomOffset": 16,
+          "primaryColor": "#3c77f1",
+          "greetingTitle": "Hi there 👋 \nHow can we help you?",
+          "greetingSubtitle": "We typically reply in a few minutes",
+          "waEnabled": true,
+          "useClickToChat": false,
+          "chatWhatsAppText": "Chat with us on WhatsApp",
+          "whatsAppBody": "Hey Team, could you please help me with",
+          "igMessengerEnabled": true,
+          "igUsername": "",
+          "chatInstaText": "Chat with us on Instagram",
+          "messengerEnabled": true,
+          "fbPageName": "",
+          "chatMessengerText": "Chat with us on Messenger",
+          "emailEnabled": true,
+          "email": "",
+          "chatEmailText": "Chat with us on Email",
+          "emailHeading": "Spur Customer Query",
+          "emailBody": "Hey Team, could you please help me with"
+        }
       }
     }
   },
