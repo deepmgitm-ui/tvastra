@@ -1356,7 +1356,7 @@
       },
       "11329748873528424255": {
         "type": "shopify://apps/spur-popups/blocks/popup-embed/019ad4fe-6d99-708f-9bf9-047b2e248391",
-        "disabled": true,
+        "disabled": false,
         "settings": {}
       }
     }
