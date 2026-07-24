@@ -687,6 +687,130 @@
 </script>
 {% endunless %}
 
+<style>
+  .tvastra-size-tap-message {
+    display: none;
+    margin-top: 8px;
+    padding: 9px 11px;
+    border-radius: 6px;
+    background: #111;
+    color: #fff;
+    font-size: 12px;
+    line-height: 1.35;
+    width: fit-content;
+    max-width: 100%;
+  }
+
+  .tvastra-size-tap-message.is-visible {
+    display: block;
+  }
+
+  .tvastra-size-required-error .variant-option label,
+  .tvastra-size-required-error select {
+    border-color: #111 !important;
+    box-shadow: 0 0 0 1px #111;
+  }
+</style>
+
+<script>
+(function () {
+  if (window.tvastraSizeTapGuardLoaded) return;
+  window.tvastraSizeTapGuardLoaded = true;
+
+  var MESSAGE = 'Please select your size.';
+
+  function getScope(target) {
+    return (target.closest && target.closest('.product-info')) ||
+      document.querySelector('.product-info');
+  }
+
+  function getSizePicker(scope) {
+    if (!scope) return null;
+
+    var picker = scope.querySelector('.product-variants .size-filter');
+    if (!picker || picker.offsetParent === null) return null;
+    if (!picker.querySelector('input, select')) return null;
+
+    return picker;
+  }
+
+  function initSizePicker(picker) {
+    if (!picker || picker.dataset.sizeGuardReady === 'true') return;
+
+    picker.dataset.sizeGuardReady = 'true';
+    picker.dataset.sizeConfirmed = 'false';
+
+    var msg = document.createElement('div');
+    msg.className = 'tvastra-size-tap-message';
+    msg.textContent = MESSAGE;
+    picker.appendChild(msg);
+
+    function confirmSize(event) {
+      if (!event.target.closest('.variant-option') && event.target.tagName !== 'SELECT') return;
+
+      picker.dataset.sizeConfirmed = 'true';
+      picker.classList.remove('tvastra-size-required-error');
+      msg.classList.remove('is-visible');
+    }
+
+    picker.addEventListener('click', confirmSize);
+    picker.addEventListener('change', confirmSize);
+  }
+
+  function showSizeMessage(target, event) {
+    var scope = getScope(target);
+    var picker = getSizePicker(scope);
+
+    if (!picker) return false;
+
+    initSizePicker(picker);
+
+    if (picker.dataset.sizeConfirmed === 'true') return false;
+
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+
+    picker.classList.add('tvastra-size-required-error');
+
+    var msg = picker.querySelector('.tvastra-size-tap-message');
+    if (msg) msg.classList.add('is-visible');
+
+    picker.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return true;
+  }
+
+  function initAll() {
+    document.querySelectorAll('.product-variants .size-filter').forEach(initSizePicker);
+  }
+
+  document.addEventListener('submit', function (event) {
+    var form = event.target.closest('form[data-type="add-to-cart-form"], form[action*="/cart/add"]');
+    if (!form) return;
+
+    showSizeMessage(form, event);
+  }, true);
+
+  document.addEventListener('click', function (event) {
+    var button = event.target.closest('[name="add"], .shopify-payment-button, .shopify-payment-button__button, custom-btn');
+    if (!button) return;
+
+    showSizeMessage(button, event);
+  }, true);
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAll);
+  } else {
+    initAll();
+  }
+
+  new MutationObserver(initAll).observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+})();
+</script>
+
 
   </body>
 </html>
