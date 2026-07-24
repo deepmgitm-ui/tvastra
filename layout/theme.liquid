@@ -240,7 +240,9 @@
     {% endunless %}
     {%- render 'whatsapp-floating' -%}
 
-    {% render 'razorpay-magic-checkout' %}
+    {%- if template.name == 'product' or template.name == 'cart' or template.name == 'collection' -%}
+  {% render 'razorpay-magic-checkout' %}
+{%- endif -%}
 
 
     <style>
