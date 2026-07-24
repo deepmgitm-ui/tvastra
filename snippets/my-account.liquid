@@ -6,7 +6,7 @@
 	</div>
 {%- else -%}
 	<div class="account alt-font {{ settings.menu_text_case }}">
-	  <a href="{%- if customer -%}/account/logout{% else %}{{ routes.account_url }}{% endif %}" aria-label="account">
+	  <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" aria-label="account">
 	  	<div class="accont-icon">
 	    	<i class="bi bi-person-plus"></i>
 	  	</div>
