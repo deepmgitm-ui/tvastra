@@ -886,6 +886,179 @@
 })();
 </script>
 
+<style>
+  .tvastra-size-empty .form-label span {
+    color: #8b8179 !important;
+    font-weight: 400 !important;
+  }
+
+  .main-product-page .product-variants fieldset.size-filter.tvastra-size-empty .variant-option label,
+  .main-product-page .product-variants fieldset.size-filter.tvastra-size-empty .variant-option input[type="radio"]:checked + label,
+  .product-variants fieldset.size-filter.tvastra-size-empty .variant-option.selected label {
+    background: #fff !important;
+    color: #111 !important;
+    border-color: #d8d1ca !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  .product-variants fieldset.size-filter.tvastra-size-empty .variant-option label .text-swatch,
+  .product-variants fieldset.size-filter.tvastra-size-empty .variant-option input[type="radio"]:checked + label .text-swatch,
+  .product-variants fieldset.size-filter.tvastra-size-empty .variant-option.selected .text-swatch {
+    background: transparent !important;
+    color: #111 !important;
+    border-color: transparent !important;
+  }
+
+  .tvastra-size-message {
+    display: none;
+    margin-top: 10px;
+    padding: 10px 12px;
+    border: 1px solid #eadfd5;
+    border-radius: 8px;
+    background: #fffaf5;
+    color: #2b2520;
+    font-size: 12px;
+    line-height: 1.35;
+    max-width: 310px;
+    box-shadow: 0 10px 24px rgba(0,0,0,.08);
+  }
+
+  .tvastra-size-message.show {
+    display: block;
+  }
+
+  .tvastra-size-error .tvastra-size-message {
+    border-color: #111;
+  }
+</style>
+
+<script>
+(function () {
+  if (window.tvastraSizeProfessionalV4) return;
+  window.tvastraSizeProfessionalV4 = true;
+
+  function closest(el, selector) {
+    return el && el.closest ? el.closest(selector) : null;
+  }
+
+  function getArea(el) {
+    return closest(el, '.product-info, .product-info-right') ||
+      document.querySelector('.product-info, .product-info-right');
+  }
+
+  function getSizeBox(area) {
+    var box = area && area.querySelector('.product-variants fieldset.size-filter');
+    if (!box || box.offsetParent === null) return null;
+    return box.querySelector('input[type="radio"], select') ? box : null;
+  }
+
+  function getMessage(box) {
+    var msg = box.querySelector('.tvastra-size-message');
+    if (msg) return msg;
+
+    msg = document.createElement('div');
+    msg.className = 'tvastra-size-message';
+    msg.textContent = 'Please select your size before continuing.';
+    box.appendChild(msg);
+    return msg;
+  }
+
+  function clearVisualSize(box) {
+    if (!box || box.dataset.sizeChosenByUser === 'true') return;
+
+    box.classList.add('tvastra-size-empty');
+
+    var labelValue = box.querySelector('.form-label span');
+    if (labelValue) labelValue.textContent = 'Select your size';
+
+    box.querySelectorAll('input[type="radio"]').forEach(function (input) {
+      input.checked = false;
+      input.removeAttribute('checked');
+    });
+
+    box.querySelectorAll('.variant-option.selected, .swatches-hover.selected').forEach(function (item) {
+      item.classList.remove('selected');
+      item.removeAttribute('data-selected');
+    });
+  }
+
+  function markChosen(box, value) {
+    box.dataset.sizeChosenByUser = 'true';
+    box.classList.remove('tvastra-size-empty', 'tvastra-size-error');
+
+    var labelValue = box.querySelector('.form-label span');
+    if (labelValue && value) labelValue.textContent = value;
+
+    getMessage(box).classList.remove('show');
+  }
+
+  function initBox(box) {
+    if (!box) return;
+
+    if (box.dataset.tvastraSizeInit !== 'true') {
+      box.dataset.tvastraSizeInit = 'true';
+      box.dataset.sizeChosenByUser = 'false';
+
+      box.addEventListener('click', function (event) {
+        var option = closest(event.target, '.variant-option');
+        if (!option) return;
+
+        var input = option.querySelector('input[type="radio"]');
+        markChosen(box, input ? input.value : '');
+      }, true);
+
+      box.addEventListener('change', function (event) {
+        if (event.target.matches('input[type="radio"], select')) {
+          markChosen(box, event.target.value);
+        }
+      }, true);
+    }
+
+    clearVisualSize(box);
+  }
+
+  function initAll() {
+    document.querySelectorAll('.product-variants fieldset.size-filter').forEach(initBox);
+  }
+
+  function blockIfSizeMissing(target, event) {
+    var box = getSizeBox(getArea(target));
+    if (!box) return false;
+
+    initBox(box);
+
+    if (box.dataset.sizeChosenByUser === 'true') return false;
+
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+
+    clearVisualSize(box);
+    box.classList.add('tvastra-size-error');
+    getMessage(box).classList.add('show');
+    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    return true;
+  }
+
+  document.addEventListener('click', function (event) {
+    var btn = closest(event.target, '[name="add"], .cart-btn, .product-buy-now-inline, .shopify-payment-button, .shopify-payment-button__button, custom-btn, [data-testid="Checkout-button"]');
+    if (btn) blockIfSizeMissing(btn, event);
+  }, true);
+
+  document.addEventListener('submit', function (event) {
+    var form = closest(event.target, 'form[data-type="add-to-cart-form"], form[action*="/cart/add"]');
+    if (form) blockIfSizeMissing(form, event);
+  }, true);
+
+  initAll();
+  setTimeout(initAll, 300);
+  setTimeout(initAll, 1000);
+  window.addEventListener('load', initAll);
+})();
+</script>
+
 
   </body>
 </html>
