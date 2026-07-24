@@ -686,5 +686,153 @@
 })();
 </script>
 {% endunless %}
+
+
+<style>
+  .tvastra-size-reminder {
+    margin-top: 8px;
+    padding: 8px 10px;
+    border: 1px solid #e7ded4;
+    border-radius: 6px;
+    background: #faf8f5;
+    color: #66584b;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .tvastra-size-reminder.is-confirmed {
+    display: none;
+  }
+
+  .tvastra-size-required-error .tvastra-size-reminder {
+    border-color: #d9a099;
+    background: #fff6f4;
+    color: #9b2f23;
+  }
+
+  .tvastra-size-required-error .variant-option label,
+  .tvastra-size-required-error select {
+    border-color: #9b2f23 !important;
+    box-shadow: 0 0 0 1px #9b2f23;
+  }
+</style>
+
+<script>
+(function () {
+  if (window.tvastraSizeReminderLoaded) return;
+  window.tvastraSizeReminderLoaded = true;
+
+  var MESSAGE = 'Please select your size before checkout.';
+
+  function getScope(target) {
+    var productForm = target.closest && target.closest('product-form');
+    return (productForm && productForm.closest('.product-info')) ||
+      (target.closest && target.closest('.product-info')) ||
+      document.querySelector('.product-info');
+  }
+
+  function getSizePicker(scope) {
+    if (!scope) return null;
+
+    var picker = scope.querySelector('.product-variants .size-filter');
+    if (!picker || picker.offsetParent === null) return null;
+    if (!picker.querySelector('input, select')) return null;
+
+    return picker;
+  }
+
+  function initPicker(picker) {
+    if (!picker || picker.dataset.tvastraSizeReady === 'true') return;
+
+    picker.dataset.tvastraSizeReady = 'true';
+    picker.dataset.tvastraSizeConfirmed = 'false';
+
+    var note = document.createElement('div');
+    note.className = 'tvastra-size-reminder';
+    note.setAttribute('aria-live', 'polite');
+    note.textContent = MESSAGE;
+    picker.appendChild(note);
+
+    function confirmSize(event) {
+      if (!event.target.closest('.variant-option') && event.target.tagName !== 'SELECT') return;
+
+      picker.dataset.tvastraSizeConfirmed = 'true';
+      picker.classList.remove('tvastra-size-required-error');
+      note.classList.add('is-confirmed');
+
+      var scope = getScope(picker);
+      var wrapper = scope && scope.querySelector('.product-form__error-message-wrapper');
+      if (wrapper) wrapper.classList.add('d-none');
+    }
+
+    picker.addEventListener('click', confirmSize);
+    picker.addEventListener('change', confirmSize);
+  }
+
+  function blockIfSizeMissing(target, event) {
+    var scope = getScope(target);
+    var picker = getSizePicker(scope);
+
+    if (!picker) return false;
+
+    initPicker(picker);
+
+    if (picker.dataset.tvastraSizeConfirmed === 'true') return false;
+
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+
+    picker.classList.add('tvastra-size-required-error');
+
+    var note = picker.querySelector('.tvastra-size-reminder');
+    if (note) {
+      note.classList.remove('is-confirmed');
+      note.textContent = 'Please select your size to continue.';
+    }
+
+    var wrapper = scope.querySelector('.product-form__error-message-wrapper');
+    var message = scope.querySelector('.product-form__error-message');
+
+    if (wrapper) wrapper.classList.remove('d-none');
+    if (message) message.textContent = MESSAGE;
+
+    picker.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return true;
+  }
+
+  function initAllPickers() {
+    document.querySelectorAll('.product-variants .size-filter').forEach(initPicker);
+  }
+
+  document.addEventListener('submit', function (event) {
+    var form = event.target.closest('form[data-type="add-to-cart-form"], form[action*="/cart/add"]');
+    if (!form) return;
+
+    blockIfSizeMissing(form, event);
+  }, true);
+
+  document.addEventListener('click', function (event) {
+    var button = event.target.closest('[name="add"], .shopify-payment-button, .shopify-payment-button__button, custom-btn');
+    if (!button) return;
+
+    blockIfSizeMissing(button, event);
+  }, true);
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAllPickers);
+  } else {
+    initAllPickers();
+  }
+
+  new MutationObserver(initAllPickers).observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+})();
+</script>
+
+
+
   </body>
 </html>
