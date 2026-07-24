@@ -210,7 +210,9 @@
         <script src="{{ 'collection-load-more.js' | asset_url }}" defer="defer"></script>
       {%- endif -%}
       <script src="{{ 'cart-notification.js' | asset_url }}" defer="defer"></script>
-      <script src="{{ 'compare.js' | asset_url }}" defer="defer"></script>
+      {%- if settings.show_compare == true -%}
+  <script src="{{ 'compare.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
       {%- if template.name == 'product' -%}
   <script src="{{ 'product-detail.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
