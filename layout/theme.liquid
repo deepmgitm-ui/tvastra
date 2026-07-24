@@ -687,16 +687,51 @@
 </script>
 {% endunless %}
 <style>
-  .tvastra-size-popup-msg {
-    margin-top: 8px;
-    padding: 8px 11px;
-    border-radius: 6px;
-    background: #111;
-    color: #fff;
+  .tvastra-size-msg {
+    display: none;
+    margin-top: 10px;
+    padding: 10px 12px;
+    border: 1px solid #e8ddd3;
+    border-radius: 8px;
+    background: #fffaf5;
+    color: #4b4038;
     font-size: 12px;
     line-height: 1.35;
-    width: fit-content;
-    max-width: 100%;
+    box-shadow: 0 8px 22px rgba(0,0,0,.07);
+    max-width: 290px;
+  }
+
+  .tvastra-size-msg.is-visible {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .tvastra-size-msg:before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    margin-top: 5px;
+    border-radius: 50%;
+    background: #111;
+    flex: 0 0 auto;
+  }
+
+  .tvastra-size-msg strong {
+    display: block;
+    color: #111;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .tvastra-size-msg span {
+    color: #6c6058;
+  }
+
+  .tvastra-size-placeholder .form-label span {
+    color: #8a817a;
+    font-weight: 400;
   }
 
   .tvastra-size-error .variant-option label,
@@ -708,10 +743,8 @@
 
 <script>
 (function () {
-  if (window.tvastraSizeGuardFinal) return;
-  window.tvastraSizeGuardFinal = true;
-
-  var MESSAGE = 'Please select your size.';
+  if (window.tvastraSizeGuardCleanV2) return;
+  window.tvastraSizeGuardCleanV2 = true;
 
   function closest(el, selector) {
     return el && el.closest ? el.closest(selector) : null;
@@ -723,64 +756,81 @@
   }
 
   function getSizeBox(area) {
-    if (!area) return null;
-
-    var box = area.querySelector('.product-variants .size-filter');
+    var box = area && area.querySelector('.product-variants .size-filter');
     if (!box || box.offsetParent === null) return null;
-    if (!box.querySelector('input, select')) return null;
-
-    return box;
+    return box.querySelector('input, select') ? box : null;
   }
 
-  function markSizeSelected(box) {
-    box.dataset.sizeSelectedByUser = 'true';
-    box.classList.remove('tvastra-size-error');
+  function getMsg(box) {
+    var msg = box.querySelector('.tvastra-size-msg');
+    if (msg) return msg;
 
-    var msg = box.querySelector('.tvastra-size-popup-msg');
-    if (msg) msg.remove();
+    msg = document.createElement('div');
+    msg.className = 'tvasMsg(box) {
+    var msg = box.querySelector('.tvastra-size-msg');
+    if (msg) return msg;
+
+    msg = document.createElement('div');
+    msg.className = 'ttra-size-msg';
+    msg.innerHTML = '<div><strong>Select your size</strong><span>Please choose your fit before checkout.</span></div>';
+    box.appendChild(msg);
+    return msg;
   }
 
   function initSizeBox(box) {
-    if (!box || box.dataset.tvastraSizeInit === 'true') return;
+    if (!box || box.dataset.tvastraReady === 'true') return;
 
-    box.dataset.tvastraSizeInit = 'true';
-    box.dataset.sizeSelectedByUser = 'false';
+    box.dataset.tvastraReady = 'true';
+    box.dataset.sizeChosenByUser = 'false';
+    box.classList.add('tvastra-size-placeholder');
 
-    box.addEventListener('click', function (event) {
-      if (closest(event.target, '.variant-option') || event.target.tagName === 'SELECT') {
-        markSizeSelected(box);
+    var label = box.querySelector('.form-label span');
+    if (label) label.textContent = 'Select your size';
+
+    box.querySelectorAll('input[type="radio"]:checked').forEach(function (input) {
+      input.checked = false;
+      input.removeAttribute('checked');
+    });
+
+    var select = box.querySelector('select');
+    if (select) {
+      if (!select.querySelector('option[value=""]')) {
+        var option = document.createElement('option');
+        option.value = '';
+        option.textContent = 'Select size';
+        option.disabled = true;
+        option.hidden = true;
+        select.insertBefore(option, select.firstChild);
       }
-    });
+      select.value = '';
+    }
 
-    box.addEventListener('change', function () {
-      markSizeSelected(box);
-    });
+    function markSelected(event) {
+      if (event && !closest(event.target, '.variant-option') && event.target.tagName !== 'SELECT') return;
+
+      box.dataset.sizeChosenByUser = 'true';
+      box.classList.remove('tvastra-size-error', 'tvastra-size-placeholder');
+      getMsg(box).classList.remove('is-visible');
+    }
+
+    box.addEventListener('click', markSelected);
+    box.addEventListener('change', markSelected);
   }
 
-  function showSizeMessage(target, event) {
-    var area = getArea(target);
-    var box = getSizeBox(area);
-
+  function showSizeRequired(target, event) {
+    var box = getSizeBox(getArea(target));
     if (!box) return false;
 
     initSizeBox(box);
 
-    if (box.dataset.sizeSelectedByUser === 'true') return false;
+    if (box.dataset.sizeChosenByUser === 'true') return false;
 
     event.preventDefault();
     event.stopPropagation();
     event.stopImmediatePropagation();
 
     box.classList.add('tvastra-size-error');
-
-    var oldMsg = box.querySelector('.tvastra-size-popup-msg');
-    if (oldMsg) oldMsg.remove();
-
-    var msg = document.createElement('div');
-    msg.className = 'tvastra-size-popup-msg';
-    msg.textContent = MESSAGE;
-    box.appendChild(msg);
-
+    getMsg(box).classList.add('is-visible');
     box.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
     return true;
@@ -791,24 +841,18 @@
   }
 
   document.addEventListener('click', function (event) {
-    var btn = closest(event.target, '[name="add"], .shopify-payment-button__button, .shopify-payment-button, custom-btn, [data-testid="Checkout-button"]');
-    if (!btn) return;
-
-    showSizeMessage(btn, event);
+    var btn = closest(event.target, '[name="add"], .shopify-payment-button, .shopify-payment-button__button, custom-btn, [data-testid="Checkout-button"]');
+    if (btn) showSizeRequired(btn, event);
   }, true);
 
   document.addEventListener('submit', function (event) {
     var form = closest(event.target, 'form[data-type="add-to-cart-form"], form[action*="/cart/add"]');
-    if (!form) return;
-
-    showSizeMessage(form, event);
+    if (form) showSizeRequired(form, event);
   }, true);
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initAll);
-  } else {
-    initAll();
-  }
+  window.addEventListener('load', function () {
+    setTimeout(initAll, 300);
+  });
 })();
 </script>
   </body>
