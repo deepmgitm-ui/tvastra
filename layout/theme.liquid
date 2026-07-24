@@ -864,6 +864,77 @@
 })();
 </script>
 
+<style>
+  .main-product-page .product-form-buttons .action-btn {
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+
+  .main-product-page .quantity-btn {
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+  }
+
+  .main-product-page quantity-input.quantity {
+    width: 66px !important;
+    height: 41px !important;
+    min-height: 41px !important;
+    display: grid !important;
+    grid-template-columns: 22px 22px 22px !important;
+    align-items: center !important;
+    overflow: hidden !important;
+    border: 1px solid #d8d1ca !important;
+    border-radius: 7px !important;
+    background: #fff !important;
+  }
+
+  .main-product-page quantity-input.quantity .quantity-button,
+  .main-product-page quantity-input.quantity .quantity-input {
+    position: static !important;
+    width: 22px !important;
+    height: 41px !important;
+    min-height: 41px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    line-height: 41px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    transform: none !important;
+  }
+
+  .main-product-page quantity-input.quantity .quantity-input {
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    color: #111 !important;
+  }
+
+  .main-product-page .cart-btn,
+  .main-product-page .product-buy-now-inline,
+  .main-product-page .shopify-payment-button,
+  .main-product-page .shopify-payment-button__button {
+    height: 41px !important;
+    min-height: 41px !important;
+  }
+
+  .main-product-page .cart-btn {
+    flex: 1 1 auto !important;
+  }
+
+  @media (max-width: 767px) {
+    .main-product-page .product-form-buttons .action-btn {
+      flex-wrap: nowrap !important;
+    }
+
+    .main-product-page .quantity-btn > label {
+      display: none !important;
+    }
+  }
+</style>
 
   </body>
 </html>
