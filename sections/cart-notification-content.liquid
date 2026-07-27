@@ -145,6 +145,7 @@
       {%- endif -%}
       <div class="cart-notification-buttons-wrapper">
         <form action="{{ routes.cart_url }}" method="post" id="form-minicart">
+          <input type="hidden" name="discount" value="TVFIT10">
           <button
             class="btn btn-medium btn-black w-100"
             name="checkout"
