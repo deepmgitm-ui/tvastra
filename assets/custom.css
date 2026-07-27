@@ -10,6 +10,105 @@
   --tv-review-line: #d7ddde;
   --tv-review-accent: #006f6a;
 }
+/*************************************************************
+** Tvastra cart offer styling
+*************************************************************/
+
+.tvastra-cart-offer {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 12px !important;
+  align-items: center !important;
+  margin-bottom: 14px !important;
+  padding: 12px !important;
+  border: 1px solid #e7dacd !important;
+  border-radius: 14px !important;
+  background: linear-gradient(135deg, #fffaf4 0%, #f6efe7 100%) !important;
+}
+
+.tvastra-cart-offer__copy span {
+  display: block !important;
+  margin-bottom: 3px !important;
+  color: #8a6c4b !important;
+  font-size: 9.5px !important;
+  line-height: 1 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
+.tvastra-cart-offer__copy strong {
+  display: block !important;
+  color: #171311 !important;
+  font-size: 13px !important;
+  line-height: 1.2 !important;
+  font-weight: 700 !important;
+}
+
+.tvastra-cart-offer__copy small {
+  display: block !important;
+  margin-top: 3px !important;
+  color: #6f6257 !important;
+  font-size: 10.5px !important;
+  line-height: 1.25 !important;
+}
+
+.tvastra-cart-offer__actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.tvastra-cart-offer__code,
+.tvastra-cart-offer__apply {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 32px !important;
+  border-radius: 999px !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+  font-weight: 800 !important;
+  white-space: nowrap !important;
+}
+
+.tvastra-cart-offer__code {
+  padding: 0 11px !important;
+  border: 1px dashed #171311 !important;
+  background: #fff !important;
+  color: #171311 !important;
+  letter-spacing: 0.04em !important;
+  cursor: pointer !important;
+}
+
+.tvastra-cart-offer__code.is-copied {
+  border-style: solid !important;
+  background: #171311 !important;
+  color: #fff !important;
+}
+
+.tvastra-cart-offer__apply {
+  padding: 0 12px !important;
+  border: 1px solid #171311 !important;
+  background: #171311 !important;
+  color: #fff !important;
+  text-decoration: none !important;
+}
+
+@media (max-width: 767px) {
+  .tvastra-cart-offer {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .tvastra-cart-offer__actions {
+    justify-content: space-between !important;
+  }
+
+  .tvastra-cart-offer__code,
+  .tvastra-cart-offer__apply {
+    flex: 1 1 0 !important;
+  }
 
 .jdgm-rev-widg,
 .jdgm-all-reviews-widget,
