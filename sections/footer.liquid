@@ -38,11 +38,6 @@
                       {%- if block.settings.content_text != blank -%}
                         <div class="logo-content" style="text-align: left !important; margin-left: 0 !important; padding-left: 0 !important;">{{ block.settings.content_text }}</div>
                       {%- endif -%}
-                      {%- if block.settings.phone != blank -%}
-                        <div class="hongo-phone-info" style="text-align: left !important;">
-                          <label>{{ 'sections.footer.phone' | t }}</label> <a href="mailto:{{ block.settings.phone }}" aria-label="phone">{{ block.settings.phone }}</a>
-                        </div>
-                      {%- endif -%}
                       {%- if block.settings.email != blank -%}
                         <div class="footer-email-info" style="text-align: left !important;">
                           <label>{{ 'sections.footer.email' | t }}</label> <a href="mailto:{{ block.settings.email }}" aria-label="mailto">{{ block.settings.email }}</a>
@@ -57,11 +52,21 @@
                   {%- when 'menu' -%}
                     <div class="col-md-6 col-lg-{{ column-width }} footer-block mobile-wrapper">
                       {{ blocktitle }}
-                      <ul class="footer-menu-link">
-                        {%- for link in linklists[block.settings.selected_menu].links -%}
-                          <li class="menu-item"><a class="navigation-links" href="{{ link.url }}" target="_self" aria-label="menu">{{ link.title }}</a></li>
-                        {%- endfor -%}
-                      </ul>
+                        <ul class="footer-menu-link">
+                          {%- if block.settings.selected_menu == 'footer-collection' -%}
+                            {%- assign footer_collection_handles = 'the-flux-edit,the-flow-edits,womens-the-basic-edit-copy' | split: ',' -%}
+                            {%- for collection_handle in footer_collection_handles -%}
+                              {%- assign footer_collection = collections[collection_handle] -%}
+                              {%- if footer_collection != blank -%}
+                                <li class="menu-item"><a class="navigation-links" href="{{ footer_collection.url }}" aria-label="{{ footer_collection.title | escape }}">{{ footer_collection.title }}</a></li>
+                              {%- endif -%}
+                            {%- endfor -%}
+                          {%- else -%}
+                            {%- for link in linklists[block.settings.selected_menu].links -%}
+                              <li class="menu-item"><a class="navigation-links" href="{{ link.url }}" target="_self" aria-label="menu">{{ link.title }}</a></li>
+                            {%- endfor -%}
+                          {%- endif -%}
+                        </ul>
                     </div>
                   {%- when 'instagram' -%}
                     <div class="col-md-6 col-lg-{{ column-width }} footer-block instagram">
@@ -174,11 +179,6 @@
                         {%- if block.settings.fax != blank -%}
                           <div class="hongo-fax-info">
                             <a href="fax:{{ block.settings.fax }}" aria-label="fax">{{ block.settings.fax }}</a>
-                          </div>
-                        {%- endif -%}
-                        {%- if block.settings.phone != blank -%}
-                          <div class="hongo-phone-info">
-                            <a href="tel:{{ block.settings.phone }}" aria-label="tel">{{ block.settings.phone }}</a>
                           </div>
                         {%- endif -%}
                         {%- if block.settings.email != blank -%}

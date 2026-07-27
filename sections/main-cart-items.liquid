@@ -201,6 +201,7 @@
                 </div>
               </form>
           </cart-items>
+          {%- render 'cart-selected-products', context: 'main-cart' -%}
           {%- if section.settings.show_cart_note -%}
             <cart-note class="cart__note field">
               <label for="Cart-note" class="alt-font">{{ 'sections.cart.note' | t }}</label>
@@ -217,15 +218,25 @@
               {%- endif -%}
               <div class="page-width{% if cart == empty %} is-empty{% endif %}" id="main-cart-footer" data-id="{{ section.id }}">
                   <div class="cart-footer">
+                    {%- assign tvfit_applied = false -%}
+                    {%- for discount in cart.cart_level_discount_applications -%}
+                      {%- if discount.title contains 'TVFIT10' -%}
+                        {%- assign tvfit_applied = true -%}
+                      {%- endif -%}
+                    {%- endfor -%}
                     <div class="tvastra-cart-offer" data-tvastra-promo>
                       <div class="tvastra-cart-offer__copy">
                         <span class="tvastra-cart-offer__eyebrow">Welcome offer</span>
                         <strong>Extra 10% off available</strong>
-                        <small>Use code at cart or checkout.</small>
+                        <small>{% if tvfit_applied %}TVFIT10 applied to this cart.{% else %}Apply here and it will carry into Razorpay checkout.{% endif %}</small>
                       </div>
                       <div class="tvastra-cart-offer__actions">
                         <button type="button" class="tvastra-cart-offer__code" data-tvastra-copy-code="TVFIT10" aria-label="Copy discount code TVFIT10">TVFIT10</button>
-                        <a class="tvastra-cart-offer__apply" data-tvastra-apply-code href="{{ routes.root_url }}discount/TVFIT10?redirect=/cart">Apply</a>
+                        {%- if tvfit_applied -%}
+                          <span class="tvastra-cart-offer__state">Applied</span>
+                        {%- else -%}
+                          <a class="tvastra-cart-offer__apply" data-tvastra-apply-code href="{{ routes.root_url }}discount/TVFIT10?redirect=/cart">Apply</a>
+                        {%- endif -%}
                       </div>
                     </div>
                     {%- if cart.cart_level_discount_applications.size > 0 -%}

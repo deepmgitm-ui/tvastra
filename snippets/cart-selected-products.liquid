@@ -1,0 +1,73 @@
+{%- liquid
+  assign recommendation_markup = ''
+  assign selected_ids = '|'
+  assign selected_count = 0
+
+  for cart_item in cart.items
+    assign selected_products = cart_item.product.metafields.custom.crosssell_products.value
+    for recommendation in selected_products
+      if selected_count >= 6
+        break
+      endif
+
+      assign recommendation_marker = '|' | append: recommendation.id | append: '|'
+      assign already_in_cart = false
+      assign already_selected = false
+      if selected_ids contains recommendation_marker
+        assign already_selected = true
+      endif
+      for existing_item in cart.items
+        if existing_item.product_id == recommendation.id
+          assign already_in_cart = true
+          break
+        endif
+      endfor
+
+      if recommendation.available and already_in_cart == false and already_selected == false
+        capture recommendation_card
+          <a class="tvastra-cart-rec-card" href="{{ recommendation.url }}">
+            <div class="tvastra-cart-rec-card__image">
+              {%- if recommendation.featured_image -%}
+                <img
+                  src="{{ recommendation.featured_image | image_url: width: 220 }}"
+                  alt="{{ recommendation.featured_image.alt | default: recommendation.title | escape }}"
+                  width="110"
+                  height="132"
+                  loading="lazy"
+                >
+              {%- endif -%}
+            </div>
+            <div class="tvastra-cart-rec-card__body">
+              <strong class="tvastra-cart-rec-card__title">{{ recommendation.title | escape }}</strong>
+              <span class="tvastra-cart-rec-card__price">
+                {{ recommendation.price | money }}
+                {%- if recommendation.compare_at_price > recommendation.price -%}
+                  <s>{{ recommendation.compare_at_price | money }}</s>
+                {%- endif -%}
+              </span>
+              <span class="tvastra-cart-rec-card__cta">Select size</span>
+            </div>
+          </a>
+        endcapture
+        assign recommendation_markup = recommendation_markup | append: recommendation_card
+        assign selected_ids = selected_ids | append: recommendation.id | append: '|'
+        assign selected_count = selected_count | plus: 1
+      endif
+    endfor
+    if selected_count >= 6
+      break
+    endif
+  endfor
+-%}
+
+{%- if recommendation_markup != blank -%}
+  <section class="tvastra-cart-recommendations{% if context == 'main-cart' %} tvastra-cart-recommendations--main{% endif %}" data-tvastra-crosssell>
+    <div class="tvastra-cart-recommendations__heading">
+      <span>Complete your fit</span>
+      <small>Selected for your cart</small>
+    </div>
+    <div class="tvastra-cart-recommendations__track">
+      {{ recommendation_markup }}
+    </div>
+  </section>
+{%- endif -%}
