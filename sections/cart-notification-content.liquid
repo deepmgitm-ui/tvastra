@@ -97,6 +97,17 @@
     </div>
   </div>
   <div class="mini-cart-bottom" data-cart-bottom>
+      <div class="tvastra-cart-offer" data-tvastra-cart-offer>
+        <div class="tvastra-cart-offer__copy">
+          <span>Welcome offer</span>
+          <strong>Extra 10% off available</strong>
+          <small>Use this code at checkout.</small>
+        </div>
+        <div class="tvastra-cart-offer__actions">
+          <button type="button" class="tvastra-cart-offer__code" data-tvastra-copy-code="TVFIT10" aria-label="Copy discount code TVFIT10">TVFIT10</button>
+          <a class="tvastra-cart-offer__apply" href="{{ routes.root_url }}discount/TVFIT10?redirect=/checkout" aria-label="Apply TVFIT10 discount">Apply</a>
+        </div>
+      </div>
       {%- render 'cart-notification-addon' -%}
       <div class="cart-notification-totals-wrapper alt-font">        
         {%- if cart.cart_level_discount_applications.size > 0 -%}
