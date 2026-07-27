@@ -373,33 +373,53 @@ customElements.define('cart-notification', CartNotification);
 
   document.addEventListener('click', function (event) {
     const button = event.target.closest('[data-tvastra-copy-code]');
-    if (!button) return;
+    const applyButton = event.target.closest('[data-tvastra-apply-code]');
+    if (!button && !applyButton) return;
 
     event.preventDefault();
 
-    const code = button.getAttribute('data-tvastra-copy-code') || button.textContent.trim();
-    const previousText = button.textContent;
+    if (button) {
+      const code = button.dataset.code || button.getAttribute('data-tvastra-copy-code') || button.textContent.trim();
+      const previousText = button.textContent;
 
+      const copyPromise = navigator.clipboard && navigator.clipboard.writeText
+        ? navigator.clipboard.writeText(code)
+        : fallbackCopy(code);
+
+      copyPromise.then(function () {
+        button.textContent = 'Copied';
+        button.classList.add('is-copied');
+
+        window.setTimeout(function () {
+          button.textContent = previousText;
+          button.classList.remove('is-copied');
+        }, 1600);
+      }).catch(function () {
+        fallbackCopy(code).then(function () {
+          button.textContent = 'Copied';
+
+          window.setTimeout(function () {
+            button.textContent = previousText;
+          }, 1600);
+        });
+      });
+      return;
+    }
+
+    if (applyButton.dataset.applying === 'true') return;
+    applyButton.dataset.applying = 'true';
+    applyButton.textContent = 'Applying...';
+    const promo = applyButton.closest('[data-tvastra-promo]');
+    const codeButton = promo && promo.querySelector('[data-tvastra-copy-code]');
+    const code = (codeButton && (codeButton.dataset.code || codeButton.textContent.trim())) || 'TVFIT10';
     const copyPromise = navigator.clipboard && navigator.clipboard.writeText
       ? navigator.clipboard.writeText(code)
       : fallbackCopy(code);
 
-    copyPromise.then(function () {
-      button.textContent = 'Copied';
-      button.classList.add('is-copied');
-
-      window.setTimeout(function () {
-        button.textContent = previousText;
-        button.classList.remove('is-copied');
-      }, 1600);
-    }).catch(function () {
-      fallbackCopy(code).then(function () {
-        button.textContent = 'Copied';
-
-        window.setTimeout(function () {
-          button.textContent = previousText;
-        }, 1600);
-      });
+    copyPromise.catch(function () {
+      return fallbackCopy(code);
+    }).then(function () {
+      window.location.assign(applyButton.href || '/discount/TVFIT10?redirect=/cart');
     });
   });
 })();

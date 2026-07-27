@@ -2840,6 +2840,224 @@ html body [class*="spur" i] form label {
   }
 }
 
+/* Premium cart drawer and cart page additions. */
+.tvastra-cart-offer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 12px;
+  padding: 12px 13px;
+  border: 1px solid #e8ded2;
+  border-radius: 8px;
+  background: #f7f1ea;
+  color: #1f2624;
+}
+
+.tvastra-cart-offer__copy {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.tvastra-cart-offer__eyebrow {
+  color: #786b5d;
+  font-size: 10px;
+  letter-spacing: .08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.tvastra-cart-offer__copy strong {
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.tvastra-cart-offer__copy small {
+  color: #6d716e;
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.tvastra-cart-offer__actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+}
+
+.tvastra-cart-offer__code,
+.tvastra-cart-offer__apply {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.tvastra-cart-offer__code {
+  border: 1px dashed #bba98f;
+  background: #fffaf4;
+  color: #3b3025;
+}
+
+.tvastra-cart-offer__apply {
+  border: 1px solid #1f2927;
+  background: #1f2927;
+  color: #fff;
+}
+
+.tvastra-cart-offer__apply[data-applying='true'] {
+  opacity: .7;
+  pointer-events: none;
+}
+
+.tvastra-cart-recommendations {
+  padding: 12px 0 2px;
+}
+
+.tvastra-cart-recommendations__heading {
+  margin-bottom: 9px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .04em;
+}
+
+.tvastra-cart-recommendations__track {
+  display: flex;
+  gap: 9px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+
+.tvastra-cart-recommendations__track::-webkit-scrollbar {
+  display: none;
+}
+
+.tvastra-cart-rec-card {
+  display: flex;
+  flex: 0 0 132px;
+  flex-direction: column;
+  gap: 7px;
+  padding: 7px;
+  border: 1px solid #e8e8e5;
+  border-radius: 7px;
+  background: #fff;
+  color: inherit;
+  text-decoration: none;
+  scroll-snap-align: start;
+}
+
+.tvastra-cart-rec-card__image {
+  aspect-ratio: .82;
+  overflow: hidden;
+  border-radius: 5px;
+  background: #f4f4f1;
+}
+
+.tvastra-cart-rec-card__image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tvastra-cart-rec-card__body {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+}
+
+.tvastra-cart-rec-card__title {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 11px;
+  line-height: 1.25;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.tvastra-cart-rec-card__price {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.tvastra-cart-rec-card__price s {
+  color: #8b8e8a;
+  font-weight: 400;
+}
+
+.tvastra-cart-rec-card__cta {
+  color: #263b37;
+  font-size: 10px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+#main-cart-items {
+  color: #1f2624;
+}
+
+#main-cart-items .cart-footer {
+  display: grid;
+  gap: 10px;
+}
+
+#main-cart-items .checkout-sidebar {
+  border: 1px solid #e8e8e5;
+  border-radius: 8px;
+  padding: 16px;
+  background: #fff;
+}
+
+#main-cart-items .cart-subtotal {
+  border-top: 1px solid #ecece8;
+  padding-top: 10px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+#main-cart-items .cart__ctas .btn {
+  min-height: 44px;
+  border-radius: 5px;
+}
+
+@media (max-width: 767px) {
+  .tvastra-cart-offer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .tvastra-cart-offer__actions {
+    width: 100%;
+  }
+
+  .tvastra-cart-offer__code,
+  .tvastra-cart-offer__apply {
+    flex: 1 1 0;
+  }
+
+  #main-cart-items .checkout-sidebar {
+    border-radius: 6px;
+    padding: 12px;
+  }
+}
+
 /*************************************************************
 ** Tvastra Refined Premium Cart Drawer
 *************************************************************/

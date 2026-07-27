@@ -217,6 +217,17 @@
               {%- endif -%}
               <div class="page-width{% if cart == empty %} is-empty{% endif %}" id="main-cart-footer" data-id="{{ section.id }}">
                   <div class="cart-footer">
+                    <div class="tvastra-cart-offer" data-tvastra-promo>
+                      <div class="tvastra-cart-offer__copy">
+                        <span class="tvastra-cart-offer__eyebrow">Welcome offer</span>
+                        <strong>Extra 10% off available</strong>
+                        <small>Use code at cart or checkout.</small>
+                      </div>
+                      <div class="tvastra-cart-offer__actions">
+                        <button type="button" class="tvastra-cart-offer__code" data-tvastra-copy-code="TVFIT10" aria-label="Copy discount code TVFIT10">TVFIT10</button>
+                        <a class="tvastra-cart-offer__apply" data-tvastra-apply-code href="{{ routes.root_url }}discount/TVFIT10?redirect=/cart">Apply</a>
+                      </div>
+                    </div>
                     {%- if cart.cart_level_discount_applications.size > 0 -%}
                       {%- for discount in cart.cart_level_discount_applications -%}
                         <div class="discounts d-flex align-items-center alt-font">
@@ -226,17 +237,6 @@
                         </div>
                       {%- endfor -%}
                     {%- endif -%}
-                    <div class="tvastra-cart-offer tvastra-cart-offer--page" data-tvastra-cart-offer>
-                      <div class="tvastra-cart-offer__copy">
-                        <span>Welcome offer</span>
-                        <strong>Extra 10% off available</strong>
-                        <small>Use this code at checkout.</small>
-                      </div>
-                      <div class="tvastra-cart-offer__actions">
-                        <button type="button" class="tvastra-cart-offer__code" data-tvastra-copy-code="TVFIT10" aria-label="Copy discount code TVFIT10">TVFIT10</button>
-                        <a class="tvastra-cart-offer__apply" href="{{ routes.root_url }}discount/TVFIT10?redirect=/checkout" aria-label="Apply TVFIT10 discount">Apply</a>
-                      </div>
-                    </div>
                     <div class="cart-subtotal alt-font">
                       <label class="mb-0">{{ 'sections.cart.subtotal' | t }}:</label>
                       <span class="float-end"> {{ cart.total_price | money }}</span>
