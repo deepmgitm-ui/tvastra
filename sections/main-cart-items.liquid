@@ -24,6 +24,7 @@
             </div>
             {%- unless cart == empty -%}
               <form action="{{ routes.cart_url }}" class="cart__contents critical-hidden" method="post" id="cart">
+                <input type="hidden" name="discount" value="TVFIT10">
                 <div class="cart__items">
                   {%- if cart != empty -%}
                     <table class="cart-items w-100">
@@ -225,6 +226,17 @@
                         </div>
                       {%- endfor -%}
                     {%- endif -%}
+                    <div class="tvastra-cart-offer tvastra-cart-offer--page" data-tvastra-cart-offer>
+                      <div class="tvastra-cart-offer__copy">
+                        <span>Welcome offer</span>
+                        <strong>Extra 10% off available</strong>
+                        <small>Use this code at checkout.</small>
+                      </div>
+                      <div class="tvastra-cart-offer__actions">
+                        <button type="button" class="tvastra-cart-offer__code" data-tvastra-copy-code="TVFIT10" aria-label="Copy discount code TVFIT10">TVFIT10</button>
+                        <a class="tvastra-cart-offer__apply" href="{{ routes.root_url }}discount/TVFIT10?redirect=/checkout" aria-label="Apply TVFIT10 discount">Apply</a>
+                      </div>
+                    </div>
                     <div class="cart-subtotal alt-font">
                       <label class="mb-0">{{ 'sections.cart.subtotal' | t }}:</label>
                       <span class="float-end"> {{ cart.total_price | money }}</span>
