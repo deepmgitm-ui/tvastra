@@ -348,3 +348,58 @@ class CartNotification extends HTMLElement {
     }
 }
 customElements.define('cart-notification', CartNotification);
+(function () {
+  if (window.tvastraCartOfferCopyReady) return;
+  window.tvastraCartOfferCopyReady = true;
+
+  function fallbackCopy(text) {
+    const input = document.createElement('textarea');
+    input.value = text;
+    input.setAttribute('readonly', '');
+    input.style.position = 'fixed';
+    input.style.opacity = '0';
+    document.body.appendChild(input);
+    input.select();
+
+    try {
+      document.execCommand('copy');
+    } catch (error) {
+      console.error(error);
+    }
+
+    input.remove();
+    return Promise.resolve();
+  }
+
+  document.addEventListener('click', function (event) {
+    const button = event.target.closest('[data-tvastra-copy-code]');
+    if (!button) return;
+
+    event.preventDefault();
+
+    const code = button.getAttribute('data-tvastra-copy-code') || button.textContent.trim();
+    const previousText = button.textContent;
+
+    const copyPromise = navigator.clipboard && navigator.clipboard.writeText
+      ? navigator.clipboard.writeText(code)
+      : fallbackCopy(code);
+
+    copyPromise.then(function () {
+      button.textContent = 'Copied';
+      button.classList.add('is-copied');
+
+      window.setTimeout(function () {
+        button.textContent = previousText;
+        button.classList.remove('is-copied');
+      }, 1600);
+    }).catch(function () {
+      fallbackCopy(code).then(function () {
+        button.textContent = 'Copied';
+
+        window.setTimeout(function () {
+          button.textContent = previousText;
+        }, 1600);
+      });
+    });
+  });
+})();
