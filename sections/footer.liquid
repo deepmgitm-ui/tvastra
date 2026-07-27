@@ -54,7 +54,7 @@
                       {{ blocktitle }}
                         <ul class="footer-menu-link">
                           {%- if block.settings.selected_menu == 'footer-collection' -%}
-                            {%- assign footer_collection_handles = 'the-flux-edit,the-flow-edits,womens-the-basic-edit-copy' | split: ',' -%}
+                            {%- assign footer_collection_handles = 'the-flux-edit,womens-the-flow-edit,womens-the-basic-edit' | split: ',' -%}
                             {%- for collection_handle in footer_collection_handles -%}
                               {%- assign footer_collection = collections[collection_handle] -%}
                               {%- if footer_collection != blank -%}
