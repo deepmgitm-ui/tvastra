@@ -36,54 +36,60 @@
         </div>
       {%- endfor -%}
     {%- else -%}
-      {%- liquid      
-        assign crosssell_item = ''
-        assign item_limit = 10
-        assign item_count = 1 
-      -%}
-      {%- for item in cart.items -%}
-        {%- assign products = item.product.metafields.custom.crosssell_products.value -%}
-        {%- for product in products -%}
-          {%- unless crosssell_item contains product.id -%}
-            <div class="swiper-slide product-box {{ product.id }} ">          
-              {%- render 'product-card-comman',
-                product_card_product: product,
-                product_card_style: 'shop-standard',
-                image_width: '230',
-                include_srcset: false,
-                show_secondary_image: false,
-                show_add_to_cart: false,
-                show_wishlist: false,
-                show_compare: false,
-                show_quickview: false,
-                show_deal_product: false,
-                display_label: false,
-                disable_hover: true,
-                sale_label_type: settings.sale_label_type,
-                sale_label_text: settings.sale_label_text,
-                sold_out_label_text: settings.sold_out_label_text
-              -%}
-              {%- assign crosssell_item = crosssell_item | append: product.id | append: ',' -%}
+      {%- liquid
+  assign crosssell_item = ','
+  assign item_limit = 6
+  assign item_count = 0
+  for item in cart.items
+    assign cart_item_token = ',' | append: item.product_id | append: ','
+    assign crosssell_item = crosssell_item | append: cart_item_token
+  endfor
+-%}
+{%- for item in cart.items -%}
+  {%- assign products = item.product.metafields.custom.crosssell_products.value -%}
+  {%- for product in products -%}
+    {%- assign product_token = ',' | append: product.id | append: ',' -%}
+    {%- unless crosssell_item contains product_token -%}
+      <div class="swiper-slide product-box {{ product.id }}">
+        <article class="tvastra-cart-rec-card">
+          <a class="tvastra-cart-rec-card__image" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+            {%- if product.featured_image -%}
+              <img src="{{ product.featured_image | image_url: width: 180 }}" alt="{{ product.featured_image.alt | default: product.title | escape }}" loading="lazy" width="90" height="112">
+            {%- endif -%}
+          </a>
+          <div class="tvastra-cart-rec-card__info">
+            <a class="tvastra-cart-rec-card__title" href="{{ product.url }}">{{ product.title | escape }}</a>
+            <div class="tvastra-cart-rec-card__price">
+              {%- if product.compare_at_price > product.price -%}
+                <span>{{ product.price | money }}</span>
+                <s>{{ product.compare_at_price | money }}</s>
+              {%- else -%}
+                <span>{{ product.price | money }}</span>
+              {%- endif -%}
             </div>
-            {%- liquid
-              assign item_count = item_count | plus: 1
-              if item_count > item_limit
-                break
-              endif
-            -%}
-          {%- endunless -%}          
-        {%- endfor -%}
-         {%- if item_count > item_limit -%}
-            {% break %}
-          {%- endif -%}
-      {%- endfor -%}
-    {%- endif -%}
+            <a class="tvastra-cart-rec-card__cta" href="{{ product.url }}">Select size</a>
+          </div>
+        </article>
+        {%- assign crosssell_item = crosssell_item | append: product_token -%}
+      </div>
+      {%- liquid
+        assign item_count = item_count | plus: 1
+        if item_count >= item_limit
+          break
+        endif
+      -%}
+    {%- endunless -%}
+  {%- endfor -%}
+  {%- if item_count >= item_limit -%}
+    {% break %}
+  {%- endif -%}
+{%- endfor -%}
   {%- endcapture -%}
   {%- assign yaml_slide_html = yaml_slide_html | strip -%}
   {%- if yaml_slide_html != '' -%}
     <div class="cart-notification-ymal-wrapper">
       <div class="ymal-title alt-font d-flex align-items-center">
-        <span>{{ 'sections.cart_crosssell_products.title' | t }}</span>
+        <span>Complete your fit</span>
         <div class="cart-notification-navigation d-flex ms-auto flex-shrink-0">
           <div class="swiper-button-prev {{ navigation }}">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/></svg>
