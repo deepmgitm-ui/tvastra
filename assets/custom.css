@@ -10,6 +10,76 @@
   --tv-review-line: #d7ddde;
   --tv-review-accent: #006f6a;
 }
+
+/* Detailed cart totals: compact hierarchy for both the drawer and cart page. */
+.tvastra-cart-price-summary__heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid #eee8e1;
+  color: #1b211f;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .01em;
+}
+
+.tvastra-cart-price-summary__heading small {
+  color: #827a72;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.tvastra-cart-price-summary__row--soft,
+.tvastra-cart-price-summary__row--soft strong {
+  color: #817970 !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+}
+
+.tvastra-cart-price-summary__row--muted,
+.tvastra-cart-price-summary__row--muted strong {
+  color: #948c83 !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+}
+
+#cart-notification .tvastra-cart-price-summary {
+  gap: 7px;
+  padding: 2px 0 0;
+}
+
+#cart-notification .tvastra-cart-price-summary__row--total {
+  margin-top: 3px;
+  padding-top: 10px;
+}
+
+#cart-notification .tvastra-cart-price-summary__note {
+  display: block;
+  margin-top: 1px;
+}
+
+#main-cart-items .tvastra-cart-price-summary {
+  gap: 10px;
+  padding: 14px 0 0;
+  border-top: 1px solid #eee8e1;
+}
+
+#main-cart-items .tvastra-cart-price-summary__row--total {
+  margin-top: 5px;
+  padding-top: 14px;
+}
+
+@media (max-width: 767px) {
+  #main-cart-items .tvastra-cart-price-summary {
+    gap: 8px;
+  }
+
+  #main-cart-items .tvastra-cart-price-summary__row {
+    font-size: 12px;
+  }
+}
 /*************************************************************
 ** Tvastra cart offer styling
 *************************************************************/
