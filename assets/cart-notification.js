@@ -371,6 +371,21 @@ customElements.define('cart-notification', CartNotification);
     return Promise.resolve();
   }
 
+  function normalizePromoRemoveControls(root) {
+    (root || document).querySelectorAll('[data-tvastra-promo]').forEach(function (promo) {
+      const appliedState = promo.querySelector('.tvastra-cart-offer__state');
+      if (!appliedState || promo.querySelector('[data-tvastra-remove-code]')) return;
+
+      const removeButton = document.createElement('button');
+      removeButton.type = 'button';
+      removeButton.className = 'tvastra-cart-offer__remove';
+      removeButton.dataset.tvastraRemoveCode = 'TVFIT10';
+      removeButton.setAttribute('aria-label', 'Remove discount code TVFIT10');
+      removeButton.textContent = 'Remove';
+      appliedState.replaceWith(removeButton);
+    });
+  }
+
   function refreshCartAfterDiscountChange() {
     const root = window.Shopify.routes.root;
 
@@ -394,6 +409,7 @@ customElements.define('cart-notification', CartNotification);
       }
 
       cartNotification.updateContent(sections);
+      normalizePromoRemoveControls(document);
       if (typeof window.initFreeshippingGoal === 'function') window.initFreeshippingGoal(cart);
       if (typeof window.cartCount === 'function') window.cartCount(cart);
       if (typeof window.renderCrosssellProducts === 'function') window.renderCrosssellProducts(sections, true);
@@ -419,6 +435,7 @@ customElements.define('cart-notification', CartNotification);
       if (currentElement && updatedElement) currentElement.innerHTML = updatedElement.innerHTML;
     });
 
+    normalizePromoRemoveControls(mainCart);
     if (typeof window.initFreeshippingGoal === 'function') window.initFreeshippingGoal(state);
     if (typeof window.cartCount === 'function') window.cartCount(state);
     if (typeof window.renderCrosssellProducts === 'function') window.renderCrosssellProducts(state.sections, true);
@@ -543,4 +560,6 @@ customElements.define('cart-notification', CartNotification);
       }, 1800);
     });
   });
+
+  normalizePromoRemoveControls(document);
 })();

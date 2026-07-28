@@ -2,7 +2,7 @@
 {%- assign show_shipping_calculater = section.settings.show_shipping_calculater -%}
 {%- assign giftwrap_product = all_products[settings.giftwrap_product] -%}
 {%- assign giftwrap_product_id = giftwrap_product.selected_or_first_available_variant.id -%}
-<section class="small-section-bottom main-cart" id="main-cart-items" data-id="{{ section.id }}">
+<section class="small-section-bottom main-cart" id="main-cart-items" data-id="{{ section.id }}" data-tvastra-cart-view="main">
   <div class="js-contents">
     <div class="container">
       {%- unless cart == empty -%}
