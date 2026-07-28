@@ -21,15 +21,16 @@
   <div class="mini-cart-wrapper d-flex flex-column h-100" data-mini-cart-wrapper>
     <ul class="cart-notification-products">
       {%- for item in cart.items -%}
+        {%- assign cart_item_image = item.image | default: item.product.featured_image -%}
         <li
           id="cart-notification-product-{{ item.id }}"
           class="cart-notification-product"
           data-product="{{ item.product_id }}"
           data-itemid="{{ item.id }}"
         >
-          {%- if item.image -%}
+          {%- if cart_item_image != blank -%}
             <a class="product-image" href="{{ item.url }}" aria-label="link">
-              <img src="{{ item.image | image_url: width: 140 }}" alt="{{ item.image.alt | escape }}" loading="lazy" width="auto" height="auto">
+              <img src="{{ cart_item_image | image_url: width: 240 }}" alt="{{ cart_item_image.alt | default: item.product.title | escape }}" loading="lazy" width="240" height="300">
             </a>
           {%- endif -%}
           <div class="cart-product-info">

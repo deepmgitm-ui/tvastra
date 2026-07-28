@@ -46,6 +46,7 @@
                       </thead>
                       <tbody>
                         {%- for item in cart.items -%}
+                          {%- assign cart_item_image = item.image | default: item.product.featured_image -%}
                           <tr class="cart-item" id="CartItem-{{ item.index | plus: 1 }}" data-product="{{ item.product.id }}">
                             <td class="product-remove">
                               <cart-remove-button id="Remove-{{ item.index | plus: 1 }}" data-item-id="{{ item.id }}" data-index="{{ item.index | plus: 1 }}" data-variant-id="{{ item.key }}">
@@ -54,8 +55,8 @@
                               </cart-remove-button>
                             </td>
                             <td class="product-thumbnail">
-                              {%- if item.image -%}
-                                <img src="{{ item.image | image_url: width: 150 }}" alt="{{ item.image.alt | escape }}" width="auto" height="auto" loading="lazy">
+                              {%- if cart_item_image != blank -%}
+                                <img src="{{ cart_item_image | image_url: width: 240 }}" alt="{{ cart_item_image.alt | default: item.product.title | escape }}" width="240" height="300" loading="lazy">
                               {%- endif -%}
                             </td>
                             <td class="cart-item-details">
