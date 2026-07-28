@@ -314,6 +314,7 @@
                         <span class="tvastra-cart-offer__eyebrow">Welcome offer</span>
                         <strong>Extra 10% off available</strong>
                         <small>{% if tvfit_applied %}TVFIT10 applied. Your cart total is updated.{% else %}Apply here and see the real saving in your cart.{% endif %}</small>
+                        <small class="tvastra-cart-offer__prepaid">+5% extra off on prepaid orders.</small>
                       </div>
                       <div class="tvastra-cart-offer__actions">
                         <button type="button" class="tvastra-cart-offer__code" data-tvastra-copy-code="TVFIT10" aria-label="Copy discount code TVFIT10">TVFIT10</button>
@@ -324,18 +325,22 @@
                         {%- endif -%}
                       </div>
                     </div>
-                    {%- if cart.cart_level_discount_applications.size > 0 -%}
-                      {%- for discount in cart.cart_level_discount_applications -%}
-                        <div class="discounts d-flex align-items-center alt-font">
-                          <i class="feather-gift"></i>
-                          <span class="discount-title alt-font">{{ discount.title }}</span>
-                          <span class="ms-auto discount-money">-{{ discount.total_allocated_amount | money }}</span>
+                    <div class="tvastra-cart-price-summary" aria-label="Price summary">
+                      <div class="tvastra-cart-price-summary__row">
+                        <span>Subtotal</span>
+                        <strong>{{ cart.original_total_price | money }}</strong>
+                      </div>
+                      {%- if cart.total_discount > 0 -%}
+                        <div class="tvastra-cart-price-summary__row tvastra-cart-price-summary__row--discount">
+                          <span>Discount{% if tvfit_applied %} (TVFIT10){% endif %}</span>
+                          <strong>-{{ cart.total_discount | money }}</strong>
                         </div>
-                      {%- endfor -%}
-                    {%- endif -%}
-                    <div class="cart-subtotal alt-font">
-                      <label class="mb-0">{{ 'sections.cart.subtotal' | t }}:</label>
-                      <span class="float-end"> {{ cart.total_price | money }}</span>
+                      {%- endif -%}
+                      <div class="cart-subtotal alt-font tvastra-cart-price-summary__row tvastra-cart-price-summary__row--total">
+                        <label class="mb-0">Total</label>
+                        <span>{{ cart.total_price | money }}</span>
+                      </div>
+                      <small class="tvastra-cart-price-summary__note">Extra 5% prepaid offer is applied at payment.</small>
                     </div>
                     <small class="tax-note caption-large">
                       <i class="bi bi-info-circle-fill"></i>
