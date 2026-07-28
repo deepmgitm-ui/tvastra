@@ -2623,14 +2623,14 @@
       },
       {
         "type": "header",
-        "content": "You may also like"
+        "content": "Cart recommendations (both carts)"
       },
       {
         "type": "product_list",
         "id": "cart_recommendation_products",
         "limit": 6,
-        "label": "Cart product recommendations",
-        "info": "Select up to 6 products to show in both cart views. If empty, product-level crosssell metafields are used."
+        "label": "Select products for both carts",
+        "info": "Select up to 6 products. They will show in the cart drawer and the main cart page. If empty, product-level crosssell metafields are used."
       },
       {
         "type": "checkbox",
