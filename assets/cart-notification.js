@@ -402,6 +402,53 @@ customElements.define('cart-notification', CartNotification);
     });
   }
 
+  function refreshMainCartFromState(state) {
+    const mainCart = document.getElementById('main-cart-items');
+    const sectionId = mainCart && mainCart.dataset.id;
+    const sectionMarkup = state.sections && sectionId && state.sections[sectionId];
+
+    if (!mainCart || !sectionMarkup) {
+      window.location.reload();
+      return;
+    }
+
+    const parsedSection = new DOMParser().parseFromString(sectionMarkup, 'text/html');
+    ['.checkout-content-left', '#main-cart-footer'].forEach(function (selector) {
+      const currentElement = mainCart.querySelector(selector);
+      const updatedElement = parsedSection.querySelector(selector);
+      if (currentElement && updatedElement) currentElement.innerHTML = updatedElement.innerHTML;
+    });
+
+    if (typeof window.initFreeshippingGoal === 'function') window.initFreeshippingGoal(state);
+    if (typeof window.cartCount === 'function') window.cartCount(state);
+    if (typeof window.renderCrosssellProducts === 'function') window.renderCrosssellProducts(state.sections, true);
+    document.dispatchEvent(new CustomEvent('cart:updated', { detail: state }));
+  }
+
+  function updateCartDiscount(discount) {
+    const root = window.Shopify.routes.root;
+    const mainCart = document.getElementById('main-cart-items');
+    const sectionId = mainCart && mainCart.dataset.id;
+    const body = { discount: discount };
+
+    if (sectionId) {
+      body.sections = [sectionId, 'cart-icon-bubble'];
+      body.sections_url = window.location.pathname;
+    }
+
+    return fetch(root + 'cart/update.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(body)
+    }).then(function (response) {
+      if (!response.ok) throw new Error('Unable to update discount');
+      return response.json();
+    });
+  }
+
   document.addEventListener('click', function (event) {
     const button = event.target.closest('[data-tvastra-copy-code]');
     const applyButton = event.target.closest('[data-tvastra-apply-code]');
@@ -446,20 +493,10 @@ customElements.define('cart-notification', CartNotification);
       removeButton.setAttribute('aria-busy', 'true');
       removeButton.textContent = 'Removing...';
 
-      fetch(window.Shopify.routes.root + 'cart/update.js', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({ discount: '' })
-      }).then(function (response) {
-        if (!response.ok) throw new Error('Unable to remove discount');
-        return response.json();
-      }).then(function () {
+      updateCartDiscount('').then(function (state) {
         const isCartPage = /\/cart(?:\/|$)/.test(window.location.pathname);
         if (isCartPage) {
-          window.location.reload();
+          refreshMainCartFromState(state);
           return null;
         }
         return refreshCartAfterDiscountChange();
@@ -488,7 +525,22 @@ customElements.define('cart-notification', CartNotification);
     copyPromise.catch(function () {
       return fallbackCopy(code);
     }).then(function () {
-      window.location.assign(applyButton.href || '/discount/TVFIT10?redirect=/cart');
+      return updateCartDiscount(code);
+    }).then(function (state) {
+      const isCartPage = /\/cart(?:\/|$)/.test(window.location.pathname);
+      if (isCartPage) {
+        refreshMainCartFromState(state);
+        return null;
+      }
+      return refreshCartAfterDiscountChange();
+    }).catch(function (error) {
+      console.error(error);
+      applyButton.dataset.applying = 'false';
+      applyButton.removeAttribute('aria-busy');
+      applyButton.textContent = 'Try again';
+      window.setTimeout(function () {
+        if (applyButton.isConnected) applyButton.textContent = 'Apply';
+      }, 1800);
     });
   });
 })();

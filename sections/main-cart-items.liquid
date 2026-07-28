@@ -11,8 +11,15 @@
             <div class="col-md-10 col-lg-9">
               <div data-free-shipping-goal-section></div>
             </div>
-          </div> 
+          </div>
         {%- endif -%}
+        <div class="tvastra-cart-page-header">
+          <div>
+            <span class="tvastra-cart-page-header__eyebrow">Tvastra / Cart</span>
+            <h1>Shopping cart</h1>
+          </div>
+          <span class="tvastra-cart-page-header__count">{{ cart.item_count }} {% if cart.item_count == 1 %}item{% else %}items{% endif %}</span>
+        </div>
       {%- endunless -%} 
       <div class="row">
         <div id="cart-errors" class="sold-product-count error-msg d-none"></div>
@@ -290,17 +297,21 @@
               {%- endif -%}
               <div class="page-width{% if cart == empty %} is-empty{% endif %}" id="main-cart-footer" data-id="{{ section.id }}">
                   <div class="cart-footer">
+                    <div class="tvastra-cart-summary-heading">
+                      <h2>Order summary</h2>
+                      <span>{{ cart.item_count }} {% if cart.item_count == 1 %}item{% else %}items{% endif %}</span>
+                    </div>
                     {%- assign tvfit_applied = false -%}
                     {%- for discount in cart.cart_level_discount_applications -%}
                       {%- if discount.title contains 'TVFIT10' -%}
                         {%- assign tvfit_applied = true -%}
                       {%- endif -%}
                     {%- endfor -%}
-                    <div class="tvastra-cart-offer" data-tvastra-promo>
+                    <div class="tvastra-cart-offer tvastra-cart-offer--page" data-tvastra-promo>
                       <div class="tvastra-cart-offer__copy">
                         <span class="tvastra-cart-offer__eyebrow">Welcome offer</span>
                         <strong>Extra 10% off available</strong>
-                        <small>{% if tvfit_applied %}TVFIT10 applied to this cart.{% else %}Apply here and it will carry into Razorpay checkout.{% endif %}</small>
+                        <small>{% if tvfit_applied %}TVFIT10 applied. Your cart total is updated.{% else %}Apply here and see the real saving in your cart.{% endif %}</small>
                       </div>
                       <div class="tvastra-cart-offer__actions">
                         <button type="button" class="tvastra-cart-offer__code" data-tvastra-copy-code="TVFIT10" aria-label="Copy discount code TVFIT10">TVFIT10</button>
