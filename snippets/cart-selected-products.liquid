@@ -7,6 +7,8 @@
   for cart_item in cart.items
     if settings.cart_recommendation_products != blank
       assign selected_products = settings.cart_recommendation_products
+    elsif settings.cart_recommendation_collection != blank
+      assign selected_products = settings.cart_recommendation_collection.products
     else
       assign selected_products = cart_item.product.metafields.custom.crosssell_products.value
     endif

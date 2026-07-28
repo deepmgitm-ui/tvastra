@@ -2633,6 +2633,12 @@
         "info": "Select up to 6 products. They will show in the cart drawer and the main cart page. If empty, product-level crosssell metafields are used."
       },
       {
+        "type": "collection",
+        "id": "cart_recommendation_collection",
+        "label": "Curated cart recommendations",
+        "info": "Optional fallback for both carts. Add only the products you want to show in this collection; no automatic recommendations are used."
+      },
+      {
         "type": "checkbox",
         "id": "autoplay",
         "label": "Autoplay",

@@ -55,7 +55,7 @@
     {%- endif -%}
     {%- if section.settings.show_cart_icon -%}
       <div class="sticky-menu-item sticky-cart">
-        <a href="#" cart-icon-bubble aria-label="cart">
+        <a href="{% if template == 'cart' %}{{ routes.cart_url }}{% else %}#{% endif %}" {% if template != 'cart' %}cart-icon-bubble data-tvastra-cart-trigger{% endif %} aria-label="cart">
           <span class="icon-wrap position-relative">
             <i class="feather-shopping-bag"></i>
             <span data-cart-count class="count {% if cart.item_count == 0 %}d-none{% endif %}">{{ cart.item_count }}</span>

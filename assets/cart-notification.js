@@ -18,10 +18,9 @@ class CartNotification extends HTMLElement {
             }).catch((e) => {
                 console.error(e);
             });
-            var load = false;
-            window.renderCrosssellProducts(parsedStateSections,load );
-
-            window.renderCrosssellProducts(parsedStateSections);
+            if (typeof window.renderCrosssellProducts === 'function') {
+                window.renderCrosssellProducts(parsedStateSections, false);
+            }
         })
         .catch((e) => {
             console.error(e);
@@ -67,7 +66,9 @@ class CartNotification extends HTMLElement {
           });
       } 
       const load = true;
-	     window.renderCrosssellProducts(parsedStateSections,load);
+      if (typeof window.renderCrosssellProducts === 'function') {
+          window.renderCrosssellProducts(parsedStateSections, load);
+      }
       if (window.jQuery) {
       }
       this.open(autoClose);
@@ -348,6 +349,24 @@ class CartNotification extends HTMLElement {
     }
 }
 customElements.define('cart-notification', CartNotification);
+(function () {
+  if (window.tvastraCartTriggerReady) return;
+  window.tvastraCartTriggerReady = true;
+
+  document.addEventListener('click', function (event) {
+    const target = event.target;
+    const trigger = target && target.closest
+      ? target.closest('[data-tvastra-cart-trigger], [cart-icon-bubble]')
+      : null;
+    const drawer = document.querySelector('cart-notification');
+
+    if (!trigger || !drawer || typeof drawer.open !== 'function') return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    drawer.open(false);
+  }, true);
+})();
 (function () {
   if (window.tvastraCartOfferCopyReady) return;
   window.tvastraCartOfferCopyReady = true;
