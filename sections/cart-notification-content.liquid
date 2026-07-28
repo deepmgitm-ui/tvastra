@@ -105,12 +105,12 @@
     </div>
   </div>
   <div class="mini-cart-bottom" data-cart-bottom>
-    <div class="tvastra-cart-offer" data-tvastra-promo>
+    <div class="tvastra-cart-offer tvastra-cart-offer--drawer" data-tvastra-promo>
       <div class="tvastra-cart-offer__copy">
         <span class="tvastra-cart-offer__eyebrow">Welcome offer</span>
         <strong>Extra 10% off available</strong>
-        <small>{% if tvfit_applied %}TVFIT10 applied. Your cart total is updated.{% else %}Apply here and see the real saving in your cart.{% endif %}</small>
-        <small class="tvastra-cart-offer__prepaid">+5% extra off on prepaid orders.</small>
+        <small>{% if tvfit_applied %}Applied to this cart.{% else %}Apply to save 10%.{% endif %}</small>
+        <small class="tvastra-cart-offer__prepaid">+5% on prepaid orders.</small>
       </div>
       <div class="tvastra-cart-offer__actions">
         <button type="button" class="tvastra-cart-offer__code" data-tvastra-copy-code="TVFIT10" aria-label="Copy discount code TVFIT10">TVFIT10</button>
