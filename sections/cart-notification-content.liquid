@@ -112,7 +112,7 @@
       <div class="tvastra-cart-offer__actions">
         <button type="button" class="tvastra-cart-offer__code" data-tvastra-copy-code="TVFIT10" aria-label="Copy discount code TVFIT10">TVFIT10</button>
         {%- if tvfit_applied -%}
-          <span class="tvastra-cart-offer__state">Applied</span>
+          <button type="button" class="tvastra-cart-offer__remove" data-tvastra-remove-code="TVFIT10" aria-label="Remove discount code TVFIT10">Remove</button>
         {%- else -%}
           <a class="tvastra-cart-offer__apply" data-tvastra-apply-code href="{{ routes.root_url }}discount/TVFIT10?redirect=/cart">Apply</a>
         {%- endif -%}
@@ -155,7 +155,7 @@
       {%- endif -%}
       <div class="cart-notification-buttons-wrapper">
         <form action="{{ routes.cart_url }}" method="post" id="form-minicart">
-          <input type="hidden" name="discount" value="TVFIT10">
+          {%- if tvfit_applied -%}<input type="hidden" name="discount" value="TVFIT10">{%- endif -%}
           <button
             class="btn btn-medium btn-black w-100"
             name="checkout"

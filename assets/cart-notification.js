@@ -371,10 +371,42 @@ customElements.define('cart-notification', CartNotification);
     return Promise.resolve();
   }
 
+  function refreshCartAfterDiscountChange() {
+    const root = window.Shopify.routes.root;
+
+    return Promise.all([
+      fetch(root + '?sections=cart-notification-content,cart-notification-crosssell-products').then(function (response) {
+        if (!response.ok) throw new Error('Unable to refresh cart sections');
+        return response.json();
+      }),
+      fetch(root + 'cart.js').then(function (response) {
+        if (!response.ok) throw new Error('Unable to refresh cart data');
+        return response.json();
+      })
+    ]).then(function (results) {
+      const sections = results[0];
+      const cart = results[1];
+      const cartNotification = document.querySelector('cart-notification');
+
+      if (!cartNotification || typeof cartNotification.updateContent !== 'function') {
+        window.location.assign(root + 'cart');
+        return cart;
+      }
+
+      cartNotification.updateContent(sections);
+      if (typeof window.initFreeshippingGoal === 'function') window.initFreeshippingGoal(cart);
+      if (typeof window.cartCount === 'function') window.cartCount(cart);
+      if (typeof window.renderCrosssellProducts === 'function') window.renderCrosssellProducts(sections, true);
+      document.dispatchEvent(new CustomEvent('cart:updated', { detail: cart }));
+      return cart;
+    });
+  }
+
   document.addEventListener('click', function (event) {
     const button = event.target.closest('[data-tvastra-copy-code]');
     const applyButton = event.target.closest('[data-tvastra-apply-code]');
-    if (!button && !applyButton) return;
+    const removeButton = event.target.closest('[data-tvastra-remove-code]');
+    if (!button && !applyButton && !removeButton) return;
 
     event.preventDefault();
 
@@ -402,6 +434,43 @@ customElements.define('cart-notification', CartNotification);
             button.textContent = previousText;
           }, 1600);
         });
+      });
+      return;
+    }
+
+    if (removeButton) {
+      if (removeButton.dataset.removing === 'true') return;
+
+      const previousText = removeButton.textContent;
+      removeButton.dataset.removing = 'true';
+      removeButton.setAttribute('aria-busy', 'true');
+      removeButton.textContent = 'Removing...';
+
+      fetch(window.Shopify.routes.root + 'cart/update.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ discount: '' })
+      }).then(function (response) {
+        if (!response.ok) throw new Error('Unable to remove discount');
+        return response.json();
+      }).then(function () {
+        const isCartPage = /\/cart(?:\/|$)/.test(window.location.pathname);
+        if (isCartPage) {
+          window.location.reload();
+          return null;
+        }
+        return refreshCartAfterDiscountChange();
+      }).catch(function (error) {
+        console.error(error);
+        removeButton.dataset.removing = 'false';
+        removeButton.removeAttribute('aria-busy');
+        removeButton.textContent = 'Try again';
+        window.setTimeout(function () {
+          if (removeButton.isConnected) removeButton.textContent = previousText;
+        }, 1800);
       });
       return;
     }
