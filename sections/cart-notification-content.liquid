@@ -123,46 +123,13 @@
     </div>
       {%- render 'cart-notification-addon' -%}
       <div class="cart-notification-totals-wrapper alt-font">
-        <div class="tvastra-cart-price-summary tvastra-cart-price-summary--drawer" aria-label="Price summary">
-          <div class="tvastra-cart-price-summary__heading">
-            <span>Price details</span>
-            <small>{{ cart.item_count }} {% if cart.item_count == 1 %}item{% else %}items{% endif %}</small>
-          </div>
-          <div class="tvastra-cart-price-summary__row">
-            <span>Product total</span>
-            <strong>{{ cart.original_total_price | money }}</strong>
-          </div>
-          {%- if cart.total_discount > 0 -%}
-            <div class="tvastra-cart-price-summary__row tvastra-cart-price-summary__row--discount">
-              <span>Discount{% if tvfit_applied %} (TVFIT10){% endif %}</span>
-              <strong>-{{ cart.total_discount | money }}</strong>
-            </div>
-          {%- else -%}
-            <div class="tvastra-cart-price-summary__row tvastra-cart-price-summary__row--muted">
-              <span>Discount</span>
-              <strong>Not applied</strong>
-            </div>
-          {%- endif -%}
-          <div class="tvastra-cart-price-summary__row">
-            <span>Subtotal</span>
-            <strong>{{ cart.items_subtotal_price | money }}</strong>
-          </div>
-          {%- if cart.requires_shipping -%}
-            <div class="tvastra-cart-price-summary__row tvastra-cart-price-summary__row--soft">
-              <span>Shipping</span>
-              <strong>At checkout</strong>
-            </div>
-          {%- endif -%}
-          <div class="tvastra-cart-price-summary__row tvastra-cart-price-summary__row--soft">
-            <span>Taxes</span>
-            <strong>{% if cart.taxes_included %}Included{% else %}At checkout{% endif %}</strong>
-          </div>
-          <div class="tvastra-cart-price-summary__row tvastra-cart-price-summary__row--total">
-            <span>Total</span>
-            <strong>{{ cart.total_price | money }}</strong>
-          </div>
-          <small class="tvastra-cart-price-summary__note">Extra 5% prepaid offer is applied at payment. Shipping and taxes are confirmed at checkout.</small>
+        <div class="tvastra-cart-drawer-total" aria-label="Cart total">
+          <span>Cart total</span>
+          <strong>{{ cart.total_price | money }}</strong>
         </div>
+        {%- if cart.total_discount > 0 -%}
+          <small class="tvastra-cart-drawer-saving">You save {{ cart.total_discount | money }}</small>
+        {%- endif -%}
       </div>
       {%- if settings.show_terms_conditions == true -%}
         <div class="cart-agreement d-flex">

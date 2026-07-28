@@ -4266,6 +4266,39 @@ html body [class*="spur" i] form label {
   padding: 9px 12px 12px !important;
 }
 
+#cart-notification .cart-notification-totals-wrapper {
+  margin: 0 !important;
+  padding: 4px 0 2px !important;
+}
+
+#cart-notification .tvastra-cart-drawer-total {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  padding: 8px 3px 0 !important;
+  border-top: 1px solid #eee8e1 !important;
+  color: #6f6861 !important;
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+}
+
+#cart-notification .tvastra-cart-drawer-total strong {
+  color: #171b1a !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  white-space: nowrap !important;
+}
+
+#cart-notification .tvastra-cart-drawer-saving {
+  display: block !important;
+  margin: 4px 3px 0 !important;
+  color: #2d665b !important;
+  font-size: 9px !important;
+  line-height: 1.2 !important;
+  font-weight: 700 !important;
+}
+
 #cart-notification .tvastra-cart-offer {
   gap: 8px !important;
   margin-bottom: 8px !important;
@@ -4281,51 +4314,6 @@ html body [class*="spur" i] form label {
 #cart-notification .tvastra-cart-offer__copy small {
   font-size: 9px !important;
   line-height: 1.2 !important;
-}
-
-#cart-notification .tvastra-cart-price-summary--drawer {
-  gap: 4px !important;
-  margin: 0 !important;
-  padding: 7px 9px !important;
-  border: 1px solid #eee8e1 !important;
-  border-radius: 9px !important;
-  background: #fff !important;
-}
-
-#cart-notification .tvastra-cart-price-summary--drawer .tvastra-cart-price-summary__heading {
-  padding-bottom: 5px !important;
-  font-size: 11px !important;
-}
-
-#cart-notification .tvastra-cart-price-summary--drawer .tvastra-cart-price-summary__row {
-  min-height: 15px !important;
-  font-size: 10px !important;
-  line-height: 1.15 !important;
-}
-
-#cart-notification .tvastra-cart-price-summary--drawer .tvastra-cart-price-summary__row strong {
-  font-size: 10.5px !important;
-}
-
-#cart-notification .tvastra-cart-price-summary--drawer .tvastra-cart-price-summary__row--soft {
-  display: none !important;
-}
-
-#cart-notification .tvastra-cart-price-summary--drawer .tvastra-cart-price-summary__row--total {
-  margin-top: 2px !important;
-  padding-top: 7px !important;
-  font-size: 13px !important;
-}
-
-#cart-notification .tvastra-cart-price-summary--drawer .tvastra-cart-price-summary__row--total strong,
-#cart-notification .tvastra-cart-price-summary--drawer .tvastra-cart-price-summary__row--total span {
-  font-size: 14px !important;
-}
-
-#cart-notification .tvastra-cart-price-summary--drawer .tvastra-cart-price-summary__note {
-  margin-top: 1px !important;
-  font-size: 8.5px !important;
-  line-height: 1.25 !important;
 }
 
 #cart-notification .cart-notification-products {
