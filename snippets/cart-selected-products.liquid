@@ -1,3 +1,54 @@
+{%- comment -%}Legacy cart fallback: keep old section renders error-free while the main cart uses the inline version.{%- endcomment -%}
+{%- unless cart == empty -%}
+  {%- assign tvfit_applied = false -%}
+  {%- for discount in cart.cart_level_discount_applications -%}
+    {%- assign discount_title = discount.title | upcase -%}
+    {%- if discount_title contains 'TVFIT10' -%}
+      {%- assign tvfit_applied = true -%}
+    {%- endif -%}
+  {%- endfor -%}
+  <div class="tvastra-cart-price-summary tvastra-cart-price-summary--page tvastra-cart-price-summary--below" data-tvastra-cart-summary="page" aria-label="Price summary">
+    <div class="tvastra-cart-price-summary__heading">
+      <span>Price details</span>
+      <small>{{ cart.item_count }} {% if cart.item_count == 1 %}item{% else %}items{% endif %}</small>
+    </div>
+    <div class="tvastra-cart-price-summary__row">
+      <span>Product total</span>
+      <strong>{{ cart.original_total_price | money }}</strong>
+    </div>
+    {%- if cart.total_discount > 0 -%}
+      <div class="tvastra-cart-price-summary__row tvastra-cart-price-summary__row--discount">
+        <span>Discount{% if tvfit_applied %} (TVFIT10){% endif %}</span>
+        <strong>-{{ cart.total_discount | money }}</strong>
+      </div>
+    {%- else -%}
+      <div class="tvastra-cart-price-summary__row tvastra-cart-price-summary__row--muted">
+        <span>Discount</span>
+        <strong>Not applied</strong>
+      </div>
+    {%- endif -%}
+    <div class="tvastra-cart-price-summary__row">
+      <span>Subtotal</span>
+      <strong>{{ cart.items_subtotal_price | money }}</strong>
+    </div>
+    {%- if cart.requires_shipping -%}
+      <div class="tvastra-cart-price-summary__row tvastra-cart-price-summary__row--soft">
+        <span>Shipping</span>
+        <strong>At checkout</strong>
+      </div>
+    {%- endif -%}
+    <div class="tvastra-cart-price-summary__row tvastra-cart-price-summary__row--soft">
+      <span>Taxes</span>
+      <strong>{% if cart.taxes_included %}Included{% else %}At checkout{% endif %}</strong>
+    </div>
+    <div class="cart-subtotal alt-font tvastra-cart-price-summary__row tvastra-cart-price-summary__row--total">
+      <label class="mb-0">Total</label>
+      <span>{{ cart.total_price | money }}</span>
+    </div>
+    <small class="tvastra-cart-price-summary__note">Extra 5% prepaid offer is applied at payment. Shipping and taxes are confirmed at checkout.</small>
+  </div>
+{%- endunless -%}
+
 {%- comment -%}Selected cart recommendations are configured with custom.crosssell_products.{%- endcomment -%}
 {%- liquid
   assign recommendation_markup = ''
