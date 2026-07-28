@@ -123,7 +123,7 @@
     </div>
       {%- render 'cart-notification-addon' -%}
       <div class="cart-notification-totals-wrapper alt-font">
-        <div class="tvastra-cart-price-summary" aria-label="Price summary">
+        <div class="tvastra-cart-price-summary tvastra-cart-price-summary--drawer" aria-label="Price summary">
           <div class="tvastra-cart-price-summary__heading">
             <span>Price details</span>
             <small>{{ cart.item_count }} {% if cart.item_count == 1 %}item{% else %}items{% endif %}</small>
@@ -183,7 +183,6 @@
       {%- endif -%}
       <div class="cart-notification-buttons-wrapper">
         <form action="{{ routes.cart_url }}" method="post" id="form-minicart">
-          {%- if tvfit_applied -%}<input type="hidden" name="discount" value="TVFIT10">{%- endif -%}
           <button
             class="btn btn-medium btn-black w-100"
             name="checkout"
