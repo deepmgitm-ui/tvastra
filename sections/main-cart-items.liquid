@@ -215,7 +215,11 @@
             assign selected_count = 0
 
             for cart_item in cart.items
-              assign selected_products = cart_item.product.metafields.custom.crosssell_products.value
+              if settings.cart_recommendation_products != blank
+                assign selected_products = settings.cart_recommendation_products
+              else
+                assign selected_products = cart_item.product.metafields.custom.crosssell_products.value
+              endif
               for recommendation in selected_products
                 if selected_count >= 6
                   break
