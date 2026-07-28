@@ -200,6 +200,7 @@
                 </div>
               </form>
           </cart-items>
+          {%- comment -%}Selected cart recommendations render inline to avoid a missing snippet dependency.{%- endcomment -%}
           {%- liquid
             assign recommendation_markup = ''
             assign selected_ids = '|'
