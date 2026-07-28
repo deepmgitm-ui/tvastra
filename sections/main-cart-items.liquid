@@ -303,7 +303,8 @@
                     </div>
                     {%- assign tvfit_applied = false -%}
                     {%- for discount in cart.cart_level_discount_applications -%}
-                      {%- if discount.title contains 'TVFIT10' -%}
+                      {%- assign discount_title = discount.title | upcase -%}
+                      {%- if discount_title contains 'TVFIT10' -%}
                         {%- assign tvfit_applied = true -%}
                       {%- endif -%}
                     {%- endfor -%}
