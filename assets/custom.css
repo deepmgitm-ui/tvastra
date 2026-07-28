@@ -4317,11 +4317,6 @@ html body [class*="spur" i] form label {
   gap: 1px !important;
 }
 
-#cart-notification .tvastra-cart-offer--drawer .tvastra-cart-offer__eyebrow {
-  font-size: 8px !important;
-  line-height: 1.1 !important;
-}
-
 #cart-notification .tvastra-cart-offer__copy strong {
   font-size: 12px !important;
   line-height: 1.2 !important;
@@ -4363,6 +4358,22 @@ html body [class*="spur" i] form label {
   display: grid !important;
   visibility: visible !important;
   opacity: 1 !important;
+}
+
+#main-cart-items .tvastra-cart-price-summary--below {
+  margin: 16px 0 18px !important;
+  padding: 14px 16px !important;
+  border: 1px solid #e9e3dc !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+}
+
+@media (max-width: 767px) {
+  #main-cart-items .tvastra-cart-price-summary--below {
+    margin: 14px 0 16px !important;
+    padding: 12px !important;
+    border-radius: 10px !important;
+  }
 }
 
 #cart-notification .cart-notification-products {
