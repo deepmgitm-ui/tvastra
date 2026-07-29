@@ -23,6 +23,30 @@
     return target && target.closest('.cart-btn, .product-buy-now-inline button, .custom-payment-btn');
   }
 
+  function openBackInStock(button, event) {
+    var popup = document.querySelector('.back-in-stock-popup');
+    var popupLibrary = window.jQuery && window.jQuery.magnificPopup;
+    if (!popup || !popupLibrary) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+
+    var selectedOptions = document.querySelectorAll('.main-product-page .product-variants input:checked');
+    var selectedVariant = Array.prototype.map.call(selectedOptions, function (option) {
+      return option.value;
+    }).filter(Boolean).join(' / ');
+    var variantField = popup.querySelector('[name="contact[variant]"]');
+    if (variantField) variantField.value = selectedVariant;
+
+    window.jQuery.magnificPopup.open({
+      items: {
+        src: popup.innerHTML,
+        type: 'inline'
+      }
+    });
+  }
+
   function shouldPromptVariantChoice(form) {
     var area = getVariantChoiceArea();
     if (!form || !area || form.dataset.tvastraVariantTouched === 'true') return false;
@@ -218,6 +242,11 @@
     if (buttons.length) document.body.classList.add('tvastra-product-sticky-cta');
     buttons.forEach(initButtons);
   }
+
+  document.addEventListener('click', function (event) {
+    var notifyButton = event.target && event.target.closest('.main-product-page .cart-btn.notify-me');
+    if (notifyButton) openBackInStock(notifyButton, event);
+  }, true);
 
   document.addEventListener('tvastra:product-added', function (event) {
     var form = event.detail && event.detail.form;
