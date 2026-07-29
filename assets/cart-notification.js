@@ -368,27 +368,8 @@ customElements.define('cart-notification', CartNotification);
   }, true);
 })();
 (function () {
-  if (window.tvastraCartOfferCopyReady) return;
-  window.tvastraCartOfferCopyReady = true;
-
-  function fallbackCopy(text) {
-    const input = document.createElement('textarea');
-    input.value = text;
-    input.setAttribute('readonly', '');
-    input.style.position = 'fixed';
-    input.style.opacity = '0';
-    document.body.appendChild(input);
-    input.select();
-
-    try {
-      document.execCommand('copy');
-    } catch (error) {
-      console.error(error);
-    }
-
-    input.remove();
-    return Promise.resolve();
-  }
+  if (window.tvastraCartOfferActionsReady) return;
+  window.tvastraCartOfferActionsReady = true;
 
   function normalizePromoRemoveControls(root) {
     (root || document).querySelectorAll('[data-tvastra-promo]').forEach(function (promo) {
@@ -486,40 +467,11 @@ customElements.define('cart-notification', CartNotification);
   }
 
   document.addEventListener('click', function (event) {
-    const button = event.target.closest('[data-tvastra-copy-code]');
     const applyButton = event.target.closest('[data-tvastra-apply-code]');
     const removeButton = event.target.closest('[data-tvastra-remove-code]');
-    if (!button && !applyButton && !removeButton) return;
+    if (!applyButton && !removeButton) return;
 
     event.preventDefault();
-
-    if (button) {
-      const code = button.dataset.code || button.getAttribute('data-tvastra-copy-code') || button.textContent.trim();
-      const previousText = button.textContent;
-
-      const copyPromise = navigator.clipboard && navigator.clipboard.writeText
-        ? navigator.clipboard.writeText(code)
-        : fallbackCopy(code);
-
-      copyPromise.then(function () {
-        button.textContent = 'Copied';
-        button.classList.add('is-copied');
-
-        window.setTimeout(function () {
-          button.textContent = previousText;
-          button.classList.remove('is-copied');
-        }, 1600);
-      }).catch(function () {
-        fallbackCopy(code).then(function () {
-          button.textContent = 'Copied';
-
-          window.setTimeout(function () {
-            button.textContent = previousText;
-          }, 1600);
-        });
-      });
-      return;
-    }
 
     if (removeButton) {
       if (removeButton.dataset.removing === 'true') return;
@@ -551,18 +503,7 @@ customElements.define('cart-notification', CartNotification);
     if (applyButton.dataset.applying === 'true') return;
     applyButton.dataset.applying = 'true';
     applyButton.textContent = 'Applying...';
-    const promo = applyButton.closest('[data-tvastra-promo]');
-    const codeButton = promo && promo.querySelector('[data-tvastra-copy-code]');
-    const code = (codeButton && (codeButton.dataset.code || codeButton.textContent.trim())) || 'TVFIT10';
-    const copyPromise = navigator.clipboard && navigator.clipboard.writeText
-      ? navigator.clipboard.writeText(code)
-      : fallbackCopy(code);
-
-    copyPromise.catch(function () {
-      return fallbackCopy(code);
-    }).then(function () {
-      return updateCartDiscount(code);
-    }).then(function (state) {
+    updateCartDiscount('TVFIT10').then(function (state) {
       const isCartPage = /\/cart(?:\/|$)/.test(window.location.pathname);
       if (isCartPage) {
         refreshMainCartFromState(state);
