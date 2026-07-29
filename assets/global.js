@@ -87,11 +87,12 @@ class QuantityInput extends HTMLElement {
   onButtonClick(event) {
     event.preventDefault();
     const previousValue = this.input.value;
+    const button = event.currentTarget;
 
-    event.target.name === 'plus' ? this.input.stepUp() : this.input.stepDown();
-    const disabled = event.target.dataset.toggle || false;
+    button.name === 'plus' ? this.input.stepUp() : this.input.stepDown();
+    const disabled = button.dataset.toggle || false;
     if (disabled) {
-      event.target.setAttribute('disabled', true);
+      button.setAttribute('disabled', true);
     }
     if (previousValue !== this.input.value) this.input.dispatchEvent(this.changeEvent);
   }
