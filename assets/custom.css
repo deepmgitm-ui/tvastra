@@ -4366,6 +4366,22 @@ html body [class*="spur" i] form label {
   border: 1px solid #e9e3dc !important;
   border-radius: 12px !important;
   background: #fff !important;
+  box-shadow: 0 8px 24px rgba(28, 24, 19, .045) !important;
+}
+
+#main-cart-items .tvastra-cart-price-summary--below .tvastra-cart-price-summary__row--shipping,
+#main-cart-items .tvastra-cart-price-summary--below .tvastra-cart-price-summary__row--shipping strong {
+  color: #2d665b !important;
+  font-weight: 700 !important;
+}
+
+#main-cart-items .checkout-sidebar .tax-note {
+  padding: 9px 10px !important;
+  border: 1px solid #eee8e1 !important;
+  border-radius: 7px !important;
+  background: #fbfaf8 !important;
+  font-size: 10px !important;
+  line-height: 1.35 !important;
 }
 
 @media (max-width: 767px) {

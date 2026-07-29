@@ -32,9 +32,9 @@
       <strong>{{ cart.items_subtotal_price | money }}</strong>
     </div>
     {%- if cart.requires_shipping -%}
-      <div class="tvastra-cart-price-summary__row tvastra-cart-price-summary__row--soft">
+      <div class="tvastra-cart-price-summary__row tvastra-cart-price-summary__row--soft tvastra-cart-price-summary__row--shipping">
         <span>Shipping</span>
-        <strong>At checkout</strong>
+        <strong>Free</strong>
       </div>
     {%- endif -%}
     <div class="tvastra-cart-price-summary__row tvastra-cart-price-summary__row--soft">
@@ -45,7 +45,7 @@
       <label class="mb-0">Total</label>
       <span>{{ cart.total_price | money }}</span>
     </div>
-    <small class="tvastra-cart-price-summary__note">Extra 5% prepaid offer is applied at payment. Shipping and taxes are confirmed at checkout.</small>
+    <small class="tvastra-cart-price-summary__note">Free shipping included. Taxes are confirmed at checkout. Extra 5% prepaid offer is applied at payment.</small>
   </div>
 {%- endunless -%}
 

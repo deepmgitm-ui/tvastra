@@ -240,9 +240,9 @@
               <strong>{{ cart.items_subtotal_price | money }}</strong>
             </div>
             {%- if cart.requires_shipping -%}
-              <div class="tvastra-cart-price-summary__row tvastra-cart-price-summary__row--soft">
+              <div class="tvastra-cart-price-summary__row tvastra-cart-price-summary__row--soft tvastra-cart-price-summary__row--shipping">
                 <span>Shipping</span>
-                <strong>At checkout</strong>
+                <strong>Free</strong>
               </div>
             {%- endif -%}
             <div class="tvastra-cart-price-summary__row tvastra-cart-price-summary__row--soft">
@@ -253,7 +253,7 @@
               <label class="mb-0">Total</label>
               <span>{{ cart.total_price | money }}</span>
             </div>
-            <small class="tvastra-cart-price-summary__note">Extra 5% prepaid offer is applied at payment. Shipping and taxes are confirmed at checkout.</small>
+            <small class="tvastra-cart-price-summary__note">Free shipping included. Taxes are confirmed at checkout. Extra 5% prepaid offer is applied at payment.</small>
           </div>
           {%- comment -%}Selected cart recommendations render inline to avoid a missing snippet dependency.{%- endcomment -%}
           {%- assign recommendation_markup = '' -%}
@@ -367,15 +367,7 @@
                     </div>
                     <small class="tax-note caption-large">
                       <i class="bi bi-info-circle-fill"></i>
-                      {%- if cart.taxes_included and shop.shipping_policy.body != blank -%}
-                        {{ 'sections.cart.taxes_included_and_shipping_policy_html' | t: link: shop.shipping_policy.url }}
-                      {%- elsif cart.taxes_included -%}
-                        {{ 'sections.cart.taxes_included_but_shipping_at_checkout' | t }}
-                      {%- elsif shop.shipping_policy.body != blank -%}
-                        {{ 'sections.cart.taxes_and_shipping_policy_at_checkout_html' | t: link: shop.shipping_policy.url }}
-                      {%- else -%}
-                        {{ 'sections.cart.taxes_and_shipping_at_checkout' | t }}
-                      {%- endif -%}
+                      Free shipping included. Taxes are confirmed at checkout.
                     </small>
                     <div class="sidebar-bottom position-relative">
                       {%- if settings.show_terms_conditions == true -%}
