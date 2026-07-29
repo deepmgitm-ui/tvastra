@@ -4617,37 +4617,6 @@ html body [class*="spur" i] form label {
   text-align: center !important;
 }
 
-/* Use text symbols for quantity controls so icon-font rules cannot swap - for +. */
-#main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity.qty-small .quantity-button::before,
-#main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity.qty-small .quantity-button::after,
-#cart-notification .cart-product-info .quantity-button::before,
-#cart-notification .cart-product-info .quantity-button::after {
-  font-family: Arial, sans-serif !important;
-  font-style: normal !important;
-  font-weight: 400 !important;
-  line-height: 1 !important;
-}
-
-#main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity.qty-small .quantity-button::before,
-#cart-notification .cart-product-info .quantity-button::before {
-  display: none !important;
-  content: none !important;
-}
-
-#main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity.qty-small .quantity-minus::after,
-#cart-notification .cart-product-info .quantity-minus::after {
-  display: block !important;
-  content: "-" !important;
-  font-size: 14px !important;
-}
-
-#main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity.qty-small .quantity-plus::after,
-#cart-notification .cart-product-info .quantity-plus::after {
-  display: block !important;
-  content: "+" !important;
-  font-size: 14px !important;
-}
-
 #main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity.qty-small .quantity-input,
 #cart-notification .cart-product-info .quantity-input {
   display: block !important;

@@ -128,44 +128,40 @@
             <span>Inclusive of all taxes</span>
             <span>Free shipping on prepaid orders</span>
           </div>
-          <div class="tvastra-product-offers" aria-label="Payment offers">
-            <div class="tvastra-product-offers__header">
-              <span class="tvastra-product-offers__title">All offers</span>
-              <span class="tvastra-product-offers__rail">Razorpay secured</span>
+          <details class="tvastra-product-offers">
+            <summary class="tvastra-product-offers__summary">
+              <span class="tvastra-product-offers__title">Offers &amp; payment</span>
+              <span class="tvastra-product-offers__highlight">Extra 10% available</span>
+              <i class="feather-chevron-down" aria-hidden="true"></i>
+            </summary>
+            <div class="tvastra-product-offers__body">
+              <div class="tvastra-product-offers__list">
+                <div class="tvastra-product-offer">
+                  <span class="tvastra-product-offer__icon" aria-hidden="true"><i class="feather-tag"></i></span>
+                  <div class="tvastra-product-offer__copy">
+                    <strong>Extra 10% off</strong>
+                    <span>Use TVFIT10 at cart or checkout.</span>
+                  </div>
+                  <button type="button" class="tvastra-product-offer__code" data-tvastra-copy-code="TVFIT10" aria-label="Copy discount code TVFIT10">Copy</button>
+                </div>
+                <div class="tvastra-product-offer tvastra-product-offer--plain">
+                  <span class="tvastra-product-offer__icon" aria-hidden="true"><i class="feather-credit-card"></i></span>
+                  <div class="tvastra-product-offer__copy">
+                    <strong>Extra 5% on prepaid orders</strong>
+                    <span>Pay online securely at checkout.</span>
+                  </div>
+                </div>
+                <div class="tvastra-product-offer tvastra-product-offer--plain">
+                  <span class="tvastra-product-offer__icon" aria-hidden="true"><i class="feather-percent"></i></span>
+                  <div class="tvastra-product-offer__copy">
+                    <strong>Bank, card and UPI offers</strong>
+                    <span>Eligibility is shown during payment.</span>
+                  </div>
+                </div>
+              </div>
+              <p class="tvastra-product-offers__note"><i class="feather-shield" aria-hidden="true"></i> Secure payments by Razorpay</p>
             </div>
-            <div class="tvastra-product-offers__list">
-              <div class="tvastra-product-offer">
-                <span class="tvastra-product-offer__icon" aria-hidden="true"><i class="feather-tag"></i></span>
-                <div class="tvastra-product-offer__copy">
-                  <strong>Save 10% with TVFIT10</strong>
-                  <span>Apply this code in cart or checkout.</span>
-                </div>
-                <button type="button" class="tvastra-product-offer__code" data-tvastra-copy-code="TVFIT10" aria-label="Copy discount code TVFIT10">Copy</button>
-              </div>
-              <div class="tvastra-product-offer tvastra-product-offer--plain">
-                <span class="tvastra-product-offer__icon" aria-hidden="true"><i class="feather-credit-card"></i></span>
-                <div class="tvastra-product-offer__copy">
-                  <strong>Extra 5% off on prepaid orders</strong>
-                  <span>Pay online securely at checkout.</span>
-                </div>
-              </div>
-              <div class="tvastra-product-offer tvastra-product-offer--plain">
-                <span class="tvastra-product-offer__icon" aria-hidden="true"><i class="feather-percent"></i></span>
-                <div class="tvastra-product-offer__copy">
-                  <strong>Bank, card, UPI and netbanking offers</strong>
-                  <span>Eligible payment offers show on Razorpay.</span>
-                </div>
-              </div>
-              <div class="tvastra-product-offer tvastra-product-offer--plain">
-                <span class="tvastra-product-offer__icon" aria-hidden="true"><i class="feather-shield"></i></span>
-                <div class="tvastra-product-offer__copy">
-                  <strong>Secure checkout with fast payment</strong>
-                  <span>Protected Razorpay payment experience.</span>
-                </div>
-              </div>
-            </div>
-            <p class="tvastra-product-offers__note">Final bank eligibility and payment savings appear during Razorpay payment.</p>
-          </div>
+          </details>
         {%- endif -%}
 
         {{- colour_family_markup -}}
@@ -518,12 +514,6 @@
       {%- when 'product-usp' -%}
         {%- render 'product-usp-block', block_settings: block.settings -%}
      {%- when 'addon-buttons' -%}
-  <style>
-    #smart-share-block a.modal-popup { display: flex !important; align-items: center !important; font-size: 14px !important; font-weight: 500 !important; text-decoration: none !important; color: #000 !important; }
-    #smart-share-block a.modal-popup i { margin-right: 6px !important; font-size: 16px !important; }
-    #smart-share-block .addon-buttons { margin: 0 !important; padding: 0 !important; }
-  </style>
-
   <div id="smart-share-block">
     <div class="addon-buttons d-sm-flex">
       {%- if block.settings.show_compare -%}
@@ -547,7 +537,12 @@
         </div>
       {%- endif -%}
       {%- if block.settings.show_social_share -%}
-        <a class="modal-popup" href="#social-sharing" aria-label="share"><i class="bi bi-share"></i>{{ 'general.product_information.share_label' | t }}</a>
+        <div class="tvastra-gallery-share" data-tvastra-gallery-share>
+          <a class="modal-popup tvastra-gallery-share__trigger" href="#social-sharing" aria-label="Share this product" title="Share">
+            <i class="bi bi-share" aria-hidden="true"></i>
+            <span class="visually-hidden">{{ 'general.product_information.share_label' | t }}</span>
+          </a>
+        </div>
         <div id="social-sharing" class="social-sharing modal-popup-main mfp-hide">
           {%- assign url = shop.url | append: product.url -%}
           <label class="mb-2 alt-font">{{ 'general.product_information.copy_link_label' | t }}</label>
@@ -561,43 +556,24 @@
     </div>
   </div>
 
-  {%- comment -%} 🔴 FIXED SCRIPT: NO MORE SQUISHED TITLES 🔴 {%- endcomment -%}
   <script>
-    function alignShareAndTitle() {
-      var shareBtnWrapper = document.getElementById("smart-share-block");
-      var titleElement = document.querySelector(".product-title") || document.querySelector("h1") || document.querySelector(".product__title");
+    function placeTvastraGalleryShare() {
+      var shareControl = document.querySelector('[data-tvastra-gallery-share]');
+      var galleryTarget = document.querySelector('.main-product-page .product-main-slider')
+        || document.querySelector('.main-product-page .product-media-grid-wrapper')
+        || document.querySelector('.main-product-page .product-gallery');
 
-      if(shareBtnWrapper && titleElement && !shareBtnWrapper.classList.contains('aligned')) {
-        var flexWrapper = document.createElement("div"); flexWrapper.className = "product-title-share-row";
-        flexWrapper.style.display = "flex";
-        flexWrapper.style.justifyContent = "space-between"; 
-        flexWrapper.style.alignItems = "center";
-        flexWrapper.style.flexWrap = "nowrap"; 
-        flexWrapper.style.gap = "8px";
-        flexWrapper.style.marginBottom = "3px";
-
-        titleElement.parentNode.insertBefore(flexWrapper, titleElement);
-        flexWrapper.appendChild(titleElement);
-        flexWrapper.appendChild(shareBtnWrapper);
-
-        // Allowed Title to WRAP properly so it doesn't get pushed left
-        titleElement.style.margin = "0";
-        titleElement.style.whiteSpace = "normal"; 
-        titleElement.style.wordBreak = "break-word";
-        titleElement.style.lineHeight = "1.08";
-
-        shareBtnWrapper.style.margin = "0";
-        shareBtnWrapper.style.flexShrink = "0"; 
-
-        shareBtnWrapper.classList.add('aligned');
+      if (shareControl && galleryTarget && shareControl.parentNode !== galleryTarget) {
+        galleryTarget.appendChild(shareControl);
       }
     }
 
     if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", alignShareAndTitle);
+      document.addEventListener("DOMContentLoaded", placeTvastraGalleryShare);
     } else {
-      alignShareAndTitle();
+      placeTvastraGalleryShare();
     }
+    document.addEventListener('shopify:section:load', placeTvastraGalleryShare);
   </script>
       {%- when 'shipping' -%}
         <ul class="shipping-info">
