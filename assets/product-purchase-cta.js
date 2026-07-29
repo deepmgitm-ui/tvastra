@@ -14,6 +14,38 @@
     return buttons && buttons.querySelector('.quantity-input');
   }
 
+  function getVariantChoiceArea() {
+    return document.querySelector('.main-product-page .product-filter.size-filter') ||
+      document.querySelector('.main-product-page .product-variants');
+  }
+
+  function getPurchaseTrigger(target) {
+    return target && target.closest('.cart-btn, .product-buy-now-inline button, .custom-payment-btn');
+  }
+
+  function shouldPromptVariantChoice(form) {
+    var area = getVariantChoiceArea();
+    if (!form || !area || form.dataset.tvastraVariantTouched === 'true') return false;
+    var choices = area.querySelectorAll('input[type="radio"], select, [data-single-option]');
+    return choices.length > 1;
+  }
+
+  function promptVariantChoice(form, event) {
+    var area = getVariantChoiceArea();
+    if (!area) return false;
+
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    form.dataset.tvastraVariantTouched = 'true';
+    area.classList.add('tvastra-option-focus');
+    area.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    window.setTimeout(function () {
+      area.classList.remove('tvastra-option-focus');
+    }, 1600);
+    return true;
+  }
+
   // Keep the plus control available when Shopify clamps the line to inventory.
   function keepPlusControl(buttons) {
     if (!buttons) return;
@@ -164,8 +196,14 @@
 
     var form = getForm(buttons);
     if (form) {
+      buttons.addEventListener('click', function (event) {
+        if (!getPurchaseTrigger(event.target)) return;
+        if (shouldPromptVariantChoice(form)) promptVariantChoice(form, event);
+      }, true);
+
       form.addEventListener('change', function (event) {
         if (event.target && event.target.name && event.target.name !== 'quantity') {
+          form.dataset.tvastraVariantTouched = 'true';
           window.setTimeout(function () { syncButtons(buttons); }, 80);
         }
       });
@@ -175,7 +213,9 @@
   }
 
   function initAll(root) {
-    (root || document).querySelectorAll(selector).forEach(initButtons);
+    var buttons = (root || document).querySelectorAll(selector);
+    if (buttons.length) document.body.classList.add('tvastra-product-sticky-cta');
+    buttons.forEach(initButtons);
   }
 
   document.addEventListener('tvastra:product-added', function (event) {
