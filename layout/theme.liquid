@@ -847,9 +847,38 @@
     return true;
   }
 
+  function openStockNotification(event) {
+    var popup = document.querySelector('.back-in-stock-popup');
+    if (!popup || !window.jQuery || !window.jQuery.magnificPopup) return false;
+
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+
+    var selectedOptions = document.querySelectorAll('.main-product-page .product-variants input:checked');
+    var selectedVariant = Array.prototype.map.call(selectedOptions, function (option) {
+      return option.value;
+    }).filter(Boolean).join(' / ');
+    var variantField = popup.querySelector('[name="contact[variant]"]');
+    if (variantField) variantField.value = selectedVariant;
+
+    window.jQuery.magnificPopup.open({
+      items: {
+        src: popup.innerHTML,
+        type: 'inline'
+      }
+    });
+    return true;
+  }
+
   document.addEventListener('click', function (event) {
     var btn = closest(event.target, '[name="add"], .cart-btn, .product-buy-now-inline, .shopify-payment-button, .shopify-payment-button__button, custom-btn, [data-testid="Checkout-button"]');
-    if (btn && !btn.classList.contains('notify-me')) blockIfSizeMissing(btn, event);
+    if (!btn) return;
+    if (btn.classList.contains('notify-me')) {
+      openStockNotification(event);
+      return;
+    }
+    blockIfSizeMissing(btn, event);
   }, true);
 
   document.addEventListener('submit', function (event) {
