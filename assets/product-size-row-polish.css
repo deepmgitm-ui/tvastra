@@ -243,3 +243,76 @@
     padding: 8px 9px !important;
   }
 }
+
+/* Keep live interest compact and permanently aligned with the current price. */
+.main-product-page .product-price-viewer-row {
+  display: flex !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.main-product-page .product-price-viewer-row > [id^="price-"] {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+
+.main-product-page .product-price-viewer-row .product-live-viewers {
+  display: inline-flex !important;
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 24px !important;
+  flex: 0 0 auto !important;
+  align-items: center !important;
+  gap: 4px !important;
+  margin: 0 !important;
+  padding: 3px 7px !important;
+  border: 1px solid rgba(22, 58, 62, .12) !important;
+  border-radius: 999px !important;
+  background: #f4f7f5 !important;
+  color: #52635f !important;
+  font-size: 9.5px !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+.main-product-page .product-price-viewer-row .product-live-viewers i {
+  margin: 0 !important;
+  color: #173f44 !important;
+  font-size: 11px !important;
+  animation-duration: 3s !important;
+}
+
+.main-product-page .product-price-viewer-row .product-live-viewers .text-wrapper {
+  display: inline-flex !important;
+  align-items: baseline !important;
+  gap: 3px !important;
+}
+
+.main-product-page .product-price-viewer-row .live-visitors-count {
+  margin: 0 !important;
+  color: #173f44 !important;
+  font-weight: 700 !important;
+}
+
+.main-product-page .product-price-viewer-row .live-visitors-copy {
+  margin: 0 !important;
+}
+
+@media (max-width: 380px) {
+  .main-product-page .product-price-viewer-row {
+    gap: 6px !important;
+  }
+
+  .main-product-page .product-price-viewer-row .product-live-viewers {
+    min-height: 22px !important;
+    padding: 3px 6px !important;
+    font-size: 9px !important;
+  }
+}

@@ -12,20 +12,19 @@
 
   function placeViewer(viewer) {
     var productInfo = viewer.closest('.product-info, .product-summary');
-    var titleRow = productInfo && productInfo.querySelector('.product-title-share-row');
-    if (!titleRow || viewer.dataset.positioned === 'true') return;
+    var price = productInfo && productInfo.querySelector('[id^="price-"]');
+    if (!productInfo || !price) return;
 
-    var actions = titleRow.querySelector('.product-title-actions');
-    if (!actions) {
-      actions = document.createElement('div');
-      actions.className = 'product-title-actions';
-      titleRow.appendChild(actions);
+    var row = productInfo.querySelector('.product-price-viewer-row');
+    if (!row) {
+      row = document.createElement('div');
+      row.className = 'product-price-viewer-row';
+      price.parentNode.insertBefore(row, price);
+      row.appendChild(price);
     }
 
-    var share = titleRow.querySelector('#smart-share-block');
-    if (share && share.parentNode === titleRow) actions.appendChild(share);
-    actions.appendChild(viewer);
-    viewer.dataset.positioned = 'true';
+    if (viewer.parentNode !== row) row.appendChild(viewer);
+    viewer.dataset.positioned = 'price';
   }
 
   function initViewer(viewer) {
