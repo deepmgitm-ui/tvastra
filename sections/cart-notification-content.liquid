@@ -119,13 +119,10 @@
     </div>
       {%- render 'cart-notification-addon' -%}
       <div class="cart-notification-totals-wrapper alt-font">
-        <div class="tvastra-cart-drawer-total" aria-label="Cart total">
-          <span>Cart total</span>
+        <div class="tvastra-cart-drawer-total" aria-label="Total bill">
+          <span>Total bill</span>
           <strong>{{ cart.total_price | money }}</strong>
         </div>
-        {%- if cart.total_discount > 0 -%}
-          <small class="tvastra-cart-drawer-saving">You save {{ cart.total_discount | money }}</small>
-        {%- endif -%}
       </div>
       {%- if settings.show_terms_conditions == true -%}
         <div class="cart-agreement d-flex">
