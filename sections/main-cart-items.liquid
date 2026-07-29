@@ -150,7 +150,9 @@
                             </td>
                             <td class="cart-item-quantity alt-font" data-label="{{ 'sections.cart.headings.quantity' | t }}">
                               <quantity-input class="quantity qty-small">
-                                <button class="quantity-button quantity-minus feather-minus" name="minus" type="button" data-toggle="true" aria-label="minus"><span class="visually-hidden">-</span></button>
+                                <button class="quantity-button quantity-minus" name="minus" type="button" data-toggle="true" aria-label="Decrease quantity">
+                                  <span class="tvastra-quantity-symbol" aria-hidden="true">-</span>
+                                </button>
                                 <input class="quantity-input" 
                                   autocomplete="off" 
                                   type="number" 
@@ -166,10 +168,11 @@
                                   {% endif %}
                                   data-index="{{ item.index | plus: 1 }}" 
                                   data-variant-id="{{ item.key }}"
-                                  id="quantity-input"
                                 />
-                                <label for="quantity-input" class="visually-hidden"></label>
-                                <button id="quantity-input" class="quantity-button quantity-plus feather-plus" name="plus" type="button" data-toggle="true" aria-label="plus"><span class="visually-hidden">+</span></button>
+                                <label for="Quantity-{{ item.index | plus: 1 }}" class="visually-hidden">Quantity</label>
+                                <button class="quantity-button quantity-plus" name="plus" type="button" data-toggle="true" aria-label="Increase quantity">
+                                  <span class="tvastra-quantity-symbol" aria-hidden="true">+</span>
+                                </button>
                               </quantity-input>
                             </td>
                             <td class="cart-item__totals right alt-font position-relative" data-label="{{ 'sections.cart.headings.total' | t }}">

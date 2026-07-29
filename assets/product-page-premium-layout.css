@@ -2566,6 +2566,35 @@
   }
 }
 
+/* Keep the sticky product quantity control readable as - | value | +. */
+.main-product-page .product-form-buttons.product-cta-smart .quantity-button {
+  position: static !important;
+  inset: auto !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .quantity-input {
+  position: static !important;
+  box-sizing: border-box !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .quantity-button::before,
+.main-product-page .product-form-buttons.product-cta-smart .quantity-button::after {
+  display: none !important;
+  content: none !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .tvastra-quantity-symbol {
+  display: block !important;
+  width: 100% !important;
+  color: currentColor !important;
+  font-family: Arial, sans-serif !important;
+  font-size: 15px !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  text-align: center !important;
+}
+
 /* Last-pass override: keep mobile product purchase actions pinned and compact. */
 .main-product-page .tvastra-product-offers__list {
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;

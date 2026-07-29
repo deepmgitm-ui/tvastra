@@ -4670,3 +4670,37 @@ html body [class*="spur" i] form label {
   margin: 0 !important;
   -webkit-appearance: none !important;
 }
+
+/* Final quantity layout: keep minus, value and plus in separate cells. */
+#main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity.qty-small .quantity-button,
+#cart-notification .cart-product-info .quantity-button {
+  position: static !important;
+  inset: auto !important;
+}
+
+#main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity.qty-small .quantity-input,
+#cart-notification .cart-product-info .quantity-input {
+  position: static !important;
+  box-sizing: border-box !important;
+}
+
+#main-cart-items .quantity-button::before,
+#main-cart-items .quantity-button::after,
+#cart-notification .quantity-button::before,
+#cart-notification .quantity-button::after {
+  display: none !important;
+  content: none !important;
+}
+
+#main-cart-items .tvastra-quantity-symbol,
+#cart-notification .tvastra-quantity-symbol {
+  display: block !important;
+  width: 100% !important;
+  color: currentColor !important;
+  font-family: Arial, sans-serif !important;
+  font-size: 14px !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  text-align: center !important;
+}
