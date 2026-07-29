@@ -1,0 +1,67 @@
+/* Equal-width size options fill one compact line without changing chip height. */
+.main-product-page .product-variants fieldset.size-filter {
+  display: block !important;
+}
+
+.main-product-page .product-variants fieldset.size-filter > .form-label {
+  width: 100% !important;
+}
+
+.main-product-page .tvastra-size-options {
+  display: flex !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  gap: 4px !important;
+  overflow-x: auto !important;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: none;
+}
+
+.main-product-page .tvastra-size-options::-webkit-scrollbar {
+  display: none;
+}
+
+.main-product-page .product-variants fieldset.size-filter .tvastra-size-options > .variant-option {
+  display: flex !important;
+  flex: 1 0 32px !important;
+  min-width: 32px !important;
+  margin: 0 !important;
+}
+
+.main-product-page .product-variants fieldset.size-filter .tvastra-size-options > .variant-option label {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 25px !important;
+  min-height: 25px !important;
+  padding: 0 5px !important;
+  white-space: nowrap !important;
+}
+
+.main-product-page .product-title,
+.main-product-page .product-title-share-row > .product-title {
+  font-size: 22px !important;
+  line-height: 1.18 !important;
+}
+
+@media (max-width: 767px) {
+  .main-product-page .tvastra-size-options {
+    gap: 3px !important;
+  }
+
+  .main-product-page .product-variants fieldset.size-filter .tvastra-size-options > .variant-option {
+    flex-basis: 29px !important;
+    min-width: 29px !important;
+  }
+
+  .main-product-page .product-variants fieldset.size-filter .tvastra-size-options > .variant-option label {
+    height: 24px !important;
+    min-height: 24px !important;
+    padding: 0 4px !important;
+  }
+
+  .main-product-page .product-title,
+  .main-product-page .product-title-share-row > .product-title {
+    font-size: 16px !important;
+    line-height: 1.18 !important;
+  }
+}

@@ -260,7 +260,8 @@
                           {%- endfor -%}
                         </select>
                       </div>
-                    {%- else -%} 
+                    {%- else -%}
+                      {%- if isSize -%}<div class="tvastra-size-options">{%- endif -%}
                         {%- for value in option.values -%}
                             {%- assign currentcolor = value | remove: ' ' | escape | downcase -%}
                             <div class="variant-option swatches-hover" data-option-type="{{ option_display_type }}" data-option-name="{{ value }}" {% if can_show_tooltip %}data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="{{ value }}" data-bs-trigger="hover"{% endif %}>
@@ -316,6 +317,7 @@
                                 </label>
                             </div>
                         {%- endfor -%}
+                      {%- if isSize -%}</div>{%- endif -%}
                     {%- endif -%}
                     {%- if option.name == size_guide_option_label and block.settings.show_size_guide -%}
                       {%- if size_guide_content != null and size_guide_content != blank or size_guide_image_url != blank -%}
