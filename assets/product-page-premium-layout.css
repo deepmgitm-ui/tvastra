@@ -2566,6 +2566,139 @@
   }
 }
 
+/* Product-page payment offers: compact, mobile-first and checkout-truthful. */
+.main-product-page .tvastra-product-offers {
+  width: 100%;
+  margin: 6px 0 8px !important;
+  padding: 10px 11px !important;
+  border: 1px solid rgba(18, 18, 18, 0.08);
+  border-radius: 8px;
+  background: #fbfaf7;
+  box-shadow: 0 8px 20px rgba(18, 18, 18, 0.04);
+}
+
+.main-product-page .tvastra-product-offers__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.main-product-page .tvastra-product-offers__title {
+  color: #141414;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.main-product-page .tvastra-product-offers__rail {
+  color: #5b5248;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.main-product-page .tvastra-product-offers__list {
+  display: grid;
+  gap: 6px;
+}
+
+.main-product-page .tvastra-product-offer {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 7px 8px;
+  border: 1px solid rgba(18, 18, 18, 0.07);
+  border-radius: 7px;
+  background: #fff;
+}
+
+.main-product-page .tvastra-product-offer__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: #0a3a40;
+  background: rgba(10, 58, 64, 0.08);
+  font-size: 13px;
+}
+
+.main-product-page .tvastra-product-offer__copy {
+  min-width: 0;
+}
+
+.main-product-page .tvastra-product-offer__copy strong,
+.main-product-page .tvastra-product-offer__copy span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.main-product-page .tvastra-product-offer__copy strong {
+  color: #171717;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.main-product-page .tvastra-product-offer__copy span {
+  margin-top: 2px;
+  color: #6b6259;
+  font-size: 10.5px;
+  line-height: 1.15;
+}
+
+.main-product-page .tvastra-product-offer__code {
+  min-width: 48px;
+  height: 27px;
+  padding: 0 10px;
+  border: 1px solid rgba(18, 18, 18, 0.14);
+  border-radius: 999px;
+  background: #111;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.main-product-page .tvastra-product-offer__code.is-copied {
+  background: #0a3a40;
+  border-color: #0a3a40;
+}
+
+.main-product-page .tvastra-product-offers__note {
+  margin: 7px 0 0 !important;
+  color: #756c62;
+  font-size: 10.5px;
+  line-height: 1.25;
+}
+
+@media (max-width: 767px) {
+  .main-product-page .tvastra-product-offers {
+    margin: 5px 0 7px !important;
+    padding: 9px !important;
+    border-radius: 7px;
+  }
+
+  .main-product-page .tvastra-product-offer {
+    min-height: 39px;
+    padding: 6px 7px;
+    gap: 7px;
+  }
+
+  .main-product-page .tvastra-product-offers__note {
+    font-size: 10px;
+  }
+}
+
 /* Final aligned CTA rules, intentionally last in the stylesheet. */
 .main-product-page .product-form-buttons.product-cta-smart .action-btn,
 .main-product-page .product-form-buttons.product-cta-smart .action-btn:not(.has-wishlist) {
