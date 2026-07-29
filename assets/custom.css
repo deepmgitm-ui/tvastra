@@ -4466,3 +4466,80 @@ html body [class*="spur" i] form label {
   height: 23px !important;
   font-size: 10px !important;
 }
+
+/* Final mobile cart card polish. */
+@media (max-width: 767px) {
+  #main-cart-items .cart-items tbody tr {
+    grid-template-columns: 60px minmax(0, 1fr) auto !important;
+    column-gap: 8px !important;
+    row-gap: 3px !important;
+    padding: 8px !important;
+    margin-bottom: 8px !important;
+    border-color: #e8e3dc !important;
+    border-radius: 9px !important;
+    box-shadow: 0 5px 16px rgba(28, 24, 19, .045) !important;
+  }
+
+  #main-cart-items .cart-items tbody tr > .product-thumbnail,
+  #main-cart-items .cart-items .product-thumbnail img {
+    width: 60px !important;
+  }
+
+  #main-cart-items .cart-items .product-thumbnail img {
+    height: 76px !important;
+    border-radius: 6px !important;
+  }
+
+  #main-cart-items .cart-item-details {
+    padding-right: 0 !important;
+  }
+
+  #main-cart-items .cart-item__name {
+    font-size: 13px !important;
+    line-height: 1.22 !important;
+    font-weight: 700 !important;
+  }
+
+  #main-cart-items .cart-item-details .product-option,
+  #main-cart-items .cart-item-details .discounts {
+    margin-top: 2px !important;
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+  }
+
+  #main-cart-items .cart-items tbody tr > .cart-item__prices,
+  #main-cart-items .cart-items tbody tr > .cart-item__totals {
+    margin-top: 2px !important;
+    padding-top: 4px !important;
+  }
+
+  #main-cart-items .cart-items tbody tr > .cart-item__prices:before,
+  #main-cart-items .cart-items tbody tr > .cart-item-quantity:before,
+  #main-cart-items .cart-items tbody tr > .cart-item__totals:before {
+    font-size: 10px !important;
+  }
+
+  #main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity.qty-small {
+    width: 76px !important;
+    height: 28px !important;
+  }
+
+  #main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity-button,
+  #main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity-input {
+    height: 26px !important;
+  }
+
+  #main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity-button {
+    width: 23px !important;
+    font-size: 10px !important;
+  }
+
+  #main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity-input {
+    width: 28px !important;
+    font-size: 11px !important;
+  }
+
+  #main-cart-items .cart-items-footer {
+    margin-top: 10px !important;
+  }
+}
