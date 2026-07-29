@@ -538,14 +538,52 @@
             <span class="visually-hidden">{{ 'general.product_information.share_label' | t }}</span>
           </a>
         </div>
-        <div id="social-sharing" class="social-sharing modal-popup-main mfp-hide">
-          {%- assign url = shop.url | append: product.url -%}
-          <label class="mb-2 alt-font">{{ 'general.product_information.copy_link_label' | t }}</label>
-          <div class="d-flex align-items-center mb-2 mb-md-4">
-            <input type="text" class="form-control" value="{{ url }}" id="copyText">
-            <a href="#" class="ms-3 copy-icon position-relative" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy to clipboard" data-bs-trigger="hover" onclick="copyText(this);return false;" aria-label="link"><i class="bi bi-files"></i></a>
+        <div
+          id="social-sharing"
+          class="social-sharing modal-popup-main mfp-hide tvastra-product-share"
+          data-tvastra-product-share
+          data-share-title="{{ product.title | escape }}"
+          data-share-image="{% if product.featured_image != blank %}https:{{ product.featured_image | image_url: width: 1200 }}{% endif %}"
+        >
+          <div class="tvastra-product-share__header">
+            <span class="tvastra-product-share__eyebrow">Share this product</span>
+            <h3 class="tvastra-product-share__title alt-font">{{ product.title | escape }}</h3>
           </div>
-          {%- render 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product.featured_image, social_style_on: true -%}
+
+          <div class="tvastra-product-share__actions" aria-label="Share options">
+            <a class="tvastra-product-share__action tvastra-product-share__action--whatsapp" data-tvastra-share-channel="whatsapp" href="#" target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp">
+              <i class="bi bi-whatsapp" aria-hidden="true"></i><span>WhatsApp</span>
+            </a>
+            <a class="tvastra-product-share__action" data-tvastra-share-channel="facebook" href="#" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook">
+              <i class="bi bi-facebook" aria-hidden="true"></i><span>Facebook</span>
+            </a>
+            <a class="tvastra-product-share__action" data-tvastra-share-channel="x" href="#" target="_blank" rel="noopener noreferrer" aria-label="Share on X">
+              <i class="bi bi-twitter-x" aria-hidden="true"></i><span>X</span>
+            </a>
+            <a class="tvastra-product-share__action" data-tvastra-share-channel="pinterest" href="#" target="_blank" rel="noopener noreferrer" aria-label="Share on Pinterest">
+              <i class="bi bi-pinterest" aria-hidden="true"></i><span>Pinterest</span>
+            </a>
+            <a class="tvastra-product-share__action" data-tvastra-share-channel="telegram" href="#" target="_blank" rel="noopener noreferrer" aria-label="Share on Telegram">
+              <i class="bi bi-telegram" aria-hidden="true"></i><span>Telegram</span>
+            </a>
+            <a class="tvastra-product-share__action" data-tvastra-share-channel="email" href="#" aria-label="Share by email">
+              <i class="bi bi-envelope" aria-hidden="true"></i><span>Email</span>
+            </a>
+            <button class="tvastra-product-share__action" type="button" data-tvastra-native-share hidden aria-label="Share using another app">
+              <i class="bi bi-share" aria-hidden="true"></i><span>More apps</span>
+            </button>
+          </div>
+
+          <div class="tvastra-product-share__copy">
+            <label class="tvastra-product-share__copy-label" for="tvastra-share-url-{{ section_id }}">Product link</label>
+            <div class="tvastra-product-share__copy-row">
+              <input id="tvastra-share-url-{{ section_id }}" class="tvastra-product-share__url" type="text" value="{{ canonical_url }}" readonly data-tvastra-share-url aria-label="Current product link">
+              <button class="tvastra-product-share__copy-button" type="button" data-tvastra-copy-share>
+                <i class="bi bi-copy" aria-hidden="true"></i><span>Copy</span>
+              </button>
+            </div>
+            <span class="tvastra-product-share__status" data-tvastra-share-status role="status" aria-live="polite"></span>
+          </div>
         </div>
       {%- endif -%}
     </div>
