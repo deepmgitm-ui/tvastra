@@ -10,6 +10,12 @@ class ProductForm extends HTMLElement {
     const submitButton = this.querySelector('[type="submit"]');
     submitButton.setAttribute('disabled', true);
     submitButton.classList.add('loading');
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      submitButton.classList.remove('tvastra-add-pending');
+      void submitButton.offsetWidth;
+      submitButton.classList.add('tvastra-add-pending');
+      window.setTimeout(() => submitButton.classList.remove('tvastra-add-pending'), 520);
+    }
     this.cartNotification?.setActiveElement(document.activeElement);
     const fetchData = {
       method: 'POST',
