@@ -4616,3 +4616,57 @@ html body [class*="spur" i] form label {
   border-left: 1px solid #e8e3dc !important;
   text-align: center !important;
 }
+
+/* Use text symbols for quantity controls so icon-font rules cannot swap - for +. */
+#main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity.qty-small .quantity-button::before,
+#main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity.qty-small .quantity-button::after,
+#cart-notification .cart-product-info .quantity-button::before,
+#cart-notification .cart-product-info .quantity-button::after {
+  font-family: Arial, sans-serif !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 1 !important;
+}
+
+#main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity.qty-small .quantity-button::before,
+#cart-notification .cart-product-info .quantity-button::before {
+  display: none !important;
+  content: none !important;
+}
+
+#main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity.qty-small .quantity-minus::after,
+#cart-notification .cart-product-info .quantity-minus::after {
+  display: block !important;
+  content: "-" !important;
+  font-size: 14px !important;
+}
+
+#main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity.qty-small .quantity-plus::after,
+#cart-notification .cart-product-info .quantity-plus::after {
+  display: block !important;
+  content: "+" !important;
+  font-size: 14px !important;
+}
+
+#main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity.qty-small .quantity-input,
+#cart-notification .cart-product-info .quantity-input {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  -webkit-appearance: textfield !important;
+  appearance: textfield !important;
+  color: #17211f !important;
+  -webkit-text-fill-color: #17211f !important;
+  background: #fff !important;
+  font-family: inherit !important;
+  line-height: 26px !important;
+  text-indent: 0 !important;
+}
+
+#main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity.qty-small .quantity-input::-webkit-inner-spin-button,
+#main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity.qty-small .quantity-input::-webkit-outer-spin-button,
+#cart-notification .cart-product-info .quantity-input::-webkit-inner-spin-button,
+#cart-notification .cart-product-info .quantity-input::-webkit-outer-spin-button {
+  margin: 0 !important;
+  -webkit-appearance: none !important;
+}
