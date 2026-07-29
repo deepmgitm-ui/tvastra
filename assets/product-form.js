@@ -149,6 +149,30 @@ class ProductForm extends HTMLElement {
   }
 }
 customElements.define('product-form', ProductForm);
+
+if (!window.tvastraCartFeedbackBound) {
+  window.tvastraCartFeedbackBound = true;
+
+  document.addEventListener('tvastra:product-added', (event) => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const replayAnimation = (element, className, duration) => {
+      if (!element) return;
+      element.classList.remove(className);
+      void element.offsetWidth;
+      element.classList.add(className);
+      window.setTimeout(() => element.classList.remove(className), duration);
+    };
+
+    const productForm = event.detail?.productForm;
+    replayAnimation(productForm?.querySelector('[name="add"]'), 'tvastra-added-feedback', 560);
+
+    document.querySelectorAll('[cart-icon-bubble], .sticky-menu-item.sticky-cart').forEach((cartTrigger) => {
+      replayAnimation(cartTrigger, 'tvastra-cart-shake', 620);
+    });
+  });
+}
+
 // bought together js
 if ($(".bought-together").length > 0) {
   document.querySelectorAll(".bought-together-varinat-option").forEach((e => {
