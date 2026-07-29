@@ -4673,3 +4673,15 @@ html body [class*="spur" i] form label {
   line-height: 1 !important;
   text-align: center !important;
 }
+
+/* Drawer shows one real total only; detailed price breakdown belongs on /cart. */
+#cart-notification [data-cart-bottom] .tvastra-cart-price-summary,
+#cart-notification [data-cart-bottom] [data-tvastra-cart-summary],
+#cart-notification [data-cart-bottom] .cart-subtotal,
+#cart-notification [data-cart-bottom] .tvastra-cart-drawer-saving {
+  display: none !important;
+}
+
+#cart-notification [data-tvastra-drawer-total-only] {
+  display: block !important;
+}

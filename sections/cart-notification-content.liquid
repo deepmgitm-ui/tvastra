@@ -118,7 +118,7 @@
       </div>
     </div>
       {%- render 'cart-notification-addon' -%}
-      <div class="cart-notification-totals-wrapper alt-font">
+      <div class="cart-notification-totals-wrapper alt-font" data-tvastra-drawer-total-only>
         <div class="tvastra-cart-drawer-total" aria-label="Total bill">
           <span>Total bill</span>
           <strong>{{ cart.total_price | money }}</strong>
