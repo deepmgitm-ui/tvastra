@@ -116,3 +116,130 @@
     animation: none !important;
   }
 }
+
+/* Keep the purchase flow borderless while preserving clear visual hierarchy. */
+.main-product-page .product-colour-family,
+.main-product-page .product-variants fieldset.product-filter,
+.main-product-page .product-variants fieldset.size-filter,
+.main-product-page .product-form-buttons {
+  border: 0 !important;
+}
+
+.main-product-page .product-colour-family {
+  margin: 0 !important;
+  padding: 4px 0 6px !important;
+}
+
+.main-product-page .product-colour-family__label,
+.main-product-page .product-variants .form-label {
+  margin: 0 0 4px !important;
+  color: #203236 !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  line-height: 1.2 !important;
+}
+
+.main-product-page .product-variants {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.main-product-page .product-variants fieldset.product-filter {
+  margin: 0 !important;
+  padding: 5px 0 6px !important;
+}
+
+.main-product-page .product-form-buttons {
+  margin: 4px 0 7px !important;
+  padding-top: 0 !important;
+}
+
+.main-product-page .product-assurance-strip {
+  gap: 5px 9px !important;
+  margin: 6px 0 0 !important;
+  color: #68716e !important;
+  font-size: 10px !important;
+}
+
+.main-product-page .product-assurance-strip span::before {
+  width: 4px !important;
+  height: 4px !important;
+  background: #9a7a2f !important;
+}
+
+.main-product-page .shipping-info {
+  gap: 0 !important;
+  margin: 3px 0 5px !important;
+  padding: 0 !important;
+}
+
+.main-product-page .shipping-info li {
+  gap: 7px !important;
+  padding: 6px 0 !important;
+  border: 0 !important;
+  color: #203236 !important;
+  font-size: 12px !important;
+}
+
+.main-product-page .shipping-info li i {
+  color: #27474c !important;
+  font-size: 14px !important;
+}
+
+.main-product-page .shipping-info p {
+  margin: 0 !important;
+}
+
+.main-product-page .trust-badge.product-trust-card {
+  margin: 5px 0 8px !important;
+  padding: 9px 10px !important;
+  border: 0 !important;
+  border-radius: 6px !important;
+  background: #f5f7f5 !important;
+  box-shadow: none !important;
+}
+
+.main-product-page .product-trust-card__copy {
+  gap: 1px !important;
+}
+
+.main-product-page .product-trust-card__eyebrow {
+  color: #63706c !important;
+  font-size: 9px !important;
+  letter-spacing: 0 !important;
+}
+
+.main-product-page .product-trust-card__title {
+  color: #203236 !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+}
+
+.main-product-page .product-trust-card__note {
+  padding-top: 4px !important;
+  border-top: 0 !important;
+}
+
+@media (max-width: 767px) {
+  .main-product-page .product-colour-family {
+    padding: 3px 0 5px !important;
+  }
+
+  .main-product-page .product-variants fieldset.product-filter {
+    padding: 4px 0 5px !important;
+  }
+
+  .main-product-page .product-form-buttons.product-cta-smart {
+    border-top: 0 !important;
+    box-shadow: 0 -8px 24px rgba(20, 34, 36, .11) !important;
+  }
+
+  .main-product-page .shipping-info li {
+    padding: 5px 0 !important;
+  }
+
+  .main-product-page .trust-badge.product-trust-card {
+    margin: 4px 0 7px !important;
+    padding: 8px 9px !important;
+  }
+}
