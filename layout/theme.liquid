@@ -849,7 +849,7 @@
 
   document.addEventListener('click', function (event) {
     var btn = closest(event.target, '[name="add"], .cart-btn, .product-buy-now-inline, .shopify-payment-button, .shopify-payment-button__button, custom-btn, [data-testid="Checkout-button"]');
-    if (btn) blockIfSizeMissing(btn, event);
+    if (btn && !btn.classList.contains('notify-me')) blockIfSizeMissing(btn, event);
   }, true);
 
   document.addEventListener('submit', function (event) {
