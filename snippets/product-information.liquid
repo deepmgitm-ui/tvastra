@@ -348,8 +348,8 @@
           </div>
         {%- endif -%}
       {%- when 'buy_buttons' -%}
-        {%- if block.settings.show_add_to_cart or block.settings.show_dynamic_checkout -%}
-          <product-form class="product-form{% if purchase_btn == false %} purchase-mode-off{% endif %}" data-backinstock="{{ block.settings.collect_back_in_stock }}"> 
+        {%- if block.settings.show_add_to_cart or block.settings.show_dynamic_checkout or product.selected_or_first_available_variant.available == false -%}
+          <product-form class="product-form{% if purchase_btn == false %} purchase-mode-off{% endif %}" data-backinstock="true">
             {%- unless purchase_btn == false -%} 
               {%- form 'product', product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
                 {%- if product_group != blank -%}
@@ -372,7 +372,7 @@
                     <input type="hidden" name="properties[_isPreorder]" value="Yes" autocomplete="off" readonly />
                   {%- endif -%} 
                 {%- endif -%}
-                <div class="product-form-buttons product-cta-smart {% if product.selected_or_first_available_variant.available == false and block.settings.collect_back_in_stock == false %}disabled-btn sold-out{% endif %}">
+                <div class="product-form-buttons product-cta-smart{% unless product.selected_or_first_available_variant.available %} is-notify-only{% endunless %}">
                   <div class="action-btn d-flex {% if block.settings.show_add_to_cart == true %}justify-content-between{% endif %} align-items-end{% if block.settings.show_wishlist %} has-wishlist{% endif %}{% if block.settings.show_dynamic_checkout %} has-buy-now{% endif %}">
                     {%- unless product_group != blank -%} 
                     <div class="quantity-btn d-flex flex-md-column align-items-center align-items-md-start">
@@ -389,8 +389,8 @@
                       </quantity-input>
                     </div>
                     {%- endunless -%}
-                    {%- if block.settings.show_add_to_cart -%}
-                      <button type="submit" name="add" id="cart-btn-{{ section_id }}" class="cart-btn alt-font{% unless  product.selected_or_first_available_variant.available %} notify-me{% endunless %}">
+                    {%- if block.settings.show_add_to_cart or product.selected_or_first_available_variant.available == false -%}
+                      <button type="{% if product.selected_or_first_available_variant.available %}submit{% else %}button{% endif %}" name="add" id="cart-btn-{{ section_id }}" class="cart-btn alt-font{% unless product.selected_or_first_available_variant.available %} notify-me{% endunless %}">
                           <i class="feather-shopping-bag"></i>
                           {%- if product.selected_or_first_available_variant.available -%}
                             {%- if product.selected_or_first_available_variant.incoming and product.selected_or_first_available_variant.inventory_quantity < 1 -%}
@@ -399,11 +399,7 @@
                               <span>{{ 'products.product.add_to_cart' | t }}</span> 
                             {%- endif -%}
                           {%- else -%}
-                            {%- if block.settings.collect_back_in_stock != false -%}
-                              <span class="notify-text-btn" data-notify-text="{{ 'general.product_information.notify_text' | t }}">{{ 'general.product_information.notify_text' | t }}</span>
-                            {%- else -%}
-                              <span>{{ 'products.product.sold_out' | t }}</span>
-                            {%- endif -%}
+                            <span class="notify-text-btn" data-notify-text="Notify me when back in stock">Notify me when back in stock</span>
                           {%- endif -%}
                       </button>
                     {%- endif -%}
@@ -456,9 +452,7 @@
           {%- endcapture -%}
           {{ pre-orde }}
         </div>
-        {%- if block.settings.collect_back_in_stock != false -%}
-          {%- render 'back-in-stock-block', block_settings: block.settings -%}
-        {%- endif -%}
+        {%- render 'back-in-stock-block', block_settings: block.settings -%}
              {%- form 'contact', id: 'ContactForm-Outofstock' -%}
               {%- if form.posted_successfully? -%}
               <div class="form-status-message" tabindex="-1" autofocus><i class="feather-check-circle"></i> {{ 'templates.contact.form.post_success' | t }}</div>

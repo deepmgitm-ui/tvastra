@@ -335,11 +335,14 @@ class VariantSelects extends HTMLElement {
   toggleAddButton(disable = true, text, modifyClass = true) {
     const addButton = document.getElementById(`product-form-${this.dataset.section}`)?.querySelector('[name="add"]');
     if (!addButton) return;
+    const productButtons = addButton.closest('.product-form-buttons');
     if (disable == true) {
       if (window.isBackInStock == true && this.currentVariant) {
         addButton.classList.add('notify-me');
+        addButton.setAttribute('type', 'button');
         addButton.removeAttribute('disabled');
-        if (text) addButton.innerHTML = 'Notify me when available';
+        productButtons?.classList.add('is-notify-only');
+        addButton.innerHTML = '<span class="notify-text-btn">Notify me when back in stock</span>';
         $('.shopify-payment-button').hide();
         const productImgSrc = this.currentVariant.featured_image.src,
               productVariantsTitle = this.currentVariant.title,
@@ -360,6 +363,8 @@ class VariantSelects extends HTMLElement {
       else{
         $('.notify-me').off('click')
         addButton.classList.remove('notify-me');
+        addButton.setAttribute('type', 'button');
+        productButtons?.classList.add('is-notify-only');
         addButton.setAttribute('disabled', true);
         document.querySelector('.product-summary .product-form-buttons')?.classList.add('disabled-btn');
         if (text) addButton.innerHTML = text;
@@ -368,6 +373,8 @@ class VariantSelects extends HTMLElement {
       $('.product-form__error-message-wrapper').addClass("d-none");
       $('.notify-me').off('click')
       addButton.classList.remove('notify-me');
+      addButton.setAttribute('type', 'submit');
+      productButtons?.classList.remove('is-notify-only');
       $('.shopify-payment-button').show();
       addButton.removeAttribute('disabled');
       //addButton.innerHTML = window.variantStrings.addToCart;

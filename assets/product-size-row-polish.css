@@ -611,3 +611,43 @@ body .main-product-page .product-form-buttons.product-cta-smart.is-cart-active .
   min-width: 26px !important;
   max-width: 26px !important;
 }
+
+/* Out-of-stock purchase state: one clear notification action only. */
+body .main-product-page .product-form-buttons.product-cta-smart.is-notify-only .action-btn,
+body .main-product-page .product-form-buttons.product-cta-smart.is-notify-only .action-btn:not(.has-wishlist) {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 0 !important;
+}
+
+body .main-product-page .product-form-buttons.product-cta-smart.is-notify-only .action-btn > :not(.cart-btn),
+body .main-product-page .product-form-buttons.product-cta-smart.is-notify-only .product-assurance-strip {
+  display: none !important;
+}
+
+body .main-product-page .product-form-buttons.product-cta-smart.is-notify-only .cart-btn.notify-me {
+  display: inline-flex !important;
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  padding: 0 16px !important;
+  border: 1px solid #173f45 !important;
+  border-radius: 6px !important;
+  background: #173f45 !important;
+  color: #fff !important;
+  box-shadow: 0 6px 16px rgba(8, 43, 52, .14) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
+
+body .main-product-page .product-form-buttons.product-cta-smart.is-notify-only .cart-btn.notify-me i {
+  display: none !important;
+}
