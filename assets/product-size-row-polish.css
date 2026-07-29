@@ -318,18 +318,29 @@
 }
 
 @keyframes tvastra-add-submit-feedback {
-  0%,
+  0% {
+    transform: translateX(0) scale(1);
+    box-shadow: 0 0 0 rgba(8, 43, 52, 0);
+  }
+  16% {
+    transform: translateX(-3px) scale(.965);
+  }
+  32% {
+    transform: translateX(3px) scale(.975);
+  }
+  48% {
+    transform: translateX(-2px) scale(.985);
+  }
+  64% {
+    transform: translateX(2px) scale(1.01);
+    box-shadow: 0 8px 18px rgba(8, 43, 52, .22);
+  }
+  82% {
+    transform: translateX(0) scale(.995);
+  }
   100% {
-    transform: scale(1);
-  }
-  24% {
-    transform: scale(.955);
-  }
-  52% {
-    transform: scale(1.025);
-  }
-  76% {
-    transform: scale(.99);
+    transform: translateX(0) scale(1);
+    box-shadow: 0 0 0 rgba(8, 43, 52, 0);
   }
 }
 
@@ -349,6 +360,7 @@
 .main-product-page .cart-btn.tvastra-add-pending {
   animation: tvastra-add-submit-feedback 500ms cubic-bezier(.22, 1, .36, 1) !important;
   transform-origin: center !important;
+  will-change: transform, box-shadow;
 }
 
 .main-product-page .cart-btn.tvastra-add-pending i {
@@ -368,20 +380,21 @@
 
 .main-product-page .product-form-buttons.product-cta-smart.is-cart-active .action-btn,
 .main-product-page .product-form-buttons.product-cta-smart.is-cart-active .action-btn:not(.has-wishlist) {
-  grid-template-columns: 64px minmax(0, 1fr) minmax(0, 1fr) 36px !important;
+  grid-template-columns: 72px minmax(0, 1fr) minmax(0, 1fr) 36px !important;
 }
 
 .main-product-page .product-form-buttons.product-cta-smart .quantity-btn {
   display: none !important;
-  width: 64px !important;
-  min-width: 0 !important;
+  width: 72px !important;
+  min-width: 72px !important;
   height: 36px !important;
   min-height: 36px !important;
   align-self: stretch !important;
   align-items: stretch !important;
   margin: 0 !important;
   padding: 0 !important;
-  overflow: hidden !important;
+  overflow: visible !important;
+  box-sizing: border-box !important;
 }
 
 .main-product-page .product-form-buttons.product-cta-smart.is-cart-active .quantity-btn {
@@ -390,15 +403,18 @@
 
 .main-product-page .product-form-buttons.product-cta-smart .quantity {
   display: grid !important;
-  grid-template-columns: 20px minmax(22px, 1fr) 20px !important;
-  width: 64px !important;
-  min-width: 64px !important;
+  grid-template-columns: 22px minmax(26px, 1fr) 22px !important;
+  width: 72px !important;
+  min-width: 72px !important;
   height: 36px !important;
   min-height: 36px !important;
   margin: 0 !important;
   padding: 0 !important;
   align-items: stretch !important;
   overflow: hidden !important;
+  border: 1px solid #ccd6d2 !important;
+  border-radius: 6px !important;
+  background: #fff !important;
   box-sizing: border-box !important;
 }
 
@@ -418,9 +434,30 @@
 }
 
 .main-product-page .product-form-buttons.product-cta-smart .quantity-button {
-  width: 20px !important;
-  min-width: 20px !important;
+  display: inline-flex !important;
+  position: static !important;
+  width: 22px !important;
+  min-width: 22px !important;
+  align-items: center !important;
+  justify-content: center !important;
   padding: 0 !important;
+  border: 0 !important;
+  background: #f7f9f8 !important;
+  color: #17363a !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .quantity-button[hidden] {
+  display: inline-flex !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .quantity-minus {
+  border-right: 1px solid #e2e8e5 !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .quantity-plus {
+  border-left: 1px solid #e2e8e5 !important;
 }
 
 .main-product-page .product-form-buttons.product-cta-smart .quantity-input {
@@ -428,6 +465,15 @@
   min-width: 0 !important;
   padding: 0 !important;
   text-align: center !important;
+  appearance: textfield !important;
+  -moz-appearance: textfield !important;
+}
+
+.main-product-page .product-form-buttons.product-cta-smart .quantity-input::-webkit-inner-spin-button,
+.main-product-page .product-form-buttons.product-cta-smart .quantity-input::-webkit-outer-spin-button {
+  margin: 0 !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
 }
 
 .main-product-page .product-form-buttons.product-cta-smart .cart-btn,
@@ -524,4 +570,44 @@
   .main-product-page .cart-btn.tvastra-add-pending i {
     animation: none !important;
   }
+}
+
+/* Keep the active quantity control intact against older responsive theme rules. */
+body .main-product-page .product-form-buttons.product-cta-smart.is-cart-active .action-btn,
+body .main-product-page .product-form-buttons.product-cta-smart.is-cart-active .action-btn:not(.has-wishlist) {
+  grid-template-columns: 72px minmax(0, 1fr) minmax(0, 1fr) 36px !important;
+}
+
+body .main-product-page .product-form-buttons.product-cta-smart.is-cart-active .quantity-btn,
+body .main-product-page .product-form-buttons.product-cta-smart.is-cart-active .quantity {
+  width: 72px !important;
+  min-width: 72px !important;
+  max-width: 72px !important;
+}
+
+body .main-product-page .product-form-buttons.product-cta-smart.is-cart-active .quantity-btn {
+  display: block !important;
+  overflow: visible !important;
+}
+
+body .main-product-page .product-form-buttons.product-cta-smart.is-cart-active .quantity {
+  display: grid !important;
+  grid-template-columns: 22px 26px 22px !important;
+  overflow: hidden !important;
+}
+
+body .main-product-page .product-form-buttons.product-cta-smart.is-cart-active .quantity-button {
+  display: inline-flex !important;
+  position: static !important;
+  width: 22px !important;
+  min-width: 22px !important;
+  max-width: 22px !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+body .main-product-page .product-form-buttons.product-cta-smart.is-cart-active .quantity-input {
+  width: 26px !important;
+  min-width: 26px !important;
+  max-width: 26px !important;
 }
