@@ -18,7 +18,7 @@
     {%- render 'seo-title' -%}
     {%- render 'meta-tags' -%} 
     <link rel="preload" as="style" href="{{ 'base.min.css' | asset_url }}">
-    <script src="{{ 'global.js' | asset_url }}&fix=quantity-target-v3" defer="defer"></script>
+    <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
 
     {{ content_for_header }}
     {%- unless settings.use_body_google_font == true or settings.alt_google_fonts == true -%}

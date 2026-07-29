@@ -380,12 +380,12 @@
                       <label>{{ 'general.product_information.quantity' | t }}</label>
                       <quantity-input class="quantity">
                         <button class="quantity-button quantity-minus" name="minus" type="button" aria-label="Decrease quantity">
-                          <span class="tvastra-quantity-symbol" aria-hidden="true">-</span>
+                          <span class="tvastra-quantity-symbol" aria-hidden="true" style="pointer-events: none;">-</span>
                         </button>
                         <input id="Quantity-{{ section_id }}" class="quantity-input" type="number" name="quantity" min="0" value="1" form="product-form-{{ section_id }}" />
                         <label for="Quantity-{{ section_id }}" class="visually-hidden">Quantity</label>
                         <button class="quantity-button quantity-plus" name="plus" type="button" aria-label="Increase quantity">
-                          <span class="tvastra-quantity-symbol" aria-hidden="true">+</span>
+                          <span class="tvastra-quantity-symbol" aria-hidden="true" style="pointer-events: none;">+</span>
                         </button>
                       </quantity-input>
                     </div>

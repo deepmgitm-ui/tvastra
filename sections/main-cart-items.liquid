@@ -151,7 +151,7 @@
                             <td class="cart-item-quantity alt-font" data-label="{{ 'sections.cart.headings.quantity' | t }}">
                               <quantity-input class="quantity qty-small">
                                 <button class="quantity-button quantity-minus" name="minus" type="button" data-toggle="true" aria-label="Decrease quantity">
-                                  <span class="tvastra-quantity-symbol" aria-hidden="true">-</span>
+                                  <span class="tvastra-quantity-symbol" aria-hidden="true" style="pointer-events: none;">-</span>
                                 </button>
                                 <input class="quantity-input" 
                                   autocomplete="off" 
@@ -171,7 +171,7 @@
                                 />
                                 <label for="Quantity-{{ item.index | plus: 1 }}" class="visually-hidden">Quantity</label>
                                 <button class="quantity-button quantity-plus" name="plus" type="button" data-toggle="true" aria-label="Increase quantity">
-                                  <span class="tvastra-quantity-symbol" aria-hidden="true">+</span>
+                                  <span class="tvastra-quantity-symbol" aria-hidden="true" style="pointer-events: none;">+</span>
                                 </button>
                               </quantity-input>
                             </td>
