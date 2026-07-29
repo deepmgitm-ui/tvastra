@@ -4543,3 +4543,76 @@ html body [class*="spur" i] form label {
     margin-top: 10px !important;
   }
 }
+
+/* Keep quantity controls visually separated: - | number | +. */
+#main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity.qty-small {
+  display: grid !important;
+  grid-template-columns: 24px 28px 24px !important;
+  align-items: center !important;
+  justify-content: start !important;
+  gap: 0 !important;
+  width: 76px !important;
+  height: 28px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 1px solid #ded9d1 !important;
+  border-radius: 7px !important;
+  background: #fff !important;
+}
+
+#main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity.qty-small .quantity-button,
+#main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity.qty-small .quantity-input {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 26px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+#main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity.qty-small .quantity-button {
+  width: 24px !important;
+  color: #233331 !important;
+  font-size: 10px !important;
+}
+
+#main-cart-items .cart-items tbody tr > .cart-item-quantity .quantity.qty-small .quantity-input {
+  width: 28px !important;
+  border-right: 1px solid #e8e3dc !important;
+  border-left: 1px solid #e8e3dc !important;
+  color: #17211f !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+  appearance: textfield !important;
+}
+
+#cart-notification .cart-product-info .quantity {
+  display: grid !important;
+  grid-template-columns: 21px 26px 21px !important;
+  align-items: center !important;
+  gap: 0 !important;
+  width: 70px !important;
+  height: 25px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+#cart-notification .cart-product-info .quantity-button,
+#cart-notification .cart-product-info .quantity-input {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+#cart-notification .cart-product-info .quantity-input {
+  border-right: 1px solid #e8e3dc !important;
+  border-left: 1px solid #e8e3dc !important;
+  text-align: center !important;
+}
