@@ -197,7 +197,8 @@
     var form = getForm(buttons);
     if (form) {
       buttons.addEventListener('click', function (event) {
-        if (!getPurchaseTrigger(event.target)) return;
+        var purchaseTrigger = getPurchaseTrigger(event.target);
+        if (!purchaseTrigger || purchaseTrigger.classList.contains('notify-me')) return;
         if (shouldPromptVariantChoice(form)) promptVariantChoice(form, event);
       }, true);
 
