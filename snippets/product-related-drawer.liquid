@@ -11,8 +11,8 @@
 -%}
 
 {%- if related_products != blank and trigger_product != blank -%}
-  <link rel="stylesheet" href="{{ 'product-related-drawer.css' | asset_url | split: '?' | first }}?v=2">
-  <script src="{{ 'product-related-drawer.js' | asset_url | split: '?' | first }}?v=1" defer="defer"></script>
+  <link rel="stylesheet" href="{{ 'product-related-drawer.css' | asset_url | split: '?' | first }}?v=3">
+  <script src="{{ 'product-related-drawer.js' | asset_url | split: '?' | first }}?v=2" defer="defer"></script>
 
   <related-products-drawer class="tvastra-related-drawer" data-related-products-drawer>
     <button
@@ -22,11 +22,12 @@
       aria-controls="{{ drawer_id }}"
       aria-expanded="false"
       data-related-products-open
+      hidden
     >
       <span class="tvastra-related-drawer__trigger-icon" aria-hidden="true">
         <i class="bi bi-collection"></i>
       </span>
-      <span class="visually-hidden">Similar products</span>
+      <span class="tvastra-related-drawer__trigger-label">Related products</span>
     </button>
 
     <div class="tvastra-related-drawer__backdrop" data-related-products-close hidden></div>
