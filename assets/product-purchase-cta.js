@@ -252,13 +252,7 @@
   function updateStickyScope() {
     stickyScopeFrame = null;
     var buttons = document.querySelector(selector);
-    var section = buttons && buttons.closest('.main-product-page');
-    var isActive = false;
-
-    if (buttons && section && isMobileViewport()) {
-      var rect = section.getBoundingClientRect();
-      isActive = rect.top < window.innerHeight && rect.bottom > window.innerHeight + 72;
-    }
+    var isActive = !!buttons && isMobileViewport();
 
     document.body.classList.toggle('tvastra-product-sticky-cta', isActive);
     if (buttons) buttons.classList.toggle('is-sticky-active', isActive);
