@@ -39,7 +39,7 @@
     assign has_custom_swatches = true
   endif
 -%}
-<div class="box-inner">
+<div class="box-inner{% unless product_card_product.available %} tvastra-card-out-of-stock{% endunless %}">
     <div class="product-image position-relative overflow-hidden"> 
         {%- if show_image_slider == true -%}
           <div class="swiper product-image-slider" {% if slider_options %}data-slider-options='{{ slider_options }}'{% endif %}>

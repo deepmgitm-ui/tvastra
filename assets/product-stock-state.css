@@ -1,0 +1,68 @@
+.product-box .box-inner.tvastra-card-out-of-stock .product-image {
+  position: relative;
+}
+
+.product-box .box-inner.tvastra-card-out-of-stock .product-image img {
+  filter: grayscale(.62) saturate(.58);
+  opacity: .72;
+  transition: filter .2s ease, opacity .2s ease;
+}
+
+.product-box .box-inner.tvastra-card-out-of-stock .image-inner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: rgba(48, 57, 55, .06);
+  pointer-events: none;
+}
+
+.product-box .tvastra-stock-badge-wrap {
+  position: absolute !important;
+  top: 10px !important;
+  left: 10px !important;
+  z-index: 5 !important;
+  width: auto !important;
+  margin: 0 !important;
+  pointer-events: none;
+}
+
+.product-box .tvastra-card-stock-badge {
+  display: inline-flex !important;
+  width: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  align-items: center;
+  justify-content: center;
+  margin: 0 !important;
+  padding: 6px 9px !important;
+  border: 1px solid rgba(255, 255, 255, .35) !important;
+  border-radius: 5px !important;
+  background: rgba(30, 40, 41, .9) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px rgba(20, 28, 28, .16) !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  white-space: nowrap;
+}
+
+@media (max-width: 479px) {
+  .product-box .tvastra-stock-badge-wrap {
+    top: 8px !important;
+    left: 8px !important;
+  }
+
+  .product-box .tvastra-card-stock-badge {
+    padding: 5px 7px !important;
+    font-size: 9px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-box .box-inner.tvastra-card-out-of-stock .product-image img {
+    transition: none;
+  }
+}

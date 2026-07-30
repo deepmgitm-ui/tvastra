@@ -11,7 +11,7 @@
 -%}
 
 {%- if related_products != blank and trigger_product != blank -%}
-  <link rel="stylesheet" href="{{ 'product-related-drawer.css' | asset_url | split: '?' | first }}?v=4">
+  <link rel="stylesheet" href="{{ 'product-related-drawer.css' | asset_url | split: '?' | first }}?v=5">
   <script src="{{ 'product-related-drawer.js' | asset_url | split: '?' | first }}?v=2" defer="defer"></script>
 
   <related-products-drawer class="tvastra-related-drawer" data-related-products-drawer>
@@ -71,7 +71,7 @@
                 assign discount_percent = saving | times: 100.0 | divided_by: related_variant.compare_at_price | round
               endif
             -%}
-            <article class="tvastra-related-card" role="listitem">
+            <article class="tvastra-related-card{% unless related_product.available %} is-out-of-stock{% endunless %}" role="listitem">
               <a class="tvastra-related-card__link" href="{{ related_product.url }}" aria-label="View {{ related_product.title | escape }}">
                 <div class="tvastra-related-card__media">
                   {%- if related_product.featured_image != blank -%}
@@ -88,7 +88,7 @@
                     {{ 'product-1' | placeholder_svg_tag: 'tvastra-related-card__placeholder' }}
                   {%- endif -%}
                   {%- unless related_product.available -%}
-                    <span class="tvastra-related-card__status">Sold out</span>
+                    <span class="tvastra-related-card__status">Out of stock</span>
                   {%- endunless -%}
                 </div>
                 <div class="tvastra-related-card__content">

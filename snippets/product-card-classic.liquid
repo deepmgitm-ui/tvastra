@@ -29,7 +29,7 @@
     assign login_to_see = false
   endif
 -%}
-<div class="box-inner">
+<div class="box-inner{% unless product_card_product.available %} tvastra-card-out-of-stock{% endunless %}">
   <div class="product-image position-relative">
     <div class="image-inner position-relative overflow-hidden">
       {%- if show_image_slider == true -%}

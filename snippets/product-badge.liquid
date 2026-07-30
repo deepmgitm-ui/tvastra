@@ -1,7 +1,6 @@
 {%- liquid
   assign display_label = settings.display_label
   assign sale_label_type = settings.sale_label_type
-  assign sold_out_label_text = settings.sold_out_label_text
   assign sale_label_text = settings.sale_label_text
   assign new_label_text = settings.new_label_text
 -%} 
@@ -10,12 +9,12 @@
 {%- else -%}
   {%- assign product_variant = product_for_badge -%}
 {%- endif -%}
-{%- if display_label == true -%}  
+{%- if product_variant.available == false -%}
+  <div class="badge-wrap tvastra-stock-badge-wrap d-flex align-items-start alt-font">
+    <span class="badge sold-out tvastra-card-stock-badge">Out of stock</span>
+  </div>
+{%- elsif display_label == true -%}
   <div class="badge-wrap d-flex align-items-start alt-font">
-    {%- comment -%} Sold out label {%- endcomment -%}
-    {%- if product_variant.available == false and sold_out_label_text != blank -%}
-      <span class="badge sold-out" aria-hidden="true">{{ sold_out_label_text }}</span>
-    {%- endif -%} 
     {%- comment -%} Sale label {%- endcomment -%}
     {%- if product_variant.compare_at_price > product_variant.price -%}
       {%- if sale_label_type == 'discount' -%}

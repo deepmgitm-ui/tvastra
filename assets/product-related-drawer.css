@@ -229,14 +229,28 @@
   object-fit: contain;
 }
 
+.tvastra-related-card.is-out-of-stock .tvastra-related-card__media img {
+  filter: grayscale(.62) saturate(.58);
+  opacity: .72;
+}
+
+.tvastra-related-card.is-out-of-stock .tvastra-related-card__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(48, 57, 55, .06);
+  pointer-events: none;
+}
+
 .tvastra-related-card__status {
   position: absolute;
   right: 7px;
   bottom: 7px;
   padding: 4px 6px;
   border-radius: 4px;
-  background: rgba(255, 255, 255, .94);
-  color: #6c4949;
+  z-index: 1;
+  background: rgba(30, 40, 41, .9);
+  color: #fff;
   font-size: 9px;
   font-weight: 600;
   line-height: 1;
