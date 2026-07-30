@@ -336,6 +336,7 @@
               </variant-radios>
             {%- endunless -%}
           </div>
+          {%- render 'product-confidence-block', product: product -%}
         {%- endunless -%}  
       {%- when 'product_deal' -%}  
         {%- capture product_deal -%}
@@ -421,6 +422,8 @@
                   </div>
                 </div>
               {%- endform -%}
+              {%- render 'product-performance-proof', product: product -%}
+              {%- render 'product-faq-block' -%}
             {%- else -%}
                 {%- if block.settings.show_wishlist -%}
                     {%- render 'button-wishlist', product: product, tooltip_position: 'top' -%}

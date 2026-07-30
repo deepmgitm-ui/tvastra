@@ -1,0 +1,42 @@
+{%- liquid
+  assign fabric_highlights = product.metafields.custom.fabric_highlights.value | default: product.metafields.custom.fabric_highlights
+  assign fabric_items = fabric_highlights | split: ','
+-%}
+
+<section class="tvastra-performance-proof" aria-label="Product performance highlights">
+  <div class="tvastra-performance-proof__top">
+    <span>Built for movement</span>
+    <strong>Studio comfort, everyday polish</strong>
+  </div>
+
+  <div class="tvastra-performance-proof__grid">
+    {%- if fabric_highlights != blank -%}
+      {%- for item in fabric_items limit: 4 -%}
+        {%- assign clean_item = item | strip -%}
+        {%- if clean_item != blank -%}
+          <div class="tvastra-performance-proof__item">
+            <span></span>
+            <strong>{{ clean_item }}</strong>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- else -%}
+      <div class="tvastra-performance-proof__item">
+        <span></span>
+        <strong>Breathable feel</strong>
+      </div>
+      <div class="tvastra-performance-proof__item">
+        <span></span>
+        <strong>Soft stretch</strong>
+      </div>
+      <div class="tvastra-performance-proof__item">
+        <span></span>
+        <strong>Shape retention</strong>
+      </div>
+      <div class="tvastra-performance-proof__item">
+        <span></span>
+        <strong>Easy layering</strong>
+      </div>
+    {%- endif -%}
+  </div>
+</section>

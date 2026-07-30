@@ -1,0 +1,65 @@
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign model_size = product.metafields.custom.model_wearing_size.value | default: product.metafields.custom.model_wearing_size | default: 'S'
+  assign model_height = product.metafields.custom.model_height.value | default: product.metafields.custom.model_height
+  assign fit_type = product.metafields.custom.fit_type.value | default: product.metafields.custom.fit_type | default: 'True to size'
+  assign size_name = ''
+
+  for option in product.options_with_values
+    assign option_name = option.name | downcase
+    if option_name contains 'size'
+      assign size_name = option.selected_value
+    endif
+  endfor
+
+  if size_name == blank
+    for option_value in current_variant.options
+      assign option_value_downcase = option_value | downcase
+      if option_value_downcase == 'xs' or option_value_downcase == 's' or option_value_downcase == 'm' or option_value_downcase == 'l' or option_value_downcase == 'xl' or option_value_downcase contains '2xl' or option_value_downcase contains '3xl'
+        assign size_name = option_value
+      endif
+    endfor
+  endif
+
+  assign size_name = size_name | default: 'Select your size'
+-%}
+
+<div class="tvastra-fit-confidence" data-tvastra-fit-confidence aria-label="Fit and size confidence">
+  <div class="tvastra-fit-confidence__header">
+    <span class="tvastra-fit-confidence__eyebrow">Fit check</span>
+    <strong>Choose with confidence</strong>
+  </div>
+
+  <div class="tvastra-fit-confidence__grid">
+    <div class="tvastra-fit-confidence__item">
+      <span class="tvastra-fit-confidence__label">Selected</span>
+      <span class="tvastra-fit-confidence__value" data-fit-selected-size>{{ size_name }}</span>
+    </div>
+    <div class="tvastra-fit-confidence__item">
+      <span class="tvastra-fit-confidence__label">Fit</span>
+      <span class="tvastra-fit-confidence__value">{{ fit_type }}</span>
+    </div>
+    <div class="tvastra-fit-confidence__item">
+      <span class="tvastra-fit-confidence__label">Model wears</span>
+      <span class="tvastra-fit-confidence__value">
+        {{ model_size }}{%- if model_height != blank -%}<small>{{ model_height }}</small>{%- endif -%}
+      </span>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    if (window.tvastraFitConfidenceReady) return;
+    window.tvastraFitConfidenceReady = true;
+
+    document.addEventListener('change', function (event) {
+      var input = event.target.closest('.main-product-page .product-variants .size-filter input[data-single-option]');
+      if (!input || !input.checked) return;
+
+      var box = document.querySelector('[data-tvastra-fit-confidence]');
+      var target = box && box.querySelector('[data-fit-selected-size]');
+      if (target) target.textContent = input.value || 'Selected';
+    });
+  })();
+</script>
