@@ -1,3 +1,5 @@
+{%- render 'product-related-drawer', product: product, section: section -%}
+{%- if false -%}
 {%- if product.metafields.custom.related_products.value != null
   and product.metafields.custom.related_products.value != blank
 -%}
@@ -111,6 +113,7 @@
       }
     }
   </style>
+{%- endif -%}
 {%- endif -%}
 {% schema %}
 {

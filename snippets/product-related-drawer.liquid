@@ -1,0 +1,129 @@
+{%- liquid
+  assign related_products = product.metafields.custom.related_products.value
+  assign trigger_product = blank
+  for related_candidate in related_products
+    unless related_candidate.id == product.id
+      assign trigger_product = related_candidate
+      break
+    endunless
+  endfor
+  assign drawer_id = 'TvastraRelatedDrawer-' | append: section.id
+-%}
+
+{%- if related_products != blank and trigger_product != blank -%}
+  <link rel="stylesheet" href="{{ 'product-related-drawer.css' | asset_url | split: '?' | first }}?v=1">
+  <script src="{{ 'product-related-drawer.js' | asset_url | split: '?' | first }}?v=1" defer="defer"></script>
+
+  <related-products-drawer class="tvastra-related-drawer" data-related-products-drawer>
+    <button
+      class="tvastra-related-drawer__trigger"
+      type="button"
+      aria-label="View similar products"
+      aria-controls="{{ drawer_id }}"
+      aria-expanded="false"
+      data-related-products-open
+    >
+      <span class="tvastra-related-drawer__trigger-image">
+        {%- if trigger_product.featured_image != blank -%}
+          {{
+            trigger_product.featured_image
+            | image_url: width: 120
+            | image_tag:
+              widths: '60, 90, 120',
+              sizes: '48px',
+              loading: 'lazy',
+              alt: ''
+          }}
+        {%- else -%}
+          <i class="bi bi-grid" aria-hidden="true"></i>
+        {%- endif -%}
+      </span>
+      <span class="tvastra-related-drawer__trigger-badge" aria-hidden="true">
+        <i class="bi bi-grid"></i>
+      </span>
+      <span class="visually-hidden">Similar products</span>
+    </button>
+
+    <div class="tvastra-related-drawer__backdrop" data-related-products-close hidden></div>
+
+    <aside
+      id="{{ drawer_id }}"
+      class="tvastra-related-drawer__panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="{{ drawer_id }}-title"
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      <div class="tvastra-related-drawer__handle" aria-hidden="true"></div>
+      <header class="tvastra-related-drawer__header">
+        <div>
+          <span class="tvastra-related-drawer__eyebrow">Curated for this style</span>
+          <h2 id="{{ drawer_id }}-title" class="tvastra-related-drawer__title">
+            {{ section.settings.heading | default: 'Similar products' | remove: '[' | remove: ']' }}
+          </h2>
+        </div>
+        <button
+          class="tvastra-related-drawer__close"
+          type="button"
+          aria-label="Close similar products"
+          data-related-products-close
+        >
+          <i class="bi bi-x-lg" aria-hidden="true"></i>
+        </button>
+      </header>
+
+      <div class="tvastra-related-drawer__track" role="list" aria-label="Similar products">
+        {%- for related_product in related_products limit: section.settings.products_to_show -%}
+          {%- unless related_product.id == product.id -%}
+            {%- liquid
+              assign related_variant = related_product.selected_or_first_available_variant
+              assign related_alt = related_product.featured_image.alt | default: related_product.title
+              assign discount_percent = 0
+              if related_variant.compare_at_price > related_variant.price
+                assign saving = related_variant.compare_at_price | minus: related_variant.price
+                assign discount_percent = saving | times: 100.0 | divided_by: related_variant.compare_at_price | round
+              endif
+            -%}
+            <article class="tvastra-related-card" role="listitem">
+              <a class="tvastra-related-card__link" href="{{ related_product.url }}" aria-label="View {{ related_product.title | escape }}">
+                <div class="tvastra-related-card__media">
+                  {%- if related_product.featured_image != blank -%}
+                    {{
+                      related_product.featured_image
+                      | image_url: width: 560
+                      | image_tag:
+                        widths: '180, 280, 400, 560',
+                        sizes: '(max-width: 767px) 44vw, 220px',
+                        loading: 'lazy',
+                        alt: related_alt
+                    }}
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'tvastra-related-card__placeholder' }}
+                  {%- endif -%}
+                  {%- unless related_product.available -%}
+                    <span class="tvastra-related-card__status">Sold out</span>
+                  {%- endunless -%}
+                </div>
+                <div class="tvastra-related-card__content">
+                  <h3 class="tvastra-related-card__title">{{ related_product.title }}</h3>
+                  <div class="tvastra-related-card__price">
+                    <span>{{ related_variant.price | money }}</span>
+                    {%- if related_variant.compare_at_price > related_variant.price -%}
+                      <s>{{ related_variant.compare_at_price | money }}</s>
+                      <em>{{ discount_percent }}% off</em>
+                    {%- endif -%}
+                  </div>
+                  <span class="tvastra-related-card__cta">
+                    View product
+                    <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                  </span>
+                </div>
+              </a>
+            </article>
+          {%- endunless -%}
+        {%- endfor -%}
+      </div>
+    </aside>
+  </related-products-drawer>
+{%- endif -%}
