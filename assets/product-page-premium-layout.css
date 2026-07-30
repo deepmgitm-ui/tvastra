@@ -3819,3 +3819,53 @@
     font-size: 9.5px !important;
   }
 }
+
+/* Mobile sticky CTA shield: keep content from showing through behind the fixed buyer bar. */
+@media (max-width: 767px) {
+  body.tvastra-product-sticky-cta {
+    padding-bottom: calc(82px + env(safe-area-inset-bottom)) !important;
+  }
+
+  body.tvastra-product-sticky-cta::after {
+    content: "";
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 9998;
+    height: calc(82px + env(safe-area-inset-bottom));
+    background: #fff;
+    pointer-events: none;
+  }
+
+  body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart {
+    z-index: 9999 !important;
+    overflow: hidden !important;
+    min-height: calc(54px + env(safe-area-inset-bottom)) !important;
+    background: #fff !important;
+    background-color: #fff !important;
+    opacity: 1 !important;
+    isolation: isolate !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: #fff;
+    pointer-events: none;
+  }
+
+  body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart .action-btn,
+  body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart .product-buy-now-inline,
+  body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart .shopify-payment-button,
+  body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart .cart-btn,
+  body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart .wishlist-btn,
+  body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart .quantity {
+    position: relative !important;
+    z-index: 1 !important;
+  }
+}
