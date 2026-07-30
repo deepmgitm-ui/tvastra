@@ -8,12 +8,13 @@
   left: 12px;
   z-index: 7;
   display: inline-flex;
-  width: auto;
+  box-sizing: border-box;
+  width: 36px;
   height: 36px;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 0 10px;
+  gap: 0;
+  padding: 0 9px;
   border: 1px solid rgba(19, 46, 49, .12);
   border-radius: 18px;
   background: rgba(255, 255, 255, .94);
@@ -22,7 +23,8 @@
   backdrop-filter: blur(8px);
   cursor: pointer;
   touch-action: manipulation;
-  transition: transform .18s ease, box-shadow .18s ease;
+  overflow: hidden;
+  transition: width .24s cubic-bezier(.22, .8, .25, 1), gap .2s ease, transform .18s ease, box-shadow .18s ease;
 }
 
 .tvastra-related-drawer__trigger[hidden] {
@@ -35,6 +37,8 @@
 
 .tvastra-related-drawer__trigger:hover,
 .tvastra-related-drawer__trigger:focus-visible {
+  width: 125px;
+  gap: 6px;
   border-color: rgba(19, 46, 49, .25);
   background: #fff;
   color: #132e31;
@@ -61,12 +65,24 @@
 }
 
 .tvastra-related-drawer__trigger-label {
+  max-width: 0;
+  overflow: hidden;
   color: #17363a;
   font-size: 10px;
   font-weight: 600;
   line-height: 1;
   letter-spacing: 0;
+  opacity: 0;
   white-space: nowrap;
+  transform: translateX(-4px);
+  transition: max-width .24s cubic-bezier(.22, .8, .25, 1), opacity .16s ease, transform .2s ease;
+}
+
+.tvastra-related-drawer__trigger:hover .tvastra-related-drawer__trigger-label,
+.tvastra-related-drawer__trigger:focus-visible .tvastra-related-drawer__trigger-label {
+  max-width: 90px;
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .tvastra-related-drawer__backdrop {
