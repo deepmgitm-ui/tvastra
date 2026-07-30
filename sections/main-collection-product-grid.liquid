@@ -37,7 +37,7 @@
                       assign colorOptions = settings.colorOpt | downcase | replace:", ","," | replace:" , ","," | replace:" ,","," | split: ","
                       assign sizeOptions =  settings.sizeOpt | downcase | replace:", ","," | replace:" , ","," | replace:" ,","," | split: ","
                       assign fname = filter.label | downcase | replace: " ", "-"
-                      if colorOptions contains fname
+                      if colorOptions contains fname or fname contains 'color' or fname contains 'colour' or fname contains 'swatch' or fname contains 'shade' or fname contains 'rang'
                         assign iscolor = true
                       endif
                       if sizeOptions contains fname
