@@ -3145,7 +3145,7 @@
     grid-template-columns: 1fr !important;
   }
 
-  .main-product-page .product-form-buttons.product-cta-smart {
+  body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart {
     position: fixed !important;
     inset: auto 0 0 0 !important;
     z-index: 120 !important;

@@ -1,5 +1,7 @@
 (function () {
   var selector = '.product-form-buttons.product-cta-smart';
+  var stickyScopeReady = false;
+  var stickyScopeFrame = null;
 
   function getForm(buttons) {
     return buttons && buttons.closest('form');
@@ -239,8 +241,42 @@
 
   function initAll(root) {
     var buttons = (root || document).querySelectorAll(selector);
-    if (buttons.length) document.body.classList.add('tvastra-product-sticky-cta');
+    if (buttons.length) setupStickyScope();
     buttons.forEach(initButtons);
+  }
+
+  function isMobileViewport() {
+    return window.matchMedia && window.matchMedia('(max-width: 767px)').matches;
+  }
+
+  function updateStickyScope() {
+    stickyScopeFrame = null;
+    var buttons = document.querySelector(selector);
+    var section = buttons && buttons.closest('.main-product-page');
+    var isActive = false;
+
+    if (buttons && section && isMobileViewport()) {
+      var rect = section.getBoundingClientRect();
+      isActive = rect.top < window.innerHeight && rect.bottom > window.innerHeight + 72;
+    }
+
+    document.body.classList.toggle('tvastra-product-sticky-cta', isActive);
+    if (buttons) buttons.classList.toggle('is-sticky-active', isActive);
+  }
+
+  function requestStickyScopeUpdate() {
+    if (stickyScopeFrame) return;
+    stickyScopeFrame = window.requestAnimationFrame(updateStickyScope);
+  }
+
+  function setupStickyScope() {
+    if (!stickyScopeReady) {
+      stickyScopeReady = true;
+      window.addEventListener('scroll', requestStickyScopeUpdate, { passive: true });
+      window.addEventListener('resize', requestStickyScopeUpdate);
+      window.addEventListener('orientationchange', requestStickyScopeUpdate);
+    }
+    requestStickyScopeUpdate();
   }
 
   document.addEventListener('click', function (event) {
