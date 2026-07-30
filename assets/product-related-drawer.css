@@ -8,12 +8,14 @@
   bottom: 82px;
   z-index: 108;
   display: grid;
-  width: 52px;
-  height: 52px;
-  padding: 3px;
-  border: 1px solid rgba(16, 54, 59, .18);
-  border-radius: 50%;
-  background: #fff;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid #173f45;
+  border-radius: 8px;
+  background: #173f45;
+  color: #fff;
   box-shadow: 0 8px 24px rgba(15, 46, 51, .17);
   cursor: pointer;
   touch-action: manipulation;
@@ -22,6 +24,9 @@
 
 .tvastra-related-drawer__trigger:hover,
 .tvastra-related-drawer__trigger:focus-visible {
+  border-color: #0d3035;
+  background: #0d3035;
+  color: #fff;
   transform: translateY(-2px);
   box-shadow: 0 11px 28px rgba(15, 46, 51, .22);
 }
@@ -33,36 +38,14 @@
   outline-offset: 2px;
 }
 
-.tvastra-related-drawer__trigger-image {
+.tvastra-related-drawer__trigger-icon {
   display: grid;
-  width: 44px;
-  height: 44px;
-  place-items: center;
-  overflow: hidden;
-  border-radius: 50%;
-  background: #f2f5f3;
-  color: #173f45;
-}
-
-.tvastra-related-drawer__trigger-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-}
-
-.tvastra-related-drawer__trigger-badge {
-  position: absolute;
-  right: -2px;
-  bottom: -2px;
-  display: grid;
-  width: 20px;
-  height: 20px;
   place-items: center;
-  border: 2px solid #fff;
-  border-radius: 50%;
-  background: #173f45;
   color: #fff;
-  font-size: 9px;
+  font-size: 21px;
+  line-height: 1;
 }
 
 .tvastra-related-drawer__backdrop {
@@ -288,11 +271,6 @@ body.tvastra-related-drawer-open {
   .tvastra-related-drawer__trigger {
     left: 20px;
     bottom: 28px;
-    width: 58px;
-    height: 58px;
-  }
-
-  .tvastra-related-drawer__trigger-image {
     width: 50px;
     height: 50px;
   }

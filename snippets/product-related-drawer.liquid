@@ -11,7 +11,7 @@
 -%}
 
 {%- if related_products != blank and trigger_product != blank -%}
-  <link rel="stylesheet" href="{{ 'product-related-drawer.css' | asset_url | split: '?' | first }}?v=1">
+  <link rel="stylesheet" href="{{ 'product-related-drawer.css' | asset_url | split: '?' | first }}?v=2">
   <script src="{{ 'product-related-drawer.js' | asset_url | split: '?' | first }}?v=1" defer="defer"></script>
 
   <related-products-drawer class="tvastra-related-drawer" data-related-products-drawer>
@@ -23,23 +23,8 @@
       aria-expanded="false"
       data-related-products-open
     >
-      <span class="tvastra-related-drawer__trigger-image">
-        {%- if trigger_product.featured_image != blank -%}
-          {{
-            trigger_product.featured_image
-            | image_url: width: 120
-            | image_tag:
-              widths: '60, 90, 120',
-              sizes: '48px',
-              loading: 'lazy',
-              alt: ''
-          }}
-        {%- else -%}
-          <i class="bi bi-grid" aria-hidden="true"></i>
-        {%- endif -%}
-      </span>
-      <span class="tvastra-related-drawer__trigger-badge" aria-hidden="true">
-        <i class="bi bi-grid"></i>
+      <span class="tvastra-related-drawer__trigger-icon" aria-hidden="true">
+        <i class="bi bi-collection"></i>
       </span>
       <span class="visually-hidden">Similar products</span>
     </button>
