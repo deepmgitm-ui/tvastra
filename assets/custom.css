@@ -1687,13 +1687,13 @@ body.sticky-active #hongo-header .navbar.tvastra-single-header .navbar-brand .al
 
 @media (min-width: 1200px) {
   #hongo-header .navbar.tvastra-single-header .navbar-brand {
-    --main-logo-width: 180px !important;
+    --main-logo-width: 210px !important;
   }
 
   #hongo-header .navbar.tvastra-single-header .navbar-brand .default-logo,
   body.sticky-active #hongo-header .navbar.tvastra-single-header .navbar-brand .default-logo {
-    width: 180px !important;
-    max-width: 180px !important;
+    width: 210px !important;
+    max-width: 210px !important;
   }
 
   #hongo-header .navbar.tvastra-single-header .menu-logo,
@@ -1753,13 +1753,13 @@ body.sticky-active #hongo-header .navbar.tvastra-single-header .navbar-brand .al
 
 @media (min-width: 1200px) and (max-width: 1399px) {
   #hongo-header .navbar.tvastra-single-header .navbar-brand {
-    --main-logo-width: 165px !important;
+    --main-logo-width: 190px !important;
   }
 
   #hongo-header .navbar.tvastra-single-header .navbar-brand .default-logo,
   body.sticky-active #hongo-header .navbar.tvastra-single-header .navbar-brand .default-logo {
-    width: 165px !important;
-    max-width: 165px !important;
+    width: 190px !important;
+    max-width: 190px !important;
   }
 }
 
