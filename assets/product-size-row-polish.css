@@ -651,3 +651,59 @@ body .main-product-page .product-form-buttons.product-cta-smart.is-notify-only .
 body .main-product-page .product-form-buttons.product-cta-smart.is-notify-only .cart-btn.notify-me i {
   display: none !important;
 }
+
+/* Final mobile sticky CTA paint lock: no translucent buttons or page bleed. */
+@media (max-width: 767px) {
+  body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart,
+  body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart::before,
+  body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart .action-btn {
+    background: #fff !important;
+    background-color: #fff !important;
+    background-image: linear-gradient(#fff, #fff) !important;
+    opacity: 1 !important;
+  }
+
+  body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart {
+    padding: 6px 10px !important;
+    min-height: 0 !important;
+    border-top: 1px solid rgba(18, 18, 18, .1) !important;
+    box-shadow: 0 -1px 0 rgba(18, 18, 18, .08), 0 -14px 30px rgba(18, 18, 18, .14) !important;
+  }
+
+  body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart .cart-btn:not(.notify-me) {
+    border-color: #083a42 !important;
+    background: #083a42 !important;
+    background-color: #083a42 !important;
+    color: #fff !important;
+    opacity: 1 !important;
+  }
+
+  body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart .product-buy-now-inline,
+  body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart .shopify-payment-button,
+  body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart .product-buy-now-inline shopify-accelerated-checkout,
+  body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart .product-buy-now-inline shopify-buy-it-now-button {
+    background: #fff !important;
+    background-color: #fff !important;
+    opacity: 1 !important;
+  }
+
+  body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart .shopify-payment-button__button,
+  body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart .custom-payment-btn {
+    border-color: #d2aa37 !important;
+    background: #d8b23f !important;
+    background-color: #d8b23f !important;
+    color: #111 !important;
+    opacity: 1 !important;
+  }
+
+  body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart .quantity,
+  body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart .quantity-button,
+  body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart .quantity-input,
+  body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart .wishlist-btn,
+  body.tvastra-product-sticky-cta .main-product-page #wishlisthero-product-page-button-container button {
+    background: #fff !important;
+    background-color: #fff !important;
+    color: #17363a !important;
+    opacity: 1 !important;
+  }
+}
