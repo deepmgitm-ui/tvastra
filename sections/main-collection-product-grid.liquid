@@ -1,4 +1,5 @@
 {{ 'collection-product.min.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="{{ 'collection-color-family-filter.css' | asset_url | split: '?' | first }}?v=1">
 {%- assign current_sort_by = collection.sort_by | default: collection.default_sort_by -%}
 <div class="collection-wrap {{ section.settings.padding_top }} {{ section.settings.padding_bottom }} section-{{ section.id }}">
   <div class="{{ section.settings.container_type }}">
@@ -48,6 +49,55 @@
                       {%- when 'list' -%}
                         <div class="js-filter{% if iscolor == true  %} color{% elsif isSize == true %} size{% else %} {{ filter.label | downcase | replace: " ", "-" }}{% endif %}" data-index="{{ forloop.index }}">
                           <div class="filter-title alt-font{% if section.settings.filter_type == 'collapsible' %} filter-active{% endif %}">{{ filter.label | escape }}{% if section.settings.filter_type == 'collapsible' %}<svg xmlns="http://www.w3.org/2000/svg" class="ms-auto" fill="#262626" viewBox="0 0 448 512"><path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg>{% endif %}</div>
+                          {%- if iscolor == true -%}
+                            <div class="tvastra-color-filter-panel">
+                          {%- endif -%}
+                          {%- if iscolor == true -%}
+                            {%- liquid
+                              assign color_family_groups = 'Black::#111111::black,jetblack,onyx,charcoal|White::#ffffff::white,offwhite,ivory,cream|Grey::#8c9196::grey,gray,graphite,silver,slate|Green::#5f6f4e::green,olive,sage,mint,moss,teal|Blue::#3d9bd9::blue,oceanblue,navy,aqua,skyblue|Pink::#d95f9f::pink,rose,blush,hotpink,magenta|Purple::#9b7bbd::purple,lilac,lavender,frostedlilac,palelavender,aubergine,aurbergeine,violet|Red::#7a2633::red,wine,maroon,burgundy|Brown::#6b5650::brown,espresso,coffee,nude,tan,beige|Yellow::#e1c34f::yellow,paleyellow,lemon|Orange::#d98242::orange,coral,peach' | split: '|'
+                            -%}
+                            <div class="tvastra-color-family-filter" aria-label="Color family filter">
+                              {%- for family in color_family_groups -%}
+                                {%- liquid
+                                  assign family_parts = family | split: '::'
+                                  assign family_label = family_parts[0]
+                                  assign family_hex = family_parts[1]
+                                  assign family_aliases = family_parts[2] | split: ','
+                                  assign family_values = ''
+                                  assign family_separator = ''
+                                  assign family_count = 0
+                                  assign family_active = false
+                                -%}
+                                {%- for value in filter.values -%}
+                                  {%- liquid
+                                    assign family_value_key = value.value | remove: ' ' | escape | downcase
+                                    if family_aliases contains family_value_key
+                                      assign family_values = family_values | append: family_separator | append: value.value
+                                      assign family_separator = '||'
+                                      assign family_count = family_count | plus: value.count
+                                      if value.active
+                                        assign family_active = true
+                                      endif
+                                    endif
+                                  -%}
+                                {%- endfor -%}
+                                {%- if family_values != blank -%}
+                                  <button
+                                    type="button"
+                                    class="tvastra-color-family-filter__chip{% if family_active %} is-active{% endif %}{% if family_count == 0 and family_active == false %} is-disabled{% endif %}"
+                                    data-color-family-trigger
+                                    data-color-family-values="{{ family_values | escape }}"
+                                    {% if family_count == 0 and family_active == false %}disabled{% endif %}
+                                    aria-pressed="{% if family_active %}true{% else %}false{% endif %}"
+                                  >
+                                    <span class="tvastra-color-family-filter__swatch{% if family_label == 'White' %} is-light{% endif %}" style="background: {{ family_hex }};"></span>
+                                    <span class="tvastra-color-family-filter__label">{{ family_label }}</span>
+                                    <span class="tvastra-color-family-filter__count">{{ family_count }}</span>
+                                  </button>
+                                {%- endif -%}
+                              {%- endfor -%}
+                            </div>
+                          {%- endif -%}
                           <ul class="filter-list" role="list">
                             {%- for value in filter.values -%}
                               <li>
@@ -108,6 +158,9 @@
                               </li>
                             {%- endfor -%}
                           </ul>
+                          {%- if iscolor == true -%}
+                            </div>
+                          {%- endif -%}
                         </div>
                       {%- when 'price_range' -%}
                         {%- liquid
@@ -660,7 +713,7 @@
   </div>
   <div class="product-sidebar-overlay"></div>
 </div>
-<script src="{{ 'collection-filters-form.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'collection-filters-form.js' | asset_url | split: '?' | first }}?v=color-family-v1" defer="defer"></script>
 {% schema %}
 {
   "name": "t:sections.main-collection-product-grid.name",

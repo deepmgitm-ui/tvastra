@@ -278,3 +278,50 @@ class PriceRange extends HTMLElement {
 }
 
 customElements.define('price-range', PriceRange);
+
+(function () {
+  if (window.tvastraColorFamilyFilterReady) return;
+  window.tvastraColorFamilyFilterReady = true;
+
+  function getFamilyValues(trigger) {
+    return (trigger.dataset.colorFamilyValues || '')
+      .split('||')
+      .map(function (value) { return value.trim(); })
+      .filter(Boolean);
+  }
+
+  function syncFamilyButtons(filter) {
+    filter.querySelectorAll('[data-color-family-trigger]').forEach(function (button) {
+      var values = getFamilyValues(button);
+      var inputs = Array.prototype.slice.call(filter.querySelectorAll('input[type="checkbox"]'))
+        .filter(function (input) { return values.indexOf(input.value) !== -1 && !input.disabled; });
+      var isActive = inputs.length > 0 && inputs.some(function (input) { return input.checked; });
+
+      button.classList.toggle('is-active', isActive);
+      button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+  }
+
+  document.addEventListener('click', function (event) {
+    var trigger = event.target.closest('[data-color-family-trigger]');
+    if (!trigger) return;
+
+    var filter = trigger.closest('.js-filter.color');
+    var form = trigger.closest('form');
+    if (!filter || !form) return;
+
+    var values = getFamilyValues(trigger);
+    var inputs = Array.prototype.slice.call(filter.querySelectorAll('input[type="checkbox"]'))
+      .filter(function (input) { return values.indexOf(input.value) !== -1 && !input.disabled; });
+
+    if (!inputs.length) return;
+
+    var shouldCheck = !inputs.every(function (input) { return input.checked; });
+    inputs.forEach(function (input) {
+      input.checked = shouldCheck;
+    });
+
+    syncFamilyButtons(filter);
+    form.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+})();

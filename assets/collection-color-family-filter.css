@@ -1,0 +1,93 @@
+.tvastra-color-filter-panel {
+  margin-bottom: 16px;
+}
+
+.tvastra-color-family-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 0 0 12px;
+}
+
+.tvastra-color-family-filter__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 32px;
+  padding: 5px 9px;
+  border: 1px solid #e2ded6;
+  border-radius: 999px;
+  background: #fff;
+  color: #151515;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  transition: border-color .2s ease, background .2s ease, color .2s ease;
+}
+
+.tvastra-color-family-filter__chip:hover,
+.tvastra-color-family-filter__chip:focus-visible,
+.tvastra-color-family-filter__chip.is-active {
+  border-color: #151515;
+  background: #151515;
+  color: #fff;
+}
+
+.tvastra-color-family-filter__chip.is-disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.tvastra-color-family-filter__swatch {
+  width: 15px;
+  height: 15px;
+  flex: 0 0 15px;
+  border: 1px solid rgba(0, 0, 0, .12);
+  border-radius: 50%;
+}
+
+.tvastra-color-family-filter__swatch.is-light {
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .16);
+}
+
+.tvastra-color-family-filter__count {
+  color: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  opacity: .62;
+}
+
+.filter_wrapper .js-filter.color .filter-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.filter_wrapper .js-filter.color .filter-list li {
+  margin: 0;
+  padding: 0;
+}
+
+.filter_wrapper .js-filter.color .facet-checkbox.color-filter {
+  width: 31px;
+  height: 31px;
+  justify-content: center !important;
+}
+
+.filter_wrapper .js-filter.color .facet-checkbox.color-filter .radio-label {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .tvastra-color-family-filter {
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .tvastra-color-family-filter__chip {
+    min-height: 30px;
+    padding: 5px 8px;
+    font-size: 11px;
+  }
+}
