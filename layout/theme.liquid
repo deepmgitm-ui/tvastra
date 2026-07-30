@@ -243,7 +243,9 @@
     {% unless request.path contains 'return_prime' %}
     <script src="{{ 'jsloader.js' | asset_url }}" defer="defer"></script>
     {% endunless %}
-    {%- render 'whatsapp-floating' -%}
+    {%- if template.name == 'index' -%}
+      {%- render 'whatsapp-floating' -%}
+    {%- endif -%}
 
     {%- if template.name == 'product' or template.name == 'cart' or template.name == 'collection' -%}
   {% render 'razorpay-magic-checkout' %}
