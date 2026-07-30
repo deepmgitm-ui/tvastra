@@ -145,6 +145,7 @@
     var input = getQuantityInput(buttons);
     var key = input && input.dataset.cartLineKey;
     if (!key) return syncButtons(buttons);
+    quantity = Math.max(0, parseInt(quantity, 10) || 0);
 
     var cartNotification = document.querySelector('cart-notification');
     var body = {
@@ -154,7 +155,6 @@
       sections_url: window.location.pathname
     };
 
-    quantity = Math.max(0, parseInt(quantity, 10) || 0);
     buttons._smartCtaRequestId = (buttons._smartCtaRequestId || 0) + 1;
     var requestId = buttons._smartCtaRequestId;
     return fetch('/cart/change.js', {

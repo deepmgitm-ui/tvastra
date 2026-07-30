@@ -1,5 +1,5 @@
 {{ 'product-detail.min.css' | asset_url | stylesheet_tag }}
-<link rel="stylesheet" href="{{ 'product-page-premium-layout.css' | asset_url | split: '?' | first }}?v=product-proof-v1">
+<link rel="stylesheet" href="{{ 'product-page-premium-layout.css' | asset_url | split: '?' | first }}?v=product-polish-v1">
 <link rel="stylesheet" href="{{ 'product-size-row-polish.css' | asset_url | split: '?' | first }}?v=7">
 <link rel="stylesheet" href="{{ 'product-media-full-view.css' | asset_url | split: '?' | first }}?v=gallery-controller-v2">
 <link rel="stylesheet" href="{{ 'product-share.css' | asset_url | split: '?' | first }}?v=1">
@@ -108,7 +108,7 @@
 <script>window.ZOOM = true;</script>
 {%- endif -%}
 <script src="{{ 'product-form.js' | asset_url | split: '?' | first }}?v=open-cart-v3" defer="defer"></script>
-<script src="{{ 'product-purchase-cta.js' | asset_url | split: '?' | first }}?v=instant-qty-v5" defer="defer"></script>
+<script src="{{ 'product-purchase-cta.js' | asset_url | split: '?' | first }}?v=instant-qty-v6" defer="defer"></script>
 <script src="{{ 'product-share.js' | asset_url | split: '?' | first }}?v=1" defer="defer"></script>
 {%- assign first_3d_model = product.media | where: "media_type", "model" | first -%}
 {%- if first_3d_model -%}
@@ -197,26 +197,26 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "How does this product fit?",
+        "name": "How should I choose my size?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "This Tvastra product is designed for a comfortable activewear fit. Choose your usual size for a clean fit, or size up if you prefer a relaxed feel."
+          "text": "Start with your usual activewear size. If you prefer a relaxed feel or are between sizes, choose one size up."
         }
       },
       {
         "@type": "Question",
-        "name": "Is this product suitable for workouts?",
+        "name": "Can I wear it for workouts?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. It is made for movement, everyday comfort and active styling, with breathable feel and stretch-friendly wear."
+          "text": "Yes. Tvastra pieces are built for movement, breathable comfort and clean everyday styling."
         }
       },
       {
         "@type": "Question",
-        "name": "Can I exchange the size?",
+        "name": "What about exchange and delivery?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Tvastra supports easy exchanges as per the store policy. Check the product page and policy pages for the latest exchange window and conditions."
+          "text": "Prepaid orders ship faster, and easy exchanges are available as per the store policy."
         }
       }
     ]

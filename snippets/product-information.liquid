@@ -125,13 +125,13 @@
             {%- render 'main-price', product: product, use_variant: true, show_badges: true, price_class: 'price--large', save_label: block.settings.show_save_label -%}
           </div>
           <div class="product-purchase-note" aria-label="Purchase information">
-            <span>Inclusive of all taxes</span>
-            <span>Free shipping on prepaid orders</span>
+            <span>Taxes included</span>
+            <span>Free prepaid shipping</span>
           </div>
           <details class="tvastra-product-offers">
             <summary class="tvastra-product-offers__summary">
               <span class="tvastra-product-offers__title">Offers &amp; payment</span>
-              <span class="tvastra-product-offers__highlight">Extra 10% available</span>
+              <span class="tvastra-product-offers__highlight">Save more today</span>
               <i class="feather-chevron-down" aria-hidden="true"></i>
             </summary>
             <div class="tvastra-product-offers__body">
@@ -139,26 +139,26 @@
                 <div class="tvastra-product-offer">
                   <span class="tvastra-product-offer__icon" aria-hidden="true"><i class="feather-tag"></i></span>
                   <div class="tvastra-product-offer__copy">
-                    <strong>Extra 10% off</strong>
-                    <span>Use TVFIT10 at cart or checkout.</span>
+                    <strong>10% welcome offer</strong>
+                    <span>Apply TVFIT10 from cart before checkout.</span>
                   </div>
                 </div>
                 <div class="tvastra-product-offer tvastra-product-offer--plain">
                   <span class="tvastra-product-offer__icon" aria-hidden="true"><i class="feather-credit-card"></i></span>
                   <div class="tvastra-product-offer__copy">
-                    <strong>Extra 5% on prepaid orders</strong>
-                    <span>Pay online securely at checkout.</span>
+                    <strong>Extra 5% prepaid benefit</strong>
+                    <span>Online payments ship faster and stay secure.</span>
                   </div>
                 </div>
                 <div class="tvastra-product-offer tvastra-product-offer--plain">
                   <span class="tvastra-product-offer__icon" aria-hidden="true"><i class="feather-percent"></i></span>
                   <div class="tvastra-product-offer__copy">
                     <strong>Bank, card and UPI offers</strong>
-                    <span>Eligibility is shown during payment.</span>
+                    <span>Eligible Razorpay offers appear at payment.</span>
                   </div>
                 </div>
               </div>
-              <p class="tvastra-product-offers__note"><i class="feather-shield" aria-hidden="true"></i> Secure payments by Razorpay</p>
+              <p class="tvastra-product-offers__note"><i class="feather-shield" aria-hidden="true"></i> Verified checkout with Razorpay</p>
             </div>
           </details>
         {%- endif -%}
