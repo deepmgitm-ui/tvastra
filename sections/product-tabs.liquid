@@ -2,7 +2,7 @@
   {% if section.settings.element_id != blank %}
     id="{{ section.settings.element_id }}"
   {% endif %}
-  class="product-tabs section-{{ section.id }} {% if section.settings.element_class != blank %} {{ section.settings.element_class }}{% endif %} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }}"
+  class="product-tabs tvastra-product-tabs section-{{ section.id }} {% if section.settings.element_class != blank %} {{ section.settings.element_class }}{% endif %} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }}"
   data-section-type="product-tabs"
   data-section-id="{{ section.id }}"
 >
@@ -11,6 +11,17 @@
       <ul class="nav nav-tabs d-none d-md-flex" id="product-tabs-{{ section.id }}" role="tablist">
         {%- assign activated = true -%}
         {%- for block in section.blocks -%}
+          {%- liquid
+            assign tab_heading_handle = block.settings.heading | handleize
+            assign tab_icon = 'bi-card-text'
+            if tab_heading_handle contains 'additional'
+              assign tab_icon = 'bi-info-circle'
+            elsif tab_heading_handle contains 'shipping' or tab_heading_handle contains 'return'
+              assign tab_icon = 'bi-truck'
+            elsif block.type == 'reviews'
+              assign tab_icon = 'bi-star'
+            endif
+          -%}
           <li class="nav-item tab-{{ forloop.index }}-{{ section.id }}-tab" role="presentation">
             <button
               class="nav-link {% if activated %}active{% endif %} alt-font"
@@ -22,8 +33,10 @@
               aria-controls="tab-{{ forloop.index }}-{{ section.id }}"
               aria-selected="true"
               data-tab-type="{{ block.type }}"
+              data-tab-heading="{{ tab_heading_handle }}"
             >
-              {{ block.settings.heading }}
+              <span class="product-tabs__icon" aria-hidden="true"><i class="bi {{ tab_icon }}"></i></span>
+              <span>{{ block.settings.heading }}</span>
             </button>
           </li>
           {%- assign activated = false -%}
@@ -32,28 +45,53 @@
       <div class="tab-content" id="product-tabs-{{ section.id }}-content">
         {%- assign activated = true -%}
         {%- for block in section.blocks -%}
+          {%- liquid
+            assign tab_heading_handle = block.settings.heading | handleize
+            assign tab_icon = 'bi-card-text'
+            if tab_heading_handle contains 'additional'
+              assign tab_icon = 'bi-info-circle'
+            elsif tab_heading_handle contains 'shipping' or tab_heading_handle contains 'return'
+              assign tab_icon = 'bi-truck'
+            elsif block.type == 'reviews'
+              assign tab_icon = 'bi-star'
+            endif
+          -%}
           {%- capture tabcontent -%}
             {%- case block.type -%}
               {%- when 'description' -%}
                 {%- if block.settings.heading != blank -%}
-                  <h6 class="mobile-tab-title d-block d-md-none" data-bs-item="tab-{{ forloop.index }}-{{ section.id }}">{{ block.settings.heading }}</h6>
+                  <h6 class="mobile-tab-title d-block d-md-none" data-bs-item="tab-{{ forloop.index }}-{{ section.id }}" data-tab-heading="{{ tab_heading_handle }}">
+                    <span class="product-tabs__icon" aria-hidden="true"><i class="bi {{ tab_icon }}"></i></span>
+                    <span>{{ block.settings.heading }}</span>
+                  </h6>
                 {%- endif -%}
                 <div class="content-wrap">{{ product.description }}</div>
               {%- when 'custom' -%}
-                {%- if block.settings.heading != blank -%}<h6 class="mobile-tab-title d-block d-md-none" data-bs-item="tab-{{ forloop.index }}-{{ section.id }}">{{ block.settings.heading }}</h6>{%- endif -%}
+                {%- if block.settings.heading != blank -%}
+                  <h6 class="mobile-tab-title d-block d-md-none" data-bs-item="tab-{{ forloop.index }}-{{ section.id }}" data-tab-heading="{{ tab_heading_handle }}">
+                    <span class="product-tabs__icon" aria-hidden="true"><i class="bi {{ tab_icon }}"></i></span>
+                    <span>{{ block.settings.heading }}</span>
+                  </h6>
+                {%- endif -%}
                 <div class="content-wrap">
                   {{ block.settings.tab_content }}
                   {{ block.settings.content_page.content }}
                 </div>
               {%- when 'liquid' -%}
                 {%- if block.settings.heading != blank -%}
-                  <h6 class="mobile-tab-title d-block d-md-none" data-bs-item="tab-{{ forloop.index }}-{{ section.id }}">{{ block.settings.heading }}</h6>
+                  <h6 class="mobile-tab-title d-block d-md-none" data-bs-item="tab-{{ forloop.index }}-{{ section.id }}" data-tab-heading="{{ tab_heading_handle }}">
+                    <span class="product-tabs__icon" aria-hidden="true"><i class="bi {{ tab_icon }}"></i></span>
+                    <span>{{ block.settings.heading }}</span>
+                  </h6>
                 {%- endif -%}
                 <div class="content-wrap">{{ block.settings.tab_content }}</div>
               {%- when 'reviews' -%}
                 <script>window.hasReviewTab = true;</script>
                 {%- if block.settings.heading != blank -%}
-                  <h6 class="mobile-tab-title d-block d-md-none" data-bs-item="tab-{{ forloop.index }}-{{ section.id }}">{{ block.settings.heading }}</h6>
+                  <h6 class="mobile-tab-title d-block d-md-none" data-bs-item="tab-{{ forloop.index }}-{{ section.id }}" data-tab-heading="{{ tab_heading_handle }}">
+                    <span class="product-tabs__icon" aria-hidden="true"><i class="bi {{ tab_icon }}"></i></span>
+                    <span>{{ block.settings.heading }}</span>
+                  </h6>
                 {%- endif -%}
                 <div class="content-wrap product-reviews-wrapper">
                   {%- if block.settings.custom_liquid != blank -%}
