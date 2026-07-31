@@ -616,7 +616,7 @@
             <li>
               <i class="bi bi-truck"></i>
               {%- liquid
-                assign range = 2 | times: 24 | times: 60 | times: 60
+                assign range = 1 | times: 24 | times: 60 | times: 60
                 assign deliver_in =  block.settings.deliver_days | times: 24 | times: 60 | times: 60
                 assign now = 'now' | date: "%s"
                 assign from = now | plus: deliver_in | minus: range | date: "%b %d"
