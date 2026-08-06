@@ -2779,6 +2779,11 @@
     box-sizing: border-box;
     margin: 0 !important;
     padding: 0 2px !important;
+    width: 100% !important;
+    border: 0 !important;
+    text-align: left !important;
+    font-family: inherit !important;
+    cursor: pointer;
     color: var(--tabs-ink) !important;
     font-size: 13px !important;
     font-weight: 650 !important;

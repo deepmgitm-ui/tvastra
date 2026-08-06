@@ -31,7 +31,7 @@
               type="button"
               role="tab"
               aria-controls="tab-{{ forloop.index }}-{{ section.id }}"
-              aria-selected="true"
+              aria-selected="{% if activated %}true{% else %}false{% endif %}"
               data-tab-type="{{ block.type }}"
               data-tab-heading="{{ tab_heading_handle }}"
             >
@@ -60,18 +60,18 @@
             {%- case block.type -%}
               {%- when 'description' -%}
                 {%- if block.settings.heading != blank -%}
-                  <h6 class="mobile-tab-title d-block d-md-none" data-bs-item="tab-{{ forloop.index }}-{{ section.id }}" data-tab-heading="{{ tab_heading_handle }}">
+                  <button type="button" class="mobile-tab-title d-block d-md-none" data-bs-item="tab-{{ forloop.index }}-{{ section.id }}" data-tab-heading="{{ tab_heading_handle }}" aria-controls="tab-{{ forloop.index }}-{{ section.id }}" aria-expanded="false">
                     <span class="product-tabs__icon" aria-hidden="true"><i class="bi {{ tab_icon }}"></i></span>
                     <span>{{ block.settings.heading }}</span>
-                  </h6>
+                  </button>
                 {%- endif -%}
                 <div class="content-wrap">{{ product.description }}</div>
               {%- when 'custom' -%}
                 {%- if block.settings.heading != blank -%}
-                  <h6 class="mobile-tab-title d-block d-md-none" data-bs-item="tab-{{ forloop.index }}-{{ section.id }}" data-tab-heading="{{ tab_heading_handle }}">
+                  <button type="button" class="mobile-tab-title d-block d-md-none" data-bs-item="tab-{{ forloop.index }}-{{ section.id }}" data-tab-heading="{{ tab_heading_handle }}" aria-controls="tab-{{ forloop.index }}-{{ section.id }}" aria-expanded="false">
                     <span class="product-tabs__icon" aria-hidden="true"><i class="bi {{ tab_icon }}"></i></span>
                     <span>{{ block.settings.heading }}</span>
-                  </h6>
+                  </button>
                 {%- endif -%}
                 <div class="content-wrap">
                   {{ block.settings.tab_content }}
@@ -79,19 +79,19 @@
                 </div>
               {%- when 'liquid' -%}
                 {%- if block.settings.heading != blank -%}
-                  <h6 class="mobile-tab-title d-block d-md-none" data-bs-item="tab-{{ forloop.index }}-{{ section.id }}" data-tab-heading="{{ tab_heading_handle }}">
+                  <button type="button" class="mobile-tab-title d-block d-md-none" data-bs-item="tab-{{ forloop.index }}-{{ section.id }}" data-tab-heading="{{ tab_heading_handle }}" aria-controls="tab-{{ forloop.index }}-{{ section.id }}" aria-expanded="false">
                     <span class="product-tabs__icon" aria-hidden="true"><i class="bi {{ tab_icon }}"></i></span>
                     <span>{{ block.settings.heading }}</span>
-                  </h6>
+                  </button>
                 {%- endif -%}
                 <div class="content-wrap">{{ block.settings.tab_content }}</div>
               {%- when 'reviews' -%}
                 <script>window.hasReviewTab = true;</script>
                 {%- if block.settings.heading != blank -%}
-                  <h6 class="mobile-tab-title d-block d-md-none" data-bs-item="tab-{{ forloop.index }}-{{ section.id }}" data-tab-heading="{{ tab_heading_handle }}">
+                  <button type="button" class="mobile-tab-title d-block d-md-none" data-bs-item="tab-{{ forloop.index }}-{{ section.id }}" data-tab-heading="{{ tab_heading_handle }}" aria-controls="tab-{{ forloop.index }}-{{ section.id }}" aria-expanded="false">
                     <span class="product-tabs__icon" aria-hidden="true"><i class="bi {{ tab_icon }}"></i></span>
                     <span>{{ block.settings.heading }}</span>
-                  </h6>
+                  </button>
                 {%- endif -%}
                 <div class="content-wrap product-reviews-wrapper">
                   {%- if block.settings.custom_liquid != blank -%}
@@ -120,6 +120,29 @@
     </div>
   </div>
 </section>
+<script>
+  (function () {
+    var section = document.querySelector('.section-{{ section.id }}');
+    if (!section) return;
+
+    function syncMobileTabState() {
+      section.querySelectorAll('.mobile-tab-title').forEach(function (trigger) {
+        trigger.setAttribute('aria-expanded', trigger.classList.contains('active') ? 'true' : 'false');
+      });
+
+      section.querySelectorAll('.nav-link[role="tab"]').forEach(function (tab) {
+        tab.setAttribute('aria-selected', tab.classList.contains('active') ? 'true' : 'false');
+      });
+    }
+
+    section.addEventListener('click', function (event) {
+      if (!event.target.closest('.mobile-tab-title')) return;
+      window.requestAnimationFrame(syncMobileTabState);
+    });
+
+    syncMobileTabState();
+  })();
+</script>
 <style type="text/css">
   @media (max-width: 767px) {
     .tab-content > .tab-pane {
