@@ -654,6 +654,24 @@ body .main-product-page .product-form-buttons.product-cta-smart.is-notify-only .
 
 /* Final mobile sticky CTA paint lock: no translucent buttons or page bleed. */
 @media (max-width: 767px) {
+  /* Reserve room after the page content for the fixed purchase tray. */
+  body.tvastra-product-sticky-cta {
+    padding-bottom: calc(52px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  /* Horizontal galleries keep swiping while vertical page scrolling stays natural. */
+  .main-product-page .product-main-slider,
+  .main-product-page .product-image-main,
+  .main-product-page .product-image-main .swiper,
+  .main-product-page .product-thumb-wrap {
+    touch-action: pan-y !important;
+  }
+
+  .main-product-page .product-image-main,
+  .main-product-page .product-thumb-wrap {
+    overscroll-behavior-x: contain;
+  }
+
   body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart,
   body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart::before,
   body.tvastra-product-sticky-cta .main-product-page .product-form-buttons.product-cta-smart .action-btn {

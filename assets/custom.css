@@ -1916,6 +1916,45 @@ body.sticky-active #hongo-header .navbar.tvastra-single-header .navbar-brand .al
   #hongo-header .navbar.tvastra-single-header .collapse.navbar-collapse {
     background-color: var(--header-bg-color, #fff) !important;
   }
+
+  /* Keep the compact header, but give every mobile icon a dependable tap target. */
+  #hongo-header .navbar.tvastra-single-header .navbar-toggler {
+    width: 36px !important;
+    min-width: 36px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    padding: 0 !important;
+  }
+
+  #hongo-header .navbar.tvastra-single-header .menu-column .search,
+  #hongo-header .navbar.tvastra-single-header .menu-column .search > a {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 30px !important;
+    min-width: 30px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    margin: 0 !important;
+  }
+
+  #hongo-header .navbar.tvastra-single-header .navbar-right {
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  #hongo-header .navbar.tvastra-single-header .navbar-right > div,
+  #hongo-header .navbar.tvastra-single-header .navbar-right > div > a {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 28px !important;
+    min-width: 28px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
 }
 .chat-support-whatsapp-wrapper {
   opacity: 0 !important;
