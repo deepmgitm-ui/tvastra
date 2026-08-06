@@ -2,7 +2,7 @@
   'use strict';
 
   var root = document.documentElement;
-  var delay = 130;
+  var delay = 220;
 
   function isInternalPageLink(link) {
     if (!link || link.target || link.hasAttribute('download') || link.hasAttribute('data-no-page-transition')) return false;

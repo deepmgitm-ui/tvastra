@@ -1972,17 +1972,28 @@ body.sticky-active .chat-support-whatsapp-wrapper {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.13s ease, visibility 0s linear 0.13s;
+  transition: opacity 0.14s ease, visibility 0s linear 0.14s;
 }
 
 .tvastra-page-transition::before {
   position: absolute;
-  width: 52px;
+  width: 92px;
   height: 1px;
-  background: #c7a33c;
+  background: rgba(199, 163, 60, 0.35);
   content: '';
   transform: scaleX(0);
-  transition: transform 0.2s ease;
+  transition: transform 0.18s ease;
+}
+
+.tvastra-page-transition::after {
+  position: absolute;
+  width: 26px;
+  height: 2px;
+  background: #092f35;
+  content: '';
+  opacity: 0;
+  transform: translateX(-45px) scaleX(0.35);
+  will-change: transform, opacity;
 }
 
 .tvastra-page-transition__mark {
@@ -2009,14 +2020,37 @@ html.tvastra-page-leaving .tvastra-page-transition::before {
   transform: scaleX(1);
 }
 
+html.tvastra-page-leaving .tvastra-page-transition::after {
+  animation: tvastra-page-run 0.22s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
 html.tvastra-page-leaving .tvastra-page-transition__mark {
   opacity: 1;
   transform: translateY(0);
 }
 
+@keyframes tvastra-page-run {
+  0% {
+    opacity: 0;
+    transform: translateX(-45px) scaleX(0.35);
+  }
+  18% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+    transform: translateX(8px) scaleX(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(45px) scaleX(0.35);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tvastra-page-transition,
   .tvastra-page-transition::before,
+  .tvastra-page-transition::after,
   .tvastra-page-transition__mark {
     transition: none !important;
   }

@@ -424,49 +424,6 @@
         "show_arrows": true
       }
     },
-    "tvastra_confidence_premium": {
-      "type": "tvastra-confidence",
-      "blocks": {
-        "made_in_india": {
-          "type": "point",
-          "settings": {
-            "title": "Made in India",
-            "text": "Designed for everyday movement."
-          }
-        },
-        "secure_payments": {
-          "type": "point",
-          "settings": {
-            "title": "Secure payments",
-            "text": "A protected checkout, every time."
-          }
-        },
-        "easy_exchange": {
-          "type": "point",
-          "settings": {
-            "title": "Easy exchange",
-            "text": "7 days to find your right fit."
-          }
-        },
-        "prepaid_shipping": {
-          "type": "point",
-          "settings": {
-            "title": "Free prepaid shipping",
-            "text": "Across India, on prepaid orders."
-          }
-        }
-      },
-      "block_order": [
-        "made_in_india",
-        "secure_payments",
-        "easy_exchange",
-        "prepaid_shipping"
-      ],
-      "settings": {
-        "eyebrow": "SHOP WITH CONFIDENCE",
-        "heading": "Built for movement. Backed by the details."
-      }
-    },
     "insta_communitycustom_4bU7Bf": {
       "type": "insta-communitycustom",
       "name": "Insta Community CTA",
@@ -820,7 +777,6 @@
     "custom_usp_tvastra_gjtphd",
     "custom_liquid_QQd9QU",
     "best_seller_slider_fEVneC",
-    "tvastra_confidence_premium",
     "insta_communitycustom_4bU7Bf",
     "connect_with_us_Ab6Vkh",
     "deal_products_VBfaBx",
