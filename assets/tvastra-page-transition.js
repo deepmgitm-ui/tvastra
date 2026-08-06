@@ -5,7 +5,7 @@
   var delay = 220;
 
   function isInternalPageLink(link) {
-    if (!link || link.target || link.hasAttribute('download') || link.hasAttribute('data-no-page-transition')) return false;
+    if (!link || link.target || link.hasAttribute('download') || link.hasAttribute('data-no-page-transition') || link.hasAttribute('data-collection-load-more')) return false;
 
     var href = link.getAttribute('href');
     if (!href || href.charAt(0) === '#' || /^(mailto:|tel:|javascript:)/i.test(href)) return false;

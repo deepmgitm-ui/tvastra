@@ -146,33 +146,6 @@
   background: var(--product-accent);
 }
 
-/* Keep key purchase reassurance close to the price without adding another card. */
-.main-product-page .tvastra-product-confidence {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  align-items: center !important;
-  gap: 4px 12px !important;
-  margin: 0 0 7px !important;
-  padding: 6px 0 !important;
-  border-top: 1px solid rgba(16, 47, 52, 0.1) !important;
-  border-bottom: 1px solid rgba(16, 47, 52, 0.1) !important;
-  color: var(--product-muted) !important;
-  font-size: 10px !important;
-  line-height: 1.25 !important;
-}
-
-.main-product-page .tvastra-product-confidence span {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 4px !important;
-  white-space: nowrap !important;
-}
-
-.main-product-page .tvastra-product-confidence i {
-  color: var(--product-accent) !important;
-  font-size: 11px !important;
-}
-
 .main-product-page .product-colour-family {
   margin: 0 0 12px !important;
   padding: 0 !important;
