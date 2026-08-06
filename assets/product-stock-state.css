@@ -66,3 +66,39 @@
     transition: none;
   }
 }
+
+/* Product pages keep the normal gallery, with a restrained unavailable state. */
+.main-product-page.tvastra-product-out-of-stock .product-image-main {
+  position: relative;
+}
+
+.main-product-page.tvastra-product-out-of-stock .product-image-main::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: rgba(18, 24, 23, .16);
+  pointer-events: none;
+}
+
+.main-product-page.tvastra-product-out-of-stock .product-image-main .preview-image,
+.main-product-page.tvastra-product-out-of-stock .product-image-main .product-frame-image {
+  filter: grayscale(.46) saturate(.62);
+}
+
+/* If Swiper is still loading, never stack every product image in the media frame. */
+@media (max-width: 767px) {
+  .main-product-page.tvastra-product-out-of-stock .product-image-main:not(.swiper-initialized) > .swiper-wrapper {
+    display: block !important;
+    transform: none !important;
+  }
+
+  .main-product-page.tvastra-product-out-of-stock .product-image-main:not(.swiper-initialized) > .swiper-wrapper > .swiper-slide {
+    display: none !important;
+    width: 100% !important;
+  }
+
+  .main-product-page.tvastra-product-out-of-stock .product-image-main:not(.swiper-initialized) > .swiper-wrapper > .swiper-slide:first-child {
+    display: block !important;
+  }
+}
