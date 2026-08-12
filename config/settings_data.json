@@ -1358,6 +1358,11 @@
         "type": "shopify://apps/spur-popups/blocks/popup-embed/019ad4fe-6d99-708f-9bf9-047b2e248391",
         "disabled": false,
         "settings": {}
+      },
+      "9717370649079274736": {
+        "type": "shopify://apps/otp-login-notify/blocks/app-embed-block/c26b7b17-273d-4800-af62-8ec88ba18251",
+        "disabled": false,
+        "settings": {}
       }
     }
   },
