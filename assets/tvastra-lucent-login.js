@@ -27,6 +27,12 @@
   }
 
   function openLucent(trigger, attempt) {
+    if (window.simplyOtp && typeof window.simplyOtp.openLoginOrAccountModal === 'function') {
+      setBusy(trigger, false);
+      window.simplyOtp.openLoginOrAccountModal();
+      return;
+    }
+
     if (window.simplyOtp && typeof window.simplyOtp.openPopup === 'function') {
       setBusy(trigger, false);
       window.simplyOtp.openPopup();
