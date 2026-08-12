@@ -78,7 +78,6 @@
     {%- endif -%}
     {{ 'responsive.min.css' | asset_url | stylesheet_tag }}
     {{ 'custom.css' | asset_url | stylesheet_tag }}
-    <link rel="stylesheet" href="{{ 'tvastra-shop-menu.css' | asset_url | split: '?' | first }}?v=1">
     <link rel="stylesheet" href="{{ 'product-stock-state.css' | asset_url | split: '?' | first }}?v=2">
     {{ 'review-stars-fix.css' | asset_url | stylesheet_tag }}
     {{ 'review-widget-v2.css' | asset_url | stylesheet_tag }}
@@ -209,7 +208,6 @@
         <script src="{{ 'newsletter.js' | asset_url }}" defer="defer"></script>
       {%- endif -%}
       <script src="{{ 'main.min.js' | asset_url }}" defer="defer"></script>
-      <script src="{{ 'tvastra-shop-menu.js' | asset_url | split: '?' | first }}?v=1" defer="defer"></script>
       <script src="{{ 'tvastra-page-transition.js' | asset_url | split: '?' | first }}?v=3" defer="defer"></script>
       {%- if template.name == 'collection' -%}
         <script src="{{ 'collection-load-more.js' | asset_url }}" defer="defer"></script>

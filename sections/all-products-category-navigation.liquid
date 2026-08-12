@@ -1,0 +1,96 @@
+{%- if collection.handle == 'all' -%}
+  {{ 'all-products-category-navigation.css' | asset_url | stylesheet_tag }}
+
+  {%- liquid
+    assign women_collection = section.settings.women_collection
+    assign men_collection = section.settings.men_collection
+    assign category_menu_handles = section.settings.women_menu | append: ',' | append: section.settings.men_menu | split: ','
+  -%}
+
+  <section class="tvastra-category-nav" aria-labelledby="TvastraCategoryHeading-{{ section.id }}">
+    <div class="container-fluid">
+      <div class="tvastra-category-nav__heading">
+        <div>
+          {%- if section.settings.eyebrow != blank -%}<p>{{ section.settings.eyebrow }}</p>{%- endif -%}
+          <h2 id="TvastraCategoryHeading-{{ section.id }}">{{ section.settings.heading }}</h2>
+        </div>
+        {%- if section.settings.description != blank -%}<div class="tvastra-category-nav__description">{{ section.settings.description }}</div>{%- endif -%}
+      </div>
+
+      <div class="tvastra-category-nav__track" aria-label="Product categories">
+        {%- render 'all-products-category-card', card_collection: women_collection, card_title: women_collection.title, card_group: 'Shop all', card_featured: true -%}
+        {%- render 'all-products-category-card', card_collection: men_collection, card_title: men_collection.title, card_group: 'Shop all', card_featured: true -%}
+
+        {%- for menu_handle in category_menu_handles -%}
+          {%- assign category_menu = linklists[menu_handle] -%}
+          {%- if category_menu.links != blank -%}
+            {%- for navigation_link in category_menu.links -%}
+              {%- if navigation_link.links != blank -%}
+                {%- for category_link in navigation_link.links -%}
+                  {%- assign linked_collection = category_link.object -%}
+                  {%- render 'all-products-category-card', card_collection: linked_collection, card_link: category_link, card_title: category_link.title, card_group: category_menu.title -%}
+                {%- endfor -%}
+              {%- else -%}
+                {%- assign linked_collection = navigation_link.object -%}
+                {%- render 'all-products-category-card', card_collection: linked_collection, card_link: navigation_link, card_title: navigation_link.title, card_group: category_menu.title -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "All products categories",
+  "tag": "section",
+  "class": "all-products-category-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "TVASTRA COLLECTIONS"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop by category"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Performance essentials made for training, movement and every day.</p>"
+    },
+    {
+      "type": "collection",
+      "id": "women_collection",
+      "label": "Women collection"
+    },
+    {
+      "type": "collection",
+      "id": "men_collection",
+      "label": "Men collection"
+    },
+    {
+      "type": "link_list",
+      "id": "women_menu",
+      "label": "Women categories"
+    },
+    {
+      "type": "link_list",
+      "id": "men_menu",
+      "label": "Men categories"
+    }
+  ],
+  "presets": [
+    {
+      "name": "All products categories"
+    }
+  ]
+}
+{% endschema %}

@@ -29,6 +29,18 @@
         "banner_bg_color": "#f7f7f7"
       }
     },
+    "category-navigation": {
+      "type": "all-products-category-navigation",
+      "settings": {
+        "eyebrow": "TVASTRA COLLECTIONS",
+        "heading": "Shop by category",
+        "description": "<p>Performance essentials made for training, movement and every day.</p>",
+        "women_collection": "women",
+        "men_collection": "men",
+        "women_menu": "women",
+        "men_menu": "men"
+      }
+    },
     "7ad6534a-e2c7-4db3-aef2-71cae81bd8ee": {
       "type": "collection-list",
       "blocks": {
@@ -133,6 +145,7 @@
   },
   "order": [
     "page-title",
+    "category-navigation",
     "7ad6534a-e2c7-4db3-aef2-71cae81bd8ee",
     "product-grid"
   ]

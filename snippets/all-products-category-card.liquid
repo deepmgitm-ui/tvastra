@@ -1,0 +1,31 @@
+{%- liquid
+  assign card_image = card_collection.image | default: card_collection.products.first.featured_image
+  assign card_url = card_collection.url | default: card_link.url
+  assign card_title = card_title | default: card_collection.title | default: card_link.title
+-%}
+
+{%- if card_url != blank and card_title != blank -%}
+  <a class="tvastra-category-card{% if card_featured %} tvastra-category-card--featured{% endif %}" href="{{ card_url }}" aria-label="Shop {{ card_title | escape }}">
+    <span class="tvastra-category-card__media">
+      {%- if card_image != blank -%}
+        {{
+          card_image
+          | image_url: width: 640
+          | image_tag:
+            class: 'tvastra-category-card__image',
+            widths: '180, 260, 360, 480, 640',
+            sizes: '(max-width: 767px) 38vw, (max-width: 1199px) 24vw, 14vw',
+            loading: 'lazy',
+            alt: card_title
+        }}
+      {%- else -%}
+        <span class="tvastra-category-card__placeholder" aria-hidden="true">TVASTRA</span>
+      {%- endif -%}
+    </span>
+    <span class="tvastra-category-card__copy">
+      {%- if card_group != blank -%}<small>{{ card_group }}</small>{%- endif -%}
+      <strong>{{ card_title }}</strong>
+      <i class="feather-arrow-up-right" aria-hidden="true"></i>
+    </span>
+  </a>
+{%- endif -%}

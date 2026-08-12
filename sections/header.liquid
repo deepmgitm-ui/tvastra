@@ -277,6 +277,12 @@
           {%- endcapture -%}
           {%- assign megamenu-content = megamenu-content | strip -%}
           {%- assign bottom-banner-content = bottom-banner-content | strip -%}
+          {%- assign menu_title_key = block.settings.text | escape | split: '[' | first | strip | downcase -%}
+          {%- if menu_title_key == 'shop' -%}
+          <li class="nav-item nav-type-link">
+            <a class="nav-link {% if request.path == routes.all_products_collection_url %}active{% endif %} {{ settings.menu_text_case }}" href="{{ routes.all_products_collection_url }}" aria-label="Shop all products">{{ block.settings.text | escape | split: '[' | first }}</a>
+          </li>
+          {%- else -%}
           <li class="nav-item megamenu-item nav-type-megamenu" data-searchUrl="{{routes.search_url}}?q={{block.id}}&view=main_submenu">
             <a class="nav-link {% if block.settings.url == request.path %} active{% endif %} {{ settings.menu_text_case }}" href="{{ block.settings.url }}" aria-label="link">{{ block.settings.text | escape | split: '[' | first }}<span class="feather-chevron-right parent d-flex align-items-center d-xl-none"></span></a>{%- if block.settings.text contains '[' -%}<span class="menu-lable parent-lable" style=" background-color: {{ settings[parants_bgColor] }}; color: {{ settings[parants_color] }}; ">{{ settings[parants_label] }}</span>{%- endif -%}
             {%- if megamenu-content != blank or bottom-banner-content != blank -%}
@@ -307,6 +313,7 @@
               </div>
             {%- endif -%}
           </li>
+          {%- endif -%}
         {%- when 'simple-dropdown' -%}
           <li class="nav-item nav-type-dropdown">
             {%- assign sublinks = linklists[block.settings.simple_menu].links -%}
