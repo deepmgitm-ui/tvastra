@@ -32,7 +32,11 @@
     {%- endif -%}
      {%- if section.settings.show_account_icon -%}
       <div class="sticky-menu-item">
-        <a href="{{ routes.account_url }}" aria-label="account-label">
+        <a
+          href="{%- if customer -%}{{ routes.account_url }}{%- else -%}#lucent-login{%- endif -%}"
+          aria-label="account-label"
+          {%- unless customer %} data-tvastra-lucent-login data-no-page-transition aria-haspopup="dialog"{% endunless -%}
+        >
           <i class="feather-user"></i>
           {%- if section.settings.show_home_label == true -%}
             <span>{{ 'sections.mobile_sticky_menu.account_label' | t }}</span>
