@@ -1,16 +1,30 @@
 @media (max-width: 1199px) {
-  .tvastra-shop-nav > .nav-link {
-    display: flex !important;
-    align-items: center;
-    justify-content: space-between;
+  .tvastra-shop-nav {
+    position: relative;
   }
 
-  .tvastra-shop-nav > .nav-link .parent {
-    flex: 0 0 42px;
-    width: 42px;
-    height: 42px;
-    margin: -10px -12px -10px 12px;
-    justify-content: center;
+  .tvastra-shop-nav > .nav-link {
+    padding-right: 56px !important;
+  }
+
+  .tvastra-shop-nav__toggle {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    display: grid;
+    width: 52px;
+    height: 100%;
+    min-height: 44px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    place-items: center;
+    color: #0b3036;
+  }
+
+  .tvastra-shop-nav__toggle i {
+    font-size: 15px;
   }
 
   .tvastra-shop-mobile-menu__inner {

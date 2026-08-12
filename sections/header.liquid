@@ -280,10 +280,10 @@
           {%- assign menu_title_key = block.settings.text | escape | split: '[' | first | strip | downcase -%}
           {%- if menu_title_key == 'shop' -%}
           <li class="nav-item megamenu-item nav-type-megamenu tvastra-shop-nav">
-            <a class="nav-link {% if request.path == routes.all_products_collection_url %}active{% endif %} {{ settings.menu_text_case }}" href="{{ routes.all_products_collection_url }}" aria-label="Shop all products">
-              {{- block.settings.text | escape | split: '[' | first -}}
-              <span class="feather-chevron-right parent d-flex align-items-center d-xl-none" role="button" tabindex="0" aria-label="Open Shop collections" aria-expanded="false"></span>
-            </a>
+            <a class="nav-link {% if request.path == routes.all_products_collection_url %}active{% endif %} {{ settings.menu_text_case }}" href="{{ routes.all_products_collection_url }}" aria-label="Shop all products">{{ block.settings.text | escape | split: '[' | first }}</a>
+            <button class="tvastra-shop-nav__toggle d-xl-none" type="button" aria-label="Open Shop collections" aria-expanded="false">
+              <i class="feather-chevron-right" aria-hidden="true"></i>
+            </button>
             <div class="dropdown-menu sub-menu tvastra-shop-mobile-menu d-xl-none">
               <div class="back-wrapper d-block">Shop</div>
               <div class="tvastra-shop-mobile-menu__inner">

@@ -2,7 +2,7 @@
   'use strict';
 
   function setShopMenuOpen(shopItem, open) {
-    var opener = shopItem && shopItem.querySelector(':scope > .nav-link .parent');
+    var opener = shopItem && shopItem.querySelector(':scope > .tvastra-shop-nav__toggle');
     var menu = shopItem && shopItem.querySelector(':scope > .tvastra-shop-mobile-menu');
     var navList = document.querySelector('#navbarNav .navbar-nav');
     var mobileTools = document.querySelector('.mobile-language-currency');
@@ -14,7 +14,7 @@
   }
 
   document.addEventListener('click', function (event) {
-    var opener = event.target.closest('.tvastra-shop-nav > .nav-link .parent');
+    var opener = event.target.closest('.tvastra-shop-nav__toggle');
     if (opener && window.matchMedia('(max-width: 1199px)').matches) {
       event.preventDefault();
       event.stopImmediatePropagation();
@@ -34,7 +34,7 @@
   }, true);
 
   document.addEventListener('keydown', function (event) {
-    var opener = event.target.closest('.tvastra-shop-nav > .nav-link .parent');
+    var opener = event.target.closest('.tvastra-shop-nav__toggle');
     if (!opener || (event.key !== 'Enter' && event.key !== ' ')) return;
 
     event.preventDefault();
