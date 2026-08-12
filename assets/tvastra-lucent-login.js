@@ -56,6 +56,7 @@
 
     event.preventDefault();
     event.stopImmediatePropagation();
+    document.documentElement.classList.remove('tvastra-page-leaving');
     setBusy(trigger, true);
     openLucent(trigger, 0);
   }, true);

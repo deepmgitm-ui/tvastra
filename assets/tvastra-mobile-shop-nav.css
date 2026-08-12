@@ -1,0 +1,89 @@
+@media (max-width: 1199px) {
+  .tvastra-shop-nav > .nav-link {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .tvastra-shop-nav > .nav-link .parent {
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    margin: -10px -12px -10px 12px;
+    justify-content: center;
+  }
+
+  .tvastra-shop-mobile-menu__inner {
+    padding: 17px 18px 24px;
+  }
+
+  .tvastra-shop-mobile-menu__label {
+    margin: 0 0 7px;
+    color: #867246;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .tvastra-shop-mobile-menu__links {
+    display: grid;
+  }
+
+  .tvastra-shop-mobile-menu__links a,
+  .tvastra-shop-mobile-menu__all {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #0b3036;
+  }
+
+  .tvastra-shop-mobile-menu__links a {
+    min-height: 53px;
+    border-bottom: 1px solid rgba(11, 48, 54, .12);
+  }
+
+  .tvastra-shop-mobile-menu__link-copy {
+    display: grid;
+    gap: 1px;
+  }
+
+  .tvastra-shop-mobile-menu__link-copy small {
+    color: #74807e;
+    font-size: 9px;
+    line-height: 1.15;
+  }
+
+  .tvastra-shop-mobile-menu__link-copy strong {
+    font-size: 13px;
+    font-weight: 550;
+    line-height: 1.25;
+  }
+
+  .tvastra-shop-mobile-menu__links i,
+  .tvastra-shop-mobile-menu__all i {
+    font-size: 13px;
+  }
+
+  .tvastra-shop-mobile-menu__all {
+    min-height: 58px;
+    margin-top: 15px;
+    padding: 0 14px;
+    background: #0b3036;
+    color: #fff;
+  }
+
+  .tvastra-shop-mobile-menu__all span {
+    display: grid;
+    gap: 1px;
+  }
+
+  .tvastra-shop-mobile-menu__all strong {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .tvastra-shop-mobile-menu__all small {
+    color: rgba(255, 255, 255, .7);
+    font-size: 10px;
+  }
+}

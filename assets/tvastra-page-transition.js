@@ -5,7 +5,7 @@
   var delay = 220;
 
   function isInternalPageLink(link) {
-    if (!link || link.target || link.hasAttribute('download') || link.hasAttribute('data-no-page-transition') || link.hasAttribute('data-collection-load-more')) return false;
+    if (!link || link.target || link.hasAttribute('download') || link.hasAttribute('data-no-page-transition') || link.hasAttribute('data-tvastra-lucent-login') || link.hasAttribute('data-collection-load-more')) return false;
 
     var href = link.getAttribute('href');
     if (!href || href.charAt(0) === '#' || /^(mailto:|tel:|javascript:)/i.test(href)) return false;
@@ -25,6 +25,7 @@
 
   document.addEventListener('click', function (event) {
     if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (event.target.closest('.parent')) return;
 
     var link = event.target.closest('a[href]');
     if (!isInternalPageLink(link) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;

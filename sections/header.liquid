@@ -279,8 +279,38 @@
           {%- assign bottom-banner-content = bottom-banner-content | strip -%}
           {%- assign menu_title_key = block.settings.text | escape | split: '[' | first | strip | downcase -%}
           {%- if menu_title_key == 'shop' -%}
-          <li class="nav-item nav-type-link">
-            <a class="nav-link {% if request.path == routes.all_products_collection_url %}active{% endif %} {{ settings.menu_text_case }}" href="{{ routes.all_products_collection_url }}" aria-label="Shop all products">{{ block.settings.text | escape | split: '[' | first }}</a>
+          <li class="nav-item megamenu-item nav-type-megamenu tvastra-shop-nav">
+            <a class="nav-link {% if request.path == routes.all_products_collection_url %}active{% endif %} {{ settings.menu_text_case }}" href="{{ routes.all_products_collection_url }}" aria-label="Shop all products">
+              {{- block.settings.text | escape | split: '[' | first -}}
+              <span class="feather-chevron-right parent d-flex align-items-center d-xl-none" role="button" tabindex="0" aria-label="Open Shop collections" aria-expanded="false"></span>
+            </a>
+            <div class="dropdown-menu sub-menu tvastra-shop-mobile-menu d-xl-none">
+              <div class="back-wrapper d-block">Shop</div>
+              <div class="tvastra-shop-mobile-menu__inner">
+                <p class="tvastra-shop-mobile-menu__label">By collection</p>
+                <nav class="tvastra-shop-mobile-menu__links" aria-label="Shop by collection">
+                  <a href="{{ collections.women.url | default: '/collections/women' }}"><span>Women</span><i class="feather-arrow-right" aria-hidden="true"></i></a>
+                  <a href="{{ collections.men.url | default: '/collections/men' }}"><span>Men</span><i class="feather-arrow-right" aria-hidden="true"></i></a>
+                  {%- assign shop_menu_handles = block.settings.menu3 | append: ',' | append: block.settings.menu4 | split: ',' -%}
+                  {%- for shop_menu_handle in shop_menu_handles -%}
+                    {%- assign shop_menu = linklists[shop_menu_handle] -%}
+                    {%- for shop_link in shop_menu.links -%}
+                      {%- if shop_link.links != blank -%}
+                        {%- for shop_child_link in shop_link.links -%}
+                          <a href="{{ shop_child_link.url }}"><span class="tvastra-shop-mobile-menu__link-copy"><small>{{ shop_menu.title }}</small><strong>{{ shop_child_link.title }}</strong></span><i class="feather-arrow-right" aria-hidden="true"></i></a>
+                        {%- endfor -%}
+                      {%- else -%}
+                        <a href="{{ shop_link.url }}"><span class="tvastra-shop-mobile-menu__link-copy"><small>{{ shop_menu.title }}</small><strong>{{ shop_link.title }}</strong></span><i class="feather-arrow-right" aria-hidden="true"></i></a>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  {%- endfor -%}
+                </nav>
+                <a class="tvastra-shop-mobile-menu__all" href="{{ routes.all_products_collection_url }}">
+                  <span><strong>All products</strong><small>Explore the complete collection</small></span>
+                  <i class="feather-arrow-right" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
           </li>
           {%- else -%}
           <li class="nav-item megamenu-item nav-type-megamenu" data-searchUrl="{{routes.search_url}}?q={{block.id}}&view=main_submenu">
