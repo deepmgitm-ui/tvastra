@@ -289,20 +289,29 @@
               <div class="tvastra-shop-mobile-menu__inner">
                 <p class="tvastra-shop-mobile-menu__label">By collection</p>
                 <nav class="tvastra-shop-mobile-menu__links" aria-label="Shop by collection">
-                  <a href="{{ collections.women.url | default: '/collections/women' }}"><span>Women</span><i class="feather-arrow-right" aria-hidden="true"></i></a>
-                  <a href="{{ collections.men.url | default: '/collections/men' }}"><span>Men</span><i class="feather-arrow-right" aria-hidden="true"></i></a>
-                  {%- assign shop_menu_handles = block.settings.menu3 | append: ',' | append: block.settings.menu4 | split: ',' -%}
-                  {%- for shop_menu_handle in shop_menu_handles -%}
-                    {%- assign shop_menu = linklists[shop_menu_handle] -%}
-                    {%- for shop_link in shop_menu.links -%}
-                      {%- if shop_link.links != blank -%}
-                        {%- for shop_child_link in shop_link.links -%}
-                          <a href="{{ shop_child_link.url }}"><span class="tvastra-shop-mobile-menu__link-copy"><small>{{ shop_menu.title }}</small><strong>{{ shop_child_link.title }}</strong></span><i class="feather-arrow-right" aria-hidden="true"></i></a>
-                        {%- endfor -%}
-                      {%- else -%}
-                        <a href="{{ shop_link.url }}"><span class="tvastra-shop-mobile-menu__link-copy"><small>{{ shop_menu.title }}</small><strong>{{ shop_link.title }}</strong></span><i class="feather-arrow-right" aria-hidden="true"></i></a>
-                      {%- endif -%}
-                    {%- endfor -%}
+                  {%- assign shop_collection_entries = 'the-flux-edit::The Flux Edit|the-flow-edit::The Flow Edit|the-basic-edit::The Basic Edit' | split: '|' -%}
+                  {%- for shop_collection_entry in shop_collection_entries -%}
+                    {%- liquid
+                      assign shop_collection_parts = shop_collection_entry | split: '::'
+                      assign shop_collection_handle = shop_collection_parts[0]
+                      assign shop_collection_fallback_title = shop_collection_parts[1]
+                      assign shop_collection = collections[shop_collection_handle]
+                      assign shop_collection_title = shop_collection.title | default: shop_collection_fallback_title
+                      assign shop_collection_url = '/collections/' | append: shop_collection_handle
+                      assign shop_collection_image = shop_collection.image | default: shop_collection.products.first.featured_image
+                      if shop_collection != blank
+                        assign shop_collection_url = shop_collection.url
+                      endif
+                    -%}
+                    <a href="{{ shop_collection_url }}">
+                      <span class="tvastra-shop-mobile-menu__media">
+                        {%- if shop_collection_image != blank -%}
+                          {{ shop_collection_image | image_url: width: 160 | image_tag: class: 'tvastra-shop-mobile-menu__image', widths: '80, 120, 160', sizes: '44px', loading: 'lazy', alt: shop_collection_title }}
+                        {%- endif -%}
+                      </span>
+                      <span class="tvastra-shop-mobile-menu__link-copy"><small>Collection</small><strong>{{ shop_collection_title }}</strong></span>
+                      <i class="feather-arrow-right" aria-hidden="true"></i>
+                    </a>
                   {%- endfor -%}
                 </nav>
                 <a class="tvastra-shop-mobile-menu__all" href="{{ routes.all_products_collection_url }}">
