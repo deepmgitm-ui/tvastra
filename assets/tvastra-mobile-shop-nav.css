@@ -89,9 +89,14 @@
   }
 
   .tvastra-shop-mobile-menu__link-copy {
-    display: grid;
-    min-width: 0;
-    flex: 1;
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    display: block !important;
+    width: auto !important;
+    height: auto !important;
+    min-width: 0 !important;
+    flex: 1 1 auto;
     gap: 1px;
   }
 
@@ -102,9 +107,11 @@
   }
 
   .tvastra-shop-mobile-menu__link-copy strong {
+    display: block;
     font-size: 14px;
     font-weight: 500;
     line-height: 1.35;
+    white-space: nowrap;
   }
 
   .tvastra-shop-mobile-menu__links i,
