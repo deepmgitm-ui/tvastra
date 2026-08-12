@@ -298,18 +298,12 @@
                       assign shop_collection = collections[shop_collection_handle]
                       assign shop_collection_title = shop_collection.title | default: shop_collection_fallback_title
                       assign shop_collection_url = '/collections/' | append: shop_collection_handle
-                      assign shop_collection_image = shop_collection.image | default: shop_collection.products.first.featured_image
                       if shop_collection != blank
                         assign shop_collection_url = shop_collection.url
                       endif
                     -%}
                     <a href="{{ shop_collection_url }}">
-                      <span class="tvastra-shop-mobile-menu__media">
-                        {%- if shop_collection_image != blank -%}
-                          {{ shop_collection_image | image_url: width: 160 | image_tag: class: 'tvastra-shop-mobile-menu__image', widths: '80, 120, 160', sizes: '44px', loading: 'lazy', alt: shop_collection_title }}
-                        {%- endif -%}
-                      </span>
-                      <span class="tvastra-shop-mobile-menu__link-copy"><small>Collection</small><strong>{{ shop_collection_title }}</strong></span>
+                      <span class="tvastra-shop-mobile-menu__link-copy"><strong>{{ shop_collection_title }}</strong></span>
                       <i class="feather-arrow-right" aria-hidden="true"></i>
                     </a>
                   {%- endfor -%}
