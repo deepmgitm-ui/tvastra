@@ -1,0 +1,271 @@
+.tvastra-shop-menu {
+  --shop-ink: #102f34;
+  --shop-muted: #687473;
+  --shop-line: rgba(16, 47, 52, .12);
+  --shop-surface: #f5f6f3;
+  padding-top: 18px;
+  padding-bottom: 20px;
+  color: var(--shop-ink);
+}
+
+.tvastra-shop-menu__header,
+.tvastra-shop-menu__layout,
+.tvastra-shop-menu__gender-copy,
+.tvastra-shop-menu__category-link,
+.tvastra-shop-menu__mobile-all {
+  display: flex;
+  align-items: center;
+}
+
+.tvastra-shop-menu__header {
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.tvastra-shop-menu__eyebrow,
+.tvastra-shop-menu__intro,
+.tvastra-shop-menu__label {
+  margin: 0;
+}
+
+.tvastra-shop-menu__eyebrow {
+  color: #857044;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.tvastra-shop-menu__intro {
+  margin-top: 3px;
+  color: var(--shop-muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.tvastra-shop-menu__desktop-all {
+  align-items: center;
+  gap: 7px;
+  color: var(--shop-ink);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.tvastra-shop-menu__layout {
+  align-items: stretch;
+  gap: 28px;
+}
+
+.tvastra-shop-menu__gender {
+  display: grid;
+  flex: 1 1 58%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.tvastra-shop-menu__gender-link,
+.tvastra-shop-menu__category-link {
+  color: var(--shop-ink);
+}
+
+.tvastra-shop-menu__gender-link {
+  min-width: 0;
+}
+
+.tvastra-shop-menu__gender-media {
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--shop-surface);
+}
+
+.tvastra-shop-menu__gender-image,
+.tvastra-shop-menu__category-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform .28s ease;
+}
+
+.tvastra-shop-menu__gender-copy {
+  justify-content: space-between;
+  min-height: 38px;
+  padding: 8px 2px 0;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.tvastra-shop-menu__gender-copy i {
+  font-size: 13px;
+}
+
+.tvastra-shop-menu__categories {
+  flex: 1 1 42%;
+  min-width: 300px;
+  padding-left: 26px;
+  border-left: 1px solid var(--shop-line);
+}
+
+.tvastra-shop-menu__label {
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--shop-line);
+  color: var(--shop-muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.tvastra-shop-menu__category-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.tvastra-shop-menu__category-group-title {
+  margin: 10px 0 0;
+  color: var(--shop-ink);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.tvastra-shop-menu__category-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.tvastra-shop-menu__category-link {
+  position: relative;
+  min-width: 0;
+  min-height: 68px;
+  gap: 10px;
+  border-bottom: 1px solid var(--shop-line);
+}
+
+.tvastra-shop-menu__category-media {
+  flex: 0 0 46px;
+  width: 46px;
+  height: 52px;
+  overflow: hidden;
+  background: var(--shop-surface);
+}
+
+.tvastra-shop-menu__category-title {
+  min-width: 0;
+  overflow-wrap: normal;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.tvastra-shop-menu__category-link > i {
+  margin-left: auto;
+  color: var(--shop-muted);
+  font-size: 12px;
+}
+
+.tvastra-shop-menu__gender-link:hover .tvastra-shop-menu__gender-image,
+.tvastra-shop-menu__category-link:hover .tvastra-shop-menu__category-image {
+  transform: scale(1.025);
+}
+
+.tvastra-shop-menu__gender-link:hover,
+.tvastra-shop-menu__category-link:hover,
+.tvastra-shop-menu__desktop-all:hover {
+  color: #857044;
+}
+
+@media (max-width: 1199px) {
+  .tvastra-shop-menu {
+    width: 100%;
+    padding: 0 16px 22px;
+  }
+
+  .tvastra-shop-menu > .back-wrapper {
+    margin-right: -16px;
+    margin-left: -16px;
+  }
+
+  .tvastra-shop-menu__header {
+    margin: 17px 0 13px;
+  }
+
+  .tvastra-shop-menu__layout {
+    display: block;
+  }
+
+  .tvastra-shop-menu__gender {
+    gap: 9px;
+  }
+
+  .tvastra-shop-menu__gender-media {
+    aspect-ratio: 4 / 3;
+  }
+
+  .tvastra-shop-menu__gender-copy {
+    min-height: 36px;
+    font-size: 13px;
+  }
+
+  .tvastra-shop-menu__categories {
+    min-width: 0;
+    margin-top: 14px;
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .tvastra-shop-menu__category-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tvastra-shop-menu__category-link {
+    min-height: 64px;
+  }
+
+  .tvastra-shop-menu__category-media {
+    flex-basis: 42px;
+    width: 42px;
+    height: 48px;
+  }
+
+  .tvastra-shop-menu__mobile-all {
+    justify-content: space-between;
+    min-height: 58px;
+    margin-top: 16px;
+    padding: 0 15px;
+    background: var(--shop-ink);
+    color: #fff;
+  }
+
+  .tvastra-shop-menu__mobile-all span {
+    display: grid;
+    gap: 2px;
+  }
+
+  .tvastra-shop-menu__mobile-all strong {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .tvastra-shop-menu__mobile-all small {
+    color: rgba(255, 255, 255, .68);
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 374px) {
+  .tvastra-shop-menu {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .tvastra-shop-menu__category-columns {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tvastra-shop-menu__gender-image,
+  .tvastra-shop-menu__category-image {
+    transition: none;
+  }
+}

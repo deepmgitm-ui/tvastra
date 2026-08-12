@@ -1,0 +1,23 @@
+{%- liquid
+  assign category_collection = category_link.object
+  assign category_image = category_collection.image | default: category_collection.products.first.featured_image
+-%}
+
+<a class="tvastra-shop-menu__category-link" href="{{ category_link.url }}">
+  <span class="tvastra-shop-menu__category-media">
+    {%- if category_image != blank -%}
+      {{
+        category_image
+        | image_url: width: 320
+        | image_tag:
+          class: 'tvastra-shop-menu__category-image',
+          widths: '96, 144, 220, 320',
+          sizes: '(max-width: 767px) 42px, 46px',
+          loading: 'lazy',
+          alt: category_link.title
+      }}
+    {%- endif -%}
+  </span>
+  <span class="tvastra-shop-menu__category-title">{{ category_link.title }}</span>
+  <i class="feather-chevron-right" aria-hidden="true"></i>
+</a>

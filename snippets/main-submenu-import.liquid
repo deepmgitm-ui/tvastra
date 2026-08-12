@@ -10,6 +10,10 @@
 -%}
 {%- for block in section.blocks -%}
 	{%- if block.id == urlarrayfinal[0] -%}
+		{%- assign tvastra_menu_title = block.settings.text | escape | split: '[' | first | strip | downcase -%}
+		{%- if block.type == 'megamenu' and tvastra_menu_title == 'shop' -%}
+			{%- render 'tvastra-shop-megamenu', menu_title: block.settings.text, women_menu: block.settings.menu3, men_menu: block.settings.menu4 -%}
+		{%- else -%}
 		{%- case block.type -%}
 			{%- when 'megamenu' -%}
 				{%- comment -%} for mega menu column {%- endcomment -%}
@@ -322,5 +326,6 @@
             </ul>
           </div>
 		{%- endcase -%}
+		{%- endif -%}
 	{%- endif -%}
 {%- endfor -%}
