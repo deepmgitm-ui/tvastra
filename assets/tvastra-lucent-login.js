@@ -55,6 +55,20 @@
     return !!document.querySelector('[data-tvastra-lucent-login-page]') || /\/account\/login\/?$/i.test(window.location.pathname);
   }
 
+  function isAccountEntryLink(link) {
+    if (!link || link.target || link.hasAttribute('download')) return false;
+
+    var destination;
+    try {
+      destination = new URL(link.href, window.location.href);
+    } catch (error) {
+      return false;
+    }
+
+    if (destination.origin !== window.location.origin) return false;
+    return /^\/account\/?(login\/?)?$/i.test(destination.pathname);
+  }
+
   function autoOpenLucent() {
     if (autoOpened || !shouldAutoOpenLucent()) return;
     autoOpened = true;
@@ -66,6 +80,8 @@
 
   document.addEventListener('click', function (event) {
     var trigger = event.target.closest(selector);
+    var accountLink = trigger ? null : event.target.closest('a[href]');
+    if (!trigger && isAccountEntryLink(accountLink)) trigger = accountLink;
     if (!trigger) return;
 
     event.preventDefault();

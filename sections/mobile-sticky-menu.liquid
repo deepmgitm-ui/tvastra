@@ -33,9 +33,9 @@
      {%- if section.settings.show_account_icon -%}
       <div class="sticky-menu-item">
         <a
-          href="{%- if customer -%}{{ routes.account_url }}{%- else -%}#lucent-login{%- endif -%}"
+          href="#lucent-login"
           aria-label="account-label"
-          {%- unless customer %} data-tvastra-lucent-login data-no-page-transition aria-haspopup="dialog" aria-controls="sotp"{% endunless -%}
+          data-tvastra-lucent-login data-no-page-transition aria-haspopup="dialog" aria-controls="sotp"
         >
           <i class="feather-user"></i>
           {%- if section.settings.show_home_label == true -%}

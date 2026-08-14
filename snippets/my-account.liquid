@@ -1,9 +1,9 @@
 {%- if settings.header_layout == 'style-1' -%}
 	<div class="account {{ settings.menu_text_case }}">
 	  <a
-	    href="{%- if customer -%}{{ routes.account_url }}{%- else -%}#lucent-login{%- endif -%}"
+	    href="#lucent-login"
 	    aria-label="account"
-	    {%- unless customer %} data-tvastra-lucent-login data-no-page-transition aria-haspopup="dialog" aria-controls="sotp"{% endunless -%}
+	    data-tvastra-lucent-login data-no-page-transition aria-haspopup="dialog" aria-controls="sotp"
 	  >
 	    <i class="feather-user d-inline-block"></i>
 	    {%- if settings.show_icon == false -%}<span class="{% if settings.header_style == "center-navigation" %}d-none d-xxl-inline-block{% else %}d-none d-xl-inline-block{% endif %}">{{ 'sections.header.account' | t }}</a>{%- if customer -%}<a href="/account/logout" class="active d-none d-lg-inline-block customer-logout" aria-label="logout">({{ 'sections.header.logout' | t }})</a>{%- endif -%}</span>{%- endif -%}
@@ -11,9 +11,9 @@
 {%- else -%}
 	<div class="account alt-font {{ settings.menu_text_case }}">
 	  <a
-	    href="{%- if customer -%}{{ routes.account_url }}{%- else -%}#lucent-login{%- endif -%}"
+	    href="#lucent-login"
 	    aria-label="account"
-	    {%- unless customer %} data-tvastra-lucent-login data-no-page-transition aria-haspopup="dialog" aria-controls="sotp"{% endunless -%}
+	    data-tvastra-lucent-login data-no-page-transition aria-haspopup="dialog" aria-controls="sotp"
 	  >
 	  	<div class="accont-icon">
 	    	<i class="bi bi-person-plus"></i>
