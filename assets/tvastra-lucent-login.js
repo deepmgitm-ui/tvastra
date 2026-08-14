@@ -4,6 +4,7 @@
   var selector = '[data-tvastra-lucent-login]';
   var retryDelay = 100;
   var maxAttempts = 50;
+  var autoOpened = false;
 
   function setBusy(trigger, busy) {
     if (!trigger) return;
@@ -50,6 +51,19 @@
     }, retryDelay);
   }
 
+  function shouldAutoOpenLucent() {
+    return !!document.querySelector('[data-tvastra-lucent-login-page]') || /\/account\/login\/?$/i.test(window.location.pathname);
+  }
+
+  function autoOpenLucent() {
+    if (autoOpened || !shouldAutoOpenLucent()) return;
+    autoOpened = true;
+    document.documentElement.classList.remove('tvastra-page-leaving');
+    window.setTimeout(function () {
+      openLucent(document.querySelector(selector), 0);
+    }, 250);
+  }
+
   document.addEventListener('click', function (event) {
     var trigger = event.target.closest(selector);
     if (!trigger) return;
@@ -60,4 +74,7 @@
     setBusy(trigger, true);
     openLucent(trigger, 0);
   }, true);
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', autoOpenLucent);
+  else autoOpenLucent();
 }());
