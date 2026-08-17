@@ -43,7 +43,7 @@
             "show_save_label": false,
             "purchase_note_tax": "Taxes included",
             "purchase_note_shipping": "Free prepaid shipping",
-            "show_product_offers": true,
+            "show_product_offers": false,
             "offers_title": "Offers & payment",
             "offers_highlight": "Save more today",
             "offer_1_title": "",
