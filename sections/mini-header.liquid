@@ -1,4 +1,7 @@
-{%- if section.settings.announcement != blank and section.settings.show_announcement != false -%}
+{%- liquid
+  assign tvastra_hide_top_announcement = true
+-%}
+{%- if tvastra_hide_top_announcement != true and section.settings.announcement != blank and section.settings.show_announcement != false -%}
   <div class="announcement-bar position-relative">
     <div class="{{ section.settings.container_type }}">
       <div class="row align-items-center">

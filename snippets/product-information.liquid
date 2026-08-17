@@ -124,43 +124,70 @@
           <div class="no-js-hidden" id="price-{{ section_id }}">
             {%- render 'main-price', product: product, use_variant: true, show_badges: true, price_class: 'price--large', save_label: block.settings.show_save_label -%}
           </div>
-          <div class="product-purchase-note" aria-label="Purchase information">
-            <span>Taxes included</span>
-            <span>Free prepaid shipping</span>
-          </div>
-          <details class="tvastra-product-offers">
-            <summary class="tvastra-product-offers__summary">
-              <span class="tvastra-product-offers__title">Offers &amp; payment</span>
-              <span class="tvastra-product-offers__highlight">Save more today</span>
-              <i class="feather-chevron-down" aria-hidden="true"></i>
-            </summary>
-            <div class="tvastra-product-offers__body">
-              <div class="tvastra-product-offers__list">
-                <div class="tvastra-product-offer">
-                  <span class="tvastra-product-offer__icon" aria-hidden="true"><i class="feather-tag"></i></span>
-                  <div class="tvastra-product-offer__copy">
-                    <strong>10% welcome offer</strong>
-                    <span>Apply TVFIT10 from cart before checkout.</span>
-                  </div>
-                </div>
-                <div class="tvastra-product-offer tvastra-product-offer--plain">
-                  <span class="tvastra-product-offer__icon" aria-hidden="true"><i class="feather-credit-card"></i></span>
-                  <div class="tvastra-product-offer__copy">
-                    <strong>Extra 5% prepaid benefit</strong>
-                    <span>Online payments ship faster and stay secure.</span>
-                  </div>
-                </div>
-                <div class="tvastra-product-offer tvastra-product-offer--plain">
-                  <span class="tvastra-product-offer__icon" aria-hidden="true"><i class="feather-percent"></i></span>
-                  <div class="tvastra-product-offer__copy">
-                    <strong>Bank, card and UPI offers</strong>
-                    <span>Eligible Razorpay offers appear at payment.</span>
-                  </div>
-                </div>
-              </div>
-              <p class="tvastra-product-offers__note"><i class="feather-shield" aria-hidden="true"></i> Verified checkout with Razorpay</p>
+          {%- liquid
+            assign purchase_note_tax = block.settings.purchase_note_tax | default: 'Taxes included'
+            assign purchase_note_shipping = block.settings.purchase_note_shipping | default: 'Free prepaid shipping'
+            assign offers_title = block.settings.offers_title | default: 'Offers & payment'
+            assign offers_highlight = block.settings.offers_highlight | default: 'Save more today'
+            assign offer_1_title = block.settings.offer_1_title | default: '10% welcome offer'
+            assign offer_1_text = block.settings.offer_1_text | default: 'Apply TVFIT10 from cart before checkout.'
+            assign offer_1_code = block.settings.offer_1_code | default: 'TVFIT10'
+            assign offer_2_title = block.settings.offer_2_title | default: 'Extra 5% prepaid benefit'
+            assign offer_2_text = block.settings.offer_2_text | default: 'Online payments ship faster and stay secure.'
+            assign offer_3_title = block.settings.offer_3_title | default: 'Bank, card and UPI offers'
+            assign offer_3_text = block.settings.offer_3_text | default: 'Eligible Razorpay offers appear at payment.'
+            assign offers_footer = block.settings.offers_footer | default: 'Verified checkout with Razorpay'
+          -%}
+          {%- if purchase_note_tax != blank or purchase_note_shipping != blank -%}
+            <div class="product-purchase-note" aria-label="Purchase information">
+              {%- if purchase_note_tax != blank -%}<span>{{ purchase_note_tax }}</span>{%- endif -%}
+              {%- if purchase_note_shipping != blank -%}<span>{{ purchase_note_shipping }}</span>{%- endif -%}
             </div>
-          </details>
+          {%- endif -%}
+          {%- if block.settings.show_product_offers != false -%}
+            <details class="tvastra-product-offers">
+              <summary class="tvastra-product-offers__summary">
+                <span class="tvastra-product-offers__title">{{ offers_title }}</span>
+                {%- if offers_highlight != blank -%}<span class="tvastra-product-offers__highlight">{{ offers_highlight }}</span>{%- endif -%}
+                <i class="feather-chevron-down" aria-hidden="true"></i>
+              </summary>
+              <div class="tvastra-product-offers__body">
+                <div class="tvastra-product-offers__list">
+                  {%- if offer_1_title != blank or offer_1_text != blank -%}
+                    <div class="tvastra-product-offer">
+                      <span class="tvastra-product-offer__icon" aria-hidden="true"><i class="feather-tag"></i></span>
+                      <div class="tvastra-product-offer__copy">
+                        {%- if offer_1_title != blank -%}<strong>{{ offer_1_title }}</strong>{%- endif -%}
+                        {%- if offer_1_text != blank -%}<span>{{ offer_1_text }}</span>{%- endif -%}
+                      </div>
+                      {%- if offer_1_code != blank -%}<span class="tvastra-product-offer__code">{{ offer_1_code }}</span>{%- endif -%}
+                    </div>
+                  {%- endif -%}
+                  {%- if offer_2_title != blank or offer_2_text != blank -%}
+                    <div class="tvastra-product-offer tvastra-product-offer--plain">
+                      <span class="tvastra-product-offer__icon" aria-hidden="true"><i class="feather-credit-card"></i></span>
+                      <div class="tvastra-product-offer__copy">
+                        {%- if offer_2_title != blank -%}<strong>{{ offer_2_title }}</strong>{%- endif -%}
+                        {%- if offer_2_text != blank -%}<span>{{ offer_2_text }}</span>{%- endif -%}
+                      </div>
+                    </div>
+                  {%- endif -%}
+                  {%- if offer_3_title != blank or offer_3_text != blank -%}
+                    <div class="tvastra-product-offer tvastra-product-offer--plain">
+                      <span class="tvastra-product-offer__icon" aria-hidden="true"><i class="feather-percent"></i></span>
+                      <div class="tvastra-product-offer__copy">
+                        {%- if offer_3_title != blank -%}<strong>{{ offer_3_title }}</strong>{%- endif -%}
+                        {%- if offer_3_text != blank -%}<span>{{ offer_3_text }}</span>{%- endif -%}
+                      </div>
+                    </div>
+                  {%- endif -%}
+                </div>
+                {%- if offers_footer != blank -%}
+                  <p class="tvastra-product-offers__note"><i class="feather-shield" aria-hidden="true"></i> {{ offers_footer }}</p>
+                {%- endif -%}
+              </div>
+            </details>
+          {%- endif -%}
         {%- endif -%}
 
         {{- colour_family_markup -}}
