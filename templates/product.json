@@ -40,7 +40,20 @@
             "hide_price": true,
             "hide_ratings": false,
             "hide_sku": false,
-            "show_save_label": false
+            "show_save_label": false,
+            "purchase_note_tax": "Taxes included",
+            "purchase_note_shipping": "Free prepaid shipping",
+            "show_product_offers": true,
+            "offers_title": "Offers & payment",
+            "offers_highlight": "Save more today",
+            "offer_1_title": "",
+            "offer_1_text": "",
+            "offer_1_code": "",
+            "offer_2_title": "Extra 5% prepaid benefit",
+            "offer_2_text": "Online payments ship faster and stay secure.",
+            "offer_3_title": "Bank, card and UPI offers",
+            "offer_3_text": "Eligible Razorpay offers appear at payment.",
+            "offers_footer": "Verified checkout with Razorpay"
           }
         },
         "judge_me_reviews_preview_badge_4iDGUN": {
