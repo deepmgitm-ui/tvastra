@@ -767,6 +767,19 @@
         "app_border_radius": 0,
         "app_padding": 0
       }
+    },
+    "custom_liquid_6HAkpL": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "container_type": "container",
+        "custom_liquid": "<div style=\"font-family: Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; color: #222; line-height: 1.7;\">\n  <h1 style=\"text-align: center; font-size: 28px; margin-bottom: 25px; color: #111;\">REFUND POLICY</h1>\n\n  <div style=\"background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 12px; padding: 15px;\">\n    <h3 style=\"font-size: 16px; margin-top: 0; color: #222;\">REFUND PROCESS</h3>\n    <p>Refunds are processed <strong>only after the returned product is received and approved</strong> by our quality check team.</p>\n  </div>\n\n  <div style=\"background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 12px; padding: 15px;\">\n    <h3 style=\"font-size: 16px; margin-top: 0; color: #222;\">REFUND TIMELINE</h3>\n    <p>Once approved, <strong>refund is initiated within 5–7 business days</strong>.<br>\n    <strong>Final credit time depends on your bank, UPI, card provider, or payment gateway.</strong></p>\n  </div>\n\n  <div style=\"background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 12px; padding: 15px;\">\n    <h3 style=\"font-size: 16px; margin-top: 0; color: #222;\">REFUND METHOD</h3>\n    <ul style=\"padding-left: 20px; margin: 0;\">\n      <li><strong>Prepaid Orders:</strong> Refunded to <strong>original payment method</strong>.</li>\n      <li><strong>COD Orders:</strong> Refunded via <strong>bank transfer or UPI</strong> after verifying details.</li>\n    </ul>\n  </div>\n\n  <div style=\"background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 12px; padding: 15px;\">\n    <h3 style=\"font-size: 16px; margin-top: 0; color: #222;\">CHARGES REFUND EXCEPTION</h3>\n    <p style=\"color: #d00000; font-weight: bold;\">Shipping, COD, convenience fees, and gift-wrapping charges are normally non-refundable.</p>\n    <p><strong>Exception:</strong> If <strong>wrong product sent by us</strong> or <strong>verified quality issue from our side</strong>, these charges will also be refunded.</p>\n  </div>\n\n  <div style=\"background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 12px; padding: 15px;\">\n    <h3 style=\"font-size: 16px; margin-top: 0; color: #222;\">PARTIAL REFUNDS</h3>\n    <p>If only some items are returned from an order, <strong>refund will be processed only for approved returned items</strong>.</p>\n  </div>\n\n  <div style=\"background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 12px; padding: 15px;\">\n    <h3 style=\"font-size: 16px; margin-top: 0; color: #222;\">STORE CREDIT OPTION</h3>\n    <p>In select cases we may offer <strong>TvastraFit Store Credit</strong> instead of refund.<br>\n    Applies to <strong>size-related returns, promotional orders, or exchange requests</strong>.</p>\n  </div>\n\n</div>",
+        "padding_top": "small-section-top",
+        "padding_bottom": "small-section-bottom",
+        "section_show": true,
+        "section_id": "",
+        "section_class_name": ""
+      }
     }
   },
   "order": [
@@ -783,6 +796,7 @@
     "177504494354d5da65",
     "testimonials_slidercustom_KDnnjy",
     "lifestyle_gridcustom_JLPHtF",
-    "1782207387d69941e6"
+    "1782207387d69941e6",
+    "custom_liquid_6HAkpL"
   ]
 }
