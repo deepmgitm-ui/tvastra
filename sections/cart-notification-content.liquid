@@ -9,11 +9,13 @@
   <span data-cart-notification-close class="ms-auto cart-close-icon feather-x"></span>
 </div>
 {%- if cart != empty -%}
-  {%- assign tvfit_applied = false -%}
+  {%- assign cart_promo_code = settings.cart_promo_code | default: 'TVFIT10' -%}
+  {%- assign cart_promo_code_up = cart_promo_code | upcase -%}
+  {%- assign promo_applied = false -%}
   {%- for discount in cart.cart_level_discount_applications -%}
     {%- assign discount_title = discount.title | upcase -%}
-    {%- if discount_title contains 'TVFIT10' -%}
-      {%- assign tvfit_applied = true -%}
+    {%- if discount_title contains cart_promo_code_up -%}
+      {%- assign promo_applied = true -%}
     {%- endif -%}
   {%- endfor -%}
   <div class="mini-cart-progress"></div>
@@ -104,19 +106,32 @@
     </div>
   </div>
   <div class="mini-cart-bottom" data-cart-bottom>
+  {%- if settings.enable_cart_promo -%}
     <div class="tvastra-cart-offer tvastra-cart-offer--drawer" data-tvastra-promo>
       <div class="tvastra-cart-offer__copy">
-        <strong>10% off with TVFIT10</strong>
-        <small>{% if tvfit_applied %}Applied + 5% prepaid{% else %}+5% extra on prepaid orders{% endif %}</small>
+        <strong>{{ settings.cart_promo_title }}</strong>
+        <small>
+          {% if promo_applied %}
+            {{ cart_promo_code }} applied.
+          {% else %}
+            {{ settings.cart_promo_desc }}
+          {% endif %}
+        </small>
+        {%- if promo_applied == false and settings.cart_promo_estimate_percent > 0 -%}
+          {%- assign estimate_multiplier = settings.cart_promo_estimate_percent | divided_by: 100.0 -%}
+          {%- assign estimated_discount = cart.items_subtotal_price | times: estimate_multiplier -%}
+          <div class="tvastra-cart-offer__estimate">Estimated saving: {{ estimated_discount | money }}</div>
+        {%- endif -%}
       </div>
       <div class="tvastra-cart-offer__actions">
-        {%- if tvfit_applied -%}
-          <button type="button" class="tvastra-cart-offer__remove" data-tvastra-remove-code="TVFIT10" aria-label="Remove discount code TVFIT10">Remove</button>
+        {%- if promo_applied -%}
+          <button type="button" class="tvastra-cart-offer__remove" data-tvastra-remove-code="{{ cart_promo_code }}" aria-label="{{ settings.cart_promo_remove_text }} {{ cart_promo_code }}">{{ settings.cart_promo_remove_text | default: 'Remove' }}</button>
         {%- else -%}
-          <a class="tvastra-cart-offer__apply" data-tvastra-apply-code href="{{ routes.root_url }}discount/TVFIT10?redirect=/cart">Apply</a>
+          <a class="tvastra-cart-offer__apply" data-tvastra-apply-code href="{{ routes.root_url }}discount/{{ cart_promo_code }}?redirect=/cart">{{ settings.cart_promo_apply_text | default: 'Apply' }}</a>
         {%- endif -%}
       </div>
     </div>
+  {%- endif -%}
       {%- render 'cart-notification-addon' -%}
       <div class="cart-notification-totals-wrapper alt-font" data-tvastra-drawer-total-only>
         <div class="tvastra-cart-drawer-total" aria-label="Total bill">

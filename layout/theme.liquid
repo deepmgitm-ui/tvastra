@@ -82,7 +82,10 @@
     <link rel="stylesheet" href="{{ 'product-stock-state.css' | asset_url | split: '?' | first }}?v=2">
     {{ 'review-stars-fix.css' | asset_url | stylesheet_tag }}
     {{ 'review-widget-v2.css' | asset_url | stylesheet_tag }}
-    <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');    
+    <script>
+      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+      window.tvastra = window.tvastra || {};
+      window.tvastra.customer = {% if customer %}true{% else %}false{% endif %};
     </script>
     <style>
   @font-face {
@@ -661,6 +664,7 @@
   }
 
   function triggerSpurPopup() {
+    if (window.tvastra && window.tvastra.lucentAutoPopup) return;
     if (localStorage.getItem(SUBMITTED_KEY) === 'yes') return;
 
     compactSpurFormOnly();

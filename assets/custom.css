@@ -123,6 +123,18 @@
   line-height: 1.25 !important;
 }
 
+.tvastra-cart-offer__estimate {
+  display: inline-block !important;
+  margin-top: 6px !important;
+  padding: 3px 6px !important;
+  border-radius: 4px !important;
+  background: #171311 !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+}
+
 .tvastra-cart-offer__actions {
   display: flex !important;
   align-items: center !important;

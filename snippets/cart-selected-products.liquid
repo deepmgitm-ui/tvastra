@@ -1,10 +1,12 @@
 {%- comment -%}Legacy cart fallback: keep old section renders error-free while the main cart uses the inline version.{%- endcomment -%}
 {%- unless cart == empty -%}
-  {%- assign tvfit_applied = false -%}
+  {%- assign cart_promo_code = settings.cart_promo_code | default: 'TVFIT10' -%}
+  {%- assign cart_promo_code_up = cart_promo_code | upcase -%}
+  {%- assign promo_applied = false -%}
   {%- for discount in cart.cart_level_discount_applications -%}
     {%- assign discount_title = discount.title | upcase -%}
-    {%- if discount_title contains 'TVFIT10' -%}
-      {%- assign tvfit_applied = true -%}
+    {%- if discount_title contains cart_promo_code_up -%}
+      {%- assign promo_applied = true -%}
     {%- endif -%}
   {%- endfor -%}
   <div class="tvastra-cart-price-summary tvastra-cart-price-summary--page tvastra-cart-price-summary--below" data-tvastra-cart-summary="page" aria-label="Price summary">
@@ -18,7 +20,7 @@
     </div>
     {%- if cart.total_discount > 0 -%}
       <div class="tvastra-cart-price-summary__row tvastra-cart-price-summary__row--discount">
-        <span>Discount{% if tvfit_applied %} (TVFIT10){% endif %}</span>
+        <span>Discount{% if promo_applied %} ({{ cart_promo_code }}){% endif %}</span>
         <strong>-{{ cart.total_discount | money }}</strong>
       </div>
     {%- else -%}

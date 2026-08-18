@@ -2557,6 +2557,53 @@
       },
       {
         "type": "header",
+        "content": "Cart promo"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_cart_promo",
+        "label": "Enable cart promo",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "cart_promo_code",
+        "label": "Promo code",
+        "default": "TVFIT10"
+      },
+      {
+        "type": "text",
+        "id": "cart_promo_title",
+        "label": "Promo title",
+        "default": "10% off with TVFIT10"
+      },
+      {
+        "type": "text",
+        "id": "cart_promo_desc",
+        "label": "Promo description",
+        "default": "Apply here and see the real saving in your cart."
+      },
+      {
+        "type": "number",
+        "id": "cart_promo_estimate_percent",
+        "label": "Estimate percentage",
+        "default": 10,
+        "info": "Used to show estimated savings before application."
+      },
+      {
+        "type": "text",
+        "id": "cart_promo_apply_text",
+        "label": "Apply button text",
+        "default": "Apply"
+      },
+      {
+        "type": "text",
+        "id": "cart_promo_remove_text",
+        "label": "Remove button text",
+        "default": "Remove"
+      },
+      {
+        "type": "header",
         "content": "Free shipping goal"
       },
       {

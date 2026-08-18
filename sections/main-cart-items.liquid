@@ -6,11 +6,13 @@
   <div class="js-contents">
     <div class="container">
       {%- unless cart == empty -%}
-        {%- assign tvfit_applied = false -%}
+        {%- assign cart_promo_code = settings.cart_promo_code | default: 'TVFIT10' -%}
+        {%- assign cart_promo_code_up = cart_promo_code | upcase -%}
+        {%- assign promo_applied = false -%}
         {%- for discount in cart.cart_level_discount_applications -%}
           {%- assign discount_title = discount.title | upcase -%}
-          {%- if discount_title contains 'TVFIT10' -%}
-            {%- assign tvfit_applied = true -%}
+          {%- if discount_title contains cart_promo_code_up -%}
+            {%- assign promo_applied = true -%}
           {%- endif -%}
         {%- endfor -%}
         {%- if settings.show_freeshipping_goal and settings.freeshipping_goal_amount > 0 -%}
@@ -229,7 +231,7 @@
             </div>
             {%- if cart.total_discount > 0 -%}
               <div class="tvastra-cart-price-summary__row tvastra-cart-price-summary__row--discount">
-                <span>Discount{% if tvfit_applied %} (TVFIT10){% endif %}</span>
+                <span>Discount{% if promo_applied %} ({{ cart_promo_code }}){% endif %}</span>
                 <strong>-{{ cart.total_discount | money }}</strong>
               </div>
             {%- else -%}
@@ -352,21 +354,33 @@
               {%- endif -%}
               <div class="page-width{% if cart == empty %} is-empty{% endif %}" id="main-cart-footer" data-id="{{ section.id }}">
                   <div class="cart-footer">
+                  {%- if settings.enable_cart_promo -%}
                     <div class="tvastra-cart-offer tvastra-cart-offer--page" data-tvastra-promo>
                       <div class="tvastra-cart-offer__copy">
                         <span class="tvastra-cart-offer__eyebrow">Welcome offer</span>
-                        <strong>Extra 10% off available</strong>
-                        <small>{% if tvfit_applied %}TVFIT10 applied. Your cart total is updated.{% else %}Apply here and see the real saving in your cart.{% endif %}</small>
-                        <small class="tvastra-cart-offer__prepaid">+5% extra off on prepaid orders.</small>
+                        <strong>{{ settings.cart_promo_title }}</strong>
+                        <small>
+                          {% if promo_applied %}
+                            {{ cart_promo_code }} applied. Your cart total is updated.
+                          {% else %}
+                            {{ settings.cart_promo_desc }}
+                          {% endif %}
+                        </small>
+                        {%- if promo_applied == false and settings.cart_promo_estimate_percent > 0 -%}
+                          {%- assign estimate_multiplier = settings.cart_promo_estimate_percent | divided_by: 100.0 -%}
+                          {%- assign estimated_discount = cart.items_subtotal_price | times: estimate_multiplier -%}
+                          <div class="tvastra-cart-offer__estimate">Estimated saving: {{ estimated_discount | money }}</div>
+                        {%- endif -%}
                       </div>
                       <div class="tvastra-cart-offer__actions">
-                        {%- if tvfit_applied -%}
-                          <button type="button" class="tvastra-cart-offer__remove" data-tvastra-remove-code="TVFIT10" aria-label="Remove discount code TVFIT10">Remove</button>
+                        {%- if promo_applied -%}
+                          <button type="button" class="tvastra-cart-offer__remove" data-tvastra-remove-code="{{ cart_promo_code }}" aria-label="{{ settings.cart_promo_remove_text }} {{ cart_promo_code }}">{{ settings.cart_promo_remove_text | default: 'Remove' }}</button>
                         {%- else -%}
-                          <a class="tvastra-cart-offer__apply" data-tvastra-apply-code href="{{ routes.root_url }}discount/TVFIT10?redirect=/cart">Apply</a>
+                          <a class="tvastra-cart-offer__apply" data-tvastra-apply-code href="{{ routes.root_url }}discount/{{ cart_promo_code }}?redirect=/cart">{{ settings.cart_promo_apply_text | default: 'Apply' }}</a>
                         {%- endif -%}
                       </div>
                     </div>
+                  {%- endif -%}
                     <small class="tax-note caption-large">
                       <i class="bi bi-info-circle-fill"></i>
                       Free shipping included. Taxes are confirmed at checkout.

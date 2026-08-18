@@ -51,8 +51,29 @@
     }, retryDelay);
   }
 
+  window.tvastra = window.tvastra || {};
+  window.tvastra.lucentAutoPopup = true;
+  var cadenceTimers = [];
+
+  function stopAutoLucent() {
+    cadenceTimers.forEach(function(timer) { clearTimeout(timer); clearInterval(timer); });
+    cadenceTimers = [];
+  }
+
   function shouldAutoOpenLucent() {
-    return !!document.querySelector('[data-tvastra-lucent-login-page]') || /\/account\/login\/?$/i.test(window.location.pathname);
+    if (window.tvastra.customer) return false;
+    if (localStorage.getItem('tvastra_lucent_submitted') === 'yes') return false;
+    return true;
+  }
+  
+  function triggerLucent() {
+    if (!shouldAutoOpenLucent()) return stopAutoLucent();
+    
+    // Do not pop if already interacting with something important like checkout
+    if (window.location.pathname.indexOf('/checkout') !== -1) return;
+    
+    document.documentElement.classList.remove('tvastra-page-leaving');
+    openLucent(document.querySelector(selector), 0);
   }
 
   function isAccountEntryLink(link) {
@@ -69,13 +90,20 @@
     return /^\/account\/?(login\/?)?$/i.test(destination.pathname);
   }
 
-  function autoOpenLucent() {
-    if (autoOpened || !shouldAutoOpenLucent()) return;
-    autoOpened = true;
-    document.documentElement.classList.remove('tvastra-page-leaving');
-    window.setTimeout(function () {
-      openLucent(document.querySelector(selector), 0);
-    }, 250);
+  function startLucentCadence() {
+    if (!shouldAutoOpenLucent()) return;
+
+    // Immediately trigger if we are on the explicit login page
+    var isLoginPage = !!document.querySelector('[data-tvastra-lucent-login-page]') || /\/account\/login\/?$/i.test(window.location.pathname);
+    if (isLoginPage) {
+      window.setTimeout(triggerLucent, 250);
+    } else {
+      // Cadence: Initial shortly after load (5s), then 40s later, then every 2 mins
+      var timer1 = window.setTimeout(triggerLucent, 5000);
+      var timer2 = window.setTimeout(triggerLucent, 45000);
+      var timer3 = window.setInterval(triggerLucent, 120000);
+      cadenceTimers.push(timer1, timer2, timer3);
+    }
   }
 
   document.addEventListener('click', function (event) {
@@ -90,7 +118,16 @@
     setBusy(trigger, true);
     openLucent(trigger, 0);
   }, true);
+  
+  // Stop popup on form submit
+  document.addEventListener('submit', function (event) {
+    var form = event.target;
+    if (form.action && form.action.indexOf('/account') !== -1) {
+      localStorage.setItem('tvastra_lucent_submitted', 'yes');
+      stopAutoLucent();
+    }
+  }, true);
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', autoOpenLucent);
-  else autoOpenLucent();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startLucentCadence);
+  else startLucentCadence();
 }());

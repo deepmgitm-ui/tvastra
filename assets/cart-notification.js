@@ -379,8 +379,8 @@ customElements.define('cart-notification', CartNotification);
       const removeButton = document.createElement('button');
       removeButton.type = 'button';
       removeButton.className = 'tvastra-cart-offer__remove';
-      removeButton.dataset.tvastraRemoveCode = 'TVFIT10';
-      removeButton.setAttribute('aria-label', 'Remove discount code TVFIT10');
+      removeButton.dataset.tvastraRemoveCode = '';
+      removeButton.setAttribute('aria-label', 'Remove discount code');
       removeButton.textContent = 'Remove';
       appliedState.replaceWith(removeButton);
     });
@@ -503,7 +503,13 @@ customElements.define('cart-notification', CartNotification);
     if (applyButton.dataset.applying === 'true') return;
     applyButton.dataset.applying = 'true';
     applyButton.textContent = 'Applying...';
-    updateCartDiscount('TVFIT10').then(function (state) {
+    
+    let codeToApply = applyButton.dataset.tvastraApplyCode || 'TVFIT10';
+    if (!applyButton.dataset.tvastraApplyCode && applyButton.href && applyButton.href.indexOf('/discount/') !== -1) {
+      codeToApply = applyButton.href.split('/discount/')[1].split('?')[0];
+    }
+    
+    updateCartDiscount(codeToApply).then(function (state) {
       const isCartPage = /\/cart(?:\/|$)/.test(window.location.pathname);
       if (isCartPage) {
         refreshMainCartFromState(state);
