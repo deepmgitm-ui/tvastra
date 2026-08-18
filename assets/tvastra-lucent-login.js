@@ -66,10 +66,16 @@
       console.log('TVASTRA LUCENT: Blocked auto-popup (Customer is logged in).');
       return false;
     }
-    if (localStorage.getItem('tvastra_lucent_submitted') === 'yes') {
-      console.log('TVASTRA LUCENT: Blocked auto-popup (Form previously submitted in this browser).');
-      return false;
+    
+    try {
+      if (localStorage.getItem('tvastra_lucent_submitted') === 'yes') {
+        console.log('TVASTRA LUCENT: Blocked auto-popup (Form previously submitted in this browser).');
+        return false;
+      }
+    } catch (e) {
+      console.warn('TVASTRA LUCENT: localStorage access blocked, likely due to incognito or iframe.');
     }
+    
     return true;
   }
   
@@ -137,7 +143,9 @@
   document.addEventListener('submit', function (event) {
     var form = event.target;
     if (form.action && form.action.indexOf('/account') !== -1) {
-      localStorage.setItem('tvastra_lucent_submitted', 'yes');
+      try {
+        localStorage.setItem('tvastra_lucent_submitted', 'yes');
+      } catch (e) {}
       stopAutoLucent();
     }
   }, true);
