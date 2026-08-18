@@ -481,50 +481,68 @@ customElements.define('cart-notification', CartNotification);
       removeButton.setAttribute('aria-busy', 'true');
       removeButton.textContent = 'Removing...';
 
-      updateCartDiscount('').then(function (state) {
-        const isCartPage = /\/cart(?:\/|$)/.test(window.location.pathname);
-        if (isCartPage) {
-          refreshMainCartFromState(state);
-          return null;
-        }
-        return refreshCartAfterDiscountChange();
-      }).catch(function (error) {
-        console.error(error);
-        removeButton.dataset.removing = 'false';
-        removeButton.removeAttribute('aria-busy');
-        removeButton.textContent = 'Try again';
-        window.setTimeout(function () {
-          if (removeButton.isConnected) removeButton.textContent = previousText;
-        }, 1800);
-      });
+      // Remove discount by navigating to /discount/ with empty code
+      const root = window.Shopify && window.Shopify.routes && window.Shopify.routes.root || '/';
+      fetch(root + 'discount/REMOVE_DISCOUNT', { redirect: 'follow' })
+        .catch(function () {})
+        .finally(function () {
+          // Force remove via cart update with empty discount
+          fetch(root + 'cart/update.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ discount: '' })
+          })
+          .then(function () {
+            const isCartPage = /\/cart(?:\/|$)/.test(window.location.pathname);
+            if (isCartPage) {
+              window.location.reload();
+            } else {
+              return refreshCartAfterDiscountChange();
+            }
+          })
+          .catch(function () {
+            removeButton.dataset.removing = 'false';
+            removeButton.removeAttribute('aria-busy');
+            removeButton.textContent = previousText;
+          });
+        });
       return;
     }
 
     if (applyButton.dataset.applying === 'true') return;
     applyButton.dataset.applying = 'true';
     applyButton.textContent = 'Applying...';
-    
-    let codeToApply = applyButton.dataset.tvastraApplyCode || 'TVFIT10';
-    if (!applyButton.dataset.tvastraApplyCode && applyButton.href && applyButton.href.indexOf('/discount/') !== -1) {
-      codeToApply = applyButton.href.split('/discount/')[1].split('?')[0];
+
+    // Get the code from data attribute or extract from href
+    let codeToApply = applyButton.dataset.tvastraApplyCode;
+    if (!codeToApply && applyButton.href && applyButton.href.indexOf('/discount/') !== -1) {
+      codeToApply = decodeURIComponent(applyButton.href.split('/discount/')[1].split('?')[0]);
     }
-    
-    updateCartDiscount(codeToApply).then(function (state) {
-      const isCartPage = /\/cart(?:\/|$)/.test(window.location.pathname);
-      if (isCartPage) {
-        refreshMainCartFromState(state);
-        return null;
-      }
-      return refreshCartAfterDiscountChange();
-    }).catch(function (error) {
-      console.error(error);
-      applyButton.dataset.applying = 'false';
-      applyButton.removeAttribute('aria-busy');
-      applyButton.textContent = 'Try again';
-      window.setTimeout(function () {
-        if (applyButton.isConnected) applyButton.textContent = 'Apply';
-      }, 1800);
-    });
+    if (!codeToApply) codeToApply = 'TVFIT10';
+
+    const isCartPage = /\/cart(?:\/|$)/.test(window.location.pathname);
+
+    if (isCartPage) {
+      // Cart page: navigate to Shopify's /discount/ URL which sets cookie, then come back to cart
+      window.location.href = '/discount/' + encodeURIComponent(codeToApply) + '?redirect=/cart';
+      return;
+    }
+
+    // Drawer: set discount via /discount/ URL in background then refresh drawer
+    const root = window.Shopify && window.Shopify.routes && window.Shopify.routes.root || '/';
+    fetch(root + 'discount/' + encodeURIComponent(codeToApply), { redirect: 'follow' })
+      .then(function () {
+        return refreshCartAfterDiscountChange();
+      })
+      .catch(function (error) {
+        console.error(error);
+        applyButton.dataset.applying = 'false';
+        applyButton.removeAttribute('aria-busy');
+        applyButton.textContent = 'Try again';
+        window.setTimeout(function () {
+          if (applyButton.isConnected) applyButton.textContent = 'Apply';
+        }, 1800);
+      });
   });
 
   normalizePromoRemoveControls(document);
