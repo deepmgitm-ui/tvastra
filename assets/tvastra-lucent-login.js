@@ -5,9 +5,10 @@
   window.tvastra.lucentAutoPopup = true;
 
   var cadenceTimers = [];
-  var lazyWakeupDone = false;
+  var woken = false;
 
-  // Only show to logged-out users, not on checkout
+  // ─── Guards ──────────────────────────────────────────────────────────────────
+
   function shouldShow() {
     if (window.tvastra.customer) return false;
     if (window.location.pathname.indexOf('/checkout') !== -1) return false;
@@ -17,53 +18,57 @@
     return true;
   }
 
-  function isAlreadyOpen() {
+  // Check every known selector Lota/Lucent might use for the modal
+  function isOpen() {
     return !!(
+      document.querySelector('#sotp') ||
       document.querySelector('#sotp-modal') ||
       document.querySelector('.sotp-modal-container') ||
       document.querySelector('[data-sotp-modal]') ||
-      document.querySelector('.simply-otp-modal') ||
-      document.querySelector('.sotp-overlay')
+      document.querySelector('lota-customer-account[open]') ||
+      document.querySelector('.sotp-overlay') ||
+      document.querySelector('[aria-controls="sotp"][aria-expanded="true"]')
     );
   }
 
-  // Fire fake interaction events to wake up lazy-loaded scripts
-  function wakeUpLazily() {
-    if (lazyWakeupDone) return;
-    lazyWakeupDone = true;
+  // Wake up lazy-loaded Lota/Lucent
+  function wakeUp() {
+    if (woken) return;
+    woken = true;
     try {
       document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: 200, clientY: 200 }));
-      document.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+      document.dispatchEvent(new PointerEvent('pointermove', { bubbles: true, clientX: 200, clientY: 200 }));
       window.dispatchEvent(new Event('scroll'));
-      window.dispatchEvent(new Event('touchstart', { bubbles: true }));
     } catch (e) {}
   }
 
-  function openPopup() {
-    // Method 1: Direct API call (if Lucent exposes it)
-    if (window.simplyOtp) {
-      if (typeof window.simplyOtp.openLoginOrAccountModal === 'function') {
-        window.simplyOtp.openLoginOrAccountModal();
-        return true;
-      }
-      if (typeof window.simplyOtp.openPopup === 'function') {
-        window.simplyOtp.openPopup();
-        return true;
-      }
-    }
+  // Find the login button
+  function getBtn() {
+    return document.querySelector('[data-tvastra-lucent-login]') ||
+           document.querySelector('a[href="#lucent-login"]') ||
+           document.querySelector('[aria-controls="sotp"]');
+  }
 
-    // Method 2: Dispatch a trusted synthetic click on the login button
-    // Safe because shouldShow() already confirmed user is NOT logged in
-    var btn = document.querySelector('[data-tvastra-lucent-login]') ||
-              document.querySelector('a[href="#lucent-login"]') ||
-              document.querySelector('[aria-controls="sotp"]');
+  // Click the button, then verify popup opened; if not, retry
+  function clickAndVerify(attempt) {
+    attempt = attempt || 0;
+    if (!shouldShow()) return;
+    if (isOpen()) return; // already open
+
+    var btn = getBtn();
     if (btn) {
-      var evt = new MouseEvent('click', { bubbles: true, cancelable: true, view: window });
-      btn.dispatchEvent(evt);
-      return true;
+      // Use native click (closest to real user interaction)
+      btn.click();
     }
 
-    return false;
+    // Check 600ms later if popup actually opened; if not, retry up to 25 times
+    if (attempt < 25) {
+      window.setTimeout(function () {
+        if (shouldShow() && !isOpen()) {
+          clickAndVerify(attempt + 1);
+        }
+      }, 600);
+    }
   }
 
   function stopCadence() {
@@ -71,35 +76,30 @@
     cadenceTimers = [];
   }
 
-  function triggerLucent(retries) {
+  function triggerLucent() {
     if (!shouldShow()) return stopCadence();
-    if (isAlreadyOpen()) return;
-
-    var opened = openPopup();
-    if (!opened && (retries || 0) < 30) {
-      // Retry in 500ms if nothing found yet (lazy load still pending)
-      window.setTimeout(function () { triggerLucent((retries || 0) + 1); }, 500);
-    }
+    if (isOpen()) return;
+    wakeUp();
+    clickAndVerify(0);
   }
 
   function startCadence() {
     if (!shouldShow()) return;
-    // 2s: pre-warm lazy loader
+    // 2s: pre-warm Lota
     // 5s: first popup
     // 45s: second popup
-    // every 2min: repeat
-    window.setTimeout(wakeUpLazily, 2000);
-    var t1 = window.setTimeout(function () { triggerLucent(0); }, 5000);
-    var t2 = window.setTimeout(function () { triggerLucent(0); }, 45000);
-    var t3 = window.setInterval(function () { triggerLucent(0); }, 120000);
+    // 2min: loop
+    window.setTimeout(wakeUp, 2000);
+    var t1 = window.setTimeout(triggerLucent, 5000);
+    var t2 = window.setTimeout(triggerLucent, 45000);
+    var t3 = window.setInterval(triggerLucent, 120000);
     cadenceTimers.push(t1, t2, t3);
   }
 
-  // Stop cadence permanently once user submits any account form
-  document.addEventListener('submit', function (event) {
-    var form = event.target;
-    if (form && form.action && form.action.indexOf('/account') !== -1) {
-      try { localStorage.setItem('tvastra_lucent_submitted', 'yes'); } catch (e) {}
+  document.addEventListener('submit', function (e) {
+    var f = e.target;
+    if (f && f.action && f.action.indexOf('/account') !== -1) {
+      try { localStorage.setItem('tvastra_lucent_submitted', 'yes'); } catch (ex) {}
       stopCadence();
     }
   }, true);
