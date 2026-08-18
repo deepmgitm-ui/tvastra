@@ -56,28 +56,37 @@
   var cadenceTimers = [];
 
   function stopAutoLucent() {
+    console.log('TVASTRA LUCENT: Stopping auto-popup timers.');
     cadenceTimers.forEach(function(timer) { clearTimeout(timer); clearInterval(timer); });
     cadenceTimers = [];
   }
 
   function shouldAutoOpenLucent() {
-    if (window.tvastra.customer) return false;
-    if (localStorage.getItem('tvastra_lucent_submitted') === 'yes') return false;
+    if (window.tvastra.customer) {
+      console.log('TVASTRA LUCENT: Blocked auto-popup (Customer is logged in).');
+      return false;
+    }
+    if (localStorage.getItem('tvastra_lucent_submitted') === 'yes') {
+      console.log('TVASTRA LUCENT: Blocked auto-popup (Form previously submitted in this browser).');
+      return false;
+    }
     return true;
   }
   
   function triggerLucent() {
+    console.log('TVASTRA LUCENT: triggerLucent called.');
     if (!shouldAutoOpenLucent()) return stopAutoLucent();
     
-    if (window.location.pathname.indexOf('/checkout') !== -1) return;
+    if (window.location.pathname.indexOf('/checkout') !== -1) {
+      console.log('TVASTRA LUCENT: Blocked auto-popup (On checkout page).');
+      return;
+    }
     
     document.documentElement.classList.remove('tvastra-page-leaving');
     var trigger = document.querySelector(selector);
-    if (trigger) {
-      trigger.click();
-    } else {
-      openLucent(null, 0);
-    }
+    
+    console.log('TVASTRA LUCENT: Attempting to open popup. Trigger element:', trigger);
+    openLucent(trigger, 0);
   }
 
   function isAccountEntryLink(link) {
@@ -95,14 +104,15 @@
   }
 
   function startLucentCadence() {
+    console.log('TVASTRA LUCENT: Initializing startLucentCadence...');
     if (!shouldAutoOpenLucent()) return;
 
-    // Immediately trigger if we are on the explicit login page
     var isLoginPage = !!document.querySelector('[data-tvastra-lucent-login-page]') || /\/account\/login\/?$/i.test(window.location.pathname);
     if (isLoginPage) {
+      console.log('TVASTRA LUCENT: Login page detected. Popping immediately.');
       window.setTimeout(triggerLucent, 250);
     } else {
-      // Cadence: Initial shortly after load (5s), then 40s later, then every 2 mins
+      console.log('TVASTRA LUCENT: Setting up timers (5s, 45s, 2m loop).');
       var timer1 = window.setTimeout(triggerLucent, 5000);
       var timer2 = window.setTimeout(triggerLucent, 45000);
       var timer3 = window.setInterval(triggerLucent, 120000);
