@@ -19,30 +19,35 @@
     return true;
   }
   
+  function openLucent(trigger) {
+    if (window.simplyOtp && typeof window.simplyOtp.openLoginOrAccountModal === 'function') {
+      window.simplyOtp.openLoginOrAccountModal();
+      return;
+    }
+
+    if (window.simplyOtp && typeof window.simplyOtp.openPopup === 'function') {
+      window.simplyOtp.openPopup();
+      return;
+    }
+
+    console.log('TVASTRA LUCENT: simplyOtp not ready yet, waiting...');
+    window.setTimeout(function () {
+      openLucent(trigger);
+    }, 500);
+  }
+
   function triggerLucent() {
     if (!shouldAutoOpenLucent()) return stopAutoLucent();
     if (window.location.pathname.indexOf('/checkout') !== -1) return;
     
     // Check if the popup is already visible by checking if simplyOtp modal is in DOM
-    if (document.querySelector('.sotp-modal-container, #sotp-modal')) {
+    if (document.querySelector('.sotp-modal-container, #sotp-modal, .sotp-modal')) {
        return; // Already open
     }
     
     var trigger = document.querySelector(selector);
-    if (trigger) {
-      console.log('TVASTRA LUCENT: Simulating click on profile button...');
-      // Simulate click so the official app handles it
-      trigger.click();
-      
-      // Also try hash fallback if the app relies on hash change
-      if (trigger.href && trigger.href.indexOf('#') !== -1) {
-         window.location.hash = trigger.hash;
-      }
-    } else if (window.simplyOtp && typeof window.simplyOtp.openLoginOrAccountModal === 'function') {
-      window.simplyOtp.openLoginOrAccountModal();
-    } else if (window.simplyOtp && typeof window.simplyOtp.openPopup === 'function') {
-      window.simplyOtp.openPopup();
-    }
+    console.log('TVASTRA LUCENT: Attempting to open via simplyOtp API...');
+    openLucent(trigger);
   }
 
   function startLucentCadence() {
