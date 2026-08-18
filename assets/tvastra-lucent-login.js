@@ -3,7 +3,7 @@
 
   var selector = '[data-tvastra-lucent-login]';
   var retryDelay = 100;
-  var maxAttempts = 50;
+  var maxAttempts = 150;
   var autoOpened = false;
 
   function setBusy(trigger, busy) {
@@ -69,11 +69,15 @@
   function triggerLucent() {
     if (!shouldAutoOpenLucent()) return stopAutoLucent();
     
-    // Do not pop if already interacting with something important like checkout
     if (window.location.pathname.indexOf('/checkout') !== -1) return;
     
     document.documentElement.classList.remove('tvastra-page-leaving');
-    openLucent(document.querySelector(selector), 0);
+    var trigger = document.querySelector(selector);
+    if (trigger) {
+      trigger.click();
+    } else {
+      openLucent(null, 0);
+    }
   }
 
   function isAccountEntryLink(link) {
