@@ -18,10 +18,10 @@
 
   function isOpen() {
     return !!(
-      document.querySelector('#sotp') ||
-      document.querySelector('#sotp-modal') ||
-      document.querySelector('.sotp-modal-container') ||
+      document.querySelector('#sotp[open]') ||
+      document.querySelector('dialog[open]') ||
       document.querySelector('lota-customer-account[open]') ||
+      document.querySelector('.sotp-modal-container') ||
       document.querySelector('[aria-controls="sotp"][aria-expanded="true"]')
     );
   }
@@ -31,7 +31,6 @@
     woken = true;
     try {
       document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: 200, clientY: 200 }));
-      document.dispatchEvent(new PointerEvent('pointermove', { bubbles: true, clientX: 200, clientY: 200 }));
       window.dispatchEvent(new Event('scroll'));
     } catch (e) {}
   }
@@ -41,43 +40,51 @@
     if (!shouldShow()) return;
     if (isOpen()) return;
 
-    // Try all methods in order
-    var opened = false;
+    // Method 1: Direct call on lota-customer-account custom element
+    var lotaEl = document.querySelector('lota-customer-account');
+    if (lotaEl) {
+      if (typeof lotaEl.open === 'function') { try { lotaEl.open(); } catch(e) {} }
+      if (typeof lotaEl.show === 'function') { try { lotaEl.show(); } catch(e) {} }
+      if (typeof lotaEl.openModal === 'function') { try { lotaEl.openModal(); } catch(e) {} }
+      if (typeof lotaEl.openPopup === 'function') { try { lotaEl.openPopup(); } catch(e) {} }
+    }
 
-    // Method 1: Dispatch real-looking click on every possible trigger element
+    // Method 2: The sotp dialog element directly
+    var dialog = document.querySelector('#sotp, dialog[aria-label*="login"], dialog[aria-label*="account"]');
+    if (dialog) {
+      if (typeof dialog.showModal === 'function') { try { dialog.showModal(); } catch(e) {} }
+      if (typeof dialog.show === 'function') { try { dialog.show(); } catch(e) {} }
+    }
+
+    // Method 3: Button click (both methods)
     var btn = document.querySelector('[data-tvastra-lucent-login]') ||
               document.querySelector('[aria-controls="sotp"]') ||
               document.querySelector('a[href="#lucent-login"]');
-
     if (btn) {
-      // Use both click() and dispatchEvent for maximum compatibility
       try { btn.click(); } catch(e) {}
-      try {
-        btn.dispatchEvent(new MouseEvent('click', {
-          bubbles: true, cancelable: true, view: window,
-          detail: 1, screenX: 0, screenY: 0, clientX: 0, clientY: 0
-        }));
-      } catch(e) {}
     }
 
-    // Method 2: Hash change (Lota may listen for hashchange event)
+    // Method 4: Hash change — Lota may listen for hashchange
     try {
-      var prevHash = window.location.hash;
-      if (prevHash !== '#lucent-login') {
+      if (window.location.hash !== '#lucent-login') {
         window.location.hash = '#lucent-login';
       }
     } catch(e) {}
 
-    // Method 3: Direct API if available
+    // Method 5: simplyOtp API
     try {
-      if (window.simplyOtp && typeof window.simplyOtp.openLoginOrAccountModal === 'function') {
-        window.simplyOtp.openLoginOrAccountModal();
-      } else if (window.simplyOtp && typeof window.simplyOtp.open === 'function') {
-        window.simplyOtp.open();
+      if (window.simplyOtp) {
+        var fnNames = ['openLoginOrAccountModal','openPopup','open','show','openModal','init'];
+        for (var i = 0; i < fnNames.length; i++) {
+          if (typeof window.simplyOtp[fnNames[i]] === 'function') {
+            window.simplyOtp[fnNames[i]]();
+            break;
+          }
+        }
       }
     } catch(e) {}
 
-    // Retry if popup did not open
+    // Retry if popup still not open
     if (attempt < 30) {
       window.setTimeout(function () {
         if (shouldShow() && !isOpen()) {
@@ -102,7 +109,6 @@
   function startCadence() {
     if (!shouldShow()) return;
     window.setTimeout(wakeUp, 2000);
-    // 8s first popup (give Lota more time to fully initialize)
     var t1 = window.setTimeout(triggerLucent, 8000);
     var t2 = window.setTimeout(triggerLucent, 50000);
     var t3 = window.setInterval(triggerLucent, 120000);
