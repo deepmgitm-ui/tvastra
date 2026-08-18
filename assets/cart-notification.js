@@ -520,29 +520,8 @@ customElements.define('cart-notification', CartNotification);
     }
     if (!codeToApply) codeToApply = 'TVFIT10';
 
-    const isCartPage = /\/cart(?:\/|$)/.test(window.location.pathname);
-
-    if (isCartPage) {
-      // Cart page: navigate to Shopify's /discount/ URL which sets cookie, then come back to cart
-      window.location.href = '/discount/' + encodeURIComponent(codeToApply) + '?redirect=/cart';
-      return;
-    }
-
-    // Drawer: set discount via /discount/ URL in background then refresh drawer
-    const root = window.Shopify && window.Shopify.routes && window.Shopify.routes.root || '/';
-    fetch(root + 'discount/' + encodeURIComponent(codeToApply), { redirect: 'follow' })
-      .then(function () {
-        return refreshCartAfterDiscountChange();
-      })
-      .catch(function (error) {
-        console.error(error);
-        applyButton.dataset.applying = 'false';
-        applyButton.removeAttribute('aria-busy');
-        applyButton.textContent = 'Try again';
-        window.setTimeout(function () {
-          if (applyButton.isConnected) applyButton.textContent = 'Apply';
-        }, 1800);
-      });
+    // Redirect directly to Shopify's /discount/ URL with redirect to checkout
+    window.location.href = '/discount/' + encodeURIComponent(codeToApply) + '?redirect=/checkout';
   });
 
   normalizePromoRemoveControls(document);
