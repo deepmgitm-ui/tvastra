@@ -1,82 +1,89 @@
-(function () {
+﻿(function () {
   'use strict';
 
-  var selector = '[data-tvastra-lucent-login], a[href="#lucent-login"]';
   window.tvastra = window.tvastra || {};
   window.tvastra.lucentAutoPopup = true;
+
   var cadenceTimers = [];
+  var lazyWakeupDone = false;
 
-  function stopAutoLucent() {
-    cadenceTimers.forEach(function(timer) { clearTimeout(timer); clearInterval(timer); });
-    cadenceTimers = [];
-  }
-
-  function shouldAutoOpenLucent() {
+  function shouldShow() {
     if (window.tvastra.customer) return false;
+    if (window.location.pathname.indexOf('/checkout') !== -1) return false;
     try {
       if (localStorage.getItem('tvastra_lucent_submitted') === 'yes') return false;
     } catch (e) {}
     return true;
   }
-  
-  function openLucent(trigger) {
-    if (window.simplyOtp && typeof window.simplyOtp.openLoginOrAccountModal === 'function') {
-      window.simplyOtp.openLoginOrAccountModal();
-      return;
-    }
 
-    if (window.simplyOtp && typeof window.simplyOtp.openPopup === 'function') {
-      window.simplyOtp.openPopup();
-      return;
-    }
+  function isAlreadyOpen() {
+    return !!(
+      document.querySelector('#sotp-modal') ||
+      document.querySelector('.sotp-modal-container') ||
+      document.querySelector('[data-sotp-modal]') ||
+      document.querySelector('.simply-otp-modal')
+    );
+  }
 
-    console.log('TVASTRA LUCENT: simplyOtp not ready yet, waiting...');
-    window.setTimeout(function () {
-      openLucent(trigger);
-    }, 500);
+  function wakeUpLazily() {
+    if (lazyWakeupDone) return;
+    lazyWakeupDone = true;
+    try {
+      var fakeMove = new MouseEvent('mousemove', { bubbles: true, cancelable: false, clientX: 100, clientY: 100 });
+      document.dispatchEvent(fakeMove);
+      window.dispatchEvent(new Event('scroll'));
+    } catch (e) {}
+  }
+
+  function openLucentPopup(retries) {
+    retries = retries || 0;
+    if (window.simplyOtp) {
+      if (typeof window.simplyOtp.openLoginOrAccountModal === 'function') {
+        window.simplyOtp.openLoginOrAccountModal();
+        return;
+      }
+      if (typeof window.simplyOtp.openPopup === 'function') {
+        window.simplyOtp.openPopup();
+        return;
+      }
+    }
+    if (retries >= 60) return;
+    window.setTimeout(function () { openLucentPopup(retries + 1); }, 500);
+  }
+
+  function stopCadence() {
+    cadenceTimers.forEach(function (t) { clearTimeout(t); clearInterval(t); });
+    cadenceTimers = [];
   }
 
   function triggerLucent() {
-    if (!shouldAutoOpenLucent()) return stopAutoLucent();
-    if (window.location.pathname.indexOf('/checkout') !== -1) return;
-    
-    // Check if the popup is already visible by checking if simplyOtp modal is in DOM
-    if (document.querySelector('.sotp-modal-container, #sotp-modal, .sotp-modal')) {
-       return; // Already open
-    }
-    
-    var trigger = document.querySelector(selector);
-    console.log('TVASTRA LUCENT: Attempting to open via simplyOtp API...');
-    openLucent(trigger);
+    if (!shouldShow()) return stopCadence();
+    if (isAlreadyOpen()) return;
+    wakeUpLazily();
+    openLucentPopup(0);
   }
 
-  function startLucentCadence() {
-    if (!shouldAutoOpenLucent()) return;
-
-    var isLoginPage = window.location.pathname.indexOf('/account/login') !== -1;
-    if (isLoginPage) {
-      window.setTimeout(triggerLucent, 250);
-    } else {
-      var timer1 = window.setTimeout(triggerLucent, 5000);
-      var timer2 = window.setTimeout(triggerLucent, 45000);
-      var timer3 = window.setInterval(triggerLucent, 120000);
-      cadenceTimers.push(timer1, timer2, timer3);
-    }
+  function startCadence() {
+    if (!shouldShow()) return;
+    window.setTimeout(wakeUpLazily, 2000);
+    var t1 = window.setTimeout(triggerLucent, 5000);
+    var t2 = window.setTimeout(triggerLucent, 45000);
+    var t3 = window.setInterval(triggerLucent, 120000);
+    cadenceTimers.push(t1, t2, t3);
   }
-  
+
   document.addEventListener('submit', function (event) {
     var form = event.target;
-    if (form.action && form.action.indexOf('/account') !== -1) {
-      try {
-        localStorage.setItem('tvastra_lucent_submitted', 'yes');
-      } catch (e) {}
-      stopAutoLucent();
+    if (form && form.action && form.action.indexOf('/account') !== -1) {
+      try { localStorage.setItem('tvastra_lucent_submitted', 'yes'); } catch (e) {}
+      stopCadence();
     }
   }, true);
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', startLucentCadence);
+    document.addEventListener('DOMContentLoaded', startCadence);
   } else {
-    startLucentCadence();
+    startCadence();
   }
+
 }());
