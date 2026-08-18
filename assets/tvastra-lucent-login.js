@@ -27,7 +27,7 @@
     status.textContent = 'Login is still loading. Please tap the account button again.';
   }
 
-  function openLucent(trigger, attempt) {
+  function openLucent(trigger) {
     if (window.simplyOtp && typeof window.simplyOtp.openLoginOrAccountModal === 'function') {
       setBusy(trigger, false);
       window.simplyOtp.openLoginOrAccountModal();
@@ -40,15 +40,10 @@
       return;
     }
 
-    if (attempt >= maxAttempts) {
-      setBusy(trigger, false);
-      announceUnavailable();
-      return;
-    }
-
+    console.log('TVASTRA LUCENT: simplyOtp not ready yet, waiting...');
     window.setTimeout(function () {
-      openLucent(trigger, attempt + 1);
-    }, retryDelay);
+      openLucent(trigger);
+    }, 500);
   }
 
   window.tvastra = window.tvastra || {};
@@ -92,7 +87,7 @@
     var trigger = document.querySelector(selector);
     
     console.log('TVASTRA LUCENT: Attempting to open popup. Trigger element:', trigger);
-    openLucent(trigger, 0);
+    openLucent(trigger);
   }
 
   function isAccountEntryLink(link) {
@@ -136,7 +131,7 @@
     event.stopImmediatePropagation();
     document.documentElement.classList.remove('tvastra-page-leaving');
     setBusy(trigger, true);
-    openLucent(trigger, 0);
+    openLucent(trigger);
   }, true);
   
   // Stop popup on form submit
