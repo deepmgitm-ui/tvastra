@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
   'use strict';
 
   window.tvastra = window.tvastra || {};
@@ -22,6 +22,8 @@
       document.querySelector('dialog[open]') ||
       document.querySelector('lota-customer-account[open]') ||
       document.querySelector('.sotp-modal-container') ||
+      document.querySelector('.sotp-popup-container') ||
+      document.querySelector('.sotp-popup-content') ||
       document.querySelector('[aria-controls="sotp"][aria-expanded="true"]')
     );
   }
@@ -74,15 +76,19 @@
     // Method 5: simplyOtp API
     try {
       if (window.simplyOtp) {
-        var fnNames = ['openLoginOrAccountModal','openPopup','open','show','openModal','init'];
+        console.log("TVASTRA LUCENT: simplyOtp found, attempting to trigger popup...");
+        var fnNames = ['openPopup', 'openLoginOrAccountModal', 'open', 'show', 'openModal', 'init'];
         for (var i = 0; i < fnNames.length; i++) {
           if (typeof window.simplyOtp[fnNames[i]] === 'function') {
+            console.log("TVASTRA LUCENT: Calling method " + fnNames[i]);
             window.simplyOtp[fnNames[i]]();
             break;
           }
         }
       }
-    } catch(e) {}
+    } catch(e) {
+      console.error("TVASTRA LUCENT: Error calling simplyOtp methods:", e);
+    }
 
     // Retry if popup still not open
     if (attempt < 30) {
