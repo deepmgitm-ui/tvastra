@@ -46,40 +46,13 @@
     if (!shouldShow()) return;
     if (isOpen()) return;
 
-    // Method 1: Direct call on lota-customer-account custom element
-    var lotaEl = document.querySelector('lota-customer-account');
-    if (lotaEl) {
-      if (typeof lotaEl.open === 'function') { try { lotaEl.open(); } catch(e) {} }
-      if (typeof lotaEl.show === 'function') { try { lotaEl.show(); } catch(e) {} }
-      if (typeof lotaEl.openModal === 'function') { try { lotaEl.openModal(); } catch(e) {} }
-      if (typeof lotaEl.openPopup === 'function') { try { lotaEl.openPopup(); } catch(e) {} }
-    }
-
-    // Method 2: The sotp dialog element directly
-    var dialog = document.querySelector('#sotp, dialog[aria-label*="login"], dialog[aria-label*="account"]');
-    if (dialog) {
-      if (typeof dialog.showModal === 'function') { try { dialog.showModal(); } catch(e) {} }
-      if (typeof dialog.show === 'function') { try { dialog.show(); } catch(e) {} }
-    }
-
-    // Method 3: Button click (both methods)
-    var btn = document.querySelector('[data-tvastra-lucent-login]') ||
-              document.querySelector('[aria-controls="sotp"]') ||
-              document.querySelector('a[href="#lucent-login"]');
-    if (btn) {
-      try { btn.click(); } catch(e) {}
-    }
-
-    // Method 4: Hash change — Lota may listen for hashchange
-    try {
-      if (window.location.hash !== '#lucent-login') {
-        window.location.hash = '#lucent-login';
-      }
-    } catch(e) {}
+    var triggered = false;
 
     // Method 5: simplyOtp API
     try {
-      if (window.simplyOtp) {
+      if (window.simplyOtp && !window.tvastra.lucentTriggered) {
+        window.tvastra.lucentTriggered = true;
+        triggered = true;
         console.log("TVASTRA LUCENT: simplyOtp found, attempting to trigger popup...");
         if (typeof window.simplyOtp.initializeSimplyOtp === 'function') {
           console.log("TVASTRA LUCENT: Calling initializeSimplyOtp");
@@ -98,7 +71,39 @@
       console.error("TVASTRA LUCENT: Error calling simplyOtp methods:", e);
     }
 
-    // Retry if popup still not open (retry up to 60 seconds)
+    // Only run other fallback methods once as well
+    if (!triggered && !window.tvastra.lucentTriggered) {
+      var lotaEl = document.querySelector('lota-customer-account');
+      var dialog = document.querySelector('#sotp, dialog[aria-label*="login"], dialog[aria-label*="account"]');
+      var btn = document.querySelector('[data-tvastra-lucent-login]') ||
+                document.querySelector('[aria-controls="sotp"]') ||
+                document.querySelector('a[href="#lucent-login"]');
+
+      if (lotaEl || dialog || btn) {
+        window.tvastra.lucentTriggered = true;
+
+        if (lotaEl) {
+          if (typeof lotaEl.open === 'function') { try { lotaEl.open(); } catch(e) {} }
+          if (typeof lotaEl.show === 'function') { try { lotaEl.show(); } catch(e) {} }
+          if (typeof lotaEl.openModal === 'function') { try { lotaEl.openModal(); } catch(e) {} }
+          if (typeof lotaEl.openPopup === 'function') { try { lotaEl.openPopup(); } catch(e) {} }
+        }
+        if (dialog) {
+          if (typeof dialog.showModal === 'function') { try { dialog.showModal(); } catch(e) {} }
+          if (typeof dialog.show === 'function') { try { dialog.show(); } catch(e) {} }
+        }
+        if (btn) {
+          try { btn.click(); } catch(e) {}
+        }
+        try {
+          if (window.location.hash !== '#lucent-login') {
+            window.location.hash = '#lucent-login';
+          }
+        } catch(e) {}
+      }
+    }
+
+    // Retry checking loop (waits for popup to become visible)
     if (attempt < 120) {
       window.setTimeout(function () {
         if (shouldShow() && !isOpen()) {
@@ -116,6 +121,7 @@
   function triggerLucent() {
     if (!shouldShow()) return stopCadence();
     if (isOpen()) return;
+    window.tvastra.lucentTriggered = false; // Reset trigger state for this interval
     wakeUp();
     tryOpen(0);
   }
