@@ -63,6 +63,7 @@
     try {
       if (window.simplyOtp && !window.tvastra.lucentTriggered) {
         window.tvastra.lucentTriggered = true;
+        window.tvastra.lucentLastTriggered = Date.now();
         triggered = true;
         console.log('TVASTRA LUCENT v16: simplyOtp found! Calling initializeSimplyOtp + openPopup...');
         if (typeof window.simplyOtp.initializeSimplyOtp === 'function') {
@@ -115,8 +116,8 @@
       }
     }
 
-    // Retry loop — waits for popup to become visible
-    if (attempt < 120) {
+    // Retry loop — ONLY if we haven't successfully triggered yet
+    if (attempt < 120 && !window.tvastra.lucentTriggered) {
       window.setTimeout(function () {
         if (shouldShow() && !isOpen()) {
           tryOpen(attempt + 1);
@@ -131,9 +132,14 @@
   }
 
   function triggerLucent() {
-    console.log('TVASTRA LUCENT v16: triggerLucent fired. isOpen=' + isOpen() + ' shouldShow=' + shouldShow());
     if (!shouldShow()) return stopCadence();
     if (isOpen()) return;
+    // Cooldown: don't re-trigger if we triggered within the last 45 seconds
+    // (prevents re-initializing Lota while user may be filling the OTP form)
+    var now = Date.now();
+    if (window.tvastra.lucentLastTriggered && (now - window.tvastra.lucentLastTriggered) < 45000) {
+      return;
+    }
     window.tvastra.lucentTriggered = false; // Reset for this interval
     wakeUp();
     tryOpen(0);
