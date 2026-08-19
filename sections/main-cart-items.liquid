@@ -376,7 +376,7 @@
                         {%- if promo_applied -%}
                           <button type="button" class="tvastra-cart-offer__remove" data-tvastra-remove-code="{{ cart_promo_code }}" aria-label="{{ settings.cart_promo_remove_text }} {{ cart_promo_code }}">{{ settings.cart_promo_remove_text | default: 'Remove' }}</button>
                         {%- else -%}
-                          <a class="tvastra-cart-offer__apply" data-tvastra-apply-code href="{{ routes.root_url }}discount/{{ cart_promo_code }}?redirect=/cart">{{ settings.cart_promo_apply_text | default: 'Apply' }}</a>
+                          <a class="tvastra-cart-offer__apply" data-tvastra-apply-code href="{{ routes.root_url }}discount/{{ cart_promo_code }}?redirect=/checkout">{{ settings.cart_promo_apply_text | default: 'Apply' }}</a>
                         {%- endif -%}
                       </div>
                     </div>
