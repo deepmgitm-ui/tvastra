@@ -13,14 +13,21 @@
     return true;
   }
 
+  function isVisible(selector) {
+    var el = document.querySelector(selector);
+    if (!el) return false;
+    return !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+  }
+
   function isOpen() {
     return !!(
       document.querySelector('#sotp[open]') ||
       document.querySelector('dialog[open]') ||
       document.querySelector('lota-customer-account[open]') ||
-      document.querySelector('.sotp-modal-container') ||
-      document.querySelector('.sotp-popup-container') ||
-      document.querySelector('.sotp-popup-content') ||
+      (document.querySelector('.sotp-modal-container') && isVisible('.sotp-modal-container')) ||
+      (document.querySelector('.sotp-popup-container') && isVisible('.sotp-popup-container')) ||
+      (document.querySelector('.sotp-popup-content') && isVisible('.sotp-popup-content')) ||
+      (document.querySelector('#sotp') && isVisible('#sotp')) ||
       document.querySelector('[aria-controls="sotp"][aria-expanded="true"]')
     );
   }
@@ -91,8 +98,8 @@
       console.error("TVASTRA LUCENT: Error calling simplyOtp methods:", e);
     }
 
-    // Retry if popup still not open
-    if (attempt < 30) {
+    // Retry if popup still not open (retry up to 60 seconds)
+    if (attempt < 120) {
       window.setTimeout(function () {
         if (shouldShow() && !isOpen()) {
           tryOpen(attempt + 1);
