@@ -4,19 +4,27 @@
   window.tvastra = window.tvastra || {};
   window.tvastra.lucentAutoPopup = true;
 
+  console.log('TVASTRA LUCENT v16: Script running. readyState=' + document.readyState + ' customer=' + JSON.stringify(window.tvastra.customer) + ' pathname=' + window.location.pathname);
+
   var cadenceTimers = [];
   var woken = false;
 
   function shouldShow() {
-    if (window.tvastra.customer) return false;
-    if (window.location.pathname.indexOf('/checkout') !== -1) return false;
+    if (window.tvastra.customer) {
+      console.log('TVASTRA LUCENT v16: shouldShow=false (customer logged in)');
+      return false;
+    }
+    if (window.location.pathname.indexOf('/checkout') !== -1) {
+      console.log('TVASTRA LUCENT v16: shouldShow=false (checkout page)');
+      return false;
+    }
     return true;
   }
 
   function isVisible(selector) {
     var el = document.querySelector(selector);
     if (!el) return false;
-    // Must have actual height — width alone is not enough (#sotp spans full width even when closed)
+    // Must have actual height — offsetWidth alone is not enough (#sotp spans full width even when closed)
     return el.offsetHeight > 0;
   }
 
@@ -49,30 +57,29 @@
 
     var triggered = false;
 
-    // Method 5: simplyOtp API
+    // Method 1: simplyOtp API (primary — most reliable)
     try {
       if (window.simplyOtp && !window.tvastra.lucentTriggered) {
         window.tvastra.lucentTriggered = true;
         triggered = true;
-        console.log("TVASTRA LUCENT: simplyOtp found, attempting to trigger popup...");
+        console.log('TVASTRA LUCENT v16: simplyOtp found! Calling initializeSimplyOtp + openPopup...');
         if (typeof window.simplyOtp.initializeSimplyOtp === 'function') {
-          console.log("TVASTRA LUCENT: Calling initializeSimplyOtp");
-          try { window.simplyOtp.initializeSimplyOtp(); } catch(e) {}
+          window.simplyOtp.initializeSimplyOtp();
         }
         var fnNames = ['openPopup', 'openLoginOrAccountModal', 'open', 'show', 'openModal', 'init'];
         for (var i = 0; i < fnNames.length; i++) {
           if (typeof window.simplyOtp[fnNames[i]] === 'function') {
-            console.log("TVASTRA LUCENT: Calling method " + fnNames[i]);
+            console.log('TVASTRA LUCENT v16: Calling simplyOtp.' + fnNames[i] + '()');
             window.simplyOtp[fnNames[i]]();
             break;
           }
         }
       }
     } catch(e) {
-      console.error("TVASTRA LUCENT: Error calling simplyOtp methods:", e);
+      console.error('TVASTRA LUCENT v16: Error in simplyOtp block:', e);
     }
 
-    // Only run other fallback methods once as well
+    // Method 2: fallback DOM methods (only once)
     if (!triggered && !window.tvastra.lucentTriggered) {
       var lotaEl = document.querySelector('lota-customer-account');
       var dialog = document.querySelector('#sotp, dialog[aria-label*="login"], dialog[aria-label*="account"]');
@@ -82,7 +89,7 @@
 
       if (lotaEl || dialog || btn) {
         window.tvastra.lucentTriggered = true;
-
+        console.log('TVASTRA LUCENT v16: Fallback DOM methods triggered');
         if (lotaEl) {
           if (typeof lotaEl.open === 'function') { try { lotaEl.open(); } catch(e) {} }
           if (typeof lotaEl.show === 'function') { try { lotaEl.show(); } catch(e) {} }
@@ -101,10 +108,12 @@
             window.location.hash = '#lucent-login';
           }
         } catch(e) {}
+      } else {
+        console.log('TVASTRA LUCENT v16: attempt ' + attempt + ' — simplyOtp and DOM elements not ready yet');
       }
     }
 
-    // Retry checking loop (waits for popup to become visible)
+    // Retry loop — waits for popup to become visible
     if (attempt < 120) {
       window.setTimeout(function () {
         if (shouldShow() && !isOpen()) {
@@ -120,15 +129,18 @@
   }
 
   function triggerLucent() {
+    console.log('TVASTRA LUCENT v16: triggerLucent fired. isOpen=' + isOpen() + ' shouldShow=' + shouldShow());
     if (!shouldShow()) return stopCadence();
     if (isOpen()) return;
-    window.tvastra.lucentTriggered = false; // Reset trigger state for this interval
+    window.tvastra.lucentTriggered = false; // Reset for this interval
     wakeUp();
     tryOpen(0);
   }
 
   function startCadence() {
+    console.log('TVASTRA LUCENT v16: startCadence called. shouldShow=' + shouldShow());
     if (!shouldShow()) return;
+    console.log('TVASTRA LUCENT v16: Scheduling timers (8s, 50s, 120s interval)...');
     window.setTimeout(wakeUp, 2000);
     var t1 = window.setTimeout(triggerLucent, 8000);
     var t2 = window.setTimeout(triggerLucent, 50000);
@@ -139,11 +151,11 @@
   document.addEventListener('submit', function (e) {
     var f = e.target;
     if (f && f.action && f.action.indexOf('/account') !== -1) {
-      try { localStorage.setItem('tvastra_lucent_submitted', 'yes'); } catch (ex) {}
       stopCadence();
     }
   }, true);
 
+  console.log('TVASTRA LUCENT v16: Registering DOMContentLoaded / calling startCadence...');
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', startCadence);
   } else {
