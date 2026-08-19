@@ -1,6 +1,9 @@
 <!doctype html>
 <html class="no-js" lang="{{ request.locale.iso_code }}"> 
   <head>
+    {%- if request.page_type == 'blog' -%}
+      <meta name="robots" content="noindex, nofollow">
+    {%- endif -%}
     <meta name="facebook-domain-verification" content="d0cizjy2j428b7lgod9qds2a44s777" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -124,6 +127,9 @@
       {%- section 'mini-header' -%}
         {%- render 'header' -%}
       <main id="MainContent" class="content-for-layout focus-none {% if template == 'product' %}product-page{% endif %}" role="main" tabindex="-1">
+        {%- if request.page_type == 'index' -%}
+          <h1 class="visually-hidden">Premium Activewear for Men & Women | Tvastra Fit</h1>
+        {%- endif -%}
         {{ content_for_layout }}
       </main>
       {%- liquid

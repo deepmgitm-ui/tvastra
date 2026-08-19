@@ -60,14 +60,17 @@
             <div {% if section.settings.show_parallax == true -%} data-swiper-parallax="800" class="d-block h-100"{% endif %}>
               {%- if block.settings.image != blank -%}
                 <div class="desktop-img d-none d-md-block">
-                  {{ block.settings.image | image_url: width: 3840 | image_tag: height: block.settings.image.height, sizes: "100vw", widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840', loading: lazy }}
+                  {%- assign image_alt = block.settings.image.alt | default: block.settings.title | default: 'Slide image' | escape -%}
+                  {{ block.settings.image | image_url: width: 3840 | image_tag: height: block.settings.image.height, sizes: "100vw", widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840', loading: lazy, alt: image_alt }}
                 </div>
               {%- else -%}
                 {{ 'lifestyle-1' | placeholder_svg_tag: 'svg-placeholder' }}
               {%- endif -%}
               {%- if mobile_image != blank -%}
                 <div class="mobile-img d-block d-md-none">
-                  {{ mobile_image | image_url: width: 3840 | image_tag: height: mobile_image.height, sizes: "100vw", widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840', loading: lazy }}
+                  {%- assign mobile_image = block.settings.mobile_image | default: block.settings.image -%}
+                  {%- assign mobile_image_alt = mobile_image.alt | default: block.settings.title | default: 'Slide image mobile' | escape -%}
+                  {{ mobile_image | image_url: width: 3840 | image_tag: height: mobile_image.height, sizes: "100vw", widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840', loading: lazy, alt: mobile_image_alt }}
                 </div>
               {%- endif -%}
             </div>

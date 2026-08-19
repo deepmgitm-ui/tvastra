@@ -5,22 +5,30 @@
   <link rel="apple-touch-icon" type="image/png" href="{{ settings.favicon_ratina | img_url: '152x' }}">
 {%- endif -%}
 {%- capture seo_title -%}
-  {%- if current_page != 1 -%}
-   {{ page_title }} &ndash; {{ current_page }}
-  {%- endif -%}
-  {%- if current_tags -%}
-    Tagged: {%- assign meta_tags = current_tags | join: ', ' -%} {{ meta_tags -}}&ndash;
-  {%- endif -%}
-  {%- if request.page_type == 'search' and search.performed == true -%}
-    {{ 'templates.search.results_with_count' | t: terms: search.terms, count: search.results_count }}
-  {%- elsif request.page_type == 'password' -%}
-    {{ shop.name }} &ndash; {{ 'general.password_page.password_page_title' | t }}
+  {%- if request.page_type == 'index' -%}
+    Tvastra Fit | Premium Gym Wear & Activewear India
   {%- else -%}
-    {{ page_title }}
+    {%- if current_page != 1 -%}
+     {{ page_title }} &ndash; {{ current_page }}
+    {%- endif -%}
+    {%- if current_tags -%}
+      Tagged: {%- assign meta_tags = current_tags | join: ', ' -%} {{ meta_tags -}}&ndash;
+    {%- endif -%}
+    {%- if request.page_type == 'search' and search.performed == true -%}
+      {{ 'templates.search.results_with_count' | t: terms: search.terms, count: search.results_count }}
+    {%- elsif request.page_type == 'password' -%}
+      {{ shop.name }} &ndash; {{ 'general.password_page.password_page_title' | t }}
+    {%- else -%}
+      {{ page_title }} | Tvastra Fit
+    {%- endif -%}
   {%- endif -%}
 {%- endcapture -%}
-<title>{{ seo_title }}</title>
+<title>{{ seo_title | strip }}</title>
 {%- liquid
-  assign seo_description = page_description | default: shop.description | default: shop.name
+  if request.page_type == 'index'
+    assign seo_description = 'Shop premium activewear and gym wear for men and women at Tvastra Fit. Designed for comfort, durability, and modern style. Free shipping on prepaid orders.'
+  else
+    assign seo_description = page_description | default: shop.description | default: 'Shop premium activewear and gym wear for men and women at Tvastra Fit.'
+  endif
 -%}
-<meta name="description" content="{{ seo_description | strip_html | escape }}">
+<meta name="description" content="{{ seo_description | strip_html | escape | truncate: 160 }}">
