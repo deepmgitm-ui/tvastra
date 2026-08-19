@@ -16,7 +16,8 @@
   function isVisible(selector) {
     var el = document.querySelector(selector);
     if (!el) return false;
-    return !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+    // Must have actual height — width alone is not enough (#sotp spans full width even when closed)
+    return el.offsetHeight > 0;
   }
 
   function isOpen() {
