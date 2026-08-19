@@ -29,16 +29,18 @@
   }
 
   function isOpen() {
-    return !!(
-      document.querySelector('#sotp[open]') ||
-      document.querySelector('dialog[open]') ||
-      document.querySelector('lota-customer-account[open]') ||
-      (document.querySelector('.sotp-modal-container') && isVisible('.sotp-modal-container')) ||
-      (document.querySelector('.sotp-popup-container') && isVisible('.sotp-popup-container')) ||
-      (document.querySelector('.sotp-popup-content') && isVisible('.sotp-popup-content')) ||
-      (document.querySelector('#sotp') && isVisible('#sotp')) ||
-      document.querySelector('[aria-controls="sotp"][aria-expanded="true"]')
-    );
+    // Only check selectors that reliably confirm the popup is ACTUALLY VISIBLE
+    // NOTE: .sotp-popup-container and .sotp-popup-content have non-zero offsetHeight
+    //       even when closed (they are absolutely positioned inside #sotp which has
+    //       height=0 via overflow when closed) — so we do NOT check them here.
+    if (document.querySelector('#sotp[open]')) return true;
+    if (document.querySelector('dialog[open]')) return true;
+    if (document.querySelector('lota-customer-account[open]')) return true;
+    if (document.querySelector('[aria-controls="sotp"][aria-expanded="true"]')) return true;
+    // #sotp itself: offsetHeight=0 when closed, >0 when open — most reliable
+    var sotp = document.querySelector('#sotp');
+    if (sotp && sotp.offsetHeight > 0) return true;
+    return false;
   }
 
   function wakeUp() {
