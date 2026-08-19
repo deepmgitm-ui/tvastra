@@ -163,6 +163,30 @@
     }
   }, true);
 
+  // Manual Trigger: Listen for clicks on the profile/account icon
+  document.addEventListener('click', function (e) {
+    var target = e.target.closest('[data-tvastra-lucent-login], [href="#lucent-login"], [aria-controls="sotp"]');
+    if (target) {
+      e.preventDefault();
+      try {
+        if (window.simplyOtp) {
+          if (typeof window.simplyOtp.initializeSimplyOtp === 'function') {
+            window.simplyOtp.initializeSimplyOtp();
+          }
+          var fnNames = ['openPopup', 'openLoginOrAccountModal', 'open', 'show', 'openModal'];
+          for (var i = 0; i < fnNames.length; i++) {
+            if (typeof window.simplyOtp[fnNames[i]] === 'function') {
+              window.simplyOtp[fnNames[i]]();
+              break;
+            }
+          }
+        }
+      } catch (ex) {
+        console.error('TVASTRA LUCENT: Error opening popup manually:', ex);
+      }
+    }
+  });
+
   console.log('TVASTRA LUCENT v16: Registering DOMContentLoaded / calling startCadence...');
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', startCadence);
