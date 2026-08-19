@@ -10,9 +10,6 @@
   function shouldShow() {
     if (window.tvastra.customer) return false;
     if (window.location.pathname.indexOf('/checkout') !== -1) return false;
-    try {
-      if (localStorage.getItem('tvastra_lucent_submitted') === 'yes') return false;
-    } catch (e) {}
     return true;
   }
 
@@ -77,6 +74,10 @@
     try {
       if (window.simplyOtp) {
         console.log("TVASTRA LUCENT: simplyOtp found, attempting to trigger popup...");
+        if (typeof window.simplyOtp.initializeSimplyOtp === 'function') {
+          console.log("TVASTRA LUCENT: Calling initializeSimplyOtp");
+          try { window.simplyOtp.initializeSimplyOtp(); } catch(e) {}
+        }
         var fnNames = ['openPopup', 'openLoginOrAccountModal', 'open', 'show', 'openModal', 'init'];
         for (var i = 0; i < fnNames.length; i++) {
           if (typeof window.simplyOtp[fnNames[i]] === 'function') {
