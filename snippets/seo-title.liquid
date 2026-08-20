@@ -6,7 +6,7 @@
 {%- endif -%}
 {%- capture seo_title -%}
   {%- if request.page_type == 'index' -%}
-    Tvastra Fit | Premium Athleisure & Activewear India
+    Tvastra Fit | Premium Athleisure Wear & Activewear India
   {%- else -%}
     {%- if current_page != 1 -%}
      {{ page_title }} &ndash; {{ current_page }}
@@ -26,9 +26,9 @@
 <title>{{ seo_title | strip }}</title>
 {%- liquid
   if request.page_type == 'index'
-    assign seo_description = 'Shop premium activewear and athleisure for men and women at Tvastra Fit. Designed for comfort, durability, and modern style. Free shipping on prepaid orders.'
+    assign seo_description = 'Shop premium activewear and athleisure wear for men and women at Tvastra Fit. Designed for comfort, durability, and modern style. Free shipping on prepaid orders.'
   else
-    assign seo_description = page_description | default: shop.description | default: 'Shop premium activewear and athleisure for men and women at Tvastra Fit.'
+    assign seo_description = page_description | default: shop.description | default: 'Shop premium activewear and athleisure wear for men and women at Tvastra Fit.'
   endif
 -%}
 <meta name="description" content="{{ seo_description | strip_html | escape | truncate: 160 }}">
