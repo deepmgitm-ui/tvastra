@@ -82,18 +82,17 @@
               {%- if section.settings.subtitle != blank -%}
                 <div class="subtitle alt-font">{{ section.settings.subtitle }}</div>
               {%- endif -%}
-              {%- assign hero_title = section.settings.title | default: 'Premium Activewear for Men & Women' -%}
-              <h1 class="title alt-font">{{ hero_title }}</h1>
+              {%- if section.settings.title != blank -%}
+                <div class="title alt-font">{{ section.settings.title }}</div>
+              {%- endif -%}
               {%- if section.settings.description != blank -%}
                 <p>{{ section.settings.description }}</p>
               {%- endif -%}
-              {%- assign hero_btn_text = section.settings.btn_text | default: 'SHOP NOW' -%}
-              {%- assign hero_btn_link = section.settings.btn_link | default: routes.all_products_collection_url -%}
               {%- render 'button-settings',
                 btn_style: section.settings.button_style,
                 btn_size: section.settings.button_size,
-                btn_text: hero_btn_text,
-                btn_link: hero_btn_link,
+                btn_text: section.settings.btn_text,
+                btn_link: section.settings.btn_link,
                 btn_radius: section.settings.btn_radius,
                 btn_border_width: section.settings.btn_border_width,
                 btn_icon_class: section.settings.btn_icon_class,
