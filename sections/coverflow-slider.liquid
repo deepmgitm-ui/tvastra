@@ -22,7 +22,7 @@
             <div class="tcf-card-bg">
               {%- if block.settings.image != blank -%}
                 <img src="{{ block.settings.image | image_url: width: 700 }}"
-                     alt="{{ block.settings.title | escape }}" loading="lazy">
+                     alt="Tvastra Fit {{ block.settings.product_name | escape }} collection" loading="lazy">
               {%- else -%}
                 <div class="tcf-card-placeholder"></div>
               {%- endif -%}
