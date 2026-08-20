@@ -143,3 +143,53 @@
     font-size: 10px;
   }
 }
+
+/* Tvastra homepage: mobile-first hero polish. Scoped to the hero only. */
+@media (max-width: 767px) {
+  .video-hero-section {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .video-hero-section .video-hero-wrap {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    min-height: min(500px, 72svh) !important;
+    max-height: 500px !important;
+    aspect-ratio: 4 / 5 !important;
+    overflow: hidden !important;
+  }
+
+  .video-hero-section .mobile-video-wrapper,
+  .video-hero-section .mobile-video-wrapper .video-hero,
+  .video-hero-section .mobile-video-wrapper video {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .video-hero-section .mobile-video-wrapper video {
+    object-fit: cover !important;
+    object-position: center center !important;
+  }
+
+  .video-hero-section .video-content-wrap {
+    padding: 0 18px 24px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .video-hero-section .video-content {
+    width: min(100%, 520px) !important;
+    margin: 0 auto !important;
+  }
+
+  /* Keep the first category strip tight against the hero on phones. */
+  .shopify-section[id*="custom_split_boxes"] {
+    margin-top: 0 !important;
+  }
+
+  /* Keep the next feature band compact without changing its desktop spacing. */
+  .shopify-section[id*="custom_usp_tvastra"] {
+    margin-top: 0 !important;
+  }
+}
