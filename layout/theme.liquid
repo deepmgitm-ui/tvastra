@@ -458,9 +458,21 @@
 
      <script src="{{ 'scroll-logo.js' | asset_url | split: '?' | first }}?v=review-stars-v1" defer></script>
      <script src="{{ 'review-stars.js' | asset_url }}" defer></script>
-     {%- if template.name == 'index' -%}
-       <script src="{{ 'judgeme-review-cards.js' | asset_url }}" defer></script>
-     {%- endif -%}
+       {%- if template.name == 'index' -%}
+       <script>
+         window.addEventListener('DOMContentLoaded', () => {
+           const loadReviews = () => {
+             if(window.reviewsLoaded) return;
+             window.reviewsLoaded = true;
+             const script = document.createElement('script');
+             script.src = "{{ 'judgeme-review-cards.js' | asset_url }}";
+             script.defer = true;
+             document.body.appendChild(script);
+           };
+           ['scroll', 'mousemove', 'touchstart'].forEach(e => window.addEventListener(e, loadReviews, {once: true}));
+         });
+       </script>
+       {%- endif -%}
 
     
     {% unless customer %}
