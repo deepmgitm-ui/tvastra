@@ -1,6 +1,17 @@
 (function () {
   'use strict';
 
+  // Shopify App Proxy / Shipway-Ezy Returns pages must be isolated from
+  // Tvastra's global login/OTP automation. The Ezy Returns form owns its
+  // own interactions and must never be interrupted by this theme script.
+  var path = window.location && window.location.pathname ? window.location.pathname : '';
+  var isEzyReturns = path === '/apps/ezy/returns' || path.indexOf('/apps/ezy/returns/') === 0;
+
+  if (isEzyReturns) {
+    console.log('TVASTRA LUCENT: skipped on Ezy Returns page.');
+    return;
+  }
+
   window.tvastra = window.tvastra || {};
   window.tvastra.lucentAutoPopup = true;
 
