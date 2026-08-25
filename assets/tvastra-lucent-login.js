@@ -1,0 +1,1 @@
+/* Lucent login popup removed from Tvastra. */
