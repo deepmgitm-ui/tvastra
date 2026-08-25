@@ -1,12 +1,12 @@
 {%- section 'breadcrumb' -%}
 
 <style>
-  .tvastra-lucent-login-page {
+  .tvastra-login-page {
     padding: 42px 0 64px;
     background: #fbfaf8;
   }
 
-  .tvastra-lucent-login-page__card {
+  .tvastra-login-page__card {
     width: min(100%, 460px);
     margin: 0 auto;
     padding: 30px 24px;
@@ -17,7 +17,7 @@
     text-align: center;
   }
 
-  .tvastra-lucent-login-page__eyebrow {
+  .tvastra-login-page__eyebrow {
     margin: 0 0 8px;
     color: #9a7934;
     font-size: 11px;
@@ -26,7 +26,7 @@
     text-transform: uppercase;
   }
 
-  .tvastra-lucent-login-page__title {
+  .tvastra-login-page__title {
     margin: 0;
     color: #101010;
     font-size: 28px;
@@ -34,14 +34,14 @@
     line-height: 1.16;
   }
 
-  .tvastra-lucent-login-page__text {
+  .tvastra-login-page__text {
     margin: 12px auto 22px;
     color: #6f665f;
     font-size: 14px;
     line-height: 1.55;
   }
 
-  .tvastra-lucent-login-page__button {
+  .tvastra-login-page__button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -57,12 +57,12 @@
     transition: transform 0.2s ease, background 0.2s ease;
   }
 
-  .tvastra-lucent-login-page__button:hover {
+  .tvastra-login-page__button:hover {
     background: #2a2724;
     transform: translateY(-1px);
   }
 
-  .tvastra-lucent-login-page__note {
+  .tvastra-login-page__note {
     margin: 14px 0 0;
     color: #8b837c;
     font-size: 12px;
@@ -70,39 +70,37 @@
   }
 
   @media (max-width: 767px) {
-    .tvastra-lucent-login-page {
+    .tvastra-login-page {
       padding: 26px 14px 46px;
     }
 
-    .tvastra-lucent-login-page__card {
+    .tvastra-login-page__card {
       padding: 24px 18px;
     }
 
-    .tvastra-lucent-login-page__title {
+    .tvastra-login-page__title {
       font-size: 23px;
     }
   }
 </style>
 
-<div class="tvastra-lucent-login-page" data-tvastra-lucent-login-page>
+<div class="tvastra-login-page">
   <div class="container">
-    <div class="tvastra-lucent-login-page__card">
-      <p class="tvastra-lucent-login-page__eyebrow">Tvastra account</p>
-      <h1 class="tvastra-lucent-login-page__title">Sign in with mobile OTP</h1>
-      <p class="tvastra-lucent-login-page__text">
-        Continue with Lucent to view your account, saved details and order updates.
+    <div class="tvastra-login-page__card">
+      <p class="tvastra-login-page__eyebrow">Tvastra account</p>
+      <h1 class="tvastra-login-page__title">Sign in with mobile OTP</h1>
+      <p class="tvastra-login-page__text">
+        Continue to view your account, saved details and order updates.
       </p>
       <a
-        href="#lucent-login"
-        class="tvastra-lucent-login-page__button"
-        data-tvastra-lucent-login
+        href="{{ routes.account_url }}"
+        class="tvastra-login-page__button"
         data-no-page-transition
-        aria-haspopup="dialog"
-        aria-controls="sotp"
+        aria-label="account"
       >
         Continue with OTP
       </a>
-      <p class="tvastra-lucent-login-page__note">
+      <p class="tvastra-login-page__note">
         The secure OTP popup will open automatically. Tap the button if it needs a second.
       </p>
     </div>
