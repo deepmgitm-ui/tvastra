@@ -3,4 +3,54 @@
   <script id="RazorpayMagicCheckoutConfig" type="application/json">
     {"oneClickCheckoutEnabled":"{{shop.metafields.magic_checkout.oneClickCheckoutEnabled}}","buyNowEnabled":"{{shop.metafields.magic_checkout.buyNowEnabled}}","config":{{shop.metafields.magic_checkout.config}},"email":"{{customer.email}}","phone":"{{customer.phone}}"}
   </script>
+  <script>
+    (function () {
+      'use strict';
+      if (window.__tvastraMagicReturnGuard) return;
+      window.__tvastraMagicReturnGuard = true;
+
+      function restoreStorefrontState() {
+        try {
+          document.documentElement.classList.remove('tvastra-page-leaving', 'overflow-hidden');
+          if (document.body) {
+            document.body.classList.remove('tvastra-page-leaving', 'overflow-hidden');
+            document.body.style.removeProperty('overflow');
+            document.body.style.removeProperty('position');
+          }
+
+          document.querySelectorAll('.tvastra-page-transition').forEach(function (el) {
+            el.classList.remove('active', 'show', 'visible', 'open', 'is-active', 'is-visible', 'loading');
+            el.style.setProperty('display', 'none', 'important');
+            el.style.setProperty('visibility', 'hidden', 'important');
+            el.style.setProperty('opacity', '0', 'important');
+            el.style.setProperty('pointer-events', 'none', 'important');
+          });
+
+          document.querySelectorAll('.loading-box').forEach(function (el) {
+            el.classList.add('hidden');
+            el.classList.remove('show-loader', 'active', 'open', 'loading');
+            el.style.setProperty('display', 'none', 'important');
+            el.style.setProperty('visibility', 'hidden', 'important');
+            el.style.setProperty('opacity', '0', 'important');
+            el.style.setProperty('pointer-events', 'none', 'important');
+          });
+        } catch (e) {}
+      }
+
+      window.addEventListener('pageshow', restoreStorefrontState);
+      window.addEventListener('focus', restoreStorefrontState);
+      window.addEventListener('popstate', restoreStorefrontState);
+      document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') {
+          restoreStorefrontState();
+          setTimeout(restoreStorefrontState, 50);
+          setTimeout(restoreStorefrontState, 250);
+          setTimeout(restoreStorefrontState, 750);
+        }
+      });
+
+      // Magic Checkout can close as an in-page modal without firing navigation events.
+      setInterval(restoreStorefrontState, 1000);
+    }());
+  </script>
 </div>
