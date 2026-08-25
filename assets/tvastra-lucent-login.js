@@ -16,20 +16,12 @@
   window.tvastra = window.tvastra || {};
   window.tvastra.lucentAutoPopup = true;
 
-  console.log('TVASTRA LUCENT: Script running. readyState=' + document.readyState + ' customer=' + JSON.stringify(window.tvastra.customer) + ' pathname=' + window.location.pathname);
-
   var cadenceTimers = [];
   var woken = false;
 
   function shouldShow() {
-    if (window.tvastra.customer) {
-      console.log('TVASTRA LUCENT: shouldShow=false (customer logged in)');
-      return false;
-    }
-    if (window.location.pathname.indexOf('/checkout') !== -1) {
-      console.log('TVASTRA LUCENT: shouldShow=false (checkout page)');
-      return false;
-    }
+    if (window.tvastra.customer) return false;
+    if (window.location.pathname.indexOf('/checkout') !== -1) return false;
     return true;
   }
 
@@ -39,8 +31,7 @@
     if (document.querySelector('lota-customer-account[open]')) return true;
     if (document.querySelector('[aria-controls="sotp"][aria-expanded="true"]')) return true;
     var sotp = document.querySelector('#sotp');
-    if (sotp && sotp.offsetHeight > 0) return true;
-    return false;
+    return !!(sotp && sotp.offsetHeight > 0);
   }
 
   function wakeUp() {
@@ -54,68 +45,74 @@
 
   function tryOpen(attempt) {
     attempt = attempt || 0;
-    if (!shouldShow()) return;
-    if (isOpen()) return;
+    if (!shouldShow() || isOpen()) return false;
 
-    var triggered = false;
+    var opened = false;
 
+    // Primary Lucent/SimplyOTP API.
     try {
-      if (window.simplyOtp && !window.tvastra.lucentTriggered) {
-        window.tvastra.lucentTriggered = true;
-        window.tvastra.lucentLastTriggered = Date.now();
-        triggered = true;
+      if (window.simplyOtp) {
         if (typeof window.simplyOtp.initializeSimplyOtp === 'function') {
-          window.simplyOtp.initializeSimplyOtp();
+          try { window.simplyOtp.initializeSimplyOtp(); } catch (e) {}
         }
+
         var fnNames = ['openPopup', 'openLoginOrAccountModal', 'open', 'show', 'openModal', 'init'];
         for (var i = 0; i < fnNames.length; i++) {
           if (typeof window.simplyOtp[fnNames[i]] === 'function') {
             window.simplyOtp[fnNames[i]]();
+            opened = true;
             break;
           }
         }
       }
     } catch (e) {
-      console.error('TVASTRA LUCENT: Error in simplyOtp block:', e);
+      console.error('TVASTRA LUCENT: simplyOtp error:', e);
     }
 
-    if (!triggered && !window.tvastra.lucentTriggered) {
-      var lotaEl = document.querySelector('lota-customer-account');
-      var dialog = document.querySelector('#sotp, dialog[aria-label*="login"], dialog[aria-label*="account"]');
-      var btn = document.querySelector('[data-tvastra-lucent-login]') ||
-                document.querySelector('[aria-controls="sotp"]') ||
-                document.querySelector('a[href="#lucent-login"]');
+    // DOM fallback if the app exposes the modal directly.
+    if (!opened) {
+      try {
+        var lotaEl = document.querySelector('lota-customer-account');
+        var dialog = document.querySelector('#sotp, dialog[aria-label*="login"], dialog[aria-label*="account"]');
+        var btn = document.querySelector('[data-tvastra-lucent-login]') ||
+                  document.querySelector('[aria-controls="sotp"]') ||
+                  document.querySelector('a[href="#lucent-login"]');
 
-      if (lotaEl || dialog || btn) {
-        window.tvastra.lucentTriggered = true;
         if (lotaEl) {
-          if (typeof lotaEl.open === 'function') { try { lotaEl.open(); } catch (e) {} }
-          if (typeof lotaEl.show === 'function') { try { lotaEl.show(); } catch (e) {} }
-          if (typeof lotaEl.openModal === 'function') { try { lotaEl.openModal(); } catch (e) {} }
-          if (typeof lotaEl.openPopup === 'function') { try { lotaEl.openPopup(); } catch (e) {} }
+          if (typeof lotaEl.open === 'function') { try { lotaEl.open(); opened = true; } catch (e) {} }
+          if (!opened && typeof lotaEl.show === 'function') { try { lotaEl.show(); opened = true; } catch (e) {} }
+          if (!opened && typeof lotaEl.openModal === 'function') { try { lotaEl.openModal(); opened = true; } catch (e) {} }
+          if (!opened && typeof lotaEl.openPopup === 'function') { try { lotaEl.openPopup(); opened = true; } catch (e) {} }
         }
-        if (dialog) {
-          if (typeof dialog.showModal === 'function') { try { dialog.showModal(); } catch (e) {} }
-          if (typeof dialog.show === 'function') { try { dialog.show(); } catch (e) {} }
+
+        if (!opened && dialog) {
+          if (typeof dialog.showModal === 'function') { try { dialog.showModal(); opened = true; } catch (e) {} }
+          if (!opened && typeof dialog.show === 'function') { try { dialog.show(); opened = true; } catch (e) {} }
         }
-        if (btn) {
-          try { btn.click(); } catch (e) {}
+
+        if (!opened && btn) {
+          try {
+            btn.click();
+            opened = true;
+          } catch (e) {}
         }
-        try {
-          if (window.location.hash !== '#lucent-login') {
-            window.location.hash = '#lucent-login';
-          }
-        } catch (e) {}
+      } catch (e) {
+        console.error('TVASTRA LUCENT: DOM fallback error:', e);
       }
     }
 
-    if (attempt < 120 && !window.tvastra.lucentTriggered) {
-      window.setTimeout(function () {
-        if (shouldShow() && !isOpen()) {
-          tryOpen(attempt + 1);
-        }
-      }, 500);
+    if (opened) {
+      window.tvastra.lucentTriggered = true;
+      window.tvastra.lucentLastTriggered = Date.now();
+      return true;
     }
+
+    // Critical: do NOT mark the trigger as complete until a real opener exists.
+    // The Lucent library may create window.simplyOtp before its methods are ready.
+    if (attempt < 120 && shouldShow() && !isOpen()) {
+      window.setTimeout(function () { tryOpen(attempt + 1); }, 500);
+    }
+    return false;
   }
 
   function stopCadence() {
@@ -128,9 +125,8 @@
     if (isOpen()) return;
 
     var now = Date.now();
-    if (window.tvastra.lucentLastTriggered && (now - window.tvastra.lucentLastTriggered) < 45000) {
-      return;
-    }
+    if (window.tvastra.lucentLastTriggered && (now - window.tvastra.lucentLastTriggered) < 45000) return;
+
     window.tvastra.lucentTriggered = false;
     wakeUp();
     tryOpen(0);
@@ -139,17 +135,18 @@
   function startCadence() {
     if (!shouldShow()) return;
     window.setTimeout(wakeUp, 2000);
-    var t1 = window.setTimeout(triggerLucent, 8000);
-    var t2 = window.setTimeout(triggerLucent, 50000);
-    var t3 = window.setInterval(triggerLucent, 120000);
-    cadenceTimers.push(t1, t2, t3);
+    cadenceTimers.push(window.setTimeout(triggerLucent, 8000));
+    cadenceTimers.push(window.setTimeout(triggerLucent, 50000));
+    cadenceTimers.push(window.setInterval(triggerLucent, 120000));
+
+    // Library can be lazy-loaded well after DOMContentLoaded.
+    window.setTimeout(triggerLucent, 1500);
+    window.setTimeout(triggerLucent, 4000);
   }
 
   document.addEventListener('submit', function (e) {
     var f = e.target;
-    if (f && f.action && f.action.indexOf('/account') !== -1) {
-      stopCadence();
-    }
+    if (f && f.action && f.action.indexOf('/account') !== -1) stopCadence();
   }, true);
 
   document.addEventListener('click', function (e) {
@@ -157,23 +154,9 @@
     if (!target) return;
 
     e.preventDefault();
-    try {
-      if (window.simplyOtp) {
-        if (typeof window.simplyOtp.initializeSimplyOtp === 'function') {
-          window.simplyOtp.initializeSimplyOtp();
-        }
-        var fnNames = ['openPopup', 'openLoginOrAccountModal', 'open', 'show', 'openModal'];
-        for (var i = 0; i < fnNames.length; i++) {
-          if (typeof window.simplyOtp[fnNames[i]] === 'function') {
-            window.simplyOtp[fnNames[i]]();
-            break;
-          }
-        }
-      }
-    } catch (ex) {
-      console.error('TVASTRA LUCENT: Error opening popup manually:', ex);
-    }
-  });
+    window.tvastra.lucentTriggered = false;
+    tryOpen(0);
+  }, true);
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', startCadence);
