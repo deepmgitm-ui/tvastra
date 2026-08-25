@@ -30,11 +30,13 @@
         </a>
       </div>
     {%- endif -%}
-     {%- if section.settings.show_account_icon -%}
+    {%- if section.settings.show_account_icon -%}
       <div class="sticky-menu-item">
         <a
-          href="{{ routes.account_url }}"
+          href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
           aria-label="account-label"
+          data-tvastra-kwikpass-account
+          {% unless customer %}onclick="if (window.KP_LOGIN_SDK_INSTANCE && typeof window.KP_LOGIN_SDK_INSTANCE.handleKpLogin === 'function') { event.preventDefault(); window.KP_LOGIN_SDK_INSTANCE.handleKpLogin(); return false; }"{% endunless %}
         >
           <i class="feather-user"></i>
           {%- if section.settings.show_home_label == true -%}
@@ -42,9 +44,9 @@
           {%- endif -%}
         </a>
       </div>
-    {%- endif -%}    
+    {%- endif -%}
     {%- if section.settings.show_wishlist_icon -%}
-      <div class="sticky-menu-item"> 
+      <div class="sticky-menu-item">
         <a href="{{ pages[settings.wishlist_page].url }}" aria-label="wishlist">
           <span class="icon-wrap position-relative">
             <i class="feather-heart"></i>
@@ -110,7 +112,7 @@
       "id": "show_collection_icon",
       "label": "Show products listing",
       "default": true
-    },        
+    },
     {
       "type": "checkbox",
       "id": "show_account_icon",
