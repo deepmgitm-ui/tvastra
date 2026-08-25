@@ -33,3 +33,78 @@
 		</a>
 	</div>
 {%- endif -%}
+
+<script>
+(function () {
+  'use strict';
+  window.tvastra = window.tvastra || {};
+  if (window.tvastra._lucentHeaderFallbackBound) return;
+  window.tvastra._lucentHeaderFallbackBound = true;
+
+  function blocked() {
+    var p = window.location && window.location.pathname ? window.location.pathname : '';
+    return p.indexOf('/checkout') !== -1 || p === '/apps/ezy/returns' || p.indexOf('/apps/ezy/returns/') === 0;
+  }
+
+  function openLucent() {
+    if (blocked()) return false;
+
+    try {
+      if (window.simplyOtp) {
+        if (typeof window.simplyOtp.initializeSimplyOtp === 'function') {
+          try { window.simplyOtp.initializeSimplyOtp(); } catch (e) {}
+        }
+        var names = ['openPopup', 'openLoginOrAccountModal', 'open', 'show', 'openModal', 'init'];
+        for (var i = 0; i < names.length; i++) {
+          if (typeof window.simplyOtp[names[i]] === 'function') {
+            window.simplyOtp[names[i]]();
+            return true;
+          }
+        }
+      }
+    } catch (e) {}
+
+    try {
+      var lota = document.querySelector('lota-customer-account');
+      if (lota) {
+        if (typeof lota.openPopup === 'function') { lota.openPopup(); return true; }
+        if (typeof lota.openModal === 'function') { lota.openModal(); return true; }
+        if (typeof lota.open === 'function') { lota.open(); return true; }
+        if (typeof lota.show === 'function') { lota.show(); return true; }
+      }
+    } catch (e) {}
+
+    return false;
+  }
+
+  function retry() {
+    var count = 0;
+    function run() {
+      if (blocked() || openLucent()) return;
+      if (++count < 24) window.setTimeout(run, 500);
+    }
+    run();
+  }
+
+  document.addEventListener('click', function (event) {
+    var trigger = event.target.closest('[data-tvastra-lucent-login], [href="#lucent-login"], [aria-controls="sotp"]');
+    if (!trigger || blocked()) return;
+    event.preventDefault();
+    event.stopPropagation();
+    retry();
+  }, true);
+
+  function boot() {
+    if (blocked()) return;
+    window.setTimeout(retry, 1500);
+    window.setTimeout(retry, 4000);
+    window.setTimeout(retry, 8000);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot, { once: true });
+  } else {
+    boot();
+  }
+}());
+</script>
