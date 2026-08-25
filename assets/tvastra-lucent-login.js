@@ -1,17 +1,10 @@
-(function () {
+﻿(function () {
   'use strict';
 
-  // Tvastra Lucent login helper.
-  // Keep the original automatic Lucent popup behavior on normal storefront pages.
-  // Shopify App Proxy / Shipway-Ezy Returns pages are isolated so the return form
-  // is never interrupted by the Tvastra login automation.
+  // Keep Shipway / Ezy Returns completely isolated from Lucent automation.
   var path = window.location && window.location.pathname ? window.location.pathname : '';
   var isEzyReturns = path === '/apps/ezy/returns' || path.indexOf('/apps/ezy/returns/') === 0;
-
-  if (isEzyReturns) {
-    console.log('TVASTRA LUCENT: skipped on Ezy Returns page.');
-    return;
-  }
+  if (isEzyReturns) return;
 
   window.tvastra = window.tvastra || {};
   window.tvastra.lucentAutoPopup = true;
@@ -22,16 +15,20 @@
   function shouldShow() {
     if (window.tvastra.customer) return false;
     if (window.location.pathname.indexOf('/checkout') !== -1) return false;
+    try {
+      if (localStorage.getItem('tvastra_lucent_submitted') === 'yes') return false;
+    } catch (e) {}
     return true;
   }
 
   function isOpen() {
-    if (document.querySelector('#sotp[open]')) return true;
-    if (document.querySelector('dialog[open]')) return true;
-    if (document.querySelector('lota-customer-account[open]')) return true;
-    if (document.querySelector('[aria-controls="sotp"][aria-expanded="true"]')) return true;
-    var sotp = document.querySelector('#sotp');
-    return !!(sotp && sotp.offsetHeight > 0);
+    return !!(
+      document.querySelector('#sotp[open]') ||
+      document.querySelector('dialog[open]') ||
+      document.querySelector('lota-customer-account[open]') ||
+      document.querySelector('.sotp-modal-container') ||
+      document.querySelector('[aria-controls="sotp"][aria-expanded="true"]')
+    );
   }
 
   function wakeUp() {
@@ -45,74 +42,61 @@
 
   function tryOpen(attempt) {
     attempt = attempt || 0;
-    if (!shouldShow() || isOpen()) return false;
+    if (!shouldShow()) return;
+    if (isOpen()) return;
 
-    var opened = false;
+    // Method 1: Direct call on lota-customer-account custom element
+    var lotaEl = document.querySelector('lota-customer-account');
+    if (lotaEl) {
+      if (typeof lotaEl.open === 'function') { try { lotaEl.open(); } catch(e) {} }
+      if (typeof lotaEl.show === 'function') { try { lotaEl.show(); } catch(e) {} }
+      if (typeof lotaEl.openModal === 'function') { try { lotaEl.openModal(); } catch(e) {} }
+      if (typeof lotaEl.openPopup === 'function') { try { lotaEl.openPopup(); } catch(e) {} }
+    }
 
-    // Primary Lucent/SimplyOTP API.
+    // Method 2: The sotp dialog element directly
+    var dialog = document.querySelector('#sotp, dialog[aria-label*="login"], dialog[aria-label*="account"]');
+    if (dialog) {
+      if (typeof dialog.showModal === 'function') { try { dialog.showModal(); } catch(e) {} }
+      if (typeof dialog.show === 'function') { try { dialog.show(); } catch(e) {} }
+    }
+
+    // Method 3: Button click (both methods)
+    var btn = document.querySelector('[data-tvastra-lucent-login]') ||
+              document.querySelector('[aria-controls="sotp"]') ||
+              document.querySelector('a[href="#lucent-login"]');
+    if (btn) {
+      try { btn.click(); } catch(e) {}
+    }
+
+    // Method 4: Hash change — Lota may listen for hashchange
+    try {
+      if (window.location.hash !== '#lucent-login') {
+        window.location.hash = '#lucent-login';
+      }
+    } catch(e) {}
+
+    // Method 5: simplyOtp API
     try {
       if (window.simplyOtp) {
-        if (typeof window.simplyOtp.initializeSimplyOtp === 'function') {
-          try { window.simplyOtp.initializeSimplyOtp(); } catch (e) {}
-        }
-
-        var fnNames = ['openPopup', 'openLoginOrAccountModal', 'open', 'show', 'openModal', 'init'];
+        var fnNames = ['openLoginOrAccountModal','openPopup','open','show','openModal','init'];
         for (var i = 0; i < fnNames.length; i++) {
           if (typeof window.simplyOtp[fnNames[i]] === 'function') {
             window.simplyOtp[fnNames[i]]();
-            opened = true;
             break;
           }
         }
       }
-    } catch (e) {
-      console.error('TVASTRA LUCENT: simplyOtp error:', e);
-    }
+    } catch(e) {}
 
-    // DOM fallback if the app exposes the modal directly.
-    if (!opened) {
-      try {
-        var lotaEl = document.querySelector('lota-customer-account');
-        var dialog = document.querySelector('#sotp, dialog[aria-label*="login"], dialog[aria-label*="account"]');
-        var btn = document.querySelector('[data-tvastra-lucent-login]') ||
-                  document.querySelector('[aria-controls="sotp"]') ||
-                  document.querySelector('a[href="#lucent-login"]');
-
-        if (lotaEl) {
-          if (typeof lotaEl.open === 'function') { try { lotaEl.open(); opened = true; } catch (e) {} }
-          if (!opened && typeof lotaEl.show === 'function') { try { lotaEl.show(); opened = true; } catch (e) {} }
-          if (!opened && typeof lotaEl.openModal === 'function') { try { lotaEl.openModal(); opened = true; } catch (e) {} }
-          if (!opened && typeof lotaEl.openPopup === 'function') { try { lotaEl.openPopup(); opened = true; } catch (e) {} }
+    // Retry if popup still not open
+    if (attempt < 30) {
+      window.setTimeout(function () {
+        if (shouldShow() && !isOpen()) {
+          tryOpen(attempt + 1);
         }
-
-        if (!opened && dialog) {
-          if (typeof dialog.showModal === 'function') { try { dialog.showModal(); opened = true; } catch (e) {} }
-          if (!opened && typeof dialog.show === 'function') { try { dialog.show(); opened = true; } catch (e) {} }
-        }
-
-        if (!opened && btn) {
-          try {
-            btn.click();
-            opened = true;
-          } catch (e) {}
-        }
-      } catch (e) {
-        console.error('TVASTRA LUCENT: DOM fallback error:', e);
-      }
+      }, 500);
     }
-
-    if (opened) {
-      window.tvastra.lucentTriggered = true;
-      window.tvastra.lucentLastTriggered = Date.now();
-      return true;
-    }
-
-    // Critical: do NOT mark the trigger as complete until a real opener exists.
-    // The Lucent library may create window.simplyOtp before its methods are ready.
-    if (attempt < 120 && shouldShow() && !isOpen()) {
-      window.setTimeout(function () { tryOpen(attempt + 1); }, 500);
-    }
-    return false;
   }
 
   function stopCadence() {
@@ -123,11 +107,6 @@
   function triggerLucent() {
     if (!shouldShow()) return stopCadence();
     if (isOpen()) return;
-
-    var now = Date.now();
-    if (window.tvastra.lucentLastTriggered && (now - window.tvastra.lucentLastTriggered) < 45000) return;
-
-    window.tvastra.lucentTriggered = false;
     wakeUp();
     tryOpen(0);
   }
@@ -135,27 +114,18 @@
   function startCadence() {
     if (!shouldShow()) return;
     window.setTimeout(wakeUp, 2000);
-    cadenceTimers.push(window.setTimeout(triggerLucent, 8000));
-    cadenceTimers.push(window.setTimeout(triggerLucent, 50000));
-    cadenceTimers.push(window.setInterval(triggerLucent, 120000));
-
-    // Library can be lazy-loaded well after DOMContentLoaded.
-    window.setTimeout(triggerLucent, 1500);
-    window.setTimeout(triggerLucent, 4000);
+    var t1 = window.setTimeout(triggerLucent, 8000);
+    var t2 = window.setTimeout(triggerLucent, 50000);
+    var t3 = window.setInterval(triggerLucent, 120000);
+    cadenceTimers.push(t1, t2, t3);
   }
 
   document.addEventListener('submit', function (e) {
     var f = e.target;
-    if (f && f.action && f.action.indexOf('/account') !== -1) stopCadence();
-  }, true);
-
-  document.addEventListener('click', function (e) {
-    var target = e.target.closest('[data-tvastra-lucent-login], [href="#lucent-login"], [aria-controls="sotp"]');
-    if (!target) return;
-
-    e.preventDefault();
-    window.tvastra.lucentTriggered = false;
-    tryOpen(0);
+    if (f && f.action && f.action.indexOf('/account') !== -1) {
+      try { localStorage.setItem('tvastra_lucent_submitted', 'yes'); } catch (ex) {}
+      stopCadence();
+    }
   }, true);
 
   if (document.readyState === 'loading') {
@@ -163,4 +133,5 @@
   } else {
     startCadence();
   }
+
 }());
