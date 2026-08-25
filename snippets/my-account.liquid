@@ -1,8 +1,10 @@
 {%- if settings.header_layout == 'style-1' -%}
 	<div class="account {{ settings.menu_text_case }}">
 	  <a
-	    href="{{ routes.account_url }}"
+	    href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
 	    aria-label="account"
+	    data-tvastra-kwikpass-account
+	    {% unless customer %}onclick="if (window.KP_LOGIN_SDK_INSTANCE && typeof window.KP_LOGIN_SDK_INSTANCE.handleKpLogin === 'function') { event.preventDefault(); window.KP_LOGIN_SDK_INSTANCE.handleKpLogin(); return false; }"{% endunless %}
 	  >
 	    <i class="feather-user d-inline-block"></i>
 	    {%- if settings.show_icon == false -%}<span class="{% if settings.header_style == "center-navigation" %}d-none d-xxl-inline-block{% else %}d-none d-xl-inline-block{% endif %}">{{ 'sections.header.account' | t }}</a>{%- if customer -%}<a href="/account/logout" class="active d-none d-lg-inline-block customer-logout" aria-label="logout">({{ 'sections.header.logout' | t }})</a>{%- endif -%}</span>{%- endif -%}
@@ -10,13 +12,15 @@
 {%- else -%}
 	<div class="account alt-font {{ settings.menu_text_case }}">
 	  <a
-	    href="{{ routes.account_url }}"
+	    href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
 	    aria-label="account"
+	    data-tvastra-kwikpass-account
+	    {% unless customer %}onclick="if (window.KP_LOGIN_SDK_INSTANCE && typeof window.KP_LOGIN_SDK_INSTANCE.handleKpLogin === 'function') { event.preventDefault(); window.KP_LOGIN_SDK_INSTANCE.handleKpLogin(); return false; }"{% endunless %}
 	  >
 	  	<div class="accont-icon">
 	    	<i class="bi bi-person-plus"></i>
 	  	</div>
-	    {%- if settings.show_icon == false -%}
+    {%- if settings.show_icon == false -%}
 		  	<div class="account-text alt-font">
 			    {%- if customer -%}
 			    	<span class="addon-title d-none d-xl-block">{{ 'sections.header.logout' | t }}</span>
