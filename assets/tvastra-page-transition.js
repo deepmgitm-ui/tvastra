@@ -4,6 +4,10 @@
   var root = document.documentElement;
   var delay = 220;
 
+  function clearPageTransition() {
+    root.classList.remove('tvastra-page-leaving');
+  }
+
   function isInternalPageLink(link) {
     if (!link || link.target || link.hasAttribute('download') || link.hasAttribute('data-no-page-transition') || link.hasAttribute('data-tvastra-lucent-login') || link.hasAttribute('data-collection-load-more')) return false;
 
@@ -38,7 +42,15 @@
     }, delay);
   }, true);
 
-  window.addEventListener('pageshow', function () {
-    root.classList.remove('tvastra-page-leaving');
+  // Razorpay Magic Checkout opens/closes outside the normal page-link flow.
+  // Clear the theme transition overlay whenever the storefront becomes visible
+  // again so cancelling/backing out of checkout never leaves the page stuck.
+  window.addEventListener('pageshow', clearPageTransition);
+  window.addEventListener('popstate', clearPageTransition);
+  window.addEventListener('focus', clearPageTransition);
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible') clearPageTransition();
   });
+
+  clearPageTransition();
 }());
