@@ -82,7 +82,6 @@
   window.addEventListener('pageshow', restoreStorefront);
   window.addEventListener('popstate', restoreStorefront);
   window.addEventListener('focus', restoreStorefront);
-
   window.addEventListener('pageshow', function () {
     window.setTimeout(restoreStorefront, 0);
     window.setTimeout(restoreStorefront, 250);
@@ -98,16 +97,23 @@
     }
   });
 
-  /* Catch Magic Checkout DOM insertion/removal without observing our own style writes. */
+  /*
+   * MutationObserver catches Magic Checkout/app DOM teardown when focus and
+   * visibility never change. It only acts on the two Tvastra loading layers.
+   */
   if (window.MutationObserver) {
     new MutationObserver(function () {
-      restoreStorefront();
+      clearPageTransition();
+      clearGlobalLoaders();
     }).observe(document.documentElement, {
       childList: true,
-      subtree: true
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class', 'style']
     });
   }
 
+  /* Always start the storefront in a neutral state. */
   restoreStorefront();
   window.setInterval(function () {
     if (document.visibilityState === 'visible') restoreStorefront();
