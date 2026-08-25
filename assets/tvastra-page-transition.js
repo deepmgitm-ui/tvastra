@@ -4,6 +4,10 @@
   var root = document.documentElement;
   var delay = 220;
 
+  function clearPageTransition() {
+    root.classList.remove('tvastra-page-leaving');
+  }
+
   function isInternalPageLink(link) {
     if (!link || link.target || link.hasAttribute('download') || link.hasAttribute('data-no-page-transition') || link.hasAttribute('data-tvastra-lucent-login') || link.hasAttribute('data-collection-load-more')) return false;
 
@@ -38,7 +42,15 @@
     }, delay);
   }, true);
 
-  window.addEventListener('pageshow', function () {
-    root.classList.remove('tvastra-page-leaving');
+  // Magic Checkout opens/closes outside the normal internal-link transition flow.
+  // When the storefront becomes visible again after Cancel/Back/dismissal,
+  // always clear the leaving state so the page cannot remain on the loading screen.
+  window.addEventListener('pageshow', clearPageTransition);
+  window.addEventListener('popstate', clearPageTransition);
+  window.addEventListener('focus', clearPageTransition);
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible') clearPageTransition();
   });
+
+  clearPageTransition();
 }());
