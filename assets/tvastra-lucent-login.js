@@ -15,9 +15,6 @@
   function shouldShow() {
     if (window.tvastra.customer) return false;
     if (window.location.pathname.indexOf('/checkout') !== -1) return false;
-    try {
-      if (localStorage.getItem('tvastra_lucent_submitted') === 'yes') return false;
-    } catch (e) {}
     return true;
   }
 
@@ -120,12 +117,13 @@
     cadenceTimers.push(t1, t2, t3);
   }
 
-  document.addEventListener('submit', function (e) {
-    var f = e.target;
-    if (f && f.action && f.action.indexOf('/account') !== -1) {
-      try { localStorage.setItem('tvastra_lucent_submitted', 'yes'); } catch (ex) {}
-      stopCadence();
-    }
+  // Manual account/login click: use the same proven 5-method opener immediately.
+  document.addEventListener('click', function (e) {
+    var target = e.target.closest('[data-tvastra-lucent-login], [href="#lucent-login"], [aria-controls="sotp"]');
+    if (!target) return;
+    if (!shouldShow()) return;
+    e.preventDefault();
+    tryOpen(0);
   }, true);
 
   if (document.readyState === 'loading') {
