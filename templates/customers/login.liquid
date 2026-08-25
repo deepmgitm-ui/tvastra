@@ -96,7 +96,9 @@
         href="{{ routes.account_url }}"
         class="tvastra-login-page__button"
         data-no-page-transition
+        data-tvastra-kwikpass-account
         aria-label="account"
+        onclick="if (window.KP_LOGIN_SDK_INSTANCE && typeof window.KP_LOGIN_SDK_INSTANCE.handleKpLogin === 'function') { event.preventDefault(); window.KP_LOGIN_SDK_INSTANCE.handleKpLogin(); return false; }"
       >
         Continue with OTP
       </a>
