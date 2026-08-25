@@ -40,8 +40,16 @@
     clearGlobalLoaders();
   }
 
+  function isAccountLink(link) {
+    if (!link) return false;
+    var aria = (link.getAttribute('aria-label') || '').toLowerCase();
+    var href = (link.getAttribute('href') || '').toLowerCase();
+    var text = (link.textContent || '').trim().toLowerCase();
+    return aria === 'account' || aria === 'account-label' || /(^|\/)account(?:\/?|[?#])/.test(href) || /(^|\/)account\/login(?:\/?|[?#])/.test(href) || /\b(sign in|login|log in|account)\b/.test(text);
+  }
+
   function isInternalPageLink(link) {
-    if (!link || link.target || link.hasAttribute('download') || link.hasAttribute('data-no-page-transition') || link.hasAttribute('data-tvastra-lucent-login') || link.hasAttribute('data-collection-load-more')) return false;
+    if (!link || isAccountLink(link) || link.target || link.hasAttribute('download') || link.hasAttribute('data-no-page-transition') || link.hasAttribute('data-tvastra-lucent-login') || link.hasAttribute('data-collection-load-more')) return false;
 
     var href = link.getAttribute('href');
     if (!href || href.charAt(0) === '#' || /^(mailto:|tel:|javascript:)/i.test(href)) return false;
@@ -74,34 +82,8 @@
     }, delay);
   }, true);
 
-  /*
-   * Safe KwikPass account trigger:
-   * - Only handles account/login links.
-   * - Does not use capture-phase stopImmediatePropagation.
-   * - Prevents navigation only when the official KwikPass SDK is actually ready.
-   * - No automatic timer: popup timing remains controlled by KwikPass app settings.
-   */
-  function isAccountLink(link) {
-    if (!link) return false;
-
-    var aria = (link.getAttribute('aria-label') || '').toLowerCase();
-    var href = (link.getAttribute('href') || '').toLowerCase();
-    var text = (link.textContent || '').trim().toLowerCase();
-
-    return (
-      aria === 'account' ||
-      aria === 'account-label' ||
-      /(^|\/)account(?:\/?|[?#])/.test(href) ||
-      /(^|\/)account\/login(?:\/?|[?#])/.test(href) ||
-      /\b(sign in|login|log in|account)\b/.test(text)
-    );
-  }
-
   function getKwikPassLogin() {
-    return window.KP_LOGIN_SDK_INSTANCE &&
-      typeof window.KP_LOGIN_SDK_INSTANCE.handleKpLogin === 'function'
-      ? window.KP_LOGIN_SDK_INSTANCE.handleKpLogin.bind(window.KP_LOGIN_SDK_INSTANCE)
-      : null;
+    return window.KP_LOGIN_SDK_INSTANCE && typeof window.KP_LOGIN_SDK_INSTANCE.handleKpLogin === 'function' ? window.KP_LOGIN_SDK_INSTANCE.handleKpLogin.bind(window.KP_LOGIN_SDK_INSTANCE) : null;
   }
 
   document.addEventListener('click', function (event) {
