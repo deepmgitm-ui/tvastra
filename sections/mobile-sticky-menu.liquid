@@ -36,7 +36,7 @@
           href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
           aria-label="account-label"
           data-tvastra-kwikpass-account
-          {% unless customer %}onclick="if (window.KP_LOGIN_SDK_INSTANCE && typeof window.KP_LOGIN_SDK_INSTANCE.handleKpLogin === 'function') { event.preventDefault(); window.KP_LOGIN_SDK_INSTANCE.handleKpLogin(); return false; }"{% endunless %}
+          {% unless customer %}onclick="event.preventDefault();(function(link){var started=Date.now();function tryOpen(){var sdk=window.KP_LOGIN_SDK_INSTANCE;if(sdk&&typeof sdk.handleKpLogin==='function'){try{sdk.handleKpLogin();return;}catch(e){}}if(Date.now()-started<2000){window.setTimeout(tryOpen,100);return;}window.location.assign(link.href);}(link))(this);"{% endunless %}
         >
           <i class="feather-user"></i>
           {%- if section.settings.show_home_label == true -%}
