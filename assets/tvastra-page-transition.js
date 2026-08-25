@@ -8,6 +8,23 @@
     root.classList.remove('tvastra-page-leaving');
   }
 
+  function clearGlobalLoaders() {
+    // Magic Checkout can close without causing a full page navigation.
+    // The theme's global loader may have been shown before checkout opened;
+    // always hide it again when the storefront regains focus/visibility.
+    try {
+      document.querySelectorAll('.loading-box').forEach(function (loader) {
+        loader.classList.add('hidden');
+        loader.classList.remove('show-loader');
+      });
+    } catch (error) {}
+  }
+
+  function restoreStorefront() {
+    clearPageTransition();
+    clearGlobalLoaders();
+  }
+
   function isInternalPageLink(link) {
     if (!link || link.target || link.hasAttribute('download') || link.hasAttribute('data-no-page-transition') || link.hasAttribute('data-tvastra-lucent-login') || link.hasAttribute('data-collection-load-more')) return false;
 
@@ -43,14 +60,22 @@
   }, true);
 
   // Magic Checkout opens/closes outside the normal internal-link transition flow.
-  // When the storefront becomes visible again after Cancel/Back/dismissal,
-  // always clear the leaving state so the page cannot remain on the loading screen.
-  window.addEventListener('pageshow', clearPageTransition);
-  window.addEventListener('popstate', clearPageTransition);
-  window.addEventListener('focus', clearPageTransition);
+  // When the storefront becomes visible/focused again after Cancel/Back/dismissal,
+  // restore the storefront and make sure the theme's global loader is hidden.
+  window.addEventListener('pageshow', restoreStorefront);
+  window.addEventListener('popstate', restoreStorefront);
+  window.addEventListener('focus', restoreStorefront);
   document.addEventListener('visibilitychange', function () {
-    if (document.visibilityState === 'visible') clearPageTransition();
+    if (document.visibilityState === 'visible') restoreStorefront();
   });
 
-  clearPageTransition();
+  // Covers the modal case where the browser never loses focus/visibility.
+  window.setTimeout(restoreStorefront, 0);
+  window.setTimeout(restoreStorefront, 600);
+  window.setTimeout(restoreStorefront, 1500);
+  window.setInterval(function () {
+    if (document.visibilityState === 'visible') {
+      clearGlobalLoaders();
+    }
+  }, 2000);
 }());
