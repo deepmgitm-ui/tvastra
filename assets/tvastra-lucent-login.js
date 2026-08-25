@@ -1,7 +1,8 @@
 /*
  * KwikPass login bridge.
- * The legacy asset filename is retained because theme.liquid already loads it.
+ * Legacy asset filename retained for theme compatibility.
  * No Lucent / simplyOtp / sotp logic remains here.
+ * KwikPass controls any configured marketing-popup timing.
  */
 (function () {
   'use strict';
@@ -49,26 +50,46 @@
     return true;
   }
 
-  // Account/profile icon: use KwikPass instead of navigating away to Shopify login.
-  document.addEventListener('click', function (event) {
-    var target = event.target && event.target.closest
-      ? event.target.closest('a[aria-label="account"], a[aria-label="account-label"]')
-      : null;
+  function isAccountTarget(target) {
+    if (!target) return false;
 
-    if (!target) return;
+    var anchor = target.closest ? target.closest('a,button,[role="button"]') : null;
+    if (!anchor) return false;
 
-    if (!hasKwikPass()) {
-      // Let the native Shopify account link work if KwikPass has not loaded at all.
-      return;
+    if (anchor.matches('a[aria-label="account"], a[aria-label="account-label"], [data-tvastra-account-login], [data-account-login], [data-login]')) {
+      return true;
     }
+
+    var aria = (anchor.getAttribute('aria-label') || '').toLowerCase();
+    if (aria.indexOf('account') !== -1 || aria === 'login' || aria.indexOf('sign in') !== -1) {
+      return true;
+    }
+
+    if (anchor.tagName === 'A') {
+      var href = anchor.getAttribute('href') || '';
+      if (href && !/^https?:\/\//i.test(href)) {
+        var normalized = href.toLowerCase();
+        if ((normalized === '/account' || normalized.indexOf('/account?') === 0 || normalized.indexOf('/account#') === 0) &&
+            normalized.indexOf('/account/logout') !== 0) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  // Every account/login entry point across the theme uses the same KwikPass opener.
+  // If KwikPass is unavailable, allow the native Shopify account link to work.
+  document.addEventListener('click', function (event) {
+    var target = event.target;
+    if (!isAccountTarget(target)) return;
+    if (!hasKwikPass()) return;
 
     event.preventDefault();
     event.stopPropagation();
+    if (event.stopImmediatePropagation) event.stopImmediatePropagation();
     runKwikPass();
   }, true);
 
-  // Trigger KwikPass's configured popup using its official SDK entrypoint.
-  window.setTimeout(function () {
-    runKwikPass();
-  }, 8000);
 }());
