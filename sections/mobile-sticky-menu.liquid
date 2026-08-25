@@ -33,9 +33,8 @@
      {%- if section.settings.show_account_icon -%}
       <div class="sticky-menu-item">
         <a
-          href="#lucent-login"
+          href="{{ routes.account_url }}"
           aria-label="account-label"
-          data-tvastra-lucent-login data-no-page-transition aria-haspopup="dialog" aria-controls="sotp"
         >
           <i class="feather-user"></i>
           {%- if section.settings.show_home_label == true -%}
