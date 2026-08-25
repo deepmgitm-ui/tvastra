@@ -6,16 +6,31 @@
 
   function clearPageTransition() {
     root.classList.remove('tvastra-page-leaving');
+
+    try {
+      document.body.classList.remove('tvastra-page-leaving');
+      document.body.classList.remove('overflow-hidden');
+      document.documentElement.classList.remove('overflow-hidden');
+
+      document.querySelectorAll('.tvastra-page-transition').forEach(function (overlay) {
+        overlay.classList.remove('active', 'show', 'visible', 'open', 'is-active', 'is-visible', 'loading');
+        overlay.style.setProperty('display', 'none', 'important');
+        overlay.style.setProperty('visibility', 'hidden', 'important');
+        overlay.style.setProperty('opacity', '0', 'important');
+        overlay.style.setProperty('pointer-events', 'none', 'important');
+      });
+    } catch (error) {}
   }
 
   function clearGlobalLoaders() {
-    // Magic Checkout can close without causing a full page navigation.
-    // The theme's global loader may have been shown before checkout opened;
-    // always hide it again when the storefront regains focus/visibility.
     try {
       document.querySelectorAll('.loading-box').forEach(function (loader) {
         loader.classList.add('hidden');
-        loader.classList.remove('show-loader');
+        loader.classList.remove('show-loader', 'active', 'open', 'loading');
+        loader.style.setProperty('display', 'none', 'important');
+        loader.style.setProperty('visibility', 'hidden', 'important');
+        loader.style.setProperty('opacity', '0', 'important');
+        loader.style.setProperty('pointer-events', 'none', 'important');
       });
     } catch (error) {}
   }
@@ -59,23 +74,48 @@
     }, delay);
   }, true);
 
-  // Magic Checkout opens/closes outside the normal internal-link transition flow.
-  // When the storefront becomes visible/focused again after Cancel/Back/dismissal,
-  // restore the storefront and make sure the theme's global loader is hidden.
+  /*
+   * Razorpay Magic Checkout can close as an in-page modal/overlay, so the browser
+   * may never emit a full navigation event. Keep the storefront layers neutral
+   * whenever the Tvastra page regains control.
+   */
   window.addEventListener('pageshow', restoreStorefront);
   window.addEventListener('popstate', restoreStorefront);
   window.addEventListener('focus', restoreStorefront);
-  document.addEventListener('visibilitychange', function () {
-    if (document.visibilityState === 'visible') restoreStorefront();
+  window.addEventListener('pageshow', function () {
+    window.setTimeout(restoreStorefront, 0);
+    window.setTimeout(restoreStorefront, 250);
+    window.setTimeout(restoreStorefront, 750);
+    window.setTimeout(restoreStorefront, 1500);
   });
 
-  // Covers the modal case where the browser never loses focus/visibility.
-  window.setTimeout(restoreStorefront, 0);
-  window.setTimeout(restoreStorefront, 600);
-  window.setTimeout(restoreStorefront, 1500);
-  window.setInterval(function () {
+  document.addEventListener('visibilitychange', function () {
     if (document.visibilityState === 'visible') {
-      clearGlobalLoaders();
+      restoreStorefront();
+      window.setTimeout(restoreStorefront, 50);
+      window.setTimeout(restoreStorefront, 300);
     }
-  }, 2000);
+  });
+
+  /*
+   * MutationObserver catches Magic Checkout/app DOM teardown when focus and
+   * visibility never change. It only acts on the two Tvastra loading layers.
+   */
+  if (window.MutationObserver) {
+    new MutationObserver(function () {
+      clearPageTransition();
+      clearGlobalLoaders();
+    }).observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class', 'style']
+    });
+  }
+
+  /* Always start the storefront in a neutral state. */
+  restoreStorefront();
+  window.setInterval(function () {
+    if (document.visibilityState === 'visible') restoreStorefront();
+  }, 1000);
 }());
