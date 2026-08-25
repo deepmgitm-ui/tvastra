@@ -45,7 +45,7 @@
     var aria = (link.getAttribute('aria-label') || '').toLowerCase();
     var href = (link.getAttribute('href') || '').toLowerCase();
     var text = (link.textContent || '').trim().toLowerCase();
-    return aria === 'account' || aria === 'account-label' || /(^|\/)account(?:\/?|[?#])/.test(href) || /(^|\/)account\/login(?:\/?|[?#])/.test(href) || /\b(sign in|login|log in|account)\b/.test(text);
+    return aria === 'account' || aria === 'account-label' || link.hasAttribute('data-tvastra-kwikpass-account') || /(^|\/)account(?:\/?|[?#])/.test(href) || /(^|\/)account\/login(?:\/?|[?#])/.test(href) || /\b(sign in|login|log in|account)\b/.test(text);
   }
 
   function isInternalPageLink(link) {
@@ -81,27 +81,6 @@
       window.location.assign(link.href);
     }, delay);
   }, true);
-
-  function getKwikPassLogin() {
-    return window.KP_LOGIN_SDK_INSTANCE && typeof window.KP_LOGIN_SDK_INSTANCE.handleKpLogin === 'function' ? window.KP_LOGIN_SDK_INSTANCE.handleKpLogin.bind(window.KP_LOGIN_SDK_INSTANCE) : null;
-  }
-
-  document.addEventListener('click', function (event) {
-    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-
-    var link = event.target.closest('a[href]');
-    if (!isAccountLink(link)) return;
-
-    var openKwikPass = getKwikPassLogin();
-    if (!openKwikPass) return;
-
-    event.preventDefault();
-    try {
-      openKwikPass();
-    } catch (error) {
-      window.location.assign(link.href);
-    }
-  }, false);
 
   window.addEventListener('pageshow', restoreStorefront);
   window.addEventListener('popstate', restoreStorefront);
