@@ -93,12 +93,12 @@
         Continue to view your account, saved details and order updates.
       </p>
       <a
-        href="{{ routes.account_url }}"
+        href="{{ routes.account_login_url }}"
         class="tvastra-login-page__button"
         data-no-page-transition
         data-tvastra-kwikpass-account
         aria-label="account"
-        onclick="if (window.KP_LOGIN_SDK_INSTANCE && typeof window.KP_LOGIN_SDK_INSTANCE.handleKpLogin === 'function') { event.preventDefault(); window.KP_LOGIN_SDK_INSTANCE.handleKpLogin(); return false; }"
+        onclick="event.preventDefault();(function(link){var started=Date.now();function tryOpen(){var sdk=window.KP_LOGIN_SDK_INSTANCE;if(sdk&&typeof sdk.handleKpLogin==='function'){try{sdk.handleKpLogin();return;}catch(e){}}if(Date.now()-started<2000){window.setTimeout(tryOpen,100);return;}window.location.assign(link.href);}(link))(this);"
       >
         Continue with OTP
       </a>
