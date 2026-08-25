@@ -75,10 +75,52 @@
   }, true);
 
   /*
-   * Razorpay Magic Checkout can close as an in-page modal/overlay, so the browser
-   * may never emit a full navigation event. Keep the storefront layers neutral
-   * whenever the Tvastra page regains control.
+   * Safe KwikPass account trigger:
+   * - Only handles account/login links.
+   * - Does not use capture-phase stopImmediatePropagation.
+   * - Prevents navigation only when the official KwikPass SDK is actually ready.
+   * - No automatic timer: popup timing remains controlled by KwikPass app settings.
    */
+  function isAccountLink(link) {
+    if (!link) return false;
+
+    var aria = (link.getAttribute('aria-label') || '').toLowerCase();
+    var href = (link.getAttribute('href') || '').toLowerCase();
+    var text = (link.textContent || '').trim().toLowerCase();
+
+    return (
+      aria === 'account' ||
+      aria === 'account-label' ||
+      /(^|\/)account(?:\/?|[?#])/.test(href) ||
+      /(^|\/)account\/login(?:\/?|[?#])/.test(href) ||
+      /\b(sign in|login|log in|account)\b/.test(text)
+    );
+  }
+
+  function getKwikPassLogin() {
+    return window.KP_LOGIN_SDK_INSTANCE &&
+      typeof window.KP_LOGIN_SDK_INSTANCE.handleKpLogin === 'function'
+      ? window.KP_LOGIN_SDK_INSTANCE.handleKpLogin.bind(window.KP_LOGIN_SDK_INSTANCE)
+      : null;
+  }
+
+  document.addEventListener('click', function (event) {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+    var link = event.target.closest('a[href]');
+    if (!isAccountLink(link)) return;
+
+    var openKwikPass = getKwikPassLogin();
+    if (!openKwikPass) return;
+
+    event.preventDefault();
+    try {
+      openKwikPass();
+    } catch (error) {
+      window.location.assign(link.href);
+    }
+  }, false);
+
   window.addEventListener('pageshow', restoreStorefront);
   window.addEventListener('popstate', restoreStorefront);
   window.addEventListener('focus', restoreStorefront);
@@ -97,10 +139,6 @@
     }
   });
 
-  /*
-   * MutationObserver catches Magic Checkout/app DOM teardown when focus and
-   * visibility never change. It only acts on the two Tvastra loading layers.
-   */
   if (window.MutationObserver) {
     new MutationObserver(function () {
       clearPageTransition();
@@ -113,7 +151,6 @@
     });
   }
 
-  /* Always start the storefront in a neutral state. */
   restoreStorefront();
   window.setInterval(function () {
     if (document.visibilityState === 'visible') restoreStorefront();
