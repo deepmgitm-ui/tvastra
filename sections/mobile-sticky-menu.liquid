@@ -33,7 +33,7 @@
      {%- if section.settings.show_account_icon -%}
       <div class="sticky-menu-item">
         <a
-          href="{{ routes.account_url }}"
+          href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
           aria-label="account-label"
         >
           <i class="feather-user"></i>
