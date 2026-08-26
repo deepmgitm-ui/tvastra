@@ -45,11 +45,11 @@
     var aria = (link.getAttribute('aria-label') || '').toLowerCase();
     var href = (link.getAttribute('href') || '').toLowerCase();
     var text = (link.textContent || '').trim().toLowerCase();
-    return aria === 'account' || aria === 'account-label' || link.hasAttribute('data-tvastra-kwikpass-account') || /(^|\/)account(?:\/?|[?#])/.test(href) || /(^|\/)account\/login(?:\/?|[?#])/.test(href) || /\b(sign in|login|log in|account)\b/.test(text);
+    return aria === 'account' || aria === 'account-label' || /(^|\/)account(?:\/?|[?#])/.test(href) || /(^|\/)account\/login(?:\/?|[?#])/.test(href) || /\b(sign in|login|log in|account)\b/.test(text);
   }
 
   function isInternalPageLink(link) {
-    if (!link || isAccountLink(link) || link.target || link.hasAttribute('download') || link.hasAttribute('data-no-page-transition') || link.hasAttribute('data-tvastra-lucent-login') || link.hasAttribute('data-collection-load-more')) return false;
+    if (!link || isAccountLink(link) || link.target || link.hasAttribute('download') || link.hasAttribute('data-no-page-transition') || link.hasAttribute('data-collection-load-more')) return false;
 
     var href = link.getAttribute('href');
     if (!href || href.charAt(0) === '#' || /^(mailto:|tel:|javascript:)/i.test(href)) return false;
