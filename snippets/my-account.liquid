@@ -3,8 +3,7 @@
 	  <a
 	    href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
 	    aria-label="account"
-	    data-tvastra-kwikpass-account
-	    {% unless customer %}onclick="event.preventDefault();(function(link){var started=Date.now();function tryOpen(){var sdk=window.KP_LOGIN_SDK_INSTANCE;if(sdk&&typeof sdk.handleKpLogin==='function'){try{sdk.handleKpLogin();return;}catch(e){}}if(Date.now()-started<2000){window.setTimeout(tryOpen,100);return;}window.location.assign(link.href);}(link))(this);"{% endunless %}
+	    rel="nofollow"
 	  >
 	    <i class="feather-user d-inline-block"></i>
 	    {%- if settings.show_icon == false -%}<span class="{% if settings.header_style == "center-navigation" %}d-none d-xxl-inline-block{% else %}d-none d-xl-inline-block{% endif %}">{{ 'sections.header.account' | t }}</a>{%- if customer -%}<a href="/account/logout" class="active d-none d-lg-inline-block customer-logout" aria-label="logout">({{ 'sections.header.logout' | t }})</a>{%- endif -%}</span>{%- endif -%}
@@ -14,8 +13,7 @@
 	  <a
 	    href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
 	    aria-label="account"
-	    data-tvastra-kwikpass-account
-	    {% unless customer %}onclick="event.preventDefault();(function(link){var started=Date.now();function tryOpen(){var sdk=window.KP_LOGIN_SDK_INSTANCE;if(sdk&&typeof sdk.handleKpLogin==='function'){try{sdk.handleKpLogin();return;}catch(e){}}if(Date.now()-started<2000){window.setTimeout(tryOpen,100);return;}window.location.assign(link.href);}(link))(this);"{% endunless %}
+	    rel="nofollow"
 	  >
   	<div class="accont-icon">
     	<i class="bi bi-person-plus"></i>
