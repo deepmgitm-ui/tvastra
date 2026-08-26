@@ -1,9 +1,9 @@
 <!-- INTERNAL SCRIPTS -->
-<script>  
-  {%- capture variant_options_image -%} 
+<script>
+  {%- capture variant_options_image -%}
     {%- for i in (1..50) -%}
-      {%- liquid 
-        assign variant_option_parameter_name_key = 'variant_option_parameter_name' | append: i 
+      {%- liquid
+        assign variant_option_parameter_name_key = 'variant_option_parameter_name' | append: i
         assign variant_option_parameter_image_key = 'variant_option_parameter_image' | append: i
         assign variant_option_parameter_name = settings[variant_option_parameter_name_key]
         assign variant_option_parameter_image = settings[variant_option_parameter_image_key]
@@ -22,22 +22,22 @@
     cart_add_url: '{{ routes.cart_add_url }}',
     cart_change_url: '{{ routes.cart_change_url }}',
     cart_update_url: '{{ routes.cart_update_url }}'
-  }
+  };
   window.cartStrings = {
     error: `{{ 'sections.cart.cart_error' | t }}`,
     quantityError: `{{ 'sections.cart.cart_quantity_error_html' | t }}`
-  }
+  };
   window.variantStrings = {
     addToCart: `<i class="feather-shopping-bag"></i><span>{{ 'products.product.add_to_cart' | t }}</span>`,
     preOrder: `<i class="feather-shopping-bag"></i><span>Pre-Order</span>`,
     addingToCart: 'Adding...',
     soldOut: `{{ 'products.product.sold_out' | t }}`,
-    unavailable: `{{ 'products.product.unavailable' | t }}`,
-  }
+    unavailable: `{{ 'products.product.unavailable' | t }}`
+  };
   window.wishlistStrings = {
     add: `{{ 'general.wishlist.add' | t }}`,
     remove: `{{ 'general.wishlist.remove' | t }}`
-  }
+  };
   window.variantOptionsImage = { {{ variant_options_image }} };
   window.GOOGLE_MAP_API_KEY = '{{ settings.map_api_key }}';
   window.freeShippingConfig = {
@@ -62,8 +62,6 @@
         assign giftwraps_in_cart = item.quantity
       endif
     endfor
-    if giftwraps_in_cart > 0 and cart.items.size == 1
-    endif
   endif
 -%}
 <script type="text/javascript">
@@ -71,4 +69,89 @@
   Shopify.GiftWrap.enabled = {{ settings.enable_giftwrap }};
   Shopify.GiftWrap.product = '{{ settings.giftwrap_product }}';
   Shopify.GiftWrap.checkbox_label = '{{ settings.checkbox_label }}';
+</script>
+
+<script>
+(function () {
+  'use strict';
+
+  var maxWaitMs = 5000;
+  var pollMs = 100;
+
+  function isLoggedIn() {
+    return window.tvastra && window.tvastra.customer === true;
+  }
+
+  function isAccountTrigger(link) {
+    if (!link || !link.matches('a[href]')) return false;
+    if (link.getAttribute('aria-label') === 'logout' || link.classList.contains('customer-logout')) return false;
+
+    var aria = (link.getAttribute('aria-label') || '').toLowerCase();
+    var href = (link.getAttribute('href') || '').toLowerCase();
+    var text = (link.textContent || '').trim().toLowerCase();
+
+    return aria === 'account' ||
+      aria === 'account-label' ||
+      /(^|\/)account(?:\/?|[?#])/.test(href) ||
+      /(^|\/)account\/login(?:\/?|[?#])/.test(href) ||
+      /\b(sign in|login|log in|account)\b/.test(text);
+  }
+
+  function getKwikPassLogin() {
+    var instance = window.KP_LOGIN_SDK_INSTANCE;
+    return instance && typeof instance.handleKpLogin === 'function'
+      ? instance.handleKpLogin.bind(instance)
+      : null;
+  }
+
+  function openKwikPassOrFallback(href) {
+    var started = Date.now();
+    var timer = window.setInterval(function () {
+      var openLogin = getKwikPassLogin();
+
+      if (openLogin) {
+        window.clearInterval(timer);
+        try {
+          openLogin();
+        } catch (error) {
+          window.location.assign(href);
+        }
+        return;
+      }
+
+      if (Date.now() - started >= maxWaitMs) {
+        window.clearInterval(timer);
+        window.location.assign(href);
+      }
+    }, pollMs);
+  }
+
+  document.addEventListener('click', function (event) {
+    if (event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey) return;
+
+    if (isLoggedIn()) return;
+
+    var link = event.target.closest('a[href]');
+    if (!isAccountTrigger(link)) return;
+
+    var openLogin = getKwikPassLogin();
+    if (openLogin) {
+      event.preventDefault();
+      try {
+        openLogin();
+      } catch (error) {
+        window.location.assign(link.href);
+      }
+      return;
+    }
+
+    event.preventDefault();
+    openKwikPassOrFallback(link.href);
+  }, true);
+}());
 </script>
