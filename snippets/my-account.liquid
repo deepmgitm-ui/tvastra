@@ -3,6 +3,7 @@
 	  <a
 	    href="{{ routes.account_url }}"
 	    aria-label="account"
+        class="header__icon--account"
 	  >
 	    <i class="feather-user d-inline-block"></i>
 	    {%- if settings.show_icon == false -%}<span class="{% if settings.header_style == "center-navigation" %}d-none d-xxl-inline-block{% else %}d-none d-xl-inline-block{% endif %}">{{ 'sections.header.account' | t }}</a>{%- if customer -%}<a href="/account/logout" class="active d-none d-lg-inline-block customer-logout" aria-label="logout">({{ 'sections.header.logout' | t }})</a>{%- endif -%}</span>{%- endif -%}
@@ -12,6 +13,7 @@
 	  <a
 	    href="{{ routes.account_url }}"
 	    aria-label="account"
+        class="header__icon--account"
 	  >
 	  	<div class="accont-icon">
 	    	<i class="bi bi-person-plus"></i>
