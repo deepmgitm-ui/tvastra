@@ -1,0 +1,352 @@
+/* ======================================================================
+   TVASTRA PDP · PRODUCT INFO REDESIGN · STEP 3
+   Delivery + trust + product USP layer
+   Loaded after Step 2 so buyer-confidence components share one hierarchy.
+   ====================================================================== */
+.main-product-page .product-summary .product-info {
+  --pdp3-ink: #132e31;
+  --pdp3-muted: #687570;
+  --pdp3-line: #e1e8e4;
+  --pdp3-soft: #f7faf8;
+  --pdp3-gold: #b98b2c;
+}
+
+/* Live interest: useful, restrained, not a competing conversion element. */
+.main-product-page .product-summary .product-info .product-live-viewers {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  width: auto !important;
+  margin: 10px 0 0 !important;
+  padding: 6px 9px !important;
+  border: 1px solid var(--pdp3-line) !important;
+  border-radius: 999px !important;
+  background: var(--pdp3-soft) !important;
+  color: var(--pdp3-muted) !important;
+  font-size: 10px !important;
+  line-height: 1.15 !important;
+}
+
+.main-product-page .product-summary .product-info .product-live-viewers i {
+  margin: 0 !important;
+  color: var(--pdp3-ink) !important;
+  font-size: 13px !important;
+}
+
+.main-product-page .product-summary .product-info .product-live-viewers .live-visitors-count {
+  color: var(--pdp3-ink) !important;
+  font-weight: 750 !important;
+}
+
+/* Delivery / shipping confidence row. */
+.main-product-page .product-summary .product-info .shipping-info {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  margin: 14px 0 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+.main-product-page .product-summary .product-info .shipping-info li {
+  display: grid !important;
+  grid-template-columns: 26px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 9px 10px !important;
+  border: 1px solid var(--pdp3-line) !important;
+  border-radius: 9px !important;
+  background: #fff !important;
+  color: var(--pdp3-ink) !important;
+}
+
+.main-product-page .product-summary .product-info .shipping-info li > i {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 26px !important;
+  height: 26px !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+  background: var(--pdp3-soft) !important;
+  color: var(--pdp3-gold) !important;
+  font-size: 13px !important;
+}
+
+.main-product-page .product-summary .product-info .shipping-info li p,
+.main-product-page .product-summary .product-info .shipping-info li .shipping-text {
+  margin: 0 !important;
+  min-width: 0 !important;
+  color: var(--pdp3-muted) !important;
+  font-size: 9.5px !important;
+  line-height: 1.35 !important;
+}
+
+.main-product-page .product-summary .product-info .shipping-info li p strong,
+.main-product-page .product-summary .product-info .shipping-info li .shipping-text strong {
+  display: block !important;
+  margin-bottom: 2px !important;
+  color: var(--pdp3-ink) !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+}
+
+.main-product-page .product-summary .product-info .shipping-info li p span {
+  color: #76827e !important;
+  font-size: 9px !important;
+}
+
+/* Trust badge becomes evidence, not another promotional card. */
+.main-product-page .product-summary .product-info .trust-badge {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 10px !important;
+  width: 100% !important;
+  margin: 11px 0 0 !important;
+  padding: 9px 11px !important;
+  border: 1px solid var(--pdp3-line) !important;
+  border-radius: 9px !important;
+  background: linear-gradient(180deg, #fff 0%, #fafcfb 100%) !important;
+  box-shadow: none !important;
+}
+
+.main-product-page .product-summary .product-info .trust-badge > * {
+  min-width: 0 !important;
+}
+
+.main-product-page .product-summary .product-info .trust-badge p,
+.main-product-page .product-summary .product-info .trust-badge .trust-badge-text,
+.main-product-page .product-summary .product-info .trust-badge .product-trust-card__copy {
+  margin: 0 !important;
+  color: var(--pdp3-muted) !important;
+}
+
+.main-product-page .product-summary .product-info .trust-badge .product-trust-card__copy {
+  display: grid !important;
+  gap: 2px !important;
+}
+
+.main-product-page .product-summary .product-info .trust-badge .product-trust-card__eyebrow {
+  color: var(--pdp3-gold) !important;
+  font-size: 9px !important;
+  font-weight: 750 !important;
+  letter-spacing: .12em !important;
+  line-height: 1.1 !important;
+  text-transform: uppercase !important;
+}
+
+.main-product-page .product-summary .product-info .trust-badge .product-trust-card__title {
+  color: var(--pdp3-ink) !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+}
+
+.main-product-page .product-summary .product-info .trust-badge .product-trust-card__brand {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  min-width: 90px !important;
+}
+
+.main-product-page .product-summary .product-info .trust-badge .product-trust-card__note {
+  grid-column: 1 / -1 !important;
+  margin: 0 !important;
+  padding-top: 6px !important;
+  border-top: 1px solid rgba(19,46,49,.08) !important;
+  color: var(--pdp3-muted) !important;
+  font-size: 9px !important;
+  line-height: 1.3 !important;
+}
+
+.main-product-page .product-summary .product-info .trust-badge img {
+  display: block !important;
+  width: auto !important;
+  max-width: 130px !important;
+  max-height: 28px !important;
+  margin: 0 !important;
+  object-fit: contain !important;
+}
+
+/* USP strip: compact utility proof points. */
+.main-product-page .product-summary .product-info .product-usp {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 0 !important;
+  margin: 11px 0 0 !important;
+  padding: 0 !important;
+  border: 1px solid var(--pdp3-line) !important;
+  border-radius: 9px !important;
+  overflow: hidden !important;
+  background: #fff !important;
+}
+
+.main-product-page .product-summary .product-info .product-usp .usp-box {
+  display: grid !important;
+  grid-template-columns: 25px minmax(0,1fr) !important;
+  align-items: center !important;
+  gap: 7px !important;
+  min-height: 45px !important;
+  margin: 0 !important;
+  padding: 8px 9px !important;
+  border: 0 !important;
+  border-right: 1px solid var(--pdp3-line) !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  color: var(--pdp3-ink) !important;
+  font-size: 9.5px !important;
+  line-height: 1.25 !important;
+}
+
+.main-product-page .product-summary .product-info .product-usp .usp-box:last-child {
+  border-right: 0 !important;
+}
+
+.main-product-page .product-summary .product-info .product-usp .usp-box i {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 25px !important;
+  height: 25px !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+  background: var(--pdp3-soft) !important;
+  color: var(--pdp3-gold) !important;
+  font-size: 13px !important;
+}
+
+.main-product-page .product-summary .product-info .product-usp .usp-box span,
+.main-product-page .product-summary .product-info .product-usp .usp-box a {
+  min-width: 0 !important;
+  color: var(--pdp3-ink) !important;
+  font-weight: 650 !important;
+  text-decoration: none !important;
+}
+
+/* Product detail accordions: one understated rhythm. */
+.main-product-page .product-summary .product-info .panel-group.accordion-event {
+  margin: 10px 0 0 !important;
+  padding: 0 !important;
+  border-top: 1px solid var(--pdp3-line) !important;
+  border-bottom: 1px solid var(--pdp3-line) !important;
+}
+
+.main-product-page .product-summary .product-info .panel-group.accordion-event + .panel-group.accordion-event {
+  margin-top: -1px !important;
+  border-top: 0 !important;
+}
+
+.main-product-page .product-summary .product-info .panel-group.accordion-event .panel,
+.main-product-page .product-summary .product-info .panel-group.accordion-event .panel-heading,
+.main-product-page .product-summary .product-info .panel-group.accordion-event .panel-collapse,
+.main-product-page .product-summary .product-info .panel-group.accordion-event .panel-body {
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.main-product-page .product-summary .product-info .panel-group.accordion-event .accordion-toggle {
+  display: block !important;
+  text-decoration: none !important;
+}
+
+.main-product-page .product-summary .product-info .panel-group.accordion-event .panel-title {
+  display: flex !important;
+  align-items: center !important;
+  min-height: 39px !important;
+  padding: 0 !important;
+  color: var(--pdp3-ink) !important;
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+}
+
+.main-product-page .product-summary .product-info .panel-group.accordion-event .panel-title i {
+  margin-left: auto !important;
+  color: var(--pdp3-muted) !important;
+  font-size: 12px !important;
+}
+
+.main-product-page .product-summary .product-info .panel-group.accordion-event .panel-body {
+  padding: 0 0 10px !important;
+  color: var(--pdp3-muted) !important;
+  font-size: 10.5px !important;
+  line-height: 1.55 !important;
+}
+
+@media (max-width: 767px) {
+  .main-product-page .product-summary .product-info .product-live-viewers {
+    margin-top: 8px !important;
+  }
+
+  .main-product-page .product-summary .product-info .shipping-info {
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
+    margin-top: 10px !important;
+  }
+
+  .main-product-page .product-summary .product-info .shipping-info li {
+    padding: 8px 9px !important;
+  }
+
+  .main-product-page .product-summary .product-info .trust-badge {
+    margin-top: 9px !important;
+  }
+
+  .main-product-page .product-summary .product-info .product-usp {
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+    margin-top: 9px !important;
+  }
+
+  .main-product-page .product-summary .product-info .product-usp .usp-box {
+    min-height: 42px !important;
+    border-right: 1px solid var(--pdp3-line) !important;
+    border-bottom: 1px solid var(--pdp3-line) !important;
+  }
+
+  .main-product-page .product-summary .product-info .product-usp .usp-box:nth-child(2n) {
+    border-right: 0 !important;
+  }
+
+  .main-product-page .product-summary .product-info .product-usp .usp-box:nth-last-child(-n+2) {
+    border-bottom: 0 !important;
+  }
+
+  .main-product-page .product-summary .product-info .panel-group.accordion-event {
+    margin-top: 8px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .main-product-page .product-summary .product-info .trust-badge {
+    grid-template-columns: minmax(0,1fr) !important;
+  }
+
+  .main-product-page .product-summary .product-info .trust-badge .product-trust-card__brand {
+    justify-content: flex-start !important;
+    min-width: 0 !important;
+  }
+
+  .main-product-page .product-summary .product-info .trust-badge img {
+    max-width: 112px !important;
+  }
+
+  .main-product-page .product-summary .product-info .product-usp .usp-box {
+    grid-template-columns: 23px minmax(0,1fr) !important;
+    padding-inline: 7px !important;
+    font-size: 9px !important;
+  }
+
+  .main-product-page .product-summary .product-info .product-usp .usp-box i {
+    width: 23px !important;
+    height: 23px !important;
+    font-size: 12px !important;
+  }
+}
