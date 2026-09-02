@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="{{ 'product-size-row-polish.css' | asset_url | split: '?' | first }}?v=8">
 <link rel="stylesheet" href="{{ 'product-media-full-view.css' | asset_url | split: '?' | first }}?v=gallery-controller-v2">
 <link rel="stylesheet" href="{{ 'product-share.css' | asset_url | split: '?' | first }}?v=1">
+<link rel="stylesheet" href="{{ 'product-info-redesign-step2.css' | asset_url | split: '?' | first }}?v=1">
 {%- liquid
   assign section_id = section.id  
   assign variant_colors = settings.product_colors | strip_newlines | downcase | split: ','
@@ -648,7 +649,7 @@
         {
           "type": "number",
           "id": "to_sold_number",
-          "label": "To sold number",
+          "label": "To",
           "default": 30
         },
         {
@@ -658,6 +659,7 @@
           "min": 1,
           "max": 24,
           "step": 1,
+          "unit": "hours",
           "default": 1
         },
         {
@@ -667,6 +669,7 @@
           "min": 1,
           "max": 24,
           "step": 1,
+          "unit": "hours",
           "default": 10
         }
       ]
