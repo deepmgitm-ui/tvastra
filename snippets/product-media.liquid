@@ -5,69 +5,36 @@
   border-radius: {{ section.settings.image_border_radius }}px;
 {%- endcapture -%}
 
+{%- comment -%}
+  Stable product gallery media rendering.
+  Unlabelled media is intentionally kept visible even when variant grouping is enabled;
+  this prevents an empty gallery when Shopify media alt text is blank.
+{%- endcomment -%}
+
 {%- if section.settings.show_thumb_slider == true -%}
   <div class="product-thumb-wrap">
     <div class="swiper product-image-thumb slider-vertical">
       <div class="swiper-wrapper">
-        {%- assign image_shown = false -%}
         {%- for media in product.media -%}
-          {%- liquid
-            assign can_show = false
-            assign variant_img_added = false
-            assign media_alt = media.alt | downcase
-            if group_image == true
-              if product_options_downcased != blank and media_alt != blank and product_options_downcased contains media_alt
-                assign can_show = true
-                assign variant_img_added = true
-              endif
-            else
-              assign can_show = true
-            endif
-          -%}
-          {%- if can_show -%}
-            <div
-              class="swiper-slide"
-              data-media-id="{{ section_id }}-{{ media.id }}-thumb"
-              data-media-type="{{ media.media_type }}"
-              data-preview-src="{{ media.preview_image | image_url: width: 1400 }}"
-              data-preview-alt="{{ media.alt | escape }}"
-              data-index="{{ forloop.index }}"
-              variant_img_added="{{ variant_img_added }}"
-            >
-              {%- render 'product-thumbnail',
-                type: 'thumb',
-                media: media,
-                position: forloop.index,
-                loop: section_settings.enable_video_looping,
-                modal_id: section_id,
-                border_style: border-style
-              -%}
-            </div>
-            {%- assign image_shown = true -%}
-          {%- endif -%}
+          <div
+            class="swiper-slide"
+            data-media-id="{{ section_id }}-{{ media.id }}-thumb"
+            data-media-type="{{ media.media_type }}"
+            data-preview-src="{{ media.preview_image | image_url: width: 1400 }}"
+            data-preview-alt="{{ media.alt | escape }}"
+            data-index="{{ forloop.index }}"
+            variant_img_added=""
+          >
+            {%- render 'product-thumbnail',
+              type: 'thumb',
+              media: media,
+              position: forloop.index,
+              loop: section_settings.enable_video_looping,
+              modal_id: section_id,
+              border_style: border-style
+            -%}
+          </div>
         {%- endfor -%}
-        {%- unless image_shown -%}
-          {%- for media in product.media -%}
-            <div
-              class="swiper-slide"
-              data-media-id="{{ section_id }}-{{ media.id }}-thumb"
-              data-media-type="{{ media.media_type }}"
-              data-preview-src="{{ media.preview_image | image_url: width: 1400 }}"
-              data-preview-alt="{{ media.alt | escape }}"
-              data-index="{{ forloop.index }}"
-              variant_img_added=""
-            >
-              {%- render 'product-thumbnail',
-                type: 'thumb',
-                media: media,
-                position: forloop.index,
-                loop: section_settings.enable_video_looping,
-                modal_id: section_id,
-                border_style: border-style
-              -%}
-            </div>
-          {%- endfor -%}
-        {%- endunless -%}
       </div>
     </div>
   </div>
@@ -75,10 +42,6 @@
 
 {%- liquid
   assign initial_media_id = product.selected_or_first_available_variant.featured_media.id
-  assign initial_preview_media = product.selected_or_first_available_variant.featured_media
-  if initial_preview_media == blank
-    assign initial_preview_media = product.featured_media
-  endif
   assign initialSlide = 0
   for media in product.media
     if media.id == initial_media_id
@@ -94,7 +57,7 @@
     class="product-gallery-photoswipe__trigger product-img-btn"
     data-original-title="Zoom"
     data-placement="left"
-    aria-label="product"
+    aria-label="Zoom product media"
   >
     <span class="bi bi-arrows-fullscreen"></span>
   </a>
@@ -106,7 +69,7 @@
   {%- capture slider_thumb_options -%}
     {%- if section.settings.show_thumb_slider == true -%}
       "initialSlide":{{ initialSlide }},
-      "autoHeight":true,
+      "autoHeight":false,
       "spaceBetween":10,
       "watchOverflow":true,
       "navigation":{
@@ -126,37 +89,25 @@
             "prevEl":".swiper-button-prev.thumb"
           },
           "breakpoints":{
-            "0":{
-              "slidesPerView":4,
-              "spaceBetween":8
-            },
-            "768":{
-              "slidesPerView":5,
-              "spaceBetween":10
-            },
-            "1200":{
-              "slidesPerView":6,
-              "spaceBetween":10
-            }
+            "0":{"slidesPerView":4,"spaceBetween":8},
+            "768":{"slidesPerView":5,"spaceBetween":10},
+            "1200":{"slidesPerView":6,"spaceBetween":10}
           }
         }
       }
     {%- else -%}
       "initialSlide":{{ initialSlide }},
-      "autoHeight":true,
+      "autoHeight":false,
       "spaceBetween":10,
       "watchOverflow":true,
       "navigation":{
         "nextEl":".product-image-main .swiper-button-next",
         "prevEl":".product-image-main .swiper-button-prev"
       },
-      "breakpoints":{
-        "0":{"slidesPerView":"1"}
-      }
+      "breakpoints":{"0":{"slidesPerView":1}}
     {%- endif -%}
   {%- endcapture -%}
 
-  {%- assign main_image_shown = false -%}
   <div
     class="swiper product-image-main"
     data-slider-options='{ {{ slider_thumb_options }} }'
@@ -166,97 +117,70 @@
   >
     <div class="swiper-wrapper">
       {%- for media in product.media -%}
-        {%- liquid
-          assign can_show = false
-          assign variant_img_added = false
-          assign media_alt = media.alt | downcase
-          if group_image == true
-            if product_options_downcased != blank and media_alt != blank and product_options_downcased contains media_alt
-              assign can_show = true
-              assign variant_img_added = true
-            endif
-          else
-            assign can_show = true
-          endif
-        -%}
-        {%- if can_show -%}
-          <div
-            class="swiper-slide product__media-item"
-            data-media-type="{{ media.media_type }}"
-            data-media-host="{{ media.host }}"
-            data-media-id="{{ section_id }}-{{ media.id }}-main"
-            data-index="{{ forloop.index }}"
-            variant_img_added="{{ variant_img_added }}"
-          >
-            {%- render 'product-thumbnail',
-              type: 'main',
-              media: media,
-              position: forloop.index,
-              loop: section_settings.enable_video_looping,
-              modal_id: section_id
-            -%}
-          </div>
-          {%- assign main_image_shown = true -%}
-        {%- endif -%}
+        <div
+          class="swiper-slide product__media-item"
+          data-media-type="{{ media.media_type }}"
+          data-media-host="{{ media.host }}"
+          data-media-id="{{ section_id }}-{{ media.id }}-main"
+          data-index="{{ forloop.index }}"
+          variant_img_added=""
+        >
+          {%- render 'product-thumbnail',
+            type: 'main',
+            media: media,
+            position: forloop.index,
+            loop: section_settings.enable_video_looping,
+            modal_id: section_id
+          -%}
+        </div>
       {%- endfor -%}
-
-      {%- unless main_image_shown -%}
-        {%- for media in product.media -%}
-          <div
-            class="swiper-slide product__media-item"
-            data-media-type="{{ media.media_type }}"
-            data-media-host="{{ media.host }}"
-            data-media-id="{{ section_id }}-{{ media.id }}-main"
-            data-index="{{ forloop.index }}"
-            variant_img_added=""
-          >
-            {%- render 'product-thumbnail',
-              type: 'main',
-              media: media,
-              position: forloop.index,
-              loop: section_settings.enable_video_looping,
-              modal_id: section_id
-            -%}
-          </div>
-        {%- endfor -%}
-      {%- endunless -%}
     </div>
 
     <div class="swiper-button-prev">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="#262626" viewBox="0 0 320 512">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="#262626" viewBox="0 0 320 512" aria-hidden="true">
         <path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/>
       </svg>
     </div>
 
     <div class="swiper-button-next">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="#262626" viewBox="0 0 320 512">
-        <path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0 12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="#262626" viewBox="0 0 320 512" aria-hidden="true">
+        <path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/>
       </svg>
     </div>
   </div>
 </div>
 
 <style>
+  /* ------------------------------------------------------------------
+     Gallery: vertical thumbnail rail on the LEFT at every breakpoint.
+     The main media area is a stable stage; media fits inside it.
+     ------------------------------------------------------------------ */
   .main-product-page .product-gallery.slider-horizontal .mobille-media-slider {
     display: grid !important;
-    grid-template-columns: 72px minmax(0, 1fr) !important;
+    grid-template-columns: 68px minmax(0, 1fr) !important;
     grid-template-areas: "thumb main" !important;
     column-gap: 12px !important;
     align-items: stretch !important;
+    width: 100% !important;
+    min-width: 0 !important;
     flex-direction: row !important;
+    flex-wrap: nowrap !important;
   }
 
   .main-product-page .product-gallery.slider-horizontal .product-thumb-wrap {
     grid-area: thumb !important;
-    width: 72px !important;
+    width: 68px !important;
+    min-width: 68px !important;
+    max-width: 68px !important;
     height: 100% !important;
-    min-height: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
     position: relative !important;
     inset: auto !important;
-    z-index: 5 !important;
+    order: 0 !important;
+    align-self: stretch !important;
     overflow: hidden !important;
+    z-index: 4 !important;
   }
 
   .main-product-page .product-gallery.slider-horizontal .product-image-thumb {
@@ -267,40 +191,45 @@
   }
 
   .main-product-page .product-gallery.slider-horizontal .product-image-thumb .swiper-wrapper {
+    display: flex !important;
     flex-direction: column !important;
     align-items: stretch !important;
     justify-content: flex-start !important;
-    height: auto !important;
+    height: 100% !important;
+    width: 100% !important;
   }
 
   .main-product-page .product-gallery.slider-horizontal .product-image-thumb .swiper-slide {
-    width: 72px !important;
-    height: 88px !important;
-    flex: 0 0 88px !important;
-    margin: 0 !important;
+    width: 68px !important;
+    height: 84px !important;
+    min-height: 84px !important;
+    max-height: 84px !important;
+    flex: 0 0 84px !important;
+    margin: 0 0 8px !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
     opacity: .72 !important;
     cursor: pointer !important;
-    border: 1px solid transparent !important;
-    transition: opacity .2s ease, border-color .2s ease, transform .2s ease !important;
   }
 
-  .main-product-page .product-gallery.slider-horizontal .product-image-thumb .swiper-slide:hover {
+  .main-product-page .product-gallery.slider-horizontal .product-image-thumb .swiper-slide:hover,
+  .main-product-page .product-gallery.slider-horizontal .product-image-thumb .swiper-slide-thumb-active {
     opacity: 1 !important;
-  }
-
-  .main-product-page .product-gallery.slider-horizontal .product-image-thumb .swiper-slide-thumb-active,
-  .main-product-page .product-gallery.slider-horizontal .product-image-thumb .swiper-slide.is-active {
-    opacity: 1 !important;
-    border-color: #1f2326 !important;
   }
 
   .main-product-page .product-gallery.slider-horizontal .product-image-thumb .product-media {
     width: 100% !important;
     height: 100% !important;
     margin: 0 !important;
-    background: #f5f5f5 !important;
+    border: 1px solid #e6e8ea !important;
     border-radius: 4px !important;
+    background: #f7f7f7 !important;
     overflow: hidden !important;
+  }
+
+  .main-product-page .product-gallery.slider-horizontal .product-image-thumb .swiper-slide-thumb-active .product-media {
+    border-color: #1f2326 !important;
+    border-width: 2px !important;
   }
 
   .main-product-page .product-gallery.slider-horizontal .product-image-thumb .product-media img {
@@ -308,64 +237,143 @@
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
+    object-position: center !important;
   }
 
   .main-product-page .product-gallery.slider-horizontal .product-main-slider {
     grid-area: main !important;
     width: 100% !important;
     min-width: 0 !important;
+    max-width: none !important;
     margin: 0 !important;
+    padding: 0 !important;
+    position: relative !important;
+    align-self: stretch !important;
+    overflow: visible !important;
   }
 
-  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product__media-item,
-  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-media {
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-image-main {
     width: 100% !important;
+    height: min(78vh, 720px) !important;
+    min-height: 420px !important;
+    margin: 0 !important;
+    background: #f7f7f7 !important;
+    border-radius: 4px !important;
+    overflow: hidden !important;
   }
 
-  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-media {
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-image-main .swiper-wrapper,
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-image-main .swiper-slide {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+  }
+
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-image-main .swiper-slide {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+  }
+
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-image-main .product-media.media-image,
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-image-main .product-media.media-image > .h-100 {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #f7f7f7 !important;
+    overflow: hidden !important;
+  }
+
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-image-main .product-media.media-image img,
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-image-main .product-media.media-image picture,
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-image-main .product-media.media-image .preview-image,
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-image-main .product-media.media-image .product-frame-image {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+    object-position: center !important;
+  }
+
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-image-main .swiper-slide .media-video,
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-image-main .swiper-slide .media-model,
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-image-main .swiper-slide .media-fall-back {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
     background: #f7f7f7 !important;
   }
 
-  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-media img {
-    display: block !important;
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-image-main .swiper-slide .media-video > video,
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-image-main .swiper-slide .media-video .plyr,
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-image-main .swiper-slide .media-video .plyr__video-wrapper,
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-image-main .swiper-slide .media-video iframe,
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-image-main .swiper-slide .media-model model-viewer {
     width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
   }
 
-  .main-product-page .product-gallery.slider-horizontal .product-image-thumb .media-icon {
-    position: absolute !important;
-    right: 5px !important;
-    bottom: 5px !important;
-    z-index: 2 !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 20px !important;
-    height: 20px !important;
-    border-radius: 50% !important;
-    background: rgba(255,255,255,.92) !important;
-    color: #222 !important;
-    font-size: 10px !important;
-    box-shadow: 0 2px 6px rgba(0,0,0,.12) !important;
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-image-main .swiper-slide .media-video > video {
+    display: block !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+    background: #f7f7f7 !important;
+    cursor: pointer !important;
+  }
+
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-image-main .swiper-slide .media-video iframe {
+    display: block !important;
+    border: 0 !important;
+    object-fit: contain !important;
+    object-position: center !important;
   }
 
   .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-img-btn {
-    z-index: 10 !important;
+    z-index: 30 !important;
   }
 
   @media (max-width: 767px) {
     .main-product-page .product-gallery.slider-horizontal .mobille-media-slider {
-      grid-template-columns: 64px minmax(0, 1fr) !important;
-      column-gap: 8px !important;
+      grid-template-columns: 52px minmax(0, 1fr) !important;
+      column-gap: 7px !important;
     }
 
-    .main-product-page .product-gallery.slider-horizontal .product-thumb-wrap {
-      width: 64px !important;
+    .main-product-page .product-gallery.slider-horizontal .product-thumb-wrap,
+    .main-product-page .product-gallery.slider-horizontal .product-image-thumb .swiper-slide {
+      width: 52px !important;
+      min-width: 52px !important;
+      max-width: 52px !important;
     }
 
     .main-product-page .product-gallery.slider-horizontal .product-image-thumb .swiper-slide {
-      width: 64px !important;
-      height: 76px !important;
-      flex-basis: 76px !important;
+      height: 70px !important;
+      min-height: 70px !important;
+      max-height: 70px !important;
+      flex-basis: 70px !important;
+      margin-bottom: 7px !important;
+    }
+
+    .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-image-main {
+      height: min(72vh, 620px) !important;
+      min-height: 360px !important;
     }
   }
 </style>
