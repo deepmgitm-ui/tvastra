@@ -12,6 +12,7 @@
 @import url("./product-info-theme-v3.css");
 @import url("./product-info-theme-v4.css");
 @import url("./product-pdp-marketplace-v1.css");
+@import url("./product-pdp-marketplace-v2.css");
 
 #social-sharing.tvastra-product-share {
   width: min(92vw, 460px);
