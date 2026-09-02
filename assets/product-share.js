@@ -48,87 +48,6 @@
     document.querySelectorAll(shareRootSelector).forEach(syncShareRoot);
   }
 
-  function ensureProductInfoVisible() {
-    document.querySelectorAll('.main-product-page .product-summary').forEach(function (summary) {
-      summary.style.setProperty('visibility', 'visible', 'important');
-      summary.style.setProperty('opacity', '1', 'important');
-      summary.style.setProperty('height', 'auto', 'important');
-      summary.style.setProperty('max-height', 'none', 'important');
-      summary.style.setProperty('overflow', 'visible', 'important');
-    });
-
-    document.querySelectorAll('.main-product-page .product-summary > .position-sticky').forEach(function (wrapper) {
-      wrapper.style.setProperty('visibility', 'visible', 'important');
-      wrapper.style.setProperty('opacity', '1', 'important');
-      wrapper.style.setProperty('height', 'auto', 'important');
-      wrapper.style.setProperty('max-height', 'none', 'important');
-      wrapper.style.setProperty('overflow', 'visible', 'important');
-    });
-
-    document.querySelectorAll('.main-product-page .product-summary .product-info').forEach(function (info) {
-      info.style.setProperty('display', 'block', 'important');
-      info.style.setProperty('visibility', 'visible', 'important');
-      info.style.setProperty('opacity', '1', 'important');
-      info.style.setProperty('height', 'auto', 'important');
-      info.style.setProperty('max-height', 'none', 'important');
-      info.style.setProperty('overflow', 'visible', 'important');
-    });
-
-    var visibleSelectors = [
-      '.product-title',
-      '.rating-sku-wrap',
-      '[id^="price-"]',
-      '.product-purchase-note',
-      '.tvastra-product-offers',
-      '.product-colour-family',
-      '.product-variants',
-      '.product-form',
-      '.product-form-buttons'
-    ];
-
-    document.querySelectorAll('.main-product-page .product-summary .product-info').forEach(function (info) {
-      visibleSelectors.forEach(function (selector) {
-        info.querySelectorAll(selector).forEach(function (node) {
-          node.style.setProperty('visibility', 'visible', 'important');
-          node.style.setProperty('opacity', '1', 'important');
-          node.style.setProperty('max-height', 'none', 'important');
-        });
-      });
-    });
-  }
-
-  function cleanPdpUi() {
-    ensureProductInfoVisible();
-
-    document.querySelectorAll('.main-product-page .product-summary .product-custom-html').forEach(function (wrapper) {
-      if (wrapper.querySelector('[id^="smart-color-swatch-"]') || wrapper.querySelector('.color-swatch-box-v2')) {
-        wrapper.style.setProperty('display', 'none', 'important');
-      }
-    });
-
-    document.querySelectorAll('.main-product-page .product-summary [id^="smart-color-swatch-"]').forEach(function (node) {
-      node.style.setProperty('display', 'none', 'important');
-    });
-
-    document.querySelectorAll('.main-product-page .product-summary .color-swatch-box-v2').forEach(function (node) {
-      node.style.setProperty('display', 'none', 'important');
-    });
-
-    document.querySelectorAll('.main-product-page .product-summary details.tvastra-product-offers').forEach(function (details) {
-      details.open = true;
-    });
-  }
-
-  function runPdpCleanup() {
-    cleanPdpUi();
-    if (window.requestAnimationFrame) {
-      window.requestAnimationFrame(function () {
-        ensureProductInfoVisible();
-        cleanPdpUi();
-      });
-    }
-  }
-
   function fallbackCopy(value) {
     var textarea = document.createElement('textarea');
     textarea.value = value;
@@ -182,12 +101,6 @@
   }
 
   document.addEventListener('click', function (event) {
-    var trigger = event.target.closest('[data-tvastra-gallery-share] .tvastra-gallery-share__trigger');
-    if (trigger) {
-      syncAllShareRoots();
-      runPdpCleanup();
-    }
-
     var copyButton = event.target.closest('[data-tvastra-copy-share]');
     if (copyButton) {
       event.preventDefault();
@@ -203,21 +116,11 @@
   }, true);
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () {
-      syncAllShareRoots();
-      runPdpCleanup();
-    });
+    document.addEventListener('DOMContentLoaded', syncAllShareRoots);
   } else {
     syncAllShareRoots();
-    runPdpCleanup();
   }
 
-  document.addEventListener('shopify:section:load', function () {
-    syncAllShareRoots();
-    runPdpCleanup();
-  });
-  window.addEventListener('popstate', function () {
-    syncAllShareRoots();
-    runPdpCleanup();
-  });
+  document.addEventListener('shopify:section:load', syncAllShareRoots);
+  window.addEventListener('popstate', syncAllShareRoots);
 })();
