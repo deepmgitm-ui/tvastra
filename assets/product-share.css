@@ -1,3 +1,5 @@
+@import url("./product-info-redesign-step3.css");
+
 #social-sharing.tvastra-product-share {
   width: min(92vw, 460px);
   max-width: 460px;
