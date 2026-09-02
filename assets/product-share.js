@@ -48,19 +48,57 @@
     document.querySelectorAll(shareRootSelector).forEach(syncShareRoot);
   }
 
-  function repairProductInfoDom() {
-    document.querySelectorAll('.main-product-page:not(.product-page-style-2) .product-summary > .position-sticky').forEach(function (wrapper) {
-      var info = wrapper.querySelector(':scope > [id^="ProductInfo-"]');
-      if (!info) return;
+  function ensureProductInfoVisible() {
+    document.querySelectorAll('.main-product-page .product-summary').forEach(function (summary) {
+      summary.style.setProperty('visibility', 'visible', 'important');
+      summary.style.setProperty('opacity', '1', 'important');
+      summary.style.setProperty('height', 'auto', 'important');
+      summary.style.setProperty('max-height', 'none', 'important');
+      summary.style.setProperty('overflow', 'visible', 'important');
+    });
 
-      while (info.nextSibling) {
-        info.appendChild(info.nextSibling);
-      }
+    document.querySelectorAll('.main-product-page .product-summary > .position-sticky').forEach(function (wrapper) {
+      wrapper.style.setProperty('visibility', 'visible', 'important');
+      wrapper.style.setProperty('opacity', '1', 'important');
+      wrapper.style.setProperty('height', 'auto', 'important');
+      wrapper.style.setProperty('max-height', 'none', 'important');
+      wrapper.style.setProperty('overflow', 'visible', 'important');
+    });
+
+    document.querySelectorAll('.main-product-page .product-summary .product-info').forEach(function (info) {
+      info.style.setProperty('display', 'block', 'important');
+      info.style.setProperty('visibility', 'visible', 'important');
+      info.style.setProperty('opacity', '1', 'important');
+      info.style.setProperty('height', 'auto', 'important');
+      info.style.setProperty('max-height', 'none', 'important');
+      info.style.setProperty('overflow', 'visible', 'important');
+    });
+
+    var visibleSelectors = [
+      '.product-title',
+      '.rating-sku-wrap',
+      '[id^="price-"]',
+      '.product-purchase-note',
+      '.tvastra-product-offers',
+      '.product-colour-family',
+      '.product-variants',
+      '.product-form',
+      '.product-form-buttons'
+    ];
+
+    document.querySelectorAll('.main-product-page .product-summary .product-info').forEach(function (info) {
+      visibleSelectors.forEach(function (selector) {
+        info.querySelectorAll(selector).forEach(function (node) {
+          node.style.setProperty('visibility', 'visible', 'important');
+          node.style.setProperty('opacity', '1', 'important');
+          node.style.setProperty('max-height', 'none', 'important');
+        });
+      });
     });
   }
 
   function cleanPdpUi() {
-    repairProductInfoDom();
+    ensureProductInfoVisible();
 
     document.querySelectorAll('.main-product-page .product-summary .product-custom-html').forEach(function (wrapper) {
       if (wrapper.querySelector('[id^="smart-color-swatch-"]') || wrapper.querySelector('.color-swatch-box-v2')) {
@@ -83,7 +121,12 @@
 
   function runPdpCleanup() {
     cleanPdpUi();
-    if (window.requestAnimationFrame) window.requestAnimationFrame(cleanPdpUi);
+    if (window.requestAnimationFrame) {
+      window.requestAnimationFrame(function () {
+        ensureProductInfoVisible();
+        cleanPdpUi();
+      });
+    }
   }
 
   function fallbackCopy(value) {
