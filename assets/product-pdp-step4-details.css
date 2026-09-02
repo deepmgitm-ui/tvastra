@@ -1,0 +1,358 @@
+/* ----------------------------------------------------------------------
+   TVASTRA PDP · STEP 4 · DETAILS + REVIEWS
+   ---------------------------------------------------------------------- */
+.product-tabs.tvastra-product-tabs {
+  --pdp-detail-ink: #17363a;
+  --pdp-detail-muted: #687571;
+  --pdp-detail-line: #e3e9e6;
+  --pdp-detail-soft: #f7f9f8;
+}
+
+.product-tabs.tvastra-product-tabs .tabs-wrapper {
+  border-top: 1px solid var(--pdp-detail-line);
+  border-bottom: 1px solid var(--pdp-detail-line);
+}
+
+.product-tabs.tvastra-product-tabs .nav.nav-tabs {
+  display: flex !important;
+  align-items: stretch !important;
+  gap: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+.product-tabs.tvastra-product-tabs .nav-item {
+  margin: 0 !important;
+}
+
+.product-tabs.tvastra-product-tabs .nav-link {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  min-height: 54px !important;
+  margin: 0 !important;
+  padding: 0 18px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--pdp-detail-muted) !important;
+  font-size: 11.5px !important;
+  font-weight: 650 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+.product-tabs.tvastra-product-tabs .nav-link::after {
+  content: "";
+  position: absolute;
+  right: 18px;
+  bottom: -1px;
+  left: 18px;
+  height: 2px;
+  border-radius: 999px;
+  background: transparent;
+  transition: background-color .18s ease;
+}
+
+.product-tabs.tvastra-product-tabs .nav-link:hover,
+.product-tabs.tvastra-product-tabs .nav-link:focus-visible,
+.product-tabs.tvastra-product-tabs .nav-link.active {
+  color: var(--pdp-detail-ink) !important;
+}
+
+.product-tabs.tvastra-product-tabs .nav-link.active::after {
+  background: var(--pdp-detail-ink);
+}
+
+.product-tabs.tvastra-product-tabs .product-tabs__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--pdp-detail-line);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--pdp-detail-muted);
+  font-size: 11px;
+}
+
+.product-tabs.tvastra-product-tabs .nav-link.active .product-tabs__icon {
+  border-color: rgba(23, 54, 58, .20);
+  color: var(--pdp-detail-ink);
+}
+
+.product-tabs.tvastra-product-tabs .tab-content {
+  padding: 28px 0 8px !important;
+}
+
+.product-tabs.tvastra-product-tabs .tab-pane {
+  color: #4e5c58;
+}
+
+.product-tabs.tvastra-product-tabs .content-wrap {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 18px 28px;
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.product-tabs.tvastra-product-tabs .content-wrap > *:first-child {
+  margin-top: 0 !important;
+}
+
+.product-tabs.tvastra-product-tabs .content-wrap > *:last-child {
+  margin-bottom: 0 !important;
+}
+
+.product-tabs.tvastra-product-tabs .content-wrap h1,
+.product-tabs.tvastra-product-tabs .content-wrap h2,
+.product-tabs.tvastra-product-tabs .content-wrap h3,
+.product-tabs.tvastra-product-tabs .content-wrap h4,
+.product-tabs.tvastra-product-tabs .content-wrap h5,
+.product-tabs.tvastra-product-tabs .content-wrap h6 {
+  margin: 0 0 10px !important;
+  color: var(--pdp-detail-ink) !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+}
+
+.product-tabs.tvastra-product-tabs .content-wrap p {
+  margin: 0 0 12px !important;
+}
+
+.product-tabs.tvastra-product-tabs .content-wrap ul,
+.product-tabs.tvastra-product-tabs .content-wrap ol {
+  margin: 10px 0 16px !important;
+  padding-left: 20px !important;
+}
+
+.product-tabs.tvastra-product-tabs .content-wrap li + li {
+  margin-top: 6px;
+}
+
+.product-tabs.tvastra-product-tabs .content-wrap strong,
+.product-tabs.tvastra-product-tabs .content-wrap b {
+  color: var(--pdp-detail-ink) !important;
+  font-weight: 700 !important;
+}
+
+.product-tabs.tvastra-product-tabs .content-wrap a {
+  color: var(--pdp-detail-ink) !important;
+  text-underline-offset: 3px;
+}
+
+/* Additional information table */
+.product-tabs.tvastra-product-tabs .content-wrap table.additional-information,
+.product-tabs.tvastra-product-tabs .content-wrap table.table {
+  width: 100% !important;
+  margin: 0 !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  overflow: hidden;
+  border: 1px solid var(--pdp-detail-line) !important;
+  border-radius: 10px !important;
+  background: #fff;
+}
+
+.product-tabs.tvastra-product-tabs .content-wrap table.additional-information tr + tr th,
+.product-tabs.tvastra-product-tabs .content-wrap table.additional-information tr + tr td,
+.product-tabs.tvastra-product-tabs .content-wrap table.table tr + tr th,
+.product-tabs.tvastra-product-tabs .content-wrap table.table tr + tr td {
+  border-top: 1px solid var(--pdp-detail-line) !important;
+}
+
+.product-tabs.tvastra-product-tabs .content-wrap table.additional-information th,
+.product-tabs.tvastra-product-tabs .content-wrap table.additional-information td,
+.product-tabs.tvastra-product-tabs .content-wrap table.table th,
+.product-tabs.tvastra-product-tabs .content-wrap table.table td {
+  padding: 11px 13px !important;
+  border: 0 !important;
+  vertical-align: top !important;
+  font-size: 11px !important;
+  line-height: 1.45 !important;
+}
+
+.product-tabs.tvastra-product-tabs .content-wrap table.additional-information th,
+.product-tabs.tvastra-product-tabs .content-wrap table.table th {
+  width: 34%;
+  background: var(--pdp-detail-soft) !important;
+  color: var(--pdp-detail-ink) !important;
+  font-weight: 700 !important;
+  text-align: left !important;
+}
+
+.product-tabs.tvastra-product-tabs .content-wrap table.additional-information td,
+.product-tabs.tvastra-product-tabs .content-wrap table.table td {
+  color: #55635f !important;
+}
+
+/* Mobile details become clean stacked accordions. Existing JS behavior remains. */
+.product-tabs.tvastra-product-tabs .mobile-tab-title {
+  position: relative;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 9px !important;
+  width: 100% !important;
+  min-height: 54px !important;
+  margin: 0 !important;
+  padding: 0 2px !important;
+  border: 0 !important;
+  border-top: 1px solid var(--pdp-detail-line) !important;
+  background: transparent !important;
+  color: var(--pdp-detail-ink) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  text-align: left !important;
+}
+
+.product-tabs.tvastra-product-tabs .mobile-tab-title::after {
+  content: "+";
+  margin-left: auto;
+  color: var(--pdp-detail-muted);
+  font-size: 19px;
+  font-weight: 350;
+  line-height: 1;
+}
+
+.product-tabs.tvastra-product-tabs .mobile-tab-title.active::after {
+  content: "−";
+}
+
+.product-tabs.tvastra-product-tabs .mobile-tab-title .product-tabs__icon {
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+}
+
+.product-tabs.tvastra-product-tabs .tab-content > .tab-pane > .content-wrap {
+  margin: 0 !important;
+  padding: 0 2px 22px !important;
+}
+
+/* Judge.me / review app section */
+.main-product-page ~ .product-tabs + .shopify-section .shopify-app-block,
+.main-product-page ~ .shopify-section .shopify-app-block {
+  max-width: 1240px !important;
+  margin: 0 auto !important;
+  padding: 16px 18px 34px !important;
+}
+
+.shopify-app-block .jdgm-widget,
+.shopify-app-block .jdgm-rev-widg {
+  color: #4f5d59 !important;
+}
+
+.shopify-app-block .jdgm-rev-widg {
+  padding: 24px !important;
+  border: 1px solid #e3e9e6 !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  box-shadow: 0 10px 28px rgba(18, 38, 40, .04) !important;
+}
+
+.shopify-app-block .jdgm-rev-widg__header {
+  padding-bottom: 18px !important;
+  border-bottom: 1px solid #e6ebe8 !important;
+}
+
+.shopify-app-block .jdgm-rev-widg__title {
+  margin: 0 0 7px !important;
+  color: #17363a !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+}
+
+.shopify-app-block .jdgm-rev-widg__summary {
+  color: #63706c !important;
+}
+
+.shopify-app-block .jdgm-rev {
+  margin: 0 !important;
+  padding: 18px 0 !important;
+  border-color: #e6ebe8 !important;
+}
+
+.shopify-app-block .jdgm-rev__header,
+.shopify-app-block .jdgm-rev__body,
+.shopify-app-block .jdgm-rev__pics {
+  font-size: 11px !important;
+}
+
+.shopify-app-block .jdgm-rev__author,
+.shopify-app-block .jdgm-rev__rating,
+.shopify-app-block .jdgm-rev__title {
+  color: #17363a !important;
+  font-weight: 700 !important;
+}
+
+.shopify-app-block .jdgm-rev__body {
+  color: #55635f !important;
+  line-height: 1.65 !important;
+}
+
+.shopify-app-block .jdgm-paginate__page {
+  color: #17363a !important;
+}
+
+@media (max-width: 767px) {
+  .product-tabs.tvastra-product-tabs .tabs-wrapper {
+    border-top: 0 !important;
+    border-bottom: 0 !important;
+  }
+
+  .product-tabs.tvastra-product-tabs .tab-content {
+    padding: 0 !important;
+  }
+
+  .product-tabs.tvastra-product-tabs .mobile-tab-title:first-child {
+    border-top: 1px solid var(--pdp-detail-line) !important;
+  }
+
+  .product-tabs.tvastra-product-tabs .content-wrap {
+    max-width: none;
+    padding: 0 2px 20px !important;
+    font-size: 12px;
+    line-height: 1.65;
+  }
+
+  .product-tabs.tvastra-product-tabs .content-wrap table.additional-information,
+  .product-tabs.tvastra-product-tabs .content-wrap table.table {
+    border-radius: 9px !important;
+  }
+
+  .product-tabs.tvastra-product-tabs .content-wrap table.additional-information th,
+  .product-tabs.tvastra-product-tabs .content-wrap table.additional-information td,
+  .product-tabs.tvastra-product-tabs .content-wrap table.table th,
+  .product-tabs.tvastra-product-tabs .content-wrap table.table td {
+    padding: 9px 10px !important;
+    font-size: 10px !important;
+  }
+
+  .product-tabs.tvastra-product-tabs .content-wrap table.additional-information th,
+  .product-tabs.tvastra-product-tabs .content-wrap table.table th {
+    width: 38%;
+  }
+
+  .shopify-app-block .jdgm-rev-widg {
+    padding: 17px !important;
+    border-radius: 10px !important;
+  }
+
+  .shopify-app-block .jdgm-rev-widg__title {
+    font-size: 17px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-tabs.tvastra-product-tabs .nav-link::after {
+    transition: none;
+  }
+}
