@@ -9,8 +9,18 @@
 @import url("./product-pdp-step5-lower.css");
 @import url("./product-pdp-step6-final.css");
 
-#social-sharing.tvastra-product-share { width:min(92vw,460px); max-width:460px; padding:22px; border:1px solid #e2e8e5; border-radius:8px; background:#fff; color:#17363a; box-shadow:0 18px 48px rgba(8,43,52,.14); }
-#social-sharing .tvastra-product-share__header { margin-bottom:16px; }
+#social-sharing.tvastra-product-share {
+  width: min(92vw, 460px);
+  max-width: 460px;
+  padding: 22px;
+  border: 1px solid #e2e8e5;
+  border-radius: 8px;
+  background: #fff;
+  color: #17363a;
+  box-shadow: 0 18px 48px rgba(8, 43, 52, .14);
+}
+
+#social-sharing .tvastra-product-share__header { margin-bottom: 16px; }
 #social-sharing .tvastra-product-share__eyebrow { display:block; margin-bottom:4px; color:#71807c; font-size:10px; font-weight:600; line-height:1.2; text-transform:uppercase; letter-spacing:.08em; }
 #social-sharing .tvastra-product-share__title { margin:0; color:#17363a; font-size:18px; font-weight:600; line-height:1.25; }
 #social-sharing .tvastra-product-share__actions { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; margin-bottom:18px; }
