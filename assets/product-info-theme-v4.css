@@ -1,0 +1,418 @@
+/* ======================================================================
+   TVASTRA PDP · PRODUCT INFO THEME V4
+   Strong visual refresh for the product-information panel.
+   Presentation only: product, variant, cart and checkout behaviour stay intact.
+   ====================================================================== */
+
+.main-product-page .product-summary {
+  --v4-ink: #171b19;
+  --v4-muted: #707974;
+  --v4-line: #e4e7e2;
+  --v4-soft: #f7f8f5;
+  --v4-warm: #f2eee3;
+  --v4-accent: #6d795f;
+  --v4-accent-dark: #56614b;
+  --v4-accent-soft: #edf1e8;
+  --v4-white: #ffffff;
+}
+
+/* The right side now reads as one intentional shopping panel. */
+@media (min-width: 992px) {
+  .main-product-page .product-summary > .position-sticky {
+    position: sticky;
+    padding: 26px 26px 28px !important;
+    border: 1px solid var(--v4-line) !important;
+    border-radius: 20px !important;
+    background: linear-gradient(180deg, #fbfbf8 0%, #f6f7f3 100%) !important;
+    box-shadow: 0 18px 50px rgba(28, 35, 31, .07) !important;
+  }
+
+  .main-product-page .product-summary > .position-sticky::before {
+    content: "";
+    display: block;
+    width: 42px;
+    height: 3px;
+    margin: 0 0 18px;
+    border-radius: 99px;
+    background: var(--v4-accent);
+  }
+}
+
+/* Product identity */
+.main-product-page .product-summary .product-info > .block-name.vendor {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  margin: 0 0 8px !important;
+  padding: 6px 10px !important;
+  border: 1px solid #dfe4db !important;
+  border-radius: 999px !important;
+  background: #f0f2ed !important;
+  color: var(--v4-accent-dark) !important;
+  font-size: 9px !important;
+  font-weight: 800 !important;
+  letter-spacing: .11em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+}
+
+.main-product-page .product-summary .product-info .product-title,
+.main-product-page .product-summary .product-info .product-title-share-row > .product-title {
+  margin: 0 !important;
+  color: var(--v4-ink) !important;
+  font-size: clamp(28px, 2.3vw, 36px) !important;
+  font-weight: 700 !important;
+  line-height: 1.04 !important;
+  letter-spacing: -.025em !important;
+}
+
+.main-product-page .product-summary .product-info .rating-sku-wrap {
+  margin: 11px 0 18px !important;
+  gap: 7px 12px !important;
+}
+
+.main-product-page .product-summary .product-info .product-rating {
+  padding: 6px 9px !important;
+  border-radius: 8px !important;
+  background: #1f2b27 !important;
+  color: #fff !important;
+}
+
+.main-product-page .product-summary .product-info .product-rating * {
+  color: inherit !important;
+}
+
+.main-product-page .product-summary .product-info .product-sku {
+  min-height: 28px !important;
+  padding-left: 12px !important;
+  color: var(--v4-muted) !important;
+}
+
+/* Price block gets its own visual anchor. */
+.main-product-page .product-summary .product-info [id^="price-"] {
+  margin: 0 !important;
+  padding: 16px 0 15px !important;
+  border-top: 1px solid var(--v4-line) !important;
+  border-bottom: 1px solid var(--v4-line) !important;
+}
+
+.main-product-page .product-summary .product-info [id^="price-"] .price {
+  display: flex !important;
+  align-items: baseline !important;
+  flex-wrap: wrap !important;
+  gap: 9px !important;
+  color: var(--v4-ink) !important;
+  font-size: 31px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+}
+
+.main-product-page .product-summary .product-info [id^="price-"] .price-item--regular,
+.main-product-page .product-summary .product-info [id^="price-"] s {
+  color: #8c948f !important;
+  font-size: 14px !important;
+}
+
+.main-product-page .product-summary .product-info .product-purchase-note {
+  margin: 8px 0 15px !important;
+  color: var(--v4-muted) !important;
+  font-size: 10.5px !important;
+  font-weight: 600 !important;
+}
+
+/* Offers feel like an actual benefit, not a generic accordion. */
+.main-product-page .product-summary .product-info .tvastra-product-offers {
+  margin: 0 0 18px !important;
+  border: 1px solid #ddd9cc !important;
+  border-radius: 14px !important;
+  background: var(--v4-warm) !important;
+  box-shadow: none !important;
+}
+
+.main-product-page .product-summary .product-info .tvastra-product-offers__summary {
+  min-height: 56px !important;
+  padding: 12px 14px !important;
+}
+
+.main-product-page .product-summary .product-info .tvastra-product-offers__title {
+  color: var(--v4-ink) !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+}
+
+.main-product-page .product-summary .product-info .tvastra-product-offers__highlight {
+  padding: 6px 9px !important;
+  background: var(--v4-accent) !important;
+  color: #fff !important;
+  font-size: 9px !important;
+  font-weight: 800 !important;
+}
+
+.main-product-page .product-summary .product-info .tvastra-product-offers__body {
+  padding: 2px 14px 12px !important;
+  border-top: 1px solid #dfdbcf !important;
+}
+
+/* Variant selection becomes visually obvious. */
+.main-product-page .product-summary .product-info .product-variants {
+  margin: 0 0 17px !important;
+  padding: 16px 16px 14px !important;
+  border: 1px solid var(--v4-line) !important;
+  border-radius: 14px !important;
+  background: var(--v4-white) !important;
+}
+
+.main-product-page .product-summary .product-info .product-filter {
+  margin: 0 !important;
+  padding: 0 0 15px !important;
+  border: 0 !important;
+}
+
+.main-product-page .product-summary .product-info .product-filter + .product-filter {
+  padding-top: 15px !important;
+  border-top: 1px solid #eef0ec !important;
+}
+
+.main-product-page .product-summary .product-info .product-filter .form-label {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  margin: 0 0 10px !important;
+  color: var(--v4-ink) !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+}
+
+.main-product-page .product-summary .product-info .product-filter .form-label span {
+  color: var(--v4-accent-dark) !important;
+  font-weight: 800 !important;
+}
+
+/* Colour swatches: clearer ring + label. */
+.main-product-page .product-summary .product-info .color-filter .variant-option {
+  margin: 0 7px 8px 0 !important;
+}
+
+.main-product-page .product-summary .product-info .color-filter .variant-option label {
+  position: relative !important;
+  width: 38px !important;
+  height: 38px !important;
+  padding: 3px !important;
+  border: 2px solid #d8dcd7 !important;
+  border-radius: 50% !important;
+  background: #fff !important;
+  box-shadow: 0 2px 6px rgba(26, 32, 28, .08) !important;
+}
+
+.main-product-page .product-summary .product-info .color-filter .variant-option input:checked + label {
+  border-color: var(--v4-accent-dark) !important;
+  box-shadow: 0 0 0 3px var(--v4-accent-soft), 0 3px 8px rgba(26, 32, 28, .12) !important;
+}
+
+/* Size chips: bigger and much easier to understand. */
+.main-product-page .product-summary .product-info .size-filter .tvastra-size-options,
+.main-product-page .product-summary .product-info .size-filter {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+}
+
+.main-product-page .product-summary .product-info .size-filter .variant-option {
+  display: block !important;
+  margin: 0 !important;
+}
+
+.main-product-page .product-summary .product-info .size-filter .variant-option label {
+  display: inline-flex !important;
+  min-width: 54px !important;
+  height: 42px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 14px !important;
+  border: 1px solid #d6dbd5 !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  color: var(--v4-ink) !important;
+  font-size: 12px !important;
+  font-weight: 750 !important;
+  transition: all .16s ease !important;
+}
+
+.main-product-page .product-summary .product-info .size-filter .variant-option input:checked + label {
+  border-color: var(--v4-accent-dark) !important;
+  background: var(--v4-accent-dark) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 10px rgba(86, 97, 75, .18) !important;
+}
+
+.main-product-page .product-summary .product-info .size-filter .variant-option label:hover {
+  border-color: var(--v4-accent) !important;
+}
+
+.main-product-page .product-summary .product-info .size-filter .modal-popup {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  margin-left: auto !important;
+  color: var(--v4-accent-dark) !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px !important;
+}
+
+/* Purchase zone: strongest area on the card. */
+.main-product-page .product-summary .product-info .product-form-buttons {
+  margin: 0 !important;
+  padding: 16px !important;
+  border-radius: 14px !important;
+  background: #202824 !important;
+  box-shadow: 0 12px 26px rgba(24, 32, 28, .13) !important;
+}
+
+.main-product-page .product-summary .product-info .product-form-buttons .action-btn {
+  gap: 10px !important;
+  align-items: stretch !important;
+}
+
+.main-product-page .product-summary .product-info .quantity-btn label {
+  margin: 0 0 6px !important;
+  color: #d8ded9 !important;
+  font-size: 9px !important;
+  font-weight: 800 !important;
+  letter-spacing: .08em !important;
+  text-transform: uppercase !important;
+}
+
+.main-product-page .product-summary .product-info .quantity-btn .quantity {
+  min-height: 46px !important;
+  border: 1px solid #445049 !important;
+  border-radius: 10px !important;
+  background: #2b342f !important;
+}
+
+.main-product-page .product-summary .product-info .quantity-btn .quantity-input {
+  color: #fff !important;
+  background: transparent !important;
+}
+
+.main-product-page .product-summary .product-info .quantity-btn .quantity-button {
+  color: #fff !important;
+}
+
+.main-product-page .product-summary .product-info .cart-btn {
+  min-height: 52px !important;
+  border: 0 !important;
+  border-radius: 11px !important;
+  background: #f0eee6 !important;
+  color: #202824 !important;
+  font-size: 12px !important;
+  font-weight: 850 !important;
+  letter-spacing: .01em !important;
+  box-shadow: none !important;
+}
+
+.main-product-page .product-summary .product-info .cart-btn:hover {
+  background: #fff !important;
+  transform: translateY(-1px);
+}
+
+.main-product-page .product-summary .product-info .cart-btn i {
+  margin-right: 6px !important;
+}
+
+.main-product-page .product-summary .product-info .product-buy-now-inline {
+  min-height: 52px !important;
+  overflow: hidden !important;
+  border-radius: 11px !important;
+}
+
+.main-product-page .product-summary .product-info .product-buy-now-inline button,
+.main-product-page .product-summary .product-info .product-buy-now-inline .shopify-payment-button__button {
+  min-height: 52px !important;
+  border-radius: 11px !important;
+  font-weight: 800 !important;
+}
+
+/* Wishlist gets its own quiet icon button. */
+.main-product-page .product-summary .product-info .product-form-buttons .wishlist-btn,
+.main-product-page .product-summary .product-info .product-form-buttons .button-wishlist {
+  width: 46px !important;
+  min-width: 46px !important;
+  min-height: 46px !important;
+  border: 1px solid #445049 !important;
+  border-radius: 10px !important;
+  background: #2b342f !important;
+  color: #fff !important;
+}
+
+/* Post-purchase reassurance stays visible but quieter. */
+.main-product-page .product-summary .product-info .shipping-info,
+.main-product-page .product-summary .product-info .trust-badge,
+.main-product-page .product-summary .product-info .product-usp,
+.main-product-page .product-summary .product-info .product-live-viewers,
+.main-product-page .product-summary .product-info .live-visitors,
+.main-product-page .product-summary .product-info .sold-product-count {
+  border-radius: 10px !important;
+  border-color: var(--v4-line) !important;
+}
+
+.main-product-page .product-summary .product-info .shipping-info {
+  margin-top: 13px !important;
+  padding: 11px 12px !important;
+  background: #fff !important;
+}
+
+.main-product-page .product-summary .product-info .product-usp {
+  padding: 10px 12px !important;
+  background: var(--v4-accent-soft) !important;
+}
+
+@media (max-width: 991px) {
+  .main-product-page .product-summary > .position-sticky {
+    padding: 12px 0 26px !important;
+  }
+
+  .main-product-page .product-summary .product-info {
+    padding: 16px !important;
+    border: 1px solid var(--v4-line) !important;
+    border-radius: 16px !important;
+    background: #f7f8f5 !important;
+  }
+
+  .main-product-page .product-summary .product-info .product-title,
+  .main-product-page .product-summary .product-info .product-title-share-row > .product-title {
+    font-size: clamp(25px, 8vw, 31px) !important;
+  }
+
+  .main-product-page .product-summary .product-info .product-form-buttons {
+    margin-left: -1px !important;
+    margin-right: -1px !important;
+    border-radius: 13px !important;
+  }
+}
+
+@media (max-width: 575px) {
+  .main-product-page .product-summary .product-info {
+    padding: 13px !important;
+    border-radius: 14px !important;
+  }
+
+  .main-product-page .product-summary .product-info .product-variants {
+    padding: 13px !important;
+  }
+
+  .main-product-page .product-summary .product-info .size-filter .variant-option label {
+    min-width: 49px !important;
+    height: 40px !important;
+    padding: 0 12px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .main-product-page .product-summary .product-info .size-filter .variant-option label,
+  .main-product-page .product-summary .product-info .cart-btn {
+    transition: none !important;
+  }
+}
