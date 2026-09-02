@@ -106,7 +106,7 @@
   {%- capture slider_thumb_options -%}
     {%- if section.settings.show_thumb_slider == true -%}
       "initialSlide":{{ initialSlide }},
-      "autoHeight":false,
+      "autoHeight":true,
       "spaceBetween":10,
       "watchOverflow":true,
       "navigation":{
@@ -143,7 +143,7 @@
       }
     {%- else -%}
       "initialSlide":{{ initialSlide }},
-      "autoHeight":false,
+      "autoHeight":true,
       "spaceBetween":10,
       "watchOverflow":true,
       "navigation":{
