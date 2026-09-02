@@ -42,7 +42,7 @@
   </svg>`
    
    /*removing existing profile(person) icon - person icon is not present in this store*/
-   const profileButtonElement = document.querySelector('.site-nav__icons a[href*="/account"]')
+   const profileButtonElement = document.querySelector('.account a[href*="/account"]')
 
   // defining css and add it to style tag in head
   function appendCss() {
@@ -238,7 +238,7 @@
 
 
   // It will change based on theme
-  const personIconElement = document.querySelector('.site-nav__icons a[href*="/account"]')?.parentElement
+  const personIconElement = document.querySelector('.account a[href*="/account"]')?.parentElement
   const html = `
     ${KwikpassNotLoggedIcon}
     ${kwikpassLoggedInIcon} 
