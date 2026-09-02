@@ -48,7 +48,20 @@
     document.querySelectorAll(shareRootSelector).forEach(syncShareRoot);
   }
 
+  function repairProductInfoDom() {
+    document.querySelectorAll('.main-product-page:not(.product-page-style-2) .product-summary > .position-sticky').forEach(function (wrapper) {
+      var info = wrapper.querySelector(':scope > [id^="ProductInfo-"]');
+      if (!info) return;
+
+      while (info.nextSibling) {
+        info.appendChild(info.nextSibling);
+      }
+    });
+  }
+
   function cleanPdpUi() {
+    repairProductInfoDom();
+
     document.querySelectorAll('.main-product-page .product-summary .product-custom-html').forEach(function (wrapper) {
       if (wrapper.querySelector('[id^="smart-color-swatch-"]') || wrapper.querySelector('.color-swatch-box-v2')) {
         wrapper.style.setProperty('display', 'none', 'important');
