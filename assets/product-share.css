@@ -5,6 +5,7 @@
 @import url("./product-identity-redesign-step7.css");
 @import url("./product-pdp-step3-cta.css");
 @import url("./product-pdp-step4-details.css");
+@import url("./product-pdp-step5-lower.css");
 
 #social-sharing.tvastra-product-share {
   width: min(92vw, 460px);
