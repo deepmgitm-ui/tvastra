@@ -1,3 +1,5 @@
+@import url("./product-share.css");
+
 /* Tvastra review widget v2: mobile-safe, font-independent stars */
 [id*="judge_me_reviews_preview_badge"] .jdgm-preview-badge {
   display: none !important;
