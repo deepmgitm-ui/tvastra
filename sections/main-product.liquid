@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="{{ 'product-media-full-view.css' | asset_url | split: '?' | first }}?v=gallery-controller-v2">
 <link rel="stylesheet" href="{{ 'product-share.css' | asset_url | split: '?' | first }}?v=1">
 <link rel="stylesheet" href="{{ 'product-info-redesign-step2.css' | asset_url | split: '?' | first }}?v=1">
+<link rel="stylesheet" href="{{ 'product-pdp-complete.css' | asset_url | split: '?' | first }}?v=1">
 {%- liquid
   assign section_id = section.id  
   assign variant_colors = settings.product_colors | strip_newlines | downcase | split: ','
@@ -225,7 +226,6 @@
 </script>
 <style>
   /* === TRUST BADGE BLOCK STYLING === */
-  /* Trust badge ka background box, padding aur border hatane ke liye */
   .product-summary [class*="trust"], 
   .product-summary [class*="badge"] {
     background: transparent !important;
@@ -233,26 +233,21 @@
     border: none !important;
     box-shadow: none !important;
     padding: 0 !important;
-    margin-bottom: 8px !important; /* Trust badge aur USP ke beech ka gap kam kiya */
+    margin-bottom: 8px !important;
   }
 
-  /* Agar trust badge ke andar ki image ke upar koi default margin ho toh use hatane ke liye */
   .product-summary [class*="trust"] img,
   .product-summary [class*="badge"] img {
     margin: 0 auto !important;
     display: block;
   }
 
-
-  /* === USP BLOCK STYLING === */
-  /* USP block ki top spacing khatam karne ke liye taaki wo upar wale block ke close aa jaye */
   .product-summary [class*="product-usp"],
   .product-summary [class*="usp"] {
     margin-top: 0 !important;
     padding-top: 0 !important;
   }
 
-  /* Sirf PC/Desktop ke liye (purana fix + alignment) */
   @media (min-width: 992px) {
     .product-summary [class*="usp"], 
     .product-summary [class*="usp"] span, 
@@ -354,63 +349,53 @@
         {
           "type": "checkbox",
           "id": "hide_price",
-          "default": true,
+          "default": false,
           "label": "Show price"
         },
         {
           "type": "checkbox",
           "id": "hide_ratings",
-          "default": true,
-          "label": "Show ratings"
+          "default": false,
+          "label": "Show rating"
         },
         {
           "type": "checkbox",
           "id": "hide_sku",
-          "default": true,
+          "default": false,
           "label": "Show SKU"
         },
         {
           "type": "checkbox",
           "id": "show_save_label",
-          "default": true,
+          "default": false,
           "label": "Show save label"
-        },
-        {
-          "type": "header",
-          "content": "Tvastra purchase notes"
         },
         {
           "type": "text",
           "id": "purchase_note_tax",
-          "label": "Purchase note 1",
-          "default": "Taxes included"
+          "label": "Purchase note - tax"
         },
         {
           "type": "text",
           "id": "purchase_note_shipping",
-          "label": "Purchase note 2",
-          "default": "Free prepaid shipping"
-        },
-        {
-          "type": "header",
-          "content": "Tvastra offers and payment"
+          "label": "Purchase note - shipping"
         },
         {
           "type": "checkbox",
           "id": "show_product_offers",
-          "label": "Show offers and payment",
-          "default": true
+          "default": true,
+          "label": "Show product offers"
         },
         {
           "type": "text",
           "id": "offers_title",
-          "label": "Offer heading",
+          "label": "Offers heading",
           "default": "Offers & payment"
         },
         {
           "type": "text",
           "id": "offers_highlight",
-          "label": "Offer summary badge",
+          "label": "Offers highlight",
           "default": "Save more today"
         },
         {
@@ -423,12 +408,12 @@
           "type": "textarea",
           "id": "offer_1_text",
           "label": "Offer 1 text",
-          "default": "Apply TVFIT10 from cart before checkout."
+          "default": "Apply the code from cart before checkout."
         },
         {
           "type": "text",
           "id": "offer_1_code",
-          "label": "Offer 1 code chip",
+          "label": "Offer 1 code",
           "default": "TVFIT10"
         },
         {
@@ -458,7 +443,7 @@
         {
           "type": "text",
           "id": "offers_footer",
-          "label": "Offer footer note",
+          "label": "Offers footer",
           "default": "Verified checkout with Razorpay"
         }
       ]
@@ -466,50 +451,56 @@
     {
       "type": "short_description",
       "name": "Short description",
-      "limit": 1,
       "settings": [
         {
           "type": "liquid",
           "id": "liquid_code",
-          "label": "Liquid code",
-          "default": "{{product.metafields.custom.short_description}}",
-          "info": "Add metafield with key=short_description."
+          "label": "Liquid code"
         }
       ]
     },
     {
-      "type": "colum-devider",
-      "name": "Column divider",
-      "limit": 1,
+      "type": "popup",
+      "name": "Popup",
       "settings": [
         {
-          "type": "paragraph",
-          "content": "Applicable when product page style = Style 2. This block will devide the product information content in two columns from where this block is positioned."
+          "type": "text",
+          "id": "link_label",
+          "label": "Link label"
+        },
+        {
+          "type": "page",
+          "id": "page",
+          "label": "Page"
         }
       ]
-    },
-    {
-      "type": "product_deal",
-      "name": "Countdown timer",
-      "limit": 1
     },
     {
       "type": "variant_picker",
-      "name": "t:sections.main-product.blocks.variant_picker.name",
+      "name": "Variant picker",
       "limit": 1,
       "settings": [
         {
-          "type": "checkbox",
-          "id": "show_size_guide",
-          "default": true,
-          "label": "Show size guide popup"
+          "type": "select",
+          "id": "picker_type",
+          "options": [
+            {
+              "value": "dropdown",
+              "label": "Dropdown"
+            },
+            {
+              "value": "button",
+              "label": "Buttons"
+            }
+          ],
+          "default": "button",
+          "label": "Variant picker type"
         },
         {
-          "type": "text",
-          "id": "size_guide_option_label",
-          "default": "Size",
-          "label": "Size option label",
-          "info": "Enter option label in which you want to show size guide button."
+          "type": "checkbox",
+          "id": "show_size_guide",
+          "default": false,
+          "label": "Show size guide"
         },
         {
           "type": "text",
@@ -518,13 +509,15 @@
           "label": "Size guide button text"
         },
         {
-          "type": "textarea",
-          "id": "size_guide_content",
-          "label": "Size guide popup content"
+          "type": "text",
+          "id": "size_guide_option_label",
+          "default": "Size",
+          "label": "Size option label"
         },
         {
-          "type": "paragraph",
-          "content": "OR"
+          "type": "textarea",
+          "id": "size_guide_content",
+          "label": "Size guide content"
         },
         {
           "type": "image_picker",
@@ -534,21 +527,25 @@
       ]
     },
     {
+      "type": "product_deal",
+      "name": "Product deal"
+    },
+    {
       "type": "buy_buttons",
-      "name": "t:sections.main-product.blocks.buy_buttons.name",
+      "name": "Buy buttons",
       "limit": 1,
       "settings": [
-        {
-          "type": "checkbox",
-          "id": "show_qty",
-          "default": true,
-          "label": "Show quantity selector"
-        },
         {
           "type": "checkbox",
           "id": "show_add_to_cart",
           "default": true,
           "label": "Show add to cart button"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_dynamic_checkout",
+          "default": true,
+          "label": "Show dynamic checkout button"
         },
         {
           "type": "checkbox",
@@ -558,365 +555,169 @@
         },
         {
           "type": "checkbox",
-          "id": "show_dynamic_checkout",
+          "id": "show_quantity_selector",
           "default": true,
-          "label": "t:sections.main-product.blocks.buy_buttons.settings.show_dynamic_checkout.label",
-          "info": "t:sections.main-product.blocks.buy_buttons.settings.show_dynamic_checkout.info"
-        },
-        {
-          "type": "header",
-          "content": "Back in stock notification"
-        },
-        {
-          "type": "checkbox",
-          "id": "collect_back_in_stock",
-          "default": true,
-          "label": "Collect back in stock notification"
-        },
-        {
-          "type": "text",
-          "id": "back-in-stock-title",
-          "default": "Notify me when this is in stock",
-          "label": "Heading"
-        },
-        {
-          "type": "textarea",
-          "id": "back-in-stock-subheading",
-          "default": "We will send you a notification as soon as this product is available again.",
-          "label": "Sub heading"
-        },
-        {
-          "type": "text",
-          "id": "back_in_icon_name",
-          "label": "Enter icon class",
-          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)",
-          "default": "bi bi-patch-check-fill"
-        },
-        {
-          "type": "textarea",
-          "id": "back-in-stock-text",
-          "default": "It will be in stock after",
-          "label": "Expected back in stock text"
-        }
-      ]
-    },
-    {
-      "type": "stock-left",
-      "name": "Stock countdown",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "radio",
-          "id": "countdown_number",
-          "label": "Countdown number",
-          "default": "custom-range",
-          "options": [
-            {
-              "value": "inventory-quantity",
-              "label": "Use inventory quantity"
-            },
-            {
-              "value": "custom-range",
-              "label": "Use custom range"
-            }
-          ]
-        },
-        {
-          "type": "number",
-          "id": "from_number",
-          "label": "From",
-          "default": 10
-        },
-        {
-          "type": "number",
-          "id": "to_number",
-          "label": "To",
-          "default": 30
+          "label": "Show quantity selector"
         }
       ]
     },
     {
       "type": "sold-product",
-      "name": "Product sale count",
-      "limit": 1,
+      "name": "Sold product",
       "settings": [
         {
-          "type": "number",
+          "type": "range",
           "id": "from_sold_number",
-          "label": "From sold number",
-          "default": 10
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "default": 1,
+          "label": "From number"
         },
         {
-          "type": "number",
+          "type": "range",
           "id": "to_sold_number",
-          "label": "To",
-          "default": 30
+          "min": 2,
+          "max": 100,
+          "step": 1,
+          "default": 6,
+          "label": "To number"
         },
         {
           "type": "range",
           "id": "from_sold_time",
-          "label": "From sold time",
           "min": 1,
           "max": 24,
           "step": 1,
-          "unit": "hours",
-          "default": 1
+          "default": 1,
+          "label": "From hours"
         },
         {
           "type": "range",
           "id": "to_sold_time",
-          "label": "To sold time",
-          "min": 1,
+          "min": 2,
           "max": 24,
           "step": 1,
-          "unit": "hours",
-          "default": 10
+          "default": 8,
+          "label": "To hours"
         }
       ]
     },
     {
       "type": "live-visitors",
-      "name": "Real time visitors",
-      "limit": 1,
+      "name": "Live visitors",
       "settings": [
-        {
-          "type": "text",
-          "id": "visitors_text",
-          "label": "Visitor text",
-          "default": "[visitors] Persons looking for this product"
-        },
         {
           "type": "range",
           "id": "visitors",
-          "label": "Visitor count range",
-          "min": 10,
-          "max": 500,
-          "step": 10,
-          "default": 50
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "default": 20,
+          "label": "Visitors"
         },
         {
           "type": "range",
           "id": "visitors_time",
-          "label": "Change count number every",
-          "min": 1,
-          "max": 50,
-          "step": 1,
-          "unit": "sec",
-          "default": 10
+          "min": 5,
+          "max": 60,
+          "step": 5,
+          "default": 15,
+          "label": "Change every seconds"
         }
       ]
     },
     {
       "type": "trust-badge",
       "name": "Trust badge",
-      "limit": 1,
       "settings": [
         {
           "type": "image_picker",
-          "id": "trust_badge_img",
-          "label": "Trust badge image",
-          "info": "Recommended size 310x30"
+          "id": "image",
+          "label": "Image"
         },
         {
-          "type": "range",
-          "id": "trust_badge_width",
-          "label": "Image width",
-          "min": 50,
-          "max": 500,
-          "step": 5,
-          "unit": "px",
-          "default": 310
+          "type": "text",
+          "id": "title",
+          "label": "Title"
         },
         {
-          "type": "richtext",
-          "id": "trust_badge_text",
-          "label": "Trust badge text"
-        },
-        {
-          "type": "select",
-          "id": "trust_badge_position",
-          "label": "Trust badge position",
-          "default": "flex-column",
-          "options": [
-            {
-              "value": "flex-column",
-              "label": "Text above image"
-            },
-            {
-              "value": "flex-column-reverse",
-              "label": "Text below image"
-            }
-          ]
-        },
-        {
-          "type": "select",
-          "id": "text_alignment",
-          "label": "Content alignment",
-          "default": "start",
-          "options": [
-            {
-              "value": "start",
-              "label": "Left"
-            },
-            {
-              "value": "center",
-              "label": "Center"
-            },
-            {
-              "value": "end",
-              "label": "Right"
-            }
-          ]
+          "type": "textarea",
+          "id": "text",
+          "label": "Text"
         }
       ]
     },
     {
       "type": "product-usp",
-      "name": "Product USP",
-      "limit": 1,
+      "name": "Product USPs",
       "settings": [
         {
-          "type": "paragraph",
-          "content": "=== USP item 1 ==="
-        },
-        {
-          "type": "text",
-          "id": "icon_class1",
-          "label": "Enter icon class",
-          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
-        },
-        {
-          "type": "text",
-          "id": "usp_text1",
-          "label": "USP text"
-        },
-        {
-          "type": "url",
-          "id": "usp_link1",
-          "label": "Set USP link"
-        },
-        {
-          "type": "paragraph",
-          "content": "=== USP item 2 ==="
-        },
-        {
-          "type": "text",
-          "id": "icon_class2",
-          "label": "Enter icon class",
-          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
-        },
-        {
-          "type": "text",
-          "id": "usp_text2",
-          "label": "USP text"
-        },
-        {
-          "type": "url",
-          "id": "usp_link2",
-          "label": "Set USP link"
-        },
-         {
-          "type": "paragraph",
-          "content": "=== USP item 3 ==="
-        },
-        {
-          "type": "text",
-          "id": "icon_class3",
-          "label": "Enter icon class",
-          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
-        },
-        {
-          "type": "text",
-          "id": "usp_text3",
-          "label": "USP text"
-        },
-        {
-          "type": "url",
-          "id": "usp_link3",
-          "label": "Set USP link"
-        },
-        {
-          "type": "select",
-          "id": "usp_alignment",
-          "label": "USP alignment",
-          "default": "start",
-          "options": [
-            {
-              "value": "start",
-              "label": "Left"
-            },
-            {
-              "value": "center",
-              "label": "Center"
-            },
-            {
-              "value": "end",
-              "label": "Right"
-            }
-          ]
+          "type": "textarea",
+          "id": "content",
+          "label": "USP content"
         }
       ]
     },
     {
       "type": "addon-buttons",
-      "name": "Product addons",
-      "limit": 1,
+      "name": "Compare / question / share",
       "settings": [
         {
           "type": "checkbox",
           "id": "show_compare",
-          "default": true,
-          "label": "Show add to compare"
+          "default": false,
+          "label": "Show compare"
         },
         {
           "type": "checkbox",
           "id": "show_question",
-          "default": true,
+          "default": false,
           "label": "Show ask a question"
         },
         {
           "type": "checkbox",
           "id": "show_social_share",
           "default": true,
-          "label": "Show social share"
+          "label": "Show share"
         }
       ]
     },
     {
       "type": "shipping",
-      "name": "Delivery and return",
-      "limit": 1,
+      "name": "Shipping",
       "settings": [
         {
           "type": "checkbox",
           "id": "show_delivery_times",
-          "label": "Show delivery estimation",
-          "default": true
+          "default": true,
+          "label": "Show delivery times"
         },
         {
           "type": "text",
           "id": "deliver_text",
-          "label": "Delivery text",
-          "default": "Estimated Delivery:"
+          "default": "Estimated delivery",
+          "label": "Delivery text"
         },
         {
-          "type": "text",
+          "type": "range",
           "id": "deliver_days",
-          "label": "Deliver in:",
-          "info": "Days (+/- 1 days). Delivery date range will be -1 to +1 days from the current date plus above entered days.",
-          "default": "7"
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "default": 5,
+          "label": "Delivery days"
         },
         {
           "type": "checkbox",
           "id": "show_shipping_text",
-          "label": "Show Shipping text",
-          "default": true
+          "default": true,
+          "label": "Show shipping text"
         },
         {
-          "type": "richtext",
+          "type": "textarea",
           "id": "shipping_text",
-          "label": "Shipping text",
-          "default": "<p><strong>Free Shipping & Returns: </strong>On all orders over $75</p>"
+          "label": "Shipping text"
         }
       ]
     },
@@ -925,20 +726,19 @@
       "name": "Separator",
       "settings": [
         {
-          "type": "color",
-          "id": "separator_color",
-          "default": "#e4e4e4",
-          "label": "Separator color"
-        },
-        {
           "type": "range",
           "id": "separator_height",
-          "min": 0,
-          "max": 10,
+          "min": 1,
+          "max": 20,
           "step": 1,
-          "unit": "px",
-          "label": "Separator height",
-          "default": 1
+          "default": 1,
+          "label": "Height"
+        },
+        {
+          "type": "color",
+          "id": "separator_color",
+          "default": "#dddddd",
+          "label": "Color"
         }
       ]
     },
@@ -947,9 +747,9 @@
       "name": "Custom HTML",
       "settings": [
         {
-          "type": "html",
+          "type": "liquid",
           "id": "custom_html",
-          "label": "Custom HTML"
+          "label": "Custom HTML / Liquid"
         }
       ]
     }
@@ -979,7 +779,6 @@
       "type": "select",
       "id": "product_page_style",
       "label": "Product page style",
-      "info": "Use column divider block to divide product information into two columns for product page style 2.",
       "default": "style-1",
       "options": [
         {
@@ -995,36 +794,30 @@
     {
       "type": "checkbox",
       "id": "show_content_container",
-      "label": "Show content in container",
-      "info": "Applicable when product page style = Style 2",
-      "default": true
-    },
-    {
-      "type": "header",
-      "content": "Product gallery settings"
+      "default": false,
+      "label": "Show content container"
     },
     {
       "type": "select",
       "id": "product_gellery",
-      "label": "Product gallery style",
-      "info": "Applicable when product page style = Style 1",
+      "label": "Product gallery",
       "default": "slider-vertical",
       "options": [
         {
-          "value": "slider-horizontal",
-          "label": "Slider horizontal"
-        },
-        {
           "value": "slider-vertical",
-          "label": "Slider vertical"
+          "label": "Vertical slider"
         },
         {
-          "value": "grid-1-columns",
-          "label": "Grid 1 column"
+          "value": "slider-horizontal",
+          "label": "Horizontal slider"
         },
         {
           "value": "grid-2-columns",
-          "label": "Grid 2 columns"
+          "label": "2 column grid"
+        },
+        {
+          "value": "grid-1-columns",
+          "label": "1 column grid"
         },
         {
           "value": "combined-grid",
@@ -1036,46 +829,40 @@
       "type": "checkbox",
       "id": "enable_variant_group",
       "default": false,
-      "label": "Enable variant group image"
+      "label": "Group media by variant"
     },
     {
       "type": "checkbox",
       "id": "show_border",
-      "default": false,
-      "label": "Show gallery image border"
+      "default": true,
+      "label": "Show gallery border"
     },
     {
       "type": "range",
       "id": "image_border_radius",
       "min": 0,
-      "max": 15,
+      "max": 30,
       "step": 1,
-      "unit": "px",
-      "label": "Gallery image border radius",
-      "default": 0
-    },    
+      "default": 0,
+      "label": "Image border radius"
+    },
     {
       "type": "checkbox",
       "id": "zoom_enabled",
-      "label": "Enable gallery image zoom",
-      "default": true
-    },
-    {
-      "type": "header",
-      "content": "Thumb slider settings"
+      "default": true,
+      "label": "Enable zoom"
     },
     {
       "type": "checkbox",
       "id": "show_thumb_slider",
-      "label": "Show thumb slider",
-      "default": true
+      "default": true,
+      "label": "Show thumbnails"
     },
     {
       "type": "select",
       "id": "thumb_slider_placement",
-      "label": "Thumb slider placement",
+      "label": "Thumbnail placement",
       "default": "left",
-      "info": "Only applicable for product gallery style: Slider vertical",
       "options": [
         {
           "value": "left",
@@ -1090,100 +877,86 @@
     {
       "type": "select",
       "id": "gutter_size",
-      "label": "Spacing between columns",
-      "default": "gutter-very-small",
-      "info": "Only applicable for product gallery style: Grid 1 Column & Grid 2 Columns",
+      "label": "Gutter size",
+      "default": "gutter-medium",
       "options": [
         {
-          "value": "gutter-none",
-          "label": "Gutter none"
-        },
-        {
-          "value": "gutter-very-small",
-          "label": "Gutter very small"
-        },
-        {
           "value": "gutter-small",
-          "label": "Gutter small"
+          "label": "Small"
         },
         {
           "value": "gutter-medium",
-          "label": "Gutter medium"
+          "label": "Medium"
         },
         {
           "value": "gutter-large",
-          "label": "Gutter large"
-        },
-        {
-          "value": "gutter-extra-large",
-          "label": "Gutter extra large"
+          "label": "Large"
         }
       ]
     },
     {
-      "type": "header",
-      "content": "Sticky add to cart"
-    },
-    {
       "type": "checkbox",
       "id": "sticky_cart_desktop",
-      "label": "Show sticky cart in desktop",
-      "default": true
+      "default": false,
+      "label": "Sticky cart on desktop"
     },
     {
       "type": "checkbox",
       "id": "sticky_cart_mobile",
-      "label": "Show sticky cart in mobile",
-      "default": true
+      "default": false,
+      "label": "Sticky cart on mobile"
     },
     {
       "type": "checkbox",
       "id": "show_dynamic_checkout_btn",
-      "label": "Show dynamic checkout button",
-      "default": false
+      "default": true,
+      "label": "Show dynamic checkout"
     },
     {
       "type": "checkbox",
       "id": "show_sticky_wishlist",
-      "label": "Show wishlist",
-      "default": false
+      "default": true,
+      "label": "Show sticky wishlist"
     },
     {
       "type": "checkbox",
       "id": "show_compare",
-      "label": "Show compare",
-      "default": false
-    },
-    {
-      "type": "header",
-      "content": "Section Settings"
+      "default": false,
+      "label": "Show compare"
     },
     {
       "type": "image_picker",
       "id": "section_bg_image",
-      "label": "Section background image",
-      "info": "Recommended size 1920x1080"
+      "label": "Background image"
     },
     {
       "type": "select",
       "id": "background_position",
       "label": "Background position",
+      "default": "cover-background",
       "options": [
         {
           "value": "cover-background",
           "label": "Cover"
         },
         {
-          "value": "fixed-background",
-          "label": "Fixed"
+          "value": "left-center",
+          "label": "Left center"
+        },
+        {
+          "value": "center-center",
+          "label": "Center center"
+        },
+        {
+          "value": "right-center",
+          "label": "Right center"
         }
-      ],
-      "default": "cover-background"
+      ]
     },
     {
       "type": "color",
       "id": "section_bg_color",
-      "label": "Section background color"
+      "label": "Background color"
     },
     {
       "type": "select",
@@ -1193,23 +966,23 @@
       "options": [
         {
           "value": "large-section-top",
-          "label": "Large section"
+          "label": "Large"
         },
         {
           "value": "medium-section-top",
-          "label": "Medium section"
+          "label": "Medium"
         },
         {
           "value": "small-section-top",
-          "label": "Small section"
+          "label": "Small"
         },
         {
           "value": "very-small-section-top",
-          "label": "Very small section"
+          "label": "Very small"
         },
         {
           "value": "pt-0",
-          "label": "No padding top"
+          "label": "None"
         }
       ]
     },
@@ -1221,23 +994,23 @@
       "options": [
         {
           "value": "large-section-bottom",
-          "label": "Large section"
+          "label": "Large"
         },
         {
           "value": "medium-section-bottom",
-          "label": "Medium section"
+          "label": "Medium"
         },
         {
           "value": "small-section-bottom",
-          "label": "Small section"
+          "label": "Small"
         },
         {
           "value": "very-small-section-bottom",
-          "label": "Very small section"
+          "label": "Very small"
         },
         {
           "value": "pb-0",
-          "label": "No padding bottom"
+          "label": "None"
         }
       ]
     },
