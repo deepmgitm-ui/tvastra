@@ -4,7 +4,6 @@
   var GALLERY_SELECTOR = '.main-product-page .product-gallery';
   var boundGalleries = new WeakSet();
   var boundSwipers = new WeakSet();
-  var preparedVideos = new WeakSet();
   var preparedIframes = new WeakSet();
 
   function getMainElement(gallery) {
@@ -24,9 +23,7 @@
     var main = getMainElement(gallery);
     if (!main) return [];
 
-    return Array.prototype.slice.call(
-      main.querySelectorAll('.swiper-wrapper > .swiper-slide')
-    ).filter(function (slide) {
+    return Array.prototype.slice.call(main.querySelectorAll('.swiper-wrapper > .swiper-slide')).filter(function (slide) {
       return !slide.classList.contains('swiper-slide-duplicate');
     });
   }
@@ -97,9 +94,7 @@
     var play = function () {
       try {
         var promise = video.play();
-        if (promise && typeof promise.catch === 'function') {
-          promise.catch(function () {});
-        }
+        if (promise && typeof promise.catch === 'function') promise.catch(function () {});
       } catch (error) {}
     };
 
@@ -107,7 +102,11 @@
       var onReady = function () {
         video.removeEventListener('loadedmetadata', onReady);
         video.removeEventListener('canplay', onReady);
-        window.requestAnimationFrame(play);
+        if (window.requestAnimationFrame) {
+          window.requestAnimationFrame(play);
+        } else {
+          play();
+        }
       };
 
       video.addEventListener('loadedmetadata', onReady, { once: true });
@@ -141,14 +140,15 @@
 
     try {
       var source = new URL(iframe.src, window.location.href);
+      var hostname = source.hostname.toLowerCase();
 
-      if (/youtube(?:-nocookie)?\\.com$/i.test(source.hostname)) {
+      if (hostname.indexOf('youtube') !== -1) {
         source.searchParams.set('enablejsapi', '1');
         source.searchParams.set('playsinline', '1');
         source.searchParams.set('mute', '1');
       }
 
-      if (/vimeo\\.com$/i.test(source.hostname)) {
+      if (hostname.indexOf('vimeo') !== -1) {
         source.searchParams.set('api', '1');
         source.searchParams.set('muted', '1');
         source.searchParams.set('playsinline', '1');
@@ -161,7 +161,9 @@
   function postExternalCommand(iframe, shouldPlay) {
     if (!iframe || !iframe.contentWindow) return;
 
-    if (/youtube/i.test(iframe.src)) {
+    var source = iframe.src || '';
+
+    if (/youtube/i.test(source)) {
       try {
         iframe.contentWindow.postMessage(JSON.stringify({
           event: 'command',
@@ -172,7 +174,7 @@
       return;
     }
 
-    if (/vimeo/i.test(iframe.src)) {
+    if (/vimeo/i.test(source)) {
       try {
         iframe.contentWindow.postMessage({
           method: shouldPlay ? 'play' : 'pause'
@@ -269,9 +271,7 @@
     var main = getMainElement(gallery);
     var thumb = getThumbElement(gallery);
 
-    if (!main || main.swiper || typeof window.Swiper !== 'function') {
-      return getMainSwiper(gallery);
-    }
+    if (!main || main.swiper || typeof window.Swiper !== 'function') return getMainSwiper(gallery);
 
     var thumbSwiper = null;
 
@@ -291,7 +291,7 @@
     }
 
     try {
-      var swiper = new window.Swiper(main, {
+      return new window.Swiper(main, {
         slidesPerView: 1,
         spaceBetween: 10,
         speed: 300,
@@ -309,8 +309,6 @@
         },
         thumbs: thumbSwiper ? { swiper: thumbSwiper } : undefined
       });
-
-      return swiper;
     } catch (error) {
       return null;
     }
@@ -382,11 +380,8 @@
       bindSwiper(gallery, swiper);
       setSwiperMediaSizing(swiper);
       try {
-        if (swiper.params && swiper.params.loop && typeof swiper.slideToLoop === 'function') {
-          swiper.slideToLoop(index, 300);
-        } else if (typeof swiper.slideTo === 'function') {
-          swiper.slideTo(index, 300);
-        }
+        if (swiper.params && swiper.params.loop && typeof swiper.slideToLoop === 'function') swiper.slideToLoop(index, 300);
+        else if (typeof swiper.slideTo === 'function') swiper.slideTo(index, 300);
       } catch (error) {}
       syncMedia(gallery, 320);
       return;
@@ -462,11 +457,8 @@
     }
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', start);
-  } else {
-    start();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
 
   window.addEventListener('load', function () {
     document.querySelectorAll(GALLERY_SELECTOR).forEach(function (gallery) {
