@@ -1,0 +1,348 @@
+/* ======================================================================
+   TVASTRA PDP · PRODUCT DETAILS REDESIGN · STEP 6
+   Description / additional info / shipping / returns / reviews tabs.
+   Existing Bootstrap tab behavior and mobile accordion JS are preserved.
+   ====================================================================== */
+.main-product-page,
+.tvastra-product-tabs {
+  --tabs6-ink: #132e31;
+  --tabs6-muted: #66736f;
+  --tabs6-line: #dfe7e3;
+  --tabs6-soft: #f7faf8;
+  --tabs6-accent: #b98b2c;
+}
+
+/* Section shell */
+.tvastra-product-tabs {
+  margin-top: 34px !important;
+  padding-top: 0 !important;
+  padding-bottom: 44px !important;
+}
+
+.tvastra-product-tabs .tabs-wrapper {
+  width: min(100%, 1040px) !important;
+  margin: 0 auto !important;
+}
+
+/* Desktop navigation */
+@media (min-width: 768px) {
+  .tvastra-product-tabs .nav-tabs {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 1px solid var(--tabs6-line) !important;
+    border-radius: 10px 10px 0 0 !important;
+    background: #fff !important;
+    overflow: hidden !important;
+  }
+
+  .tvastra-product-tabs .nav-tabs .nav-item {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+
+  .tvastra-product-tabs .nav-tabs .nav-link {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    min-height: 48px !important;
+    margin: 0 !important;
+    padding: 0 14px !important;
+    border: 0 !important;
+    border-right: 1px solid var(--tabs6-line) !important;
+    border-radius: 0 !important;
+    background: #fff !important;
+    color: var(--tabs6-muted) !important;
+    font-size: 11px !important;
+    font-weight: 650 !important;
+    line-height: 1.2 !important;
+    text-align: center !important;
+    transition: background-color .18s ease, color .18s ease !important;
+  }
+
+  .tvastra-product-tabs .nav-tabs .nav-item:last-child .nav-link {
+    border-right: 0 !important;
+  }
+
+  .tvastra-product-tabs .nav-tabs .nav-link::after {
+    content: "" !important;
+    position: absolute !important;
+    right: 16px !important;
+    bottom: 0 !important;
+    left: 16px !important;
+    width: auto !important;
+    height: 2px !important;
+    background: var(--tabs6-ink) !important;
+    transform: scaleX(0) !important;
+    transform-origin: center !important;
+    transition: transform .2s ease !important;
+  }
+
+  .tvastra-product-tabs .nav-tabs .nav-link.active,
+  .tvastra-product-tabs .nav-tabs .nav-link:hover {
+    color: var(--tabs6-ink) !important;
+    background: var(--tabs6-soft) !important;
+  }
+
+  .tvastra-product-tabs .nav-tabs .nav-link.active::after {
+    transform: scaleX(1) !important;
+  }
+
+  .tvastra-product-tabs .nav-tabs .product-tabs__icon {
+    display: none !important;
+  }
+
+  .tvastra-product-tabs .tab-content {
+    margin: 0 !important;
+    border: 1px solid var(--tabs6-line) !important;
+    border-top: 0 !important;
+    border-radius: 0 0 10px 10px !important;
+    background: #fff !important;
+    overflow: hidden !important;
+  }
+
+  .tvastra-product-tabs .tab-content > .tab-pane {
+    margin: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+  }
+
+  .tvastra-product-tabs .tab-content > .tab-pane > .content-wrap {
+    width: min(820px, calc(100% - 64px)) !important;
+    max-width: none !important;
+    margin: 0 auto !important;
+    padding: 28px 0 30px !important;
+    color: var(--tabs6-muted) !important;
+    font-size: 13px !important;
+    line-height: 1.75 !important;
+  }
+
+  .tvastra-product-tabs .content-wrap p {
+    margin: 0 0 12px !important;
+  }
+
+  .tvastra-product-tabs .content-wrap p:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  .tvastra-product-tabs .content-wrap h1,
+  .tvastra-product-tabs .content-wrap h2,
+  .tvastra-product-tabs .content-wrap h3,
+  .tvastra-product-tabs .content-wrap h4,
+  .tvastra-product-tabs .content-wrap h5,
+  .tvastra-product-tabs .content-wrap h6 {
+    margin: 0 0 10px !important;
+    color: var(--tabs6-ink) !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    line-height: 1.35 !important;
+  }
+
+  .tvastra-product-tabs .tab-content ul {
+    display: grid !important;
+    gap: 7px !important;
+    margin: 0 0 14px !important;
+    padding: 0 !important;
+    list-style: none !important;
+  }
+
+  .tvastra-product-tabs .tab-content li {
+    position: relative !important;
+    padding-left: 17px !important;
+    color: var(--tabs6-muted) !important;
+  }
+
+  .tvastra-product-tabs .tab-content li::before {
+    content: "" !important;
+    position: absolute !important;
+    top: .78em !important;
+    left: 0 !important;
+    width: 5px !important;
+    height: 5px !important;
+    border-radius: 50% !important;
+    background: var(--tabs6-accent) !important;
+  }
+
+  .tvastra-product-tabs .additional-information {
+    width: 100% !important;
+    margin: 0 !important;
+    border-collapse: collapse !important;
+  }
+
+  .tvastra-product-tabs .additional-information th,
+  .tvastra-product-tabs .additional-information td {
+    padding: 12px 0 !important;
+    border-bottom: 1px solid var(--tabs6-line) !important;
+    background: transparent !important;
+    font-size: 12px !important;
+    line-height: 1.45 !important;
+    vertical-align: top !important;
+  }
+
+  .tvastra-product-tabs .additional-information tr:last-child th,
+  .tvastra-product-tabs .additional-information tr:last-child td {
+    border-bottom: 0 !important;
+  }
+
+  .tvastra-product-tabs .additional-information th {
+    width: 34% !important;
+    color: var(--tabs6-ink) !important;
+    font-weight: 700 !important;
+  }
+
+  .tvastra-product-tabs .additional-information td {
+    color: var(--tabs6-muted) !important;
+  }
+}
+
+/* Mobile: accordion rows with strong tap rhythm. */
+@media (max-width: 767px) {
+  .tvastra-product-tabs {
+    margin-top: 24px !important;
+    padding-bottom: 32px !important;
+  }
+
+  .tvastra-product-tabs .container {
+    padding-right: 10px !important;
+    padding-left: 10px !important;
+  }
+
+  .tvastra-product-tabs .tab-content {
+    margin: 0 !important;
+    border: 1px solid var(--tabs6-line) !important;
+    border-radius: 10px !important;
+    background: #fff !important;
+    overflow: hidden !important;
+  }
+
+  .tvastra-product-tabs .tab-content > .tab-pane,
+  .tvastra-product-tabs .tab-content > .tab-pane:not(:last-child) {
+    border-bottom: 1px solid var(--tabs6-line) !important;
+    background: #fff !important;
+  }
+
+  .tvastra-product-tabs .tab-content > .tab-pane:last-child {
+    border-bottom: 0 !important;
+  }
+
+  .tvastra-product-tabs .tab-content .mobile-tab-title,
+  .tvastra-product-tabs .tab-content .tab-pane:first-child .mobile-tab-title {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    margin: 0 !important;
+    padding: 0 14px !important;
+    border: 0 !important;
+    background: #fff !important;
+    color: var(--tabs6-ink) !important;
+    font-family: inherit !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+    text-align: left !important;
+    cursor: pointer !important;
+  }
+
+  .tvastra-product-tabs .tab-content .mobile-tab-title::before {
+    content: "" !important;
+    width: 3px !important;
+    height: 17px !important;
+    margin-right: 10px !important;
+    border-radius: 999px !important;
+    background: transparent !important;
+    transition: background-color .18s ease !important;
+  }
+
+  .tvastra-product-tabs .tab-content .mobile-tab-title.active::before {
+    background: var(--tabs6-accent) !important;
+  }
+
+  .tvastra-product-tabs .tab-content .mobile-tab-title::after {
+    content: "+" !important;
+    width: 18px !important;
+    height: 18px !important;
+    margin-left: auto !important;
+    color: var(--tabs6-muted) !important;
+    font-size: 15px !important;
+    font-weight: 400 !important;
+    line-height: 18px !important;
+    text-align: center !important;
+    background: transparent !important;
+    border: 0 !important;
+  }
+
+  .tvastra-product-tabs .tab-content .mobile-tab-title.active::after {
+    content: "−" !important;
+  }
+
+  .tvastra-product-tabs .tab-content .mobile-tab-title .product-tabs__icon {
+    display: none !important;
+  }
+
+  .tvastra-product-tabs .tab-content > .tab-pane > .content-wrap {
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 14px 18px 27px !important;
+    color: var(--tabs6-muted) !important;
+    font-size: 11px !important;
+    line-height: 1.65 !important;
+  }
+
+  .tvastra-product-tabs .content-wrap h1,
+  .tvastra-product-tabs .content-wrap h2,
+  .tvastra-product-tabs .content-wrap h3,
+  .tvastra-product-tabs .content-wrap h4,
+  .tvastra-product-tabs .content-wrap h5,
+  .tvastra-product-tabs .content-wrap h6 {
+    margin-bottom: 7px !important;
+    font-size: 12px !important;
+  }
+
+  .tvastra-product-tabs .tab-content ul {
+    gap: 6px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .tvastra-product-tabs .tab-content li {
+    padding-left: 14px !important;
+  }
+
+  .tvastra-product-tabs .additional-information th,
+  .tvastra-product-tabs .additional-information td {
+    padding: 9px 0 !important;
+    font-size: 10.5px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .tvastra-product-tabs .tab-content .mobile-tab-title {
+    height: 46px !important;
+    min-height: 46px !important;
+    padding-inline: 12px !important;
+  }
+
+  .tvastra-product-tabs .tab-content > .tab-pane > .content-wrap {
+    padding-right: 12px !important;
+    padding-left: 24px !important;
+    font-size: 10.5px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tvastra-product-tabs .nav-tabs .nav-link,
+  .tvastra-product-tabs .nav-tabs .nav-link::after,
+  .tvastra-product-tabs .mobile-tab-title::before {
+    transition: none !important;
+  }
+}
