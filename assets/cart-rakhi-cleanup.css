@@ -1,0 +1,21 @@
+/* Tvastra cart cleanup: remove the retired Rakhi promotion from both cart surfaces. */
+
+/* Main /cart page offer block */
+.main-cart .tvastra-cart-offer[data-tvastra-promo] {
+  display: none !important;
+}
+
+/* Mini-cart / cart drawer offer block */
+.mini-cart-bottom .tvastra-cart-offer[data-tvastra-promo] {
+  display: none !important;
+}
+
+/* Never expose the retired coupon code in the cart price-details label. */
+.main-cart .tvastra-cart-price-summary__row--discount span {
+  font-size: 0 !important;
+}
+
+.main-cart .tvastra-cart-price-summary__row--discount span::after {
+  content: 'Discount' !important;
+  font-size: 13px !important;
+}
