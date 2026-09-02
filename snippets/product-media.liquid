@@ -16,7 +16,7 @@
             assign variant_img_added = false
             assign media_alt = media.alt | downcase
             if group_image == true
-              if product_options_downcased contains media_alt
+              if product_options_downcased != blank and media_alt != blank and product_options_downcased contains media_alt
                 assign can_show = true
                 assign variant_img_added = true
               endif
@@ -55,7 +55,7 @@
               data-preview-src="{{ media.preview_image | image_url: width: 1400 }}"
               data-preview-alt="{{ media.alt | escape }}"
               data-index="{{ forloop.index }}"
-              variant_img_added="{{ variant_img_added }}"
+              variant_img_added=""
             >
               {%- render 'product-thumbnail',
                 type: 'thumb',
@@ -156,6 +156,7 @@
     {%- endif -%}
   {%- endcapture -%}
 
+  {%- assign main_image_shown = false -%}
   <div
     class="swiper product-image-main"
     data-slider-options='{ {{ slider_thumb_options }} }'
@@ -170,7 +171,7 @@
           assign variant_img_added = false
           assign media_alt = media.alt | downcase
           if group_image == true
-            if product_options_downcased contains media_alt
+            if product_options_downcased != blank and media_alt != blank and product_options_downcased contains media_alt
               assign can_show = true
               assign variant_img_added = true
             endif
@@ -195,9 +196,11 @@
               modal_id: section_id
             -%}
           </div>
+          {%- assign main_image_shown = true -%}
         {%- endif -%}
       {%- endfor -%}
-      {%- unless image_shown -%}
+
+      {%- unless main_image_shown -%}
         {%- for media in product.media -%}
           <div
             class="swiper-slide product__media-item"
@@ -205,7 +208,7 @@
             data-media-host="{{ media.host }}"
             data-media-id="{{ section_id }}-{{ media.id }}-main"
             data-index="{{ forloop.index }}"
-            variant_img_added="{{ variant_img_added }}"
+            variant_img_added=""
           >
             {%- render 'product-thumbnail',
               type: 'main',
@@ -227,7 +230,7 @@
 
     <div class="swiper-button-next">
       <svg xmlns="http://www.w3.org/2000/svg" fill="#262626" viewBox="0 0 320 512">
-        <path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/>
+        <path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0 12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/>
       </svg>
     </div>
   </div>
