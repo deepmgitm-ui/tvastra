@@ -1,0 +1,271 @@
+/* ======================================================================
+   TVASTRA PDP · REVIEWS REDESIGN · STEP 5
+   Judge.me presentation layer. App behavior and review data remain intact.
+   ====================================================================== */
+#judgeme_product_reviews {
+  --reviews-ink: #132e31;
+  --reviews-muted: #687570;
+  --reviews-line: #e2e8e5;
+  --reviews-soft: #f7faf8;
+  width: min(1120px, calc(100% - 32px)) !important;
+  margin: 56px auto 64px !important;
+  color: var(--reviews-ink) !important;
+}
+
+#judgeme_product_reviews .jdgm-rev-widg {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Review heading */
+#judgeme_product_reviews .jdgm-rev-widg__title,
+#judgeme_product_reviews .jdgm-all-reviews-widget .jdgm-widget-title {
+  margin: 0 !important;
+  padding: 0 0 14px !important;
+  border-bottom: 1px solid var(--reviews-line) !important;
+  color: var(--reviews-ink) !important;
+  font-size: 22px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -.01em !important;
+}
+
+/* Summary area */
+#judgeme_product_reviews .jdgm-rev-widg__summary,
+#judgeme_product_reviews .jdgm-rev-widg__summary-inner {
+  color: var(--reviews-ink) !important;
+}
+
+#judgeme_product_reviews .jdgm-rev-widg__summary {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  min-height: 72px !important;
+  margin: 0 !important;
+  padding: 14px 0 16px !important;
+  border-bottom: 1px solid var(--reviews-line) !important;
+}
+
+#judgeme_product_reviews .jdgm-rev-widg__summary-stars,
+#judgeme_product_reviews .jdgm-rev-widg__summary-stars > * {
+  display: inline-flex !important;
+  align-items: center !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  gap: 2px !important;
+  white-space: nowrap !important;
+}
+
+#judgeme_product_reviews .jdgm-rev-widg__summary-stars {
+  color: var(--reviews-ink) !important;
+}
+
+#judgeme_product_reviews .jdgm-rev-widg__summary-average {
+  color: var(--reviews-ink) !important;
+  font-size: 24px !important;
+  font-weight: 750 !important;
+  line-height: 1 !important;
+}
+
+#judgeme_product_reviews .jdgm-rev-widg__summary-text {
+  color: var(--reviews-muted) !important;
+  font-size: 11px !important;
+}
+
+/* Review cards */
+#judgeme_product_reviews .jdgm-rev-widg__reviews,
+#judgeme_product_reviews .jdgm-all-reviews-widget .jdgm-rev-widg__reviews {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+  margin: 16px 0 0 !important;
+}
+
+#judgeme_product_reviews .jdgm-rev,
+#judgeme_product_reviews .jdgm-carousel-item {
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 18px !important;
+  border: 1px solid var(--reviews-line) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  box-shadow: 0 7px 20px rgba(19,46,49,.045) !important;
+}
+
+#judgeme_product_reviews .jdgm-rev__header {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 6px 10px !important;
+  margin-bottom: 11px !important;
+}
+
+#judgeme_product_reviews .jdgm-rev__rating {
+  display: inline-flex !important;
+  align-items: center !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  gap: 2px !important;
+  white-space: nowrap !important;
+}
+
+#judgeme_product_reviews .jdgm-rev__title {
+  width: 100% !important;
+  margin: 0 !important;
+  color: var(--reviews-ink) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+}
+
+#judgeme_product_reviews .jdgm-rev__author,
+#judgeme_product_reviews .jdgm-rev__timestamp,
+#judgeme_product_reviews .jdgm-rev__prod-info-wrapper {
+  color: var(--reviews-muted) !important;
+  font-size: 9.5px !important;
+  line-height: 1.35 !important;
+}
+
+#judgeme_product_reviews .jdgm-rev__author {
+  font-weight: 650 !important;
+}
+
+#judgeme_product_reviews .jdgm-rev__content {
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #465550 !important;
+  font-size: 12px !important;
+  line-height: 1.65 !important;
+}
+
+#judgeme_product_reviews .jdgm-rev__pics {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 5px !important;
+  margin: 13px 0 0 !important;
+}
+
+#judgeme_product_reviews .jdgm-rev__pic-link {
+  min-width: 0 !important;
+  border-radius: 7px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--reviews-line) !important;
+}
+
+#judgeme_product_reviews .jdgm-rev__pic-img {
+  width: 100% !important;
+  height: 62px !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+#judgeme_product_reviews .jdgm-rev__actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 7px !important;
+  margin-top: 12px !important;
+}
+
+#judgeme_product_reviews .jdgm-rev__actions a,
+#judgeme_product_reviews .jdgm-rev__actions button {
+  display: inline-flex !important;
+  align-items: center !important;
+  min-height: 29px !important;
+  padding: 0 9px !important;
+  border: 1px solid var(--reviews-line) !important;
+  border-radius: 999px !important;
+  background: var(--reviews-soft) !important;
+  color: var(--reviews-ink) !important;
+  font-size: 9.5px !important;
+  font-weight: 650 !important;
+  text-decoration: none !important;
+}
+
+/* Carousel controls */
+#judgeme_product_reviews .jdgm-carousel-wrapper .jdgm-carousel__left-arrow,
+#judgeme_product_reviews .jdgm-carousel-wrapper .jdgm-carousel__right-arrow {
+  width: 34px !important;
+  height: 34px !important;
+  border: 1px solid var(--reviews-line) !important;
+  border-radius: 50% !important;
+  background: rgba(255,255,255,.96) !important;
+  color: var(--reviews-ink) !important;
+  box-shadow: 0 5px 14px rgba(19,46,49,.08) !important;
+}
+
+/* Review widget controls */
+#judgeme_product_reviews button,
+#judgeme_product_reviews .jdgm-write-rev-link,
+#judgeme_product_reviews .jdgm-btn {
+  border-radius: 999px !important;
+}
+
+@media (max-width: 991px) {
+  #judgeme_product_reviews .jdgm-rev-widg__reviews,
+  #judgeme_product_reviews .jdgm-all-reviews-widget .jdgm-rev-widg__reviews {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 767px) {
+  #judgeme_product_reviews {
+    width: calc(100% - 20px) !important;
+    margin: 40px auto 48px !important;
+  }
+
+  #judgeme_product_reviews .jdgm-rev-widg__title,
+  #judgeme_product_reviews .jdgm-all-reviews-widget .jdgm-widget-title {
+    font-size: 18px !important;
+    padding-bottom: 11px !important;
+  }
+
+  #judgeme_product_reviews .jdgm-rev-widg__summary {
+    min-height: 60px !important;
+    padding-block: 11px 12px !important;
+  }
+
+  #judgeme_product_reviews .jdgm-rev-widg__summary-average {
+    font-size: 21px !important;
+  }
+
+  #judgeme_product_reviews .jdgm-rev-widg__reviews,
+  #judgeme_product_reviews .jdgm-all-reviews-widget .jdgm-rev-widg__reviews {
+    grid-template-columns: 1fr !important;
+    gap: 9px !important;
+    margin-top: 11px !important;
+  }
+
+  #judgeme_product_reviews .jdgm-rev,
+  #judgeme_product_reviews .jdgm-carousel-item {
+    padding: 14px !important;
+    border-radius: 9px !important;
+    box-shadow: none !important;
+  }
+
+  #judgeme_product_reviews .jdgm-rev__content {
+    font-size: 11px !important;
+  }
+
+  #judgeme_product_reviews .jdgm-rev__pic-img {
+    height: 72px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  #judgeme_product_reviews {
+    width: calc(100% - 16px) !important;
+  }
+
+  #judgeme_product_reviews .jdgm-rev__pics {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #judgeme_product_reviews * {
+    scroll-behavior: auto !important;
+  }
+}
