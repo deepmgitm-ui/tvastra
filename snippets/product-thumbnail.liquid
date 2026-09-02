@@ -44,6 +44,9 @@
     >    
   </div>
 {%- else -%}
+  {%- if position == 1 or position == '1' -%}
+    {%- render 'product-main-image-fit' -%}
+  {%- endif -%}
   {%- case media.media_type -%}
     {%- when 'image' -%}
       <div class="product-media overflow-hidden media-image h-100" style="{{ border_style }}">
