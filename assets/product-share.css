@@ -6,6 +6,7 @@
 @import url("./product-pdp-step3-cta.css");
 @import url("./product-pdp-step4-details.css");
 @import url("./product-pdp-step5-lower.css");
+@import url("./product-pdp-step6-final.css");
 
 #social-sharing.tvastra-product-share {
   width: min(92vw, 460px);
