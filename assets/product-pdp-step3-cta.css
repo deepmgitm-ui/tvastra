@@ -1,0 +1,321 @@
+/* ----------------------------------------------------------------------
+   TVASTRA PDP · STEP 3 · PURCHASE EXPERIENCE
+   ---------------------------------------------------------------------- */
+.main-product-page .product-summary .product-form {
+  margin-top: 2px;
+}
+
+.main-product-page .product-summary .product-form .product-form-buttons,
+.main-product-page .product-summary .product-form .product-cta-smart {
+  width: 100%;
+}
+
+.main-product-page .product-summary .product-form .action-btn {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr) auto !important;
+  align-items: end !important;
+  gap: 8px !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+.main-product-page .product-summary .product-form .quantity-btn {
+  display: grid !important;
+  gap: 5px !important;
+  margin: 0 !important;
+}
+
+.main-product-page .product-summary .product-form .quantity-btn > label {
+  margin: 0 !important;
+  color: #6d7976 !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  text-transform: uppercase !important;
+  letter-spacing: .07em !important;
+}
+
+.main-product-page .product-summary .product-form .quantity {
+  display: inline-flex !important;
+  align-items: center !important;
+  width: 108px !important;
+  height: 46px !important;
+  overflow: hidden !important;
+  border: 1px solid #d5dfdb !important;
+  border-radius: 8px !important;
+  background: #fff !important;
+}
+
+.main-product-page .product-summary .product-form .quantity-button {
+  display: inline-flex !important;
+  flex: 0 0 34px !important;
+  width: 34px !important;
+  height: 44px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #17363a !important;
+  font-size: 17px !important;
+}
+
+.main-product-page .product-summary .product-form .quantity-button:hover {
+  background: #f4f7f5 !important;
+}
+
+.main-product-page .product-summary .product-form .quantity-input {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  width: 38px !important;
+  height: 44px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #17363a !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+  appearance: textfield !important;
+}
+
+.main-product-page .product-summary .product-form .quantity-input::-webkit-outer-spin-button,
+.main-product-page .product-summary .product-form .quantity-input::-webkit-inner-spin-button {
+  margin: 0 !important;
+  appearance: none !important;
+}
+
+.main-product-page .product-summary .product-form .cart-btn {
+  display: inline-flex !important;
+  width: 100% !important;
+  min-height: 46px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  padding: 0 18px !important;
+  border: 1px solid #17363a !important;
+  border-radius: 8px !important;
+  background: #17363a !important;
+  color: #fff !important;
+  font-size: 12px !important;
+  font-weight: 750 !important;
+  line-height: 1 !important;
+  letter-spacing: .01em !important;
+  box-shadow: 0 8px 18px rgba(23, 54, 58, .13) !important;
+  transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease !important;
+}
+
+.main-product-page .product-summary .product-form .cart-btn:hover {
+  transform: translateY(-1px) !important;
+  background: #102d31 !important;
+  box-shadow: 0 11px 22px rgba(23, 54, 58, .17) !important;
+}
+
+.main-product-page .product-summary .product-form .cart-btn i {
+  margin: 0 !important;
+  font-size: 14px !important;
+}
+
+.main-product-page .product-summary .product-form .cart-btn.notify-me {
+  background: #fff !important;
+  color: #17363a !important;
+  box-shadow: none !important;
+}
+
+.main-product-page .product-summary .product-form .product-buy-now-inline {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.main-product-page .product-summary .product-form .product-buy-now-inline .shopify-payment-button,
+.main-product-page .product-summary .product-form .product-buy-now-inline .shopify-payment-button__button {
+  width: 100% !important;
+}
+
+.main-product-page .product-summary .product-form .product-buy-now-inline .shopify-payment-button__button,
+.main-product-page .product-summary .product-form .product-buy-now-inline .custom-payment-btn,
+.main-product-page .product-summary .product-form .product-buy-now-inline button {
+  min-height: 46px !important;
+  border: 1px solid #d3ddd9 !important;
+  border-radius: 8px !important;
+  background: #fff !important;
+  color: #17363a !important;
+  font-size: 12px !important;
+  font-weight: 750 !important;
+  line-height: 1 !important;
+  box-shadow: none !important;
+}
+
+.main-product-page .product-summary .product-form .product-buy-now-inline .shopify-payment-button__button:hover,
+.main-product-page .product-summary .product-form .product-buy-now-inline .custom-payment-btn:hover,
+.main-product-page .product-summary .product-form .product-buy-now-inline button:hover {
+  border-color: #17363a !important;
+  background: #f5f8f7 !important;
+}
+
+.main-product-page .product-summary .product-form .shopify-payment-button__button--hidden {
+  display: none !important;
+}
+
+.main-product-page .product-summary .product-form .action-btn > .wishlist-btn,
+.main-product-page .product-summary .product-form .action-btn > .button-wishlist,
+.main-product-page .product-summary .product-form .action-btn > a[data-wishlist] {
+  flex: 0 0 46px !important;
+  width: 46px !important;
+  min-width: 46px !important;
+  height: 46px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  border: 1px solid #d4dfda !important;
+  border-radius: 8px !important;
+  background: #fff !important;
+  color: #17363a !important;
+}
+
+.main-product-page .product-summary .product-form .action-btn > .wishlist-btn:hover,
+.main-product-page .product-summary .product-form .action-btn > .button-wishlist:hover,
+.main-product-page .product-summary .product-form .action-btn > a[data-wishlist]:hover {
+  border-color: #17363a !important;
+  background: #f5f8f7 !important;
+}
+
+.main-product-page .product-summary .product-form .action-btn > .wishlist-btn i,
+.main-product-page .product-summary .product-form .action-btn > .button-wishlist i,
+.main-product-page .product-summary .product-form .action-btn > a[data-wishlist] i {
+  margin: 0 !important;
+  font-size: 16px !important;
+}
+
+/* Error / unavailable states remain obvious without looking alarming. */
+.main-product-page .product-summary .product-form .product-form__error-message-wrapper {
+  margin: 0 0 9px !important;
+  padding: 8px 10px !important;
+  border-radius: 7px !important;
+  background: #fff4f3 !important;
+  color: #9b3028 !important;
+  font-size: 10px !important;
+}
+
+/* Sticky desktop purchase tray */
+.main-product-page + .sticky-addtocart,
+.sticky-addtocart {
+  border-top: 1px solid #dfe7e3 !important;
+  background: rgba(255, 255, 255, .97) !important;
+  box-shadow: 0 -10px 30px rgba(18, 38, 40, .09) !important;
+  backdrop-filter: blur(14px) !important;
+}
+
+.sticky-addtocart .container,
+.sticky-addtocart .sticky-cart-wrap {
+  min-height: 68px !important;
+}
+
+.sticky-addtocart .product-title {
+  color: #17363a !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+}
+
+.sticky-addtocart .price,
+.sticky-addtocart .price-item--sale {
+  color: #17363a !important;
+  font-size: 14px !important;
+  font-weight: 750 !important;
+}
+
+.sticky-addtocart .compare-btn,
+.sticky-addtocart .wishlist-btn {
+  border: 1px solid #d4dfda !important;
+  border-radius: 8px !important;
+  background: #fff !important;
+  color: #17363a !important;
+}
+
+.sticky-addtocart .sticky-add-to-cart,
+.sticky-addtocart .cart-btn,
+.sticky-addtocart .btn {
+  min-height: 44px !important;
+  border-radius: 8px !important;
+  background: #17363a !important;
+  color: #fff !important;
+  font-size: 11px !important;
+  font-weight: 750 !important;
+}
+
+/* Mobile bottom tray: compact, thumb-friendly, never full-screen. */
+@media (max-width: 767px) {
+  .main-product-page .product-summary .product-form .action-btn {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 7px !important;
+  }
+
+  .main-product-page .product-summary .product-form .quantity-btn {
+    grid-column: 1 / -1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+
+  .main-product-page .product-summary .product-form .quantity-btn > label {
+    font-size: 9px !important;
+  }
+
+  .main-product-page .product-summary .product-form .quantity {
+    width: 112px !important;
+    height: 42px !important;
+  }
+
+  .main-product-page .product-summary .product-form .quantity-button {
+    height: 40px !important;
+  }
+
+  .main-product-page .product-summary .product-form .quantity-input {
+    height: 40px !important;
+  }
+
+  .main-product-page .product-summary .product-form .cart-btn,
+  .main-product-page .product-summary .product-form .product-buy-now-inline .shopify-payment-button__button,
+  .main-product-page .product-summary .product-form .product-buy-now-inline .custom-payment-btn,
+  .main-product-page .product-summary .product-form .product-buy-now-inline button {
+    min-height: 44px !important;
+  }
+
+  .main-product-page .product-summary .product-form .action-btn > .wishlist-btn,
+  .main-product-page .product-summary .product-form .action-btn > .button-wishlist,
+  .main-product-page .product-summary .product-form .action-btn > a[data-wishlist] {
+    min-height: 44px !important;
+    height: 44px !important;
+  }
+
+  .sticky-addtocart {
+    min-height: 64px !important;
+    padding: 7px 10px !important;
+  }
+
+  .sticky-addtocart .product-title,
+  .sticky-addtocart .price-wrapper,
+  .sticky-addtocart .compare-btn,
+  .sticky-addtocart .wishlist-btn {
+    display: none !important;
+  }
+
+  .sticky-addtocart .sticky-add-to-cart,
+  .sticky-addtocart .cart-btn,
+  .sticky-addtocart .btn {
+    width: 100% !important;
+    min-height: 50px !important;
+    border-radius: 8px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .main-product-page .product-summary .product-form .cart-btn,
+  .main-product-page .product-summary .product-form .product-buy-now-inline button {
+    transition: none !important;
+  }
+}
