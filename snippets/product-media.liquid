@@ -4,12 +4,11 @@
   {%- endif -%}
   border-radius: {{ section.settings.image_border_radius }}px;
 {%- endcapture -%}
+
 {%- if section.settings.show_thumb_slider == true -%}
   <div class="product-thumb-wrap">
-    <div class="swiper product-image-thumb slider-{{ direction }}">
-      <!-- Additional required wrapper -->
+    <div class="swiper product-image-thumb slider-vertical">
       <div class="swiper-wrapper">
-        <!-- Slides -->
         {%- assign image_shown = false -%}
         {%- for media in product.media -%}
           {%- liquid
@@ -73,6 +72,7 @@
     </div>
   </div>
 {%- endif -%}
+
 {%- liquid
   assign initial_media_id = product.selected_or_first_available_variant.featured_media.id
   assign initial_preview_media = product.selected_or_first_available_variant.featured_media
@@ -87,6 +87,7 @@
     endif
   endfor
 -%}
+
 <div class="product-main-slider">
   <a
     href="#"
@@ -97,10 +98,12 @@
   >
     <span class="bi bi-arrows-fullscreen"></span>
   </a>
+
   <div class="badge-wrapper" id="badge-{{ section_id }}">
     {%- render 'product-badge', product_for_badge: product -%}
   </div>
-  {%- capture slider_thumb_options -%}  
+
+  {%- capture slider_thumb_options -%}
     {%- if section.settings.show_thumb_slider == true -%}
       "initialSlide":{{ initialSlide }},
       "autoHeight":false,
@@ -113,18 +116,27 @@
       "thumbs":{
         "swiper":{
           "el":".product-image-thumb",
-          "slidesPerView":"auto",
-          "direction":"{{ direction }}",
-          "spaceBetween":15,
-          "slideThumbActiveClass": "swiper-slide-thumb-active",
+          "slidesPerView":4,
+          "direction":"vertical",
+          "spaceBetween":10,
+          "watchSlidesProgress":true,
+          "slideThumbActiveClass":"swiper-slide-thumb-active",
           "navigation":{
             "nextEl":".swiper-button-next.thumb",
             "prevEl":".swiper-button-prev.thumb"
           },
           "breakpoints":{
-            "0":{"slidesPerView":"auto","spaceBetween":10,"freeMode":{"enabled":true,"sticky":false}},
-            "768":{"slidesPerView":"{{ slider_veiw }}"},
-            "992":{"slidesPerView":"{{ slider_veiw }}"
+            "0":{
+              "slidesPerView":4,
+              "spaceBetween":8
+            },
+            "768":{
+              "slidesPerView":5,
+              "spaceBetween":10
+            },
+            "1200":{
+              "slidesPerView":6,
+              "spaceBetween":10
             }
           }
         }
@@ -143,16 +155,15 @@
       }
     {%- endif -%}
   {%- endcapture -%}
+
   <div
     class="swiper product-image-main"
     data-slider-options='{ {{ slider_thumb_options }} }'
-    data-thumb-direction="horizontal"
+    data-thumb-direction="vertical"
     data-thumb-breakpoint="767"
     style="{{ border-style }}"
   >
-    <!-- Additional required wrapper -->
     <div class="swiper-wrapper">
-      <!-- Slides -->
       {%- for media in product.media -%}
         {%- liquid
           assign can_show = false
@@ -161,7 +172,7 @@
           if group_image == true
             if product_options_downcased contains media_alt
               assign can_show = true
-              assign variant_img_added = true 
+              assign variant_img_added = true
             endif
           else
             assign can_show = true
@@ -207,64 +218,156 @@
         {%- endfor -%}
       {%- endunless -%}
     </div>
+
     <div class="swiper-button-prev">
       <svg xmlns="http://www.w3.org/2000/svg" fill="#262626" viewBox="0 0 320 512">
-        <path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-32.8-45.3 0l-160 160z"/>
+        <path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/>
       </svg>
     </div>
+
     <div class="swiper-button-next">
       <svg xmlns="http://www.w3.org/2000/svg" fill="#262626" viewBox="0 0 320 512">
-        <path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-32.8 45.3 0l160 160z"/>
+        <path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 0-45.3l160 160z"/>
       </svg>
-      </div>
+    </div>
   </div>
 </div>
 
 <style>
-  /* Horizontal product gallery: main product image first, thumbnail carousel below it. */
+  /* ==========================================================
+     TVASTRA PDP GALLERY · LEFT THUMBNAIL RAIL
+     Main image stays large. Thumbnails move to the left.
+     Zoom, video and Swiper behavior remain native.
+     ========================================================== */
   .main-product-page .product-gallery.slider-horizontal .mobille-media-slider {
-    flex-direction: column !important;
-  }
-
-  .main-product-page .product-gallery.slider-horizontal .product-main-slider {
-    order: 1 !important;
-    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 72px minmax(0, 1fr) !important;
+    grid-template-areas: "thumb main" !important;
+    column-gap: 12px !important;
+    align-items: stretch !important;
+    flex-direction: row !important;
   }
 
   .main-product-page .product-gallery.slider-horizontal .product-thumb-wrap {
-    order: 2 !important;
+    grid-area: thumb !important;
+    width: 72px !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
     position: relative !important;
     inset: auto !important;
-    width: 100% !important;
-    margin-top: 14px !important;
-    margin-bottom: 0 !important;
-    padding: 0 !important;
-    transform: none !important;
-    z-index: 2 !important;
+    z-index: 5 !important;
+    overflow: hidden !important;
   }
 
   .main-product-page .product-gallery.slider-horizontal .product-image-thumb {
     width: 100% !important;
+    height: 100% !important;
     margin: 0 !important;
+    overflow: hidden !important;
   }
 
   .main-product-page .product-gallery.slider-horizontal .product-image-thumb .swiper-wrapper {
-    align-items: center !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
     justify-content: flex-start !important;
+    height: auto !important;
+  }
+
+  .main-product-page .product-gallery.slider-horizontal .product-image-thumb .swiper-slide {
+    width: 72px !important;
+    height: 88px !important;
+    flex: 0 0 88px !important;
+    margin: 0 !important;
+    opacity: .72 !important;
+    cursor: pointer !important;
+    border: 1px solid transparent !important;
+    transition: opacity .2s ease, border-color .2s ease, transform .2s ease !important;
+  }
+
+  .main-product-page .product-gallery.slider-horizontal .product-image-thumb .swiper-slide:hover {
+    opacity: 1 !important;
+  }
+
+  .main-product-page .product-gallery.slider-horizontal .product-image-thumb .swiper-slide-thumb-active,
+  .main-product-page .product-gallery.slider-horizontal .product-image-thumb .swiper-slide.is-active {
+    opacity: 1 !important;
+    border-color: #1f2326 !important;
+  }
+
+  .main-product-page .product-gallery.slider-horizontal .product-image-thumb .product-media {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    background: #f5f5f5 !important;
+    border-radius: 4px !important;
+    overflow: hidden !important;
+  }
+
+  .main-product-page .product-gallery.slider-horizontal .product-image-thumb .product-media img {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider {
+    grid-area: main !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product__media-item,
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-media {
+    width: 100% !important;
+  }
+
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-media {
+    background: #f7f7f7 !important;
+  }
+
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-media img {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .main-product-page .product-gallery.slider-horizontal .product-image-thumb .media-icon {
+    position: absolute !important;
+    right: 5px !important;
+    bottom: 5px !important;
+    z-index: 2 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 20px !important;
+    height: 20px !important;
+    border-radius: 50% !important;
+    background: rgba(255,255,255,.92) !important;
+    color: #222 !important;
+    font-size: 10px !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,.12) !important;
+  }
+
+  .main-product-page .product-gallery.slider-horizontal .product-main-slider .product-img-btn {
+    z-index: 10 !important;
   }
 
   @media (max-width: 767px) {
-    .main-product-page .product-gallery.slider-horizontal .product-thumb-wrap {
-      position: relative !important;
-      right: auto !important;
-      bottom: auto !important;
-      left: auto !important;
-      margin-top: 10px !important;
-      overflow: visible !important;
+    .main-product-page .product-gallery.slider-horizontal .mobille-media-slider {
+      grid-template-columns: 64px minmax(0, 1fr) !important;
+      column-gap: 8px !important;
     }
 
-    .main-product-page .product-gallery.slider-horizontal .product-image-thumb {
-      overflow: hidden !important;
+    .main-product-page .product-gallery.slider-horizontal .product-thumb-wrap {
+      width: 64px !important;
+    }
+
+    .main-product-page .product-gallery.slider-horizontal .product-image-thumb .swiper-slide {
+      width: 64px !important;
+      height: 76px !important;
+      flex-basis: 76px !important;
     }
   }
 </style>
