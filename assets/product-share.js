@@ -48,6 +48,25 @@
     document.querySelectorAll(shareRootSelector).forEach(syncShareRoot);
   }
 
+  function cleanPdpUi() {
+    document.querySelectorAll('.main-product-page .product-summary [id^="smart-color-swatch-"]').forEach(function (node) {
+      node.style.setProperty('display', 'none', 'important');
+    });
+
+    document.querySelectorAll('.main-product-page .product-summary .color-swatch-box-v2').forEach(function (node) {
+      node.style.setProperty('display', 'none', 'important');
+    });
+
+    document.querySelectorAll('.main-product-page .product-summary details.tvastra-product-offers').forEach(function (details) {
+      details.open = true;
+    });
+  }
+
+  function runPdpCleanup() {
+    cleanPdpUi();
+    if (window.requestAnimationFrame) window.requestAnimationFrame(cleanPdpUi);
+  }
+
   function fallbackCopy(value) {
     var textarea = document.createElement('textarea');
     textarea.value = value;
@@ -102,7 +121,10 @@
 
   document.addEventListener('click', function (event) {
     var trigger = event.target.closest('[data-tvastra-gallery-share] .tvastra-gallery-share__trigger');
-    if (trigger) syncAllShareRoots();
+    if (trigger) {
+      syncAllShareRoots();
+      runPdpCleanup();
+    }
 
     var copyButton = event.target.closest('[data-tvastra-copy-share]');
     if (copyButton) {
@@ -119,11 +141,21 @@
   }, true);
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', syncAllShareRoots);
+    document.addEventListener('DOMContentLoaded', function () {
+      syncAllShareRoots();
+      runPdpCleanup();
+    });
   } else {
     syncAllShareRoots();
+    runPdpCleanup();
   }
 
-  document.addEventListener('shopify:section:load', syncAllShareRoots);
-  window.addEventListener('popstate', syncAllShareRoots);
+  document.addEventListener('shopify:section:load', function () {
+    syncAllShareRoots();
+    runPdpCleanup();
+  });
+  window.addEventListener('popstate', function () {
+    syncAllShareRoots();
+    runPdpCleanup();
+  });
 })();
