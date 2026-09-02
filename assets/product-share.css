@@ -14,33 +14,536 @@
 @import url("./product-pdp-marketplace-v1.css");
 @import url("./product-pdp-marketplace-v2.css");
 
+/* =========================================================
+   TVASTRA PDP — SLEEK MARKETPLACE POLISH
+   Flipkart-inspired information density and hierarchy,
+   without copying brand-specific UI or changing functionality.
+   ========================================================= */
+:root {
+  --tvs-pdp-bg: #f1f3f6;
+  --tvs-pdp-card: #ffffff;
+  --tvs-pdp-ink: #212121;
+  --tvs-pdp-muted: #6b7280;
+  --tvs-pdp-line: #e0e0e0;
+  --tvs-pdp-blue: #2874f0;
+  --tvs-pdp-blue-soft: #eef4ff;
+  --tvs-pdp-orange: #ff9f00;
+  --tvs-pdp-orange-dark: #f28f00;
+  --tvs-pdp-green: #168a5b;
+}
+
+/* PAGE / GRID */
+.main-product-page {
+  background: var(--tvs-pdp-bg) !important;
+}
+
+.main-product-page .product.row {
+  margin-left: -5px !important;
+  margin-right: -5px !important;
+  align-items: flex-start !important;
+}
+
+.main-product-page .product-gallery,
+.main-product-page .product-summary {
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+@media (min-width: 992px) {
+  .main-product-page .product-gallery,
+  .main-product-page .product-summary {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+  }
+}
+
+/* GALLERY — CLEAN, COMPACT, PRODUCT-FIRST */
+.main-product-page .product-gallery .product-main-slider,
+.main-product-page .product-gallery .product-image-main {
+  border: 1px solid var(--tvs-pdp-line) !important;
+  border-radius: 4px !important;
+  background: var(--tvs-pdp-card) !important;
+  box-shadow: none !important;
+}
+
+.main-product-page .product-gallery .product-image-main .swiper-slide.product__media-item {
+  min-height: clamp(390px, 39vw, 540px) !important;
+  background: #fff !important;
+}
+
+.main-product-page .product-gallery .product-image-main .swiper-slide.product__media-item img,
+.main-product-page .product-gallery .product-image-main .swiper-slide.product__media-item picture img {
+  max-height: 540px !important;
+  padding: 10px !important;
+}
+
+.main-product-page .product-gallery .product-image-main .product-img-btn {
+  top: 10px !important;
+  right: 10px !important;
+  width: 34px !important;
+  height: 34px !important;
+  border: 1px solid #d9dde3 !important;
+  border-radius: 4px !important;
+  background: rgba(255,255,255,.96) !important;
+  box-shadow: none !important;
+}
+
+.main-product-page .product-gallery .product-image-main .swiper-button-prev,
+.main-product-page .product-gallery .product-image-main .swiper-button-next {
+  width: 34px !important;
+  height: 34px !important;
+  margin-top: -17px !important;
+  border: 1px solid #d9dde3 !important;
+  border-radius: 4px !important;
+  background: rgba(255,255,255,.96) !important;
+  box-shadow: none !important;
+}
+
+.main-product-page .product-gallery .product-image-main .swiper-button-prev svg,
+.main-product-page .product-gallery .product-image-main .swiper-button-next svg {
+  width: 9px !important;
+  height: 15px !important;
+}
+
+.main-product-page .product-gallery .product-thumb-wrap {
+  margin-top: 6px !important;
+}
+
+.main-product-page .product-gallery .product-image-thumb .swiper-wrapper {
+  gap: 6px !important;
+}
+
+.main-product-page .product-gallery .product-image-thumb .swiper-slide {
+  width: 64px !important;
+  height: 64px !important;
+}
+
+.main-product-page .product-gallery .product-image-thumb .swiper-slide > * {
+  border: 1px solid #d9dde3 !important;
+  border-radius: 3px !important;
+  box-shadow: none !important;
+}
+
+.main-product-page .product-gallery .product-image-thumb .swiper-slide-thumb-active > * {
+  border: 2px solid var(--tvs-pdp-blue) !important;
+  box-shadow: none !important;
+}
+
+/* DESKTOP SUMMARY CARD */
+@media (min-width: 992px) {
+  .main-product-page .product-summary > .position-sticky {
+    padding: 0 !important;
+    border: 1px solid var(--tvs-pdp-line) !important;
+    border-radius: 4px !important;
+    background: var(--tvs-pdp-card) !important;
+    box-shadow: none !important;
+  }
+}
+
+.main-product-page .product-summary .product-info {
+  padding: 16px !important;
+  color: var(--tvs-pdp-ink) !important;
+}
+
+/* TITLE BLOCK */
+.main-product-page .product-summary .product-info > .block-name.vendor {
+  margin: 0 0 5px !important;
+  padding: 2px 6px !important;
+  border: 0 !important;
+  border-radius: 2px !important;
+  background: transparent !important;
+  color: #878787 !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: .05em !important;
+}
+
+.main-product-page .product-summary .product-info .product-title,
+.main-product-page .product-summary .product-info .product-title-share-row > .product-title {
+  margin: 0 !important;
+  color: var(--tvs-pdp-ink) !important;
+  font-size: clamp(20px, 1.65vw, 27px) !important;
+  font-weight: 600 !important;
+  line-height: 1.28 !important;
+  letter-spacing: -.01em !important;
+}
+
+.main-product-page .product-summary .product-info .rating-sku-wrap {
+  gap: 8px !important;
+  margin: 7px 0 0 !important;
+}
+
+.main-product-page .product-summary .product-info .product-rating {
+  min-height: 22px !important;
+  padding: 3px 7px !important;
+  border-radius: 3px !important;
+  background: var(--tvs-pdp-green) !important;
+}
+
+.main-product-page .product-summary .product-info .product-sku {
+  padding-left: 8px !important;
+  font-size: 9px !important;
+}
+
+/* PRICE — MARKETPLACE-DENSE STRIP */
+.main-product-page .product-summary .product-info [id^="price-"] {
+  margin: 12px -16px 0 !important;
+  padding: 12px 16px !important;
+  border-top: 1px solid var(--tvs-pdp-line) !important;
+  border-bottom: 1px solid var(--tvs-pdp-line) !important;
+  background: #fff !important;
+}
+
+.main-product-page .product-summary .product-info [id^="price-"] .price {
+  gap: 7px !important;
+  color: var(--tvs-pdp-ink) !important;
+  font-size: 28px !important;
+  font-weight: 700 !important;
+}
+
+.main-product-page .product-summary .product-info [id^="price-"] .price-item--regular,
+.main-product-page .product-summary .product-info [id^="price-"] s {
+  color: #878787 !important;
+  font-size: 13px !important;
+}
+
+.main-product-page .product-summary .product-info [id^="price-"] .price__badge,
+.main-product-page .product-summary .product-info [id^="price-"] .badge {
+  padding: 4px 6px !important;
+  border-radius: 2px !important;
+  background: #e7f5e9 !important;
+  color: #1d7a35 !important;
+  font-size: 9px !important;
+}
+
+.main-product-page .product-summary .product-info .product-purchase-note {
+  gap: 5px 12px !important;
+  margin-top: 6px !important;
+  font-size: 9px !important;
+}
+
+.main-product-page .product-summary .product-info .product-purchase-note span:before {
+  width: 13px !important;
+  height: 13px !important;
+}
+
+/* OFFERS — LESS BULKY */
+.main-product-page .product-summary .product-info .tvastra-product-offers {
+  margin: 10px 0 !important;
+  border: 1px solid #f0dfa9 !important;
+  border-radius: 4px !important;
+  background: #fffdf4 !important;
+}
+
+.main-product-page .product-summary .product-info .tvastra-product-offers__summary {
+  min-height: 40px !important;
+  padding: 8px 10px !important;
+}
+
+.main-product-page .product-summary .product-info .tvastra-product-offers__title {
+  font-size: 10px !important;
+}
+
+.main-product-page .product-summary .product-info .tvastra-product-offers__highlight {
+  padding: 3px 6px !important;
+  border-radius: 2px !important;
+  font-size: 8px !important;
+}
+
+.main-product-page .product-summary .product-info .tvastra-product-offers__body {
+  padding: 0 10px 7px !important;
+}
+
+.main-product-page .product-summary .product-info .tvastra-product-offer {
+  grid-template-columns: 24px minmax(0,1fr) auto !important;
+  gap: 7px !important;
+  padding: 7px 0 !important;
+}
+
+.main-product-page .product-summary .product-info .tvastra-product-offer__icon {
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 3px !important;
+}
+
+/* COLOUR FAMILY — NO EXTRA CARD */
+.main-product-page .product-summary .product-info .product-colour-family {
+  margin: 10px 0 0 !important;
+  padding: 11px 0 0 !important;
+  border-top: 1px solid var(--tvs-pdp-line) !important;
+}
+
+.main-product-page .product-summary .product-info .product-colour-family__label {
+  margin-bottom: 7px !important;
+  font-size: 11px !important;
+}
+
+.main-product-page .product-summary .product-info .product-colour-family__options {
+  gap: 8px !important;
+}
+
+.main-product-page .product-summary .product-info .product-colour-family__options > div > div,
+.main-product-page .product-summary .product-info .product-colour-family__options > a > div {
+  padding: 2px !important;
+}
+
+.main-product-page .product-summary .product-info .product-colour-family__options > div > div > span,
+.main-product-page .product-summary .product-info .product-colour-family__options > a > div > span {
+  width: 28px !important;
+  height: 28px !important;
+}
+
+/* VARIANTS — FLAT, CRISP */
+.main-product-page .product-summary .product-info .product-variants {
+  margin: 10px 0 0 !important;
+  padding: 11px !important;
+  border: 1px solid var(--tvs-pdp-line) !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+}
+
+.main-product-page .product-summary .product-info .product-filter {
+  padding-bottom: 10px !important;
+}
+
+.main-product-page .product-summary .product-info .product-filter + .product-filter {
+  padding-top: 10px !important;
+}
+
+.main-product-page .product-summary .product-info .product-filter .form-label {
+  margin-bottom: 7px !important;
+  font-size: 10px !important;
+}
+
+.main-product-page .product-summary .product-info .color-filter .variant-option {
+  margin: 0 5px 5px 0 !important;
+}
+
+.main-product-page .product-summary .product-info .color-filter .variant-option label {
+  width: 36px !important;
+  height: 36px !important;
+  padding: 2px !important;
+  border-radius: 50% !important;
+}
+
+.main-product-page .product-summary .product-info .size-filter {
+  gap: 6px !important;
+}
+
+.main-product-page .product-summary .product-info .size-filter .variant-option label {
+  min-width: 48px !important;
+  height: 36px !important;
+  padding: 0 11px !important;
+  border-radius: 3px !important;
+  font-size: 10px !important;
+}
+
+.main-product-page .product-summary .product-info .size-filter .variant-option input:checked + label {
+  border-color: var(--tvs-pdp-blue) !important;
+  background: var(--tvs-pdp-blue-soft) !important;
+  color: #1d5fc7 !important;
+  box-shadow: inset 0 0 0 1px var(--tvs-pdp-blue) !important;
+}
+
+.main-product-page .product-summary .product-info .size-filter .modal-popup {
+  color: var(--tvs-pdp-blue) !important;
+  font-size: 9px !important;
+}
+
+/* CTA — ORANGE + BLUE MARKETPLACE HIERARCHY */
+.main-product-page .product-summary .product-info .product-form-buttons {
+  margin: 10px 0 0 !important;
+  padding: 10px !important;
+  border: 1px solid var(--tvs-pdp-line) !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+}
+
+.main-product-page .product-summary .product-info .quantity-btn label {
+  margin-bottom: 4px !important;
+  font-size: 8px !important;
+}
+
+.main-product-page .product-summary .product-info .quantity-btn .quantity {
+  min-height: 42px !important;
+  border-radius: 3px !important;
+}
+
+.main-product-page .product-summary .product-info .cart-btn {
+  min-height: 46px !important;
+  border-radius: 3px !important;
+  background: var(--tvs-pdp-orange) !important;
+  color: #fff !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  box-shadow: none !important;
+}
+
+.main-product-page .product-summary .product-info .cart-btn:hover {
+  background: var(--tvs-pdp-orange-dark) !important;
+  transform: none !important;
+}
+
+.main-product-page .product-summary .product-info .product-buy-now-inline,
+.main-product-page .product-summary .product-info .product-buy-now-inline button,
+.main-product-page .product-summary .product-info .product-buy-now-inline .shopify-payment-button__button {
+  min-height: 46px !important;
+  border-radius: 3px !important;
+}
+
+.main-product-page .product-summary .product-info .product-buy-now-inline button,
+.main-product-page .product-summary .product-info .product-buy-now-inline .shopify-payment-button__button {
+  background: var(--tvs-pdp-blue) !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+}
+
+.main-product-page .product-summary .product-info .product-buy-now-inline button:hover,
+.main-product-page .product-summary .product-info .product-buy-now-inline .shopify-payment-button__button:hover {
+  background: #2166d1 !important;
+}
+
+.main-product-page .product-summary .product-info .product-form-buttons .wishlist-btn,
+.main-product-page .product-summary .product-info .product-form-buttons .button-wishlist {
+  width: 42px !important;
+  min-width: 42px !important;
+  min-height: 42px !important;
+  border-radius: 3px !important;
+}
+
+/* DELIVERY / TRUST — COMPACT UTILITIES */
+.main-product-page .product-summary .product-info .shipping-info,
+.main-product-page .product-summary .product-info .trust-badge,
+.main-product-page .product-summary .product-info .product-usp,
+.main-product-page .product-summary .product-info .product-live-viewers,
+.main-product-page .product-summary .product-info .live-visitors,
+.main-product-page .product-summary .product-info .sold-product-count {
+  border-radius: 3px !important;
+  box-shadow: none !important;
+}
+
+.main-product-page .product-summary .product-info .shipping-info {
+  margin-top: 8px !important;
+  padding: 9px !important;
+}
+
+.main-product-page .product-summary .product-info .product-usp {
+  gap: 4px !important;
+  margin-top: 6px !important;
+  padding: 7px !important;
+}
+
+/* LOWER CONTENT — CLEAN DIVIDERS, NO HEAVY CARDS */
+.main-product-page .product-summary .product-info .panel-group {
+  margin-top: 7px !important;
+}
+
+.main-product-page .product-summary .product-info .panel-group .panel-heading .panel-title a {
+  min-height: 42px !important;
+  font-size: 10.5px !important;
+}
+
+.main-product-page .product-summary .product-info .panel-group .panel-body {
+  padding-bottom: 11px !important;
+  font-size: 10px !important;
+}
+
+/* MOBILE — KEEP IT DENSE, NOT CRAMPED */
+@media (max-width: 991px) {
+  .main-product-page .product-gallery,
+  .main-product-page .product-summary {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .main-product-page .product-summary {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+
+  .main-product-page .product-summary > .position-sticky {
+    padding: 4px 0 14px !important;
+  }
+
+  .main-product-page .product-summary .product-info {
+    padding: 12px !important;
+    border: 1px solid var(--tvs-pdp-line) !important;
+    border-radius: 4px !important;
+    background: #fff !important;
+  }
+
+  .main-product-page .product-gallery .product-image-main .swiper-slide.product__media-item {
+    min-height: min(105vw, 500px) !important;
+  }
+}
+
+@media (max-width: 575px) {
+  .main-product-page .product-gallery .product-image-main .swiper-slide.product__media-item img {
+    padding: 6px !important;
+  }
+
+  .main-product-page .product-gallery .product-image-thumb .swiper-slide {
+    width: 54px !important;
+    height: 54px !important;
+  }
+
+  .main-product-page .product-summary .product-info {
+    padding: 11px !important;
+  }
+
+  .main-product-page .product-summary .product-info .product-title {
+    font-size: 22px !important;
+    line-height: 1.25 !important;
+  }
+
+  .main-product-page .product-summary .product-info [id^="price-"] {
+    margin-left: -11px !important;
+    margin-right: -11px !important;
+    padding-left: 11px !important;
+    padding-right: 11px !important;
+  }
+
+  .main-product-page .product-summary .product-info .product-usp {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* =========================================================
+   SHARE MODAL — SAME SYSTEM
+   ========================================================= */
 #social-sharing.tvastra-product-share {
   width: min(92vw, 460px);
   max-width: 460px;
-  padding: 22px;
-  border: 1px solid #e2e8e5;
-  border-radius: 8px;
+  padding: 18px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
   background: #fff;
-  color: #17363a;
-  box-shadow: 0 18px 48px rgba(8, 43, 52, .14);
+  color: #212121;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .14);
 }
 
-#social-sharing .tvastra-product-share__header { margin-bottom: 16px; }
-#social-sharing .tvastra-product-share__eyebrow { display:block; margin-bottom:4px; color:#71807c; font-size:10px; font-weight:600; line-height:1.2; text-transform:uppercase; letter-spacing:.08em; }
-#social-sharing .tvastra-product-share__title { margin:0; color:#17363a; font-size:18px; font-weight:600; line-height:1.25; }
-#social-sharing .tvastra-product-share__actions { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; margin-bottom:18px; }
-#social-sharing .tvastra-product-share__action { display:inline-flex; min-width:0; min-height:64px; flex-direction:column; align-items:center; justify-content:center; gap:7px; margin:0; padding:8px 4px; border:1px solid #e1e7e4; border-radius:8px; background:#f8faf9; color:#17363a; font-family:inherit; font-size:10px; font-weight:600; line-height:1; text-align:center; text-decoration:none; cursor:pointer; transition:border-color .18s ease,background-color .18s ease,transform .18s ease; }
-#social-sharing .tvastra-product-share__action:hover,#social-sharing .tvastra-product-share__action:focus-visible { border-color:#aebdb8; background:#fff; color:#17363a; transform:translateY(-1px); }
-#social-sharing .tvastra-product-share__action:focus-visible,#social-sharing .tvastra-product-share__copy-button:focus-visible { outline:2px solid #173f45; outline-offset:2px; }
-#social-sharing .tvastra-product-share__action i { margin:0; font-size:18px; line-height:1; }
-#social-sharing .tvastra-product-share__action--whatsapp i { color:#167b69; }
-#social-sharing .tvastra-product-share__copy { padding-top:15px; border-top:1px solid #e8ecea; }
-#social-sharing .tvastra-product-share__copy-label { display:block; margin:0 0 7px; color:#53615d; font-size:10px; font-weight:600; line-height:1.2; }
-#social-sharing .tvastra-product-share__copy-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:7px; }
-#social-sharing .tvastra-product-share__url { width:100%; min-width:0; height:40px; margin:0; padding:0 11px; border:1px solid #dce4e0; border-radius:6px; background:#f8faf9; color:#465550; font-size:11px; line-height:40px; text-overflow:ellipsis; }
-#social-sharing .tvastra-product-share__copy-button { display:inline-flex; min-width:78px; height:40px; align-items:center; justify-content:center; gap:6px; margin:0; padding:0 13px; border:1px solid #173f45; border-radius:6px; background:#173f45; color:#fff; font-family:inherit; font-size:11px; font-weight:600; line-height:1; }
-#social-sharing .tvastra-product-share__copy-button i { margin:0; font-size:14px; }
-#social-sharing .tvastra-product-share__status { display:block; min-height:13px; margin-top:5px; color:#16705f; font-size:9px; font-weight:600; line-height:1.3; }
+#social-sharing .tvastra-product-share__header { margin-bottom: 14px; }
+#social-sharing .tvastra-product-share__eyebrow { display:block; margin-bottom:4px; color:#878787; font-size:9px; font-weight:700; line-height:1.2; text-transform:uppercase; letter-spacing:.08em; }
+#social-sharing .tvastra-product-share__title { margin:0; color:#212121; font-size:17px; font-weight:600; line-height:1.25; }
+#social-sharing .tvastra-product-share__actions { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:7px; margin-bottom:16px; }
+#social-sharing .tvastra-product-share__action { display:inline-flex; min-width:0; min-height:58px; flex-direction:column; align-items:center; justify-content:center; gap:6px; margin:0; padding:7px 4px; border:1px solid #e0e0e0; border-radius:3px; background:#fafafa; color:#212121; font-family:inherit; font-size:9px; font-weight:600; line-height:1; text-align:center; text-decoration:none; cursor:pointer; transition:border-color .16s ease,background-color .16s ease; }
+#social-sharing .tvastra-product-share__action:hover,
+#social-sharing .tvastra-product-share__action:focus-visible { border-color:#b8b8b8; background:#fff; color:#212121; transform:none; }
+#social-sharing .tvastra-product-share__action i { margin:0; font-size:17px; line-height:1; }
+#social-sharing .tvastra-product-share__action--whatsapp i { color:#168a5b; }
+#social-sharing .tvastra-product-share__copy { padding-top:13px; border-top:1px solid #e6e6e6; }
+#social-sharing .tvastra-product-share__copy-label { display:block; margin:0 0 6px; color:#6b7280; font-size:9px; font-weight:700; line-height:1.2; }
+#social-sharing .tvastra-product-share__copy-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:6px; }
+#social-sharing .tvastra-product-share__url { width:100%; min-width:0; height:38px; margin:0; padding:0 10px; border:1px solid #dedede; border-radius:3px; background:#fafafa; color:#4b5563; font-size:10px; line-height:38px; text-overflow:ellipsis; }
+#social-sharing .tvastra-product-share__copy-button { display:inline-flex; min-width:74px; height:38px; align-items:center; justify-content:center; gap:6px; margin:0; padding:0 12px; border:1px solid var(--tvs-pdp-blue); border-radius:3px; background:var(--tvs-pdp-blue); color:#fff; font-family:inherit; font-size:10px; font-weight:700; line-height:1; }
+#social-sharing .tvastra-product-share__copy-button i { margin:0; font-size:13px; }
+#social-sharing .tvastra-product-share__status { display:block; min-height:12px; margin-top:5px; color:#168a5b; font-size:9px; font-weight:600; line-height:1.3; }
 #social-sharing [hidden] { display:none !important; }
-@media (max-width:480px) { #social-sharing.tvastra-product-share{width:calc(100vw - 24px);padding:18px;} #social-sharing .tvastra-product-share__actions{grid-template-columns:repeat(3,minmax(0,1fr));} #social-sharing .tvastra-product-share__title{font-size:16px;} }
-@media (prefers-reduced-motion:reduce) { #social-sharing .tvastra-product-share__action{transition:none;} }
+@media (max-width:480px) {
+  #social-sharing.tvastra-product-share{width:calc(100vw - 20px);padding:15px;}
+  #social-sharing .tvastra-product-share__actions{grid-template-columns:repeat(3,minmax(0,1fr));}
+  #social-sharing .tvastra-product-share__title{font-size:16px;}
+}
+@media (prefers-reduced-motion:reduce) {
+  #social-sharing .tvastra-product-share__action{transition:none;}
+}
