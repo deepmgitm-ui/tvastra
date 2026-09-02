@@ -140,7 +140,7 @@
     color: #000;
   }
   path#svgkp-path {
-    stroke-width: 0.4;
+    stroke-width: 0.2;
   }
   #icon-close-kwikpass{
     display: none;
@@ -152,11 +152,11 @@
     justify-content: center;
     margin-left:3px;
   }
-  @media(max-width:768px){
+  {% comment %} @media(max-width:768px){
   .header--icon{
     display: none;
   }
-  }
+  } {% endcomment %}
     `;
 
     var style = document.createElement('style');
