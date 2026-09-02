@@ -49,6 +49,12 @@
   }
 
   function cleanPdpUi() {
+    document.querySelectorAll('.main-product-page .product-summary .product-custom-html').forEach(function (wrapper) {
+      if (wrapper.querySelector('[id^="smart-color-swatch-"]') || wrapper.querySelector('.color-swatch-box-v2')) {
+        wrapper.style.setProperty('display', 'none', 'important');
+      }
+    });
+
     document.querySelectorAll('.main-product-page .product-summary [id^="smart-color-swatch-"]').forEach(function (node) {
       node.style.setProperty('display', 'none', 'important');
     });
