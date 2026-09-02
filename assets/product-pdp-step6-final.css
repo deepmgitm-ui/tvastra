@@ -1,0 +1,349 @@
+/* ----------------------------------------------------------------------
+   TVASTRA PDP · STEP 6 · TRUST, FAQ, MODALS + FINAL SPACING
+   ---------------------------------------------------------------------- */
+
+/* Overall PDP rhythm */
+.main-product-page {
+  --pdp-final-ink: #17363a;
+  --pdp-final-muted: #6d7976;
+  --pdp-final-line: #e2e8e5;
+  --pdp-final-soft: #f7f9f8;
+  background: #fff;
+}
+
+.main-product-page .product-summary .position-sticky {
+  top: max(20px, var(--top-space)) !important;
+}
+
+.main-product-page .product-summary .product-info > * {
+  box-sizing: border-box;
+}
+
+/* Make supporting trust blocks feel intentional rather than theme-default. */
+.main-product-page .product-summary .trust-badge {
+  display: block !important;
+  padding: 12px !important;
+  border: 1px solid var(--pdp-final-line) !important;
+  border-radius: 10px !important;
+  background: var(--pdp-final-soft) !important;
+  color: var(--pdp-final-muted) !important;
+}
+
+.main-product-page .product-summary .trust-badge p,
+.main-product-page .product-summary .trust-badge span {
+  color: inherit !important;
+  font-size: 10px !important;
+  line-height: 1.45 !important;
+}
+
+.main-product-page .product-summary .product-usp {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 7px 16px !important;
+  margin: 0 0 13px !important;
+  padding: 10px 12px !important;
+  border: 1px solid var(--pdp-final-line) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+}
+
+.main-product-page .product-summary .product-usp .usp-box {
+  display: inline-flex !important;
+  align-items: center !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  color: var(--pdp-final-muted) !important;
+  font-size: 9.5px !important;
+  font-weight: 600 !important;
+  line-height: 1.25 !important;
+}
+
+.main-product-page .product-summary .product-usp .usp-box i {
+  margin-right: 6px !important;
+  color: var(--pdp-final-ink) !important;
+  font-size: 14px !important;
+}
+
+.main-product-page .product-summary .product-usp .usp-box span {
+  color: inherit !important;
+}
+
+/* Delivery / pickup */
+.main-product-page .product-summary pickup-availability {
+  display: block !important;
+  margin: 0 0 13px !important;
+  padding: 0 !important;
+}
+
+.main-product-page .product-summary pickup-availability .pickup-availability-preview {
+  padding: 11px 12px !important;
+  border: 1px solid var(--pdp-final-line) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+}
+
+.main-product-page .product-summary pickup-availability .caption-large,
+.main-product-page .product-summary pickup-availability .pickup-availability-info {
+  color: var(--pdp-final-muted) !important;
+  font-size: 10px !important;
+  line-height: 1.4 !important;
+}
+
+.main-product-page .product-summary pickup-availability .pickup-availability-button {
+  color: var(--pdp-final-ink) !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+}
+
+/* Pre-order / deal / stock indicators */
+.main-product-page .product-summary .pre-order-box,
+.main-product-page .product-summary .product-deal-wrap,
+.main-product-page .product-summary .stock-left-wrap,
+.main-product-page .product-summary .sold-product-count,
+.main-product-page .product-summary .live-visitors {
+  margin: 0 0 13px !important;
+}
+
+.main-product-page .product-summary .pre-order-box {
+  padding: 11px 12px !important;
+  border: 1px solid var(--pdp-final-line) !important;
+  border-radius: 10px !important;
+  background: var(--pdp-final-soft) !important;
+  color: var(--pdp-final-muted) !important;
+}
+
+.main-product-page .product-summary .pre-order-box .off-text,
+.main-product-page .product-summary .pre-order-box .delivery-date {
+  font-size: 10px !important;
+  line-height: 1.4 !important;
+}
+
+.main-product-page .product-summary .sold-product-count {
+  display: flex !important;
+  align-items: center !important;
+  padding: 9px 11px !important;
+  border: 1px solid #eee5d7 !important;
+  border-radius: 9px !important;
+  background: #fffaf2 !important;
+  color: #765b32 !important;
+  font-size: 10px !important;
+}
+
+.main-product-page .product-summary .sold-product-count i {
+  margin-right: 7px !important;
+}
+
+.main-product-page .product-summary .live-visitors {
+  display: flex !important;
+  align-items: center !important;
+  padding: 8px 0 !important;
+  color: var(--pdp-final-muted) !important;
+  font-size: 10px !important;
+}
+
+.main-product-page .product-summary .live-visitors i {
+  margin-right: 7px !important;
+  color: var(--pdp-final-ink) !important;
+}
+
+/* Native collapsibles inside the purchase panel */
+.main-product-page .product-summary .panel-group.accordion-event {
+  margin: 0 0 13px !important;
+  border-top: 1px solid var(--pdp-final-line) !important;
+  border-bottom: 1px solid var(--pdp-final-line) !important;
+}
+
+.main-product-page .product-summary .accordion-event .panel {
+  margin: 0 !important;
+}
+
+.main-product-page .product-summary .accordion-event .panel + .panel {
+  border-top: 1px solid var(--pdp-final-line) !important;
+}
+
+.main-product-page .product-summary .accordion-event .panel-heading {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: #fff !important;
+}
+
+.main-product-page .product-summary .accordion-event .accordion-toggle {
+  display: block !important;
+  padding: 0 !important;
+  color: var(--pdp-final-ink) !important;
+  text-decoration: none !important;
+}
+
+.main-product-page .product-summary .accordion-event .panel-title {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  min-height: 49px !important;
+  gap: 14px !important;
+  color: inherit !important;
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+}
+
+.main-product-page .product-summary .accordion-event .panel-title i {
+  flex: 0 0 auto !important;
+  color: var(--pdp-final-muted) !important;
+  font-size: 14px !important;
+}
+
+.main-product-page .product-summary .accordion-event .panel-body {
+  padding: 0 0 13px !important;
+  color: var(--pdp-final-muted) !important;
+  font-size: 10.5px !important;
+  line-height: 1.6 !important;
+}
+
+.main-product-page .product-summary .accordion-event .panel-body p {
+  margin: 0 0 8px !important;
+}
+
+.main-product-page .product-summary .accordion-event .panel-body ul,
+.main-product-page .product-summary .accordion-event .panel-body ol {
+  margin: 6px 0 7px !important;
+  padding-left: 18px !important;
+}
+
+.main-product-page .product-summary .accordion-event .panel-body li + li {
+  margin-top: 4px;
+}
+
+.main-product-page .product-summary .accordion-event .panel-body strong,
+.main-product-page .product-summary .accordion-event .panel-body b {
+  color: var(--pdp-final-ink) !important;
+}
+
+/* Share control is visually attached to the gallery rather than looking like a random text link. */
+.main-product-page [data-tvastra-gallery-share] {
+  position: absolute !important;
+  top: 14px !important;
+  left: 14px !important;
+  z-index: 7 !important;
+}
+
+.main-product-page [data-tvastra-gallery-share] .tvastra-gallery-share__trigger {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 38px !important;
+  height: 38px !important;
+  border: 1px solid rgba(23, 54, 58, .12) !important;
+  border-radius: 50% !important;
+  background: rgba(255,255,255,.88) !important;
+  color: var(--pdp-final-ink) !important;
+  box-shadow: 0 8px 18px rgba(18,38,40,.10) !important;
+  backdrop-filter: blur(8px) !important;
+  text-decoration: none !important;
+}
+
+.main-product-page [data-tvastra-gallery-share] .tvastra-gallery-share__trigger:hover {
+  background: #fff !important;
+  transform: translateY(-1px);
+}
+
+/* Size-guide popup */
+.size-guide-popup {
+  width: min(92vw, 760px) !important;
+  max-height: 88vh !important;
+  overflow: auto !important;
+  padding: 20px !important;
+  border: 1px solid #dde5e1 !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  color: #4f5d59 !important;
+  box-shadow: 0 22px 60px rgba(18,38,40,.18) !important;
+}
+
+.size-guide-popup img {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: 78vh !important;
+  object-fit: contain !important;
+  border-radius: 7px !important;
+}
+
+.size-guide-popup table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+}
+
+.size-guide-popup th,
+.size-guide-popup td {
+  padding: 9px 8px !important;
+  border-bottom: 1px solid #e4eae7 !important;
+  font-size: 10.5px !important;
+  line-height: 1.35 !important;
+  text-align: left !important;
+}
+
+.size-guide-popup th {
+  color: #17363a !important;
+  font-weight: 700 !important;
+}
+
+/* Keep lower sections from visually merging into the hero. */
+.product-tabs.tvastra-product-tabs,
+.bought-together,
+.related-product,
+.upsell-product,
+.recent-products.recentView-main {
+  scroll-margin-top: 90px;
+}
+
+@media (max-width: 767px) {
+  .main-product-page .product-summary .product-info > * {
+    max-width: 100% !important;
+  }
+
+  .main-product-page [data-tvastra-gallery-share] {
+    top: 10px !important;
+    left: 10px !important;
+  }
+
+  .main-product-page [data-tvastra-gallery-share] .tvastra-gallery-share__trigger {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  .main-product-page .product-summary .product-usp {
+    gap: 7px 12px !important;
+    padding: 9px 10px !important;
+  }
+
+  .main-product-page .product-summary .product-usp .usp-box {
+    font-size: 9px !important;
+  }
+
+  .main-product-page .product-summary .product-usp .usp-box i {
+    font-size: 13px !important;
+  }
+
+  .main-product-page .product-summary .accordion-event .panel-title {
+    min-height: 47px !important;
+    font-size: 11px !important;
+  }
+
+  .main-product-page .product-summary .accordion-event .panel-body {
+    padding-bottom: 12px !important;
+    font-size: 10px !important;
+  }
+
+  .size-guide-popup {
+    width: calc(100vw - 24px) !important;
+    padding: 14px !important;
+    border-radius: 10px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .main-product-page [data-tvastra-gallery-share] .tvastra-gallery-share__trigger {
+    transition: none !important;
+  }
+}
