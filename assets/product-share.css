@@ -8,6 +8,7 @@
 @import url("./product-pdp-step4-details.css");
 @import url("./product-pdp-step5-lower.css");
 @import url("./product-pdp-step6-final.css");
+@import url("./product-info-theme-v2.css");
 
 #social-sharing.tvastra-product-share {
   width: min(92vw, 460px);
