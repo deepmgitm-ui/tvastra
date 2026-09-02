@@ -1,61 +1,115 @@
 {%- comment -%}
-  TVASTRA PDP main image fit.
-  Keeps the full source image visible, removes inherited fixed-height cropping,
-  and gives the main image the maximum useful width beside the left thumbnail rail.
+  TVASTRA PDP media stage.
+  Images and videos fit INSIDE one stable gallery area without cropping.
 {%- endcomment -%}
+
 <style>
   .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) {
     grid-template-columns: 52px minmax(0, 1fr) !important;
     column-gap: 8px !important;
+    align-items: stretch !important;
   }
 
   .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-thumb-wrap {
     width: 52px !important;
+    min-width: 52px !important;
     max-width: 52px !important;
+    height: var(--tvastra-gallery-stage-height, clamp(440px, 43vw, 700px)) !important;
+    min-height: var(--tvastra-gallery-stage-height, clamp(440px, 43vw, 700px)) !important;
+    max-height: var(--tvastra-gallery-stage-height, clamp(440px, 43vw, 700px)) !important;
+    overflow: hidden !important;
   }
 
+  .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-thumb-wrap .product-image-thumb,
+  .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-thumb-wrap .product-image-thumb .swiper-wrapper {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-thumb-wrap .product-image-thumb .swiper-slide {
+    width: 52px !important;
+    height: 82px !important;
+    min-height: 82px !important;
+    max-height: 82px !important;
+    flex: 0 0 82px !important;
+    margin: 0 0 8px !important;
+  }
+
+  .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-thumb-wrap .product-image-thumb .product-media {
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-thumb-wrap .product-image-thumb .product-media img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+  }
+
+  /* One fixed media stage. Swiper must not resize it based on image/video content. */
   .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider,
   .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-image-main {
     width: 100% !important;
     min-width: 0 !important;
-    height: auto !important;
-    max-height: none !important;
-    min-height: 0 !important;
-    overflow: visible !important;
+    height: var(--tvastra-gallery-stage-height, clamp(440px, 43vw, 700px)) !important;
+    min-height: var(--tvastra-gallery-stage-height, clamp(440px, 43vw, 700px)) !important;
+    max-height: var(--tvastra-gallery-stage-height, clamp(440px, 43vw, 700px)) !important;
+    overflow: hidden !important;
     visibility: visible !important;
     opacity: 1 !important;
-    background: #fff !important;
+    background: #f7f7f7 !important;
   }
 
-  .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-image-main .swiper-wrapper {
+  .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-image-main .swiper-wrapper,
+  .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-image-main .swiper-slide,
+  .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-image-main .swiper-slide-active {
     width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
   }
 
   .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-image-main .swiper-slide,
   .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-image-main .swiper-slide-active {
-    width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    display: block !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
     visibility: visible !important;
     opacity: 1 !important;
-    overflow: visible !important;
   }
 
+  /* Full image inside the stage — never crop it. */
   .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-image-main .swiper-slide .product-media.media-image,
-  .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-image-main .swiper-slide .product-media.media-image > .h-100 {
+  .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-image-main .swiper-slide .product-media.media-image.h-100 {
     position: relative !important;
     width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    aspect-ratio: auto !important;
-    overflow: visible !important;
-    background: #fff !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    background: #f7f7f7 !important;
+  }
+
+  .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-image-main .swiper-slide .product-media.media-image > picture,
+  .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-image-main .swiper-slide .product-media.media-image > a,
+  .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-image-main .swiper-slide .product-media.media-image .image-frame {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
   .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-image-main .swiper-slide .product-media.media-image img,
@@ -63,99 +117,76 @@
   .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-image-main .swiper-slide .product-media.media-image .product-frame-image {
     display: block !important;
     width: 100% !important;
-    height: auto !important;
+    height: 100% !important;
+    min-width: 0 !important;
     min-height: 0 !important;
-    max-height: none !important;
     max-width: 100% !important;
+    max-height: 100% !important;
     object-fit: contain !important;
     object-position: center !important;
+    margin: 0 !important;
   }
 
+  /* Video/model use the same box and the same no-crop containment. */
   .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-image-main .swiper-slide .media-video,
   .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-image-main .swiper-slide .media-model,
   .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-image-main .swiper-slide .media-fall-back {
+    position: relative !important;
     width: 100% !important;
-    height: auto !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    background: #f7f7f7 !important;
+  }
+
+  .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-image-main .swiper-slide .media-video > video,
+  .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-image-main .swiper-slide .media-video .plyr,
+  .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-image-main .swiper-slide .media-video .plyr__video-wrapper,
+  .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-image-main .swiper-slide .media-video iframe,
+  .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-image-main .swiper-slide .media-model model-viewer {
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
     min-height: 0 !important;
-    max-height: none !important;
-    overflow: visible !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+  }
+
+  .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-image-main .swiper-slide .media-video > video {
+    display: block !important;
+    object-fit: contain !important;
+    object-position: center !important;
+    background: #f7f7f7 !important;
+  }
+
+  .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-main-slider .product-img-btn {
+    z-index: 30 !important;
   }
 
   @media (max-width: 767px) {
     .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) {
+      --tvastra-gallery-stage-height: min(118vw, 72vh, 620px);
       grid-template-columns: 46px minmax(0, 1fr) !important;
       column-gap: 6px !important;
     }
 
     .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-thumb-wrap {
       width: 46px !important;
+      min-width: 46px !important;
       max-width: 46px !important;
     }
 
-    .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) .product-thumb-wrap .product-image-thumb .swiper-slide {
+    .main-product-page .product-gallery .mobille-media-slider:has(> .product-thumb-wrap) > .product-thumb-wrap .product-image-thumb .swiper-slide {
       width: 46px !important;
       height: 66px !important;
       min-height: 66px !important;
+      max-height: 66px !important;
       flex-basis: 66px !important;
+      margin-bottom: 7px !important;
     }
   }
 </style>
-<script>
-  (function () {
-    'use strict';
-
-    var selector = '.main-product-page .product-gallery .mobille-media-slider';
-    var bound = new WeakSet();
-
-    function refresh(gallery) {
-      var main = gallery && gallery.querySelector('.product-image-main');
-      var swiper = main && main.swiper;
-      var images = main && main.querySelectorAll('.product-media.media-image img');
-
-      if (!main) return;
-
-      if (images) {
-        images.forEach(function (image) {
-          if (!image.complete) {
-            image.addEventListener('load', function () {
-              refresh(gallery);
-            }, { once: true });
-          }
-        });
-      }
-
-      if (swiper) {
-        try {
-          if (typeof swiper.updateAutoHeight === 'function') swiper.updateAutoHeight(0);
-          if (typeof swiper.update === 'function') swiper.update();
-        } catch (error) {}
-      }
-    }
-
-    function bind(gallery) {
-      if (!gallery || bound.has(gallery)) return;
-      bound.add(gallery);
-      refresh(gallery);
-      [100, 350, 800, 1600].forEach(function (delay) {
-        window.setTimeout(function () { refresh(gallery); }, delay);
-      });
-    }
-
-    function boot() {
-      document.querySelectorAll(selector).forEach(bind);
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', boot);
-    } else {
-      boot();
-    }
-
-    if (window.MutationObserver && document.body) {
-      var observer = new MutationObserver(function () {
-        boot();
-      });
-      observer.observe(document.body, { childList: true, subtree: true });
-    }
-  })();
-</script>
