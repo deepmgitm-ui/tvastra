@@ -129,6 +129,7 @@
       </a>
       {%- section 'mini-header' -%}
         {%- render 'header' -%}
+        {% render 'kwikpass-add-button' %}
       <main id="MainContent" class="content-for-layout focus-none {% if template == 'product' %}product-page{% endif %}" role="main" tabindex="-1">
         {%- if request.page_type == 'index' -%}
           <h1 class="visually-hidden">Premium Activewear for Men & Women | Tvastra Fit</h1>
@@ -188,6 +189,7 @@
         <script type="text/javascript">   
           window.Hongo = {
             shop: '{{ shop.permanent_domain }}',
+            {% comment %} design_mode: {{ request.design_mode | json }}, {% endcomment %}
             {%- if request.design_mode == true -%}
               purchase_code: '{{ settings.purchase_code }}',
               purchase_action: '{{ settings.purchase_action }}',
@@ -221,7 +223,8 @@
       {%- endif -%}
       <script src="{{ 'main.min.js' | asset_url }}" defer="defer"></script>
       <script src="{{ 'tvastra-mobile-shop-nav.js' | asset_url | split: '?' | first }}?v=3" defer="defer"></script>
-      <script src="{{ 'tvastra-page-transition.js' | asset_url | split: '?' | first }}?v=5" defer="defer"></script>
+      <script src="{{ 'tvastra-lucent-login.js' | asset_url | split: '?' | first }}?v=19" defer="defer"></script>
+      <script src="{{ 'tvastra-page-transition.js' | asset_url | split: '?' | first }}?v=4" defer="defer"></script>
       {%- if template.name == 'collection' -%}
         <script src="{{ 'collection-load-more.js' | asset_url }}" defer="defer"></script>
       {%- endif -%}
@@ -256,3 +259,73 @@
     {%- endif -%}
     {%- render 'loader',main-loader:true -%}
     {% unless request.path contains 'return_prime' %}
+    <script src="{{ 'jsloader.js' | asset_url }}" defer="defer"></script>
+    {% endunless %}
+    {%- if template.name == 'index' -%}
+      {%- render 'whatsapp-floating' -%}
+    {%- endif -%}
+
+    {%- if template.name == 'product' or template.name == 'cart' or template.name == 'collection' -%}
+  {% render 'razorpay-magic-checkout' %}
+{%- endif -%}
+{% render 'kwikpass' %}
+
+    <style>
+  /* =========================================
+     1. WISHLIST ICON & HEADER FIX (100% Safe)
+  ========================================= */
+  a[href*="wishlist"] {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  a[href*="wishlist"] svg, 
+  a[href*="wishlist"] i {
+    width: 24px !important; 
+    height: 24px !important;
+    max-width: 24px !important;
+    max-height: 24px !important;
+    margin: 0 !important;
+    transform: translateY(-2px) !important; 
+  }
+  a[href*="wishlist"] svg path {
+    stroke-width: 1.5 !important; 
+  }
+  sticky-header, .header-wrapper, .header-section, header, #shopify-section-header, .shopify-section-header {
+      z-index: 99999 !important;
+      position: relative;
+  }
+
+  /* =========================================
+     2. THUMBNAILS OVERLAP & TOP SPACE FIX
+  ========================================= */
+  .product-gallery.slider-horizontal { 
+      position: relative !important; 
+      padding-top: 0 !important; 
+      padding-bottom: 0 !important; 
+  }
+  
+  /* Container se upar ka faltu space hatane ke liye */
+  .product-gallery.slider-horizontal .mobille-media-slider { 
+      position: relative !important; 
+      display: block !important; 
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+      top: 0 !important;
+  }
+  
+  .product-gallery.slider-horizontal .product-main-slider { 
+      width: 100% !important; 
+      max-width: 100% !important; 
+      margin-top: 0 !important;
+      margin-bottom: 0 !important; 
+  }
+  
+  /* YE WAPAS NORMAL KIYA: Taaki image wapas dikhne lage */
+  .product-gallery.slider-horizontal .product-main-slider .swiper-slide {
+      display: block !important; 
+      height: 100% !important; 
+  }
+  
+  /* IMAGE KO TOP PAR CHIPKANE KA SAFE TAREEKA */
+  .product-gallery.slider-horizontal .product-main-slider img {
