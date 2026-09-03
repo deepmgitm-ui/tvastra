@@ -1,4 +1,90 @@
-/* TVASTRA PDP legacy layer intentionally disabled.
-   Product information presentation now lives exclusively in
-   assets/tvastra-product-info-reset.css, scoped to .tvastra-pdp-info.
-*/
+/* ======================================================================
+   TVASTRA PDP — FINAL SAFETY / OUTER-LAYOUT RESET
+   This file remains loaded by main-product.liquid and intentionally owns
+   only the outer PDP layout. Inner Product Info styling is owned by
+   tvastra-product-info-reset.css.
+   ====================================================================== */
+
+.main-product-page {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow-x: clip !important;
+  overflow-y: visible !important;
+  contain: none !important;
+}
+
+.main-product-page > .container,
+.main-product-page > .container-fluid,
+.main-product-page .product,
+.main-product-page .product-gallery,
+.main-product-page .product-summary {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.main-product-page .product-gallery,
+.main-product-page .product-summary {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.main-product-page .product-media-grid-wrapper {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* The PDP should never depend on a sticky wrapper for basic visibility. */
+.main-product-page .product-gallery > .position-sticky,
+.main-product-page .product-summary > .position-sticky {
+  position: static !important;
+  top: auto !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.main-product-page .product-gallery img,
+.main-product-page .product-gallery video,
+.main-product-page .product-gallery iframe {
+  max-width: 100% !important;
+}
+
+/* A stale page-transition state must not blank or clip a PDP. */
+html.tvastra-page-leaving .main-product-page {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  clip-path: none !important;
+  filter: none !important;
+}
+
+/* The rebuilt colour-family block is the canonical swatch UI. */
+.main-product-page .tvastra-pdp-info:has(.product-colour-family) .product-custom-html:has([id^="smart-color-swatch-"]) {
+  display: none !important;
+}
+
+.main-product-page .product-summary .product-info,
+.main-product-page .product-summary .product-info-right {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Prevent merchant-entered copy from forcing a wider PDP. */
+.main-product-page .product-summary,
+.main-product-page .product-summary * {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 767px) {
+  .main-product-page .product-summary,
+  .main-product-page .product-gallery {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
