@@ -1,158 +1,133 @@
+<link rel="stylesheet" href="{{ 'tvastra-product-info-reset.css' | asset_url | split: '?' | first }}?v=reset-1">
+
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
   assign product_group = product.metafields.custom.product_group
-  assign purchase_btn = false 
+  assign purchase_btn = false
   assign login_to_see = false
-  if settings.enable_login_price == true and customer and  settings.enable_catalog_mode == false
+
+  if settings.enable_login_price == true and customer and settings.enable_catalog_mode == false
     assign purchase_btn = true
     assign login_to_see = true
-  elsif  settings.enable_login_price == false and settings.enable_catalog_mode == false
+  elsif settings.enable_login_price == false and settings.enable_catalog_mode == false
     assign purchase_btn = true
-    assign login_to_see = true 
+    assign login_to_see = true
   elsif settings.enable_catalog_mode == true and settings.enable_login_price == false
     assign purchase_btn = false
     assign login_to_see = true
-  elsif settings.enable_login_price == true  and  customer and  settings.enable_catalog_mode == true
+  elsif settings.enable_login_price == true and customer and settings.enable_catalog_mode == true
     assign purchase_btn = false
     assign login_to_see = true
-  elsif settings.enable_login_price == true  and settings.enable_catalog_mode == true
+  elsif settings.enable_login_price == true and settings.enable_catalog_mode == true
     assign purchase_btn = false
     assign login_to_see = false
   endif
--%} 
-<div id="ProductInfo-{{ section_id }}" class="purches-{{ purchase_btn }} loginSee-{{ login_to_see }} product-info{% if section_settings.product_page_style == 'style-2' %} col-lg-6{% endif %}">
-  {%- assign product_form_id = 'product-form-' | append: section_id -%}
+
+  assign product_form_id = 'product-form-' | append: section_id
+
+  assign swatch_hex = product.metafields.custom.swatch_color.value
+  assign swatch_name = product.metafields.custom.swatch_name.value
+  assign sibling_products = product.metafields.custom.sibling_products.value
+  assign has_colour_family = false
+  if swatch_hex != blank or swatch_name != blank or sibling_products.size > 0
+    assign has_colour_family = true
+  endif
+-%}
+
+<div id="ProductInfo-{{ section_id }}" class="purches-{{ purchase_btn }} loginSee-{{ login_to_see }} product-info tvastra-pdp-info{% if section_settings.product_page_style == 'style-2' %} col-lg-6{% endif %}">
   {%- for block in forloop_content -%}
     {%- case block.type -%}
+
       {%- when '@app' -%}
         {%- render block -%}
+
       {%- when 'product-meta' -%}
         {%- render 'product-meta', block_settings: block.settings, product: product -%}
+
       {%- when 'colum-devider' -%}
-      {%- if section_settings.product_page_style == 'style-2' -%}
-        </div>
-        <div class="col-lg-6 product-info-right">
-      {%- endif -%}
+        {%- if section_settings.product_page_style == 'style-2' -%}
+          </div>
+          <div class="col-lg-6 product-info-right tvastra-pdp-info">
+        {%- endif -%}
+
       {%- when 'vendor' -%}
         {%- if product.vendor != blank -%}
           <div class="block-name vendor">
-            <a href="/collections/all?filter.v.price.gte=&filter.v.price.lte=&filter.p.vendor={{ product.vendor }}&sort_by=title-ascending" aria-label="vendor">{{ product.vendor }}</a>
+            <a href="/collections/all?filter.v.price.gte=&filter.v.price.lte=&filter.p.vendor={{ product.vendor | url_encode }}&sort_by=title-ascending" aria-label="{{ product.vendor | escape }}">{{ product.vendor }}</a>
           </div>
         {%- endif -%}
+
       {%- when 'text' -%}
         {%- if block.settings.text != blank -%}
-          <div class="block-name">
-            {{- block.settings.text -}}
-          </div>
+          <div class="block-name">{{ block.settings.text }}</div>
         {%- endif -%}
+
       {%- when 'title' -%}
+        <section class="tvastra-pdp-info__identity">
+          <h1 class="product-title alt-font h-5">{{ product.title | escape }}</h1>
 
-        {%- comment -%} 🔴 STANDALONE SIBLING SWATCHES (ZERO GAP, PERFECT ALIGNMENT) 🔴 {%- endcomment -%}
-        {%- liquid
-          assign _hex = product.metafields.custom.swatch_color.value
-          assign _name = product.metafields.custom.swatch_name.value
-          assign _siblings = product.metafields.custom.sibling_products.value
-
-          assign _has_swatches = false
-          if _hex != blank or _siblings.size > 0
-            assign _has_swatches = true
-          endif
-        -%}
-
-        {%- capture colour_family_markup -%}
-          {%- if _has_swatches -%}
-          <div class="product-colour-family" style="margin-bottom: 8px; margin-top: 0px;">
-            <div class="product-colour-family__label" style="font-size: 14px; font-weight: 600; color: #000; margin-bottom: 10px; line-height: 1.2;">
-              Colour:&nbsp;<span style="font-weight: 400; color: #555; text-transform: capitalize;">{{ _name }}</span>
-            </div>
-
-            <div class="product-colour-family__options" style="display: flex; flex-wrap: wrap; gap: 15px;">
-              {%- comment -%} CURRENT PRODUCT (ALWAYS FIRST) {%- endcomment -%}
-              <div style="display: inline-flex; flex-direction: column; align-items: center; gap: 6px; cursor: default;" title="{{ _name }}">
-                {%- liquid 
-                  assign current_bg = _hex
-                  if current_bg == blank
-                    assign current_bg = _name | split: ' ' | first | handleize
-                  endif
-                -%}
-                <div style="border: 1px solid #000; border-radius: 50%; padding: 2px; display: inline-flex; align-items: center; justify-content: center;">
-                  <span style="width: 28px; height: 28px; border-radius: 50%; display: block; background-color: {{ current_bg | default: '#cccccc' }}; border: 1px solid rgba(0,0,0,0.1); flex-shrink: 0;"></span>
+          {%- if block.settings.hide_ratings or block.settings.hide_sku -%}
+            <div class="rating-sku-wrap">
+              {%- if block.settings.hide_ratings -%}
+                <div class="product-rating" data-trigger="review-tab">
+                  <span class="shopify-product-reviews-badge" data-id="{{ product.id }}">
+                    <span class="spr-badge">
+                      <span class="spr-starrating spr-badge-starrating" aria-label="Product rating">
+                        <i class="spr-icon spr-icon-star-empty"></i>
+                        <i class="spr-icon spr-icon-star-empty"></i>
+                        <i class="spr-icon spr-icon-star-empty"></i>
+                        <i class="spr-icon spr-icon-star-empty"></i>
+                        <i class="spr-icon spr-icon-star-empty"></i>
+                      </span>
+                    </span>
+                  </span>
                 </div>
-                <span style="font-size: 11px; font-weight: 600; color: #000; text-transform: capitalize; line-height: 1.2; text-align: center; max-width: 60px; word-wrap: break-word;">{{ _name | default: 'Color' }}</span>
+              {%- endif -%}
+
+              {%- if block.settings.hide_sku -%}
+                <div class="product-sku">
+                  <span class="sku">{{ 'general.product_information.sku' | t }}</span>
+                  <span id="sku-{{ section_id }}">{{ current_variant.sku }}</span>
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {%- if block.settings.hide_price and login_to_see -%}
+            <div class="no-js-hidden" id="price-{{ section_id }}">
+              {%- render 'main-price', product: product, use_variant: true, show_badges: true, price_class: 'price--large', save_label: block.settings.show_save_label -%}
+            </div>
+
+            {%- liquid
+              assign purchase_note_tax = block.settings.purchase_note_tax | default: 'Taxes included'
+              assign purchase_note_shipping = block.settings.purchase_note_shipping | default: 'Free prepaid shipping'
+              assign offers_title = block.settings.offers_title | default: 'Offers & payment'
+              assign offers_highlight = block.settings.offers_highlight | default: 'Save more today'
+              assign offer_1_title = block.settings.offer_1_title | default: '10% welcome offer'
+              assign offer_1_text = block.settings.offer_1_text | default: 'Apply TVFIT10 from cart before checkout.'
+              assign offer_1_code = block.settings.offer_1_code | default: 'TVFIT10'
+              assign offer_2_title = block.settings.offer_2_title | default: 'Extra 5% prepaid benefit'
+              assign offer_2_text = block.settings.offer_2_text | default: 'Online payments ship faster and stay secure.'
+              assign offer_3_title = block.settings.offer_3_title | default: 'Bank, card and UPI offers'
+              assign offer_3_text = block.settings.offer_3_text | default: 'Eligible Razorpay offers appear at payment.'
+              assign offers_footer = block.settings.offers_footer | default: 'Verified checkout with Razorpay'
+            -%}
+
+            {%- if purchase_note_tax != blank or purchase_note_shipping != blank -%}
+              <div class="product-purchase-note" aria-label="Purchase information">
+                {%- if purchase_note_tax != blank -%}<span>{{ purchase_note_tax }}</span>{%- endif -%}
+                {%- if purchase_note_shipping != blank -%}<span>{{ purchase_note_shipping }}</span>{%- endif -%}
               </div>
+            {%- endif -%}
 
-              {%- comment -%} SIBLING PRODUCTS {%- endcomment -%}
-              {%- for s in _siblings -%}
-                {%- if s.handle == product.handle -%}{%- continue -%}{%- endif -%}
-                {%- assign _sh = s.metafields.custom.swatch_color.value -%}
-                {%- assign _sn = s.metafields.custom.swatch_name.value -%}
-
-                <a href="{{ s.url }}" style="display: inline-flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none;" title="{{ _sn }}" onmouseover="this.children[0].style.borderColor='#999'; this.children[1].style.color='#000';" onmouseout="this.children[0].style.borderColor='transparent'; this.children[1].style.color='#555';">
-                  {%- liquid 
-                    assign sibling_bg = _sh
-                    if sibling_bg == blank
-                      assign sibling_bg = _sn | split: ' ' | first | handleize
-                    endif
-                  -%}
-                  <div style="border: 1px solid transparent; border-radius: 50%; padding: 2px; display: inline-flex; align-items: center; justify-content: center; transition: border-color 0.2s ease;">
-                    <span style="width: 28px; height: 28px; border-radius: 50%; display: block; background-color: {{ sibling_bg | default: '#cccccc' }}; border: 1px solid rgba(0,0,0,0.1); flex-shrink: 0;"></span>
-                  </div>
-                  <span style="font-size: 11px; font-weight: 400; color: #555; text-transform: capitalize; line-height: 1.2; text-align: center; max-width: 60px; word-wrap: break-word; transition: color 0.2s ease;">{{ _sn | default: 'Color' }}</span>
-                </a>
-              {%- endfor -%}
-            </div>
-          </div>
-          {%- endif -%}
-        {%- endcapture -%}
-
-        <h1 class="product-title alt-font h-5">{{ product.title | escape }}</h1>
-        <div class="rating-sku-wrap flex-wrap d-flex w-100 align-items-center">                  
-          {%- if block.settings.hide_ratings == true -%}
-            <div class="product-rating" data-trigger="review-tab">
-              <span class="shopify-product-reviews-badge" data-id="{{ product.id }}">
-                <span class="spr-badge">
-                  <span class="spr-starrating spr-badge-starrating"><i class="spr-icon spr-icon-star-empty"></i><i class="spr-icon spr-icon-star-empty"></i><i class="spr-icon spr-icon-star-empty"></i><i class="spr-icon spr-icon-star-empty"></i><i class="spr-icon spr-icon-star-empty"></i></span>
-                </span>
-              </span>
-            </div>
-          {%- endif -%}
-          {%- if block.settings.hide_sku == true -%}
-            <div class="product-sku"><span class="sku">{{ 'general.product_information.sku' | t }}</span> <span id="sku-{{ section_id }}">{{ current_variant.sku }}</span></div>
-          {%- endif -%}
-          </div>
-        {%- if block.settings.hide_price == true and login_to_see == true -%}
-          <div class="no-js-hidden" id="price-{{ section_id }}">
-            {%- render 'main-price', product: product, use_variant: true, show_badges: true, price_class: 'price--large', save_label: block.settings.show_save_label -%}
-          </div>
-          {%- liquid
-            assign purchase_note_tax = block.settings.purchase_note_tax | default: 'Taxes included'
-            assign purchase_note_shipping = block.settings.purchase_note_shipping | default: 'Free prepaid shipping'
-            assign offers_title = block.settings.offers_title | default: 'Offers & payment'
-            assign offers_highlight = block.settings.offers_highlight | default: 'Save more today'
-            assign offer_1_title = block.settings.offer_1_title | default: '10% welcome offer'
-            assign offer_1_text = block.settings.offer_1_text | default: 'Apply TVFIT10 from cart before checkout.'
-            assign offer_1_code = block.settings.offer_1_code | default: 'TVFIT10'
-            assign offer_2_title = block.settings.offer_2_title | default: 'Extra 5% prepaid benefit'
-            assign offer_2_text = block.settings.offer_2_text | default: 'Online payments ship faster and stay secure.'
-            assign offer_3_title = block.settings.offer_3_title | default: 'Bank, card and UPI offers'
-            assign offer_3_text = block.settings.offer_3_text | default: 'Eligible Razorpay offers appear at payment.'
-            assign offers_footer = block.settings.offers_footer | default: 'Verified checkout with Razorpay'
-          -%}
-          {%- if purchase_note_tax != blank or purchase_note_shipping != blank -%}
-            <div class="product-purchase-note" aria-label="Purchase information">
-              {%- if purchase_note_tax != blank -%}<span>{{ purchase_note_tax }}</span>{%- endif -%}
-              {%- if purchase_note_shipping != blank -%}<span>{{ purchase_note_shipping }}</span>{%- endif -%}
-            </div>
-          {%- endif -%}
-          {%- if block.settings.show_product_offers != false -%}
-            <details class="tvastra-product-offers">
-              <summary class="tvastra-product-offers__summary">
-                <span class="tvastra-product-offers__title">{{ offers_title }}</span>
-                {%- if offers_highlight != blank -%}<span class="tvastra-product-offers__highlight">{{ offers_highlight }}</span>{%- endif -%}
-                <i class="feather-chevron-down" aria-hidden="true"></i>
-              </summary>
-              <div class="tvastra-product-offers__body">
-                <div class="tvastra-product-offers__list">
+            {%- if block.settings.show_product_offers != false -%}
+              <details class="tvastra-product-offers">
+                <summary class="tvastra-product-offers__summary">
+                  <span class="tvastra-product-offers__title">{{ offers_title }}</span>
+                  {%- if offers_highlight != blank -%}<span class="tvastra-product-offers__highlight">{{ offers_highlight }}</span>{%- endif -%}
+                  <i class="feather-chevron-down" aria-hidden="true"></i>
+                </summary>
+                <div class="tvastra-product-offers__body">
                   {%- if offer_1_title != blank or offer_1_text != blank -%}
                     <div class="tvastra-product-offer">
                       <span class="tvastra-product-offer__icon" aria-hidden="true"><i class="feather-tag"></i></span>
@@ -163,6 +138,7 @@
                       {%- if offer_1_code != blank -%}<span class="tvastra-product-offer__code">{{ offer_1_code }}</span>{%- endif -%}
                     </div>
                   {%- endif -%}
+
                   {%- if offer_2_title != blank or offer_2_text != blank -%}
                     <div class="tvastra-product-offer tvastra-product-offer--plain">
                       <span class="tvastra-product-offer__icon" aria-hidden="true"><i class="feather-credit-card"></i></span>
@@ -172,6 +148,7 @@
                       </div>
                     </div>
                   {%- endif -%}
+
                   {%- if offer_3_title != blank or offer_3_text != blank -%}
                     <div class="tvastra-product-offer tvastra-product-offer--plain">
                       <span class="tvastra-product-offer__icon" aria-hidden="true"><i class="feather-percent"></i></span>
@@ -181,40 +158,65 @@
                       </div>
                     </div>
                   {%- endif -%}
+
+                  {%- if offers_footer != blank -%}
+                    <p class="tvastra-product-offers__note"><i class="feather-shield" aria-hidden="true"></i>{{ offers_footer }}</p>
+                  {%- endif -%}
                 </div>
-                {%- if offers_footer != blank -%}
-                  <p class="tvastra-product-offers__note"><i class="feather-shield" aria-hidden="true"></i> {{ offers_footer }}</p>
-                {%- endif -%}
-              </div>
-            </details>
+              </details>
+            {%- endif -%}
           {%- endif -%}
-        {%- endif -%}
 
-        {{- colour_family_markup -}}
+          {%- if has_colour_family -%}
+            <div class="product-colour-family">
+              <div class="product-colour-family__label">
+                Colour: <span>{{ swatch_name | default: 'Select' }}</span>
+              </div>
+              <div class="product-colour-family__options">
+                <div title="{{ swatch_name | default: product.title | escape }}" aria-current="true">
+                  <div>
+                    <span style="background-color: {{ swatch_hex | default: '#cccccc' }};"></span>
+                  </div>
+                  <span>{{ swatch_name | default: 'Current' }}</span>
+                </div>
 
-        {%- form 'product', product, id: 'product-form-installment', class: 'installment caption-large' -%}
-          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">{{ form | payment_terms }}
-        {%- endform -%}
+                {%- for sibling in sibling_products -%}
+                  {%- unless sibling.handle == product.handle -%}
+                    {%- liquid
+                      assign sibling_hex = sibling.metafields.custom.swatch_color.value | default: '#cccccc'
+                      assign sibling_name = sibling.metafields.custom.swatch_name.value | default: 'Colour'
+                    -%}
+                    <a href="{{ sibling.url }}" title="{{ sibling_name | escape }}">
+                      <div><span style="background-color: {{ sibling_hex }};"></span></div>
+                      <span>{{ sibling_name }}</span>
+                    </a>
+                  {%- endunless -%}
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+        </section>
 
       {%- when 'short_description' -%}
-        <div class="product-info-overview">
-          {{ block.settings.liquid_code }}
-        </div>      
+        <div class="product-info-overview">{{ block.settings.liquid_code }}</div>
+
       {%- when 'popup' -%}
-          <modal-opener class="product-popup-modal__opener no-js-hidden" data-modal="#PopupModal-{{ block.id }}">
-            <button id="ProductPopup-{{ block.id }}" class="product-popup-modal__button link" type="button" aria-haspopup="dialog">{{ block.settings.link_label | default: block.settings.page.title }}</button>
-          </modal-opener>
-          <a href="{{ block.settings.page.url }}" class="product-popup-modal__button link no-js" aria-label="popup">{{ block.settings.link_label }}</a>
+        <modal-opener class="product-popup-modal__opener no-js-hidden" data-modal="#PopupModal-{{ block.id }}">
+          <button id="ProductPopup-{{ block.id }}" class="product-popup-modal__button link" type="button" aria-haspopup="dialog">{{ block.settings.link_label | default: block.settings.page.title }}</button>
+        </modal-opener>
+        <a href="{{ block.settings.page.url }}" class="product-popup-modal__button link no-js" aria-label="popup">{{ block.settings.link_label }}</a>
 
       {%- when 'variant_picker' -%}
-        {%- unless login_to_see == false or product_group != blank %}      
+        {%- unless login_to_see == false or product_group != blank -%}
           {%- assign size_guide_option_label = block.settings.size_guide_option_label -%}
           {%- assign size_guide_content = block.settings.size_guide_content -%}
           {%- assign size_guide_image = block.settings.size_guide_image -%}
           {%- assign size_guide_metafield = product.metafields.custom.size_cart.value -%}
+
           {%- if size_guide_image == blank and size_guide_metafield != blank -%}
             {%- assign size_guide_image = size_guide_metafield -%}
           {%- endif -%}
+
           {%- assign size_guide_image_url = '' -%}
           {%- if size_guide_image != blank -%}
             {%- if size_guide_image.width != blank -%}
@@ -223,6 +225,7 @@
               {%- assign size_guide_image_url = size_guide_image -%}
             {%- endif -%}
           {%- endif -%}
+
           <div class="product-variants{% if current_variant.available == false and current_variant.inventory_quantity < 1 %} sold-out-product{% endif %}" id="variants-{{ section_id }}">
             {%- unless product.has_only_default_variant -%}
               {%- liquid
@@ -233,120 +236,120 @@
                   assign option_name = settings[option_name_key] | handleize
                   assign option_type = settings[option_type_key]
                   if option_name != ''
-                    assign optionString = option_name | append: '=' | append: option_type
-                    assign option_type_array = option_type_array | append: ',' | append: optionString
+                    assign option_string = option_name | append: '=' | append: option_type
+                    assign option_type_array = option_type_array | append: ',' | append: option_string
                   endif
                 endfor
                 assign option_type_array = option_type_array | split: ','
                 assign option_display_type_default = settings.variant_option_type_default
               -%}
+
               <variant-radios class="no-js-hidden" data-section="{{ section_id }}" data-url="{{ product.url }}" data-product-id="{{ product.id }}">
                 {%- for option in product.options_with_values -%}
                   {%- liquid
                     assign can_show_tooltip = true
                     assign option_display_type = ''
-                    assign handleizeOptionName = option.name | handleize
-                    if handleizeOptionName == 'size'
+                    assign option_handle = option.name | handleize
+                    assign option_name_lower = option.name | downcase
+                    assign iscolor = false
+                    assign isSize = false
+
+                    if option_handle == 'size'
                       assign can_show_tooltip = false
                     endif
+
+                    if option_name_lower contains 'color' or option_name_lower contains 'colour' or option_name_lower contains 'rang'
+                      assign iscolor = true
+                    endif
+
+                    if option_name_lower contains 'size'
+                      assign isSize = true
+                    endif
+
                     for option_item in option_type_array
                       assign option_array = option_item | split: '='
-                      if option_array != blank and option_array.first == handleizeOptionName
+                      if option_array != blank and option_array.first == option_handle
                         assign option_display_type = option_array.last
                       endif
                     endfor
+
                     if option_display_type == ''
                       assign option_display_type = option_display_type_default
                     endif
-
-                    assign iscolor = false
-                    assign isSize = false
-                    assign fname = option.name | downcase
-                    if fname contains 'color' or fname contains 'colour' or fname contains 'rang'
-                      assign iscolor = true
-                    endif
-                    if fname contains 'size'
-                        assign isSize = true
-                    endif
                   -%}
 
-                  {%- comment -%} 🔴 HIDE DUPLICATE NATIVE COLOR OPTION IF CUSTOM SWATCHES ARE ON 🔴 {%- endcomment -%}
-                  {%- assign hide_option_css = '' -%}
-                  {%- if iscolor and _has_swatches -%}
-                    {%- assign hide_option_css = 'display: none !important;' -%}
-                  {%- endif -%}
+                  <fieldset class="js product-form__input product-filter{% if iscolor %} color-filter{% elsif isSize %} size-filter{% else %} {{ option_handle }}-filter{% endif %}{% if option_display_type != blank %} {{ option_display_type }}{% endif %}{% if iscolor and has_colour_family %} tvastra-option-hidden{% endif %}">
+                    <label class="form-label w-100">
+                      {{ option.name }}: <span>{{ option.selected_value }}</span>
+                    </label>
 
-                  <fieldset class="js product-form__input product-filter{% if iscolor == true  %} color-filter {% elsif isSize == true %} size-filter {% else %} {{ handleizeOptionName }}-filter {% endif %}{{ option_display_type }}" style="{{ hide_option_css }}">
-                    <label class="form-label w-100">{{ option.name }}: <span>{{ option.selected_value }}</span></label>                            
-                    {%- if option_display_type == 'dropdown' -%} 
+                    {%- if option_display_type == 'dropdown' -%}
                       <div class="variant-option select">
                         <select id="Option-{{ section_id }}-{{ forloop.index0 }}" class="select__select" name="options[{{ option.name | escape }}]" form="product-form-{{ section_id }}">
                           {%- for value in option.values -%}
-                            <option value="{{ value | escape }}" {% if option.selected_value == value %}selected="selected"{% endif %}>{{ value }}</option>
+                            <option value="{{ value | escape }}"{% if option.selected_value == value %} selected="selected"{% endif %}>{{ value }}</option>
                           {%- endfor -%}
                         </select>
                       </div>
                     {%- else -%}
                       {%- if isSize -%}<div class="tvastra-size-options">{%- endif -%}
-                        {%- for value in option.values -%}
-                            {%- assign currentcolor = value | remove: ' ' | escape | downcase -%}
-                            <div class="variant-option swatches-hover" data-option-type="{{ option_display_type }}" data-option-name="{{ value }}" {% if can_show_tooltip %}data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="{{ value }}" data-bs-trigger="hover"{% endif %}>
-                                <input type="radio" id="{{ section_id }}-{{ option.name }}-{{ forloop.index0 }}" data-single-option data-option-position="{{ option.position }}" data-value="{{ value | escape }}" name="{{ option.name }}" value="{{ value | escape }}" class="visually-hidden" form="product-form-{{ section_id }}" {% if option.selected_value == value %}checked{% endif %} autocomplete="off" aria-label="filter" />
-                                <label for="{{ section_id }}-{{ option.name }}-{{ forloop.index0 }}" class="{{ handleizeOptionName }}-filter">
-                                  {%- if option_display_type == 'image' -%} 
-                                    {%- assign swatch_image = '' -%}
-                                    {%- if iscolor == true-%}
-                                      {%- liquid
-                                        for variant in product.variants
-                                          if swatch_image != ''
-                                            break
-                                          endif
-                                          for variant_option in variant['options']
-                                            if swatch_image != ''
-                                              break
-                                            endif
-                                            assign option_title = variant_option | escape | downcase
-                                            if currentcolor == option_title
-                                              assign swatch_image = variant.featured_media.preview_image
-                                            endif
-                                          endfor
-                                        endfor
-                                      -%}
-                                    {%- endif -%}
-                                    {%- if swatch_image != blank and swatch_image != null -%}
-                                        <img src="{{ swatch_image | image_url: width: 80, height: 80 }}" alt="{{ value }}" width="80" height="80" loading="lazy" />
-                                    {%- else -%}
-                                        <span class="text-swatch">{{ value }}</span>
-                                    {%- endif -%}
-                                  {%- else -%} 
-                                    {%- if iscolor == true -%}
-                                      {%- liquid
-                                        assign bg_color = ''
-                                        for color in variant_colors
-                                          assign current_color_code = color | split: ':'
-                                          assign color_name = current_color_code.first | remove: ' ' | escape | downcase
-                                          if color_name == currentcolor
-                                            assign bg_color = current_color_code.last
-                                          endif
-                                        endfor
-                                        assign is_white = false
-                                        assign bg_color_lower = bg_color | downcase | strip
-                                        if bg_color_lower == '#fff' or bg_color_lower == '#ffffff'
-                                          assign is_white = true
-                                        endif
-                                      -%}
-                                      <span class="{% if bg_color != '' %}color{% else %}null{% endif %}-bg{% if is_white == true %} color-white{% endif %}" style="{% if bg_color != '' %}background-color: {{ bg_color }};{% endif %}display: block;"></span>
-                                    {%- else -%}
-                                      <span class="text-swatch">{{ value }}</span>
-                                    {%- endif -%}
+
+                      {%- for value in option.values -%}
+                        {%- assign normalized_value = value | remove: ' ' | downcase -%}
+                        <div class="variant-option swatches-hover" data-option-type="{{ option_display_type }}" data-option-name="{{ value | escape }}"{% if can_show_tooltip %} data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="{{ value | escape }}" data-bs-trigger="hover"{% endif %}>
+                          <input type="radio" id="{{ section_id }}-{{ option.name | handleize }}-{{ forloop.index0 }}" data-single-option data-option-position="{{ option.position }}" data-value="{{ value | escape }}" name="{{ option.name }}" value="{{ value | escape }}" class="visually-hidden" form="product-form-{{ section_id }}"{% if option.selected_value == value %} checked{% endif %} autocomplete="off" aria-label="{{ value | escape }}">
+                          <label for="{{ section_id }}-{{ option.name | handleize }}-{{ forloop.index0 }}" class="{{ option_handle }}-filter">
+                            {%- if option_display_type == 'image' -%}
+                              {%- assign swatch_image = blank -%}
+                              {%- if iscolor -%}
+                                {%- for variant in product.variants -%}
+                                  {%- if swatch_image == blank -%}
+                                    {%- for variant_option in variant.options -%}
+                                      {%- assign variant_option_normalized = variant_option | remove: ' ' | downcase -%}
+                                      {%- if variant_option_normalized == normalized_value and variant.featured_media != blank -%}
+                                        {%- assign swatch_image = variant.featured_media.preview_image -%}
+                                        {%- break -%}
+                                      {%- endif -%}
+                                    {%- endfor -%}
                                   {%- endif -%}
-                                </label>
-                            </div>
-                        {%- endfor -%}
+                                  {%- if swatch_image != blank -%}{%- break -%}{%- endif -%}
+                                {%- endfor -%}
+                              {%- endif -%}
+
+                              {%- if swatch_image != blank -%}
+                                <img src="{{ swatch_image | image_url: width: 80, height: 80 }}" alt="{{ value | escape }}" width="80" height="80" loading="lazy">
+                              {%- else -%}
+                                <span class="text-swatch">{{ value }}</span>
+                              {%- endif -%}
+                            {%- elsif iscolor -%}
+                              {%- liquid
+                                assign bg_color = ''
+                                for color in variant_colors
+                                  assign color_pair = color | split: ':'
+                                  assign color_name = color_pair.first | remove: ' ' | downcase
+                                  if color_name == normalized_value
+                                    assign bg_color = color_pair.last
+                                  endif
+                                endfor
+                                assign color_is_white = false
+                                assign bg_color_clean = bg_color | downcase | strip
+                                if bg_color_clean == '#fff' or bg_color_clean == '#ffffff'
+                                  assign color_is_white = true
+                                endif
+                              -%}
+                              <span class="{% if bg_color != blank %}color{% else %}null{% endif %}-bg{% if color_is_white %} color-white{% endif %}"{% if bg_color != blank %} style="background-color: {{ bg_color }};"{% endif %}></span>
+                            {%- else -%}
+                              <span class="text-swatch">{{ value }}</span>
+                            {%- endif -%}
+                          </label>
+                        </div>
+                      {%- endfor -%}
+
                       {%- if isSize -%}</div>{%- endif -%}
                     {%- endif -%}
+
                     {%- if option.name == size_guide_option_label and block.settings.show_size_guide -%}
-                      {%- if size_guide_content != null and size_guide_content != blank or size_guide_image_url != blank -%}
+                      {%- if size_guide_content != blank or size_guide_image_url != blank -%}
                         <a class="modal-popup" href="#size-guide-popup-{{ section_id }}">{{ block.settings.size_guide_button_text | default: 'Size guide' }}</a>
                         <div id="size-guide-popup-{{ section_id }}" class="modal-popup-main mfp-hide size-guide-popup" aria-label="Size guide">
                           {%- if size_guide_image_url != blank -%}
@@ -359,77 +362,74 @@
                     {%- endif -%}
                   </fieldset>
                 {%- endfor -%}
+
                 <script type="application/json">{{ product.variants | json }}</script>
               </variant-radios>
             {%- endunless -%}
           </div>
-        {%- endunless -%}  
-      {%- when 'product_deal' -%}  
-        {%- capture product_deal -%}
-          {%- render 'product-deal', product: product -%}
-        {%- endcapture -%}
+        {%- endunless -%}
+
+      {%- when 'product_deal' -%}
+        {%- capture product_deal -%}{%- render 'product-deal', product: product -%}{%- endcapture -%}
         {%- if product_deal != blank -%}
           <div class="product-deal-wrap d-flex align-items-center">
             <div class="deal-title"><span>{{ 'general.product_information.hurry_up' | t }}</span>{{ 'general.product_information.sale_end_text' | t }}</div>
             {{ product_deal }}
           </div>
         {%- endif -%}
+
       {%- when 'buy_buttons' -%}
-        {%- if block.settings.show_add_to_cart or block.settings.show_dynamic_checkout or product.selected_or_first_available_variant.available == false -%}
+        {%- if block.settings.show_add_to_cart or block.settings.show_dynamic_checkout or current_variant.available == false -%}
           <product-form class="product-form{% if purchase_btn == false %} purchase-mode-off{% endif %}" data-backinstock="true">
-            {%- unless purchase_btn == false -%} 
+            {%- unless purchase_btn == false -%}
               {%- form 'product', product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
                 {%- if product_group != blank -%}
-                  {%- render 'group-product-block', productgrop: product_group, main_product: product -%} 
+                  {%- render 'group-product-block', productgrop: product_group, main_product: product -%}
+                {%- else -%}
+                  <input type="hidden" name="id" value="{{ current_variant.id }}">
                 {%- endif -%}
+
                 <p class="product-form__error-message-wrapper d-none" role="alert">
-                  <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-error" viewBox="0 0 13 13" width="15" height="15">
-                    <circle cx="6.5" cy="6.50049" r="5.5" stroke="white" stroke-width="2"/>
-                    <circle cx="6.5" cy="6.5" r="5.5" fill="#EB001B" stroke="#EB001B" stroke-width="0.7"/>
-                    <path d="M5.87413 3.52832L5.97439 7.57216H7.02713L7.12739 3.52832H5.87413ZM6.50076 9.66091C6.88091 9.66091 7.18169 9.37267 7.18169 9.00504C7.18169 8.63742 6.88091 8.34917 6.50076 8.34917C6.12061 8.34917 5.81982 8.63742 5.81982 9.00504C5.81982 9.37267 6.12061 9.66091 6.50076 9.66091Z" fill="white"/>
-                    <path d="M5.87413 3.17832H5.51535L5.52424 3.537L5.6245 7.58083L5.63296 7.92216H5.97439H7.02713H7.36856L7.37702 7.58083L7.47728 3.537L7.48617 3.17832H7.12739H5.87413ZM6.50076 10.0109C7.06121 10.0109 7.5317 9.57872 7.5317 9.00504C7.5317 8.43137 7.06121 7.99918 6.50076 7.99918C5.94031 7.99918 5.46982 8.43137 5.46982 9.00504C5.46982 9.57872 5.94031 10.0109 6.50076 10.0109Z" fill="white" stroke="#EB001B" stroke-width="0.7">
-                  </svg>
                   <span class="product-form__error-message text-danger"></span>
                 </p>
-                {%- unless product_group != blank -%} 
-                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                {%- endunless -%}
-                {%- if product.selected_or_first_available_variant.available -%}
-                  {%- if product.selected_or_first_available_variant.incoming and product.selected_or_first_available_variant.inventory_quantity < 1 -%}
-                    <input type="hidden" name="properties[_isPreorder]" value="Yes" autocomplete="off" readonly />
-                  {%- endif -%} 
+
+                {%- if current_variant.available and current_variant.incoming and current_variant.inventory_quantity < 1 -%}
+                  <input type="hidden" name="properties[_isPreorder]" value="Yes" autocomplete="off" readonly>
                 {%- endif -%}
-                <div class="product-form-buttons product-cta-smart{% unless product.selected_or_first_available_variant.available %} is-notify-only{% endunless %}">
-                  <div class="action-btn d-flex {% if block.settings.show_add_to_cart == true %}justify-content-between{% endif %} align-items-end{% if block.settings.show_wishlist %} has-wishlist{% endif %}{% if block.settings.show_dynamic_checkout %} has-buy-now{% endif %}">
-                    {%- unless product_group != blank -%} 
-                    <div class="quantity-btn d-flex flex-md-column align-items-center align-items-md-start">
-                      <label>{{ 'general.product_information.quantity' | t }}</label>
-                      <quantity-input class="quantity">
-                        <button class="quantity-button quantity-minus" name="minus" type="button" aria-label="Decrease quantity">
-                          <span class="tvastra-quantity-symbol" aria-hidden="true" style="pointer-events: none;">-</span>
-                        </button>
-                        <input id="Quantity-{{ section_id }}" class="quantity-input" type="number" name="quantity" min="0" value="1" form="product-form-{{ section_id }}" />
-                        <label for="Quantity-{{ section_id }}" class="visually-hidden">Quantity</label>
-                        <button class="quantity-button quantity-plus" name="plus" type="button" aria-label="Increase quantity">
-                          <span class="tvastra-quantity-symbol" aria-hidden="true" style="pointer-events: none;">+</span>
-                        </button>
-                      </quantity-input>
-                    </div>
+
+                <div class="product-form-buttons product-cta-smart{% unless current_variant.available %} is-notify-only{% endunless %}">
+                  <div class="action-btn{% if block.settings.show_add_to_cart %} has-cart{% endif %}{% if block.settings.show_wishlist %} has-wishlist{% endif %}{% if block.settings.show_dynamic_checkout %} has-buy-now{% endif %}">
+                    {%- unless product_group != blank -%}
+                      {%- if block.settings.show_qty -%}
+                        <div class="quantity-btn">
+                          <quantity-input class="quantity">
+                            <button class="quantity-button quantity-minus" name="minus" type="button" aria-label="Decrease quantity">
+                              <span class="tvastra-quantity-symbol" aria-hidden="true">−</span>
+                            </button>
+                            <input id="Quantity-{{ section_id }}" class="quantity-input" type="number" name="quantity" min="0" value="1" form="{{ product_form_id }}" aria-label="Quantity">
+                            <button class="quantity-button quantity-plus" name="plus" type="button" aria-label="Increase quantity">
+                              <span class="tvastra-quantity-symbol" aria-hidden="true">+</span>
+                            </button>
+                          </quantity-input>
+                        </div>
+                      {%- endif -%}
                     {%- endunless -%}
-                    {%- if block.settings.show_add_to_cart or product.selected_or_first_available_variant.available == false -%}
-                      <button type="{% if product.selected_or_first_available_variant.available %}submit{% else %}button{% endif %}" name="add" id="cart-btn-{{ section_id }}" class="cart-btn alt-font{% unless product.selected_or_first_available_variant.available %} notify-me{% endunless %}">
-                          <i class="feather-shopping-bag"></i>
-                          {%- if product.selected_or_first_available_variant.available -%}
-                            {%- if product.selected_or_first_available_variant.incoming and product.selected_or_first_available_variant.inventory_quantity < 1 -%}
-                              <span>{{ 'general.product_information.pre_order' | t }}</span>
-                            {%- else -%}
-                              <span>{{ 'products.product.add_to_cart' | t }}</span> 
-                            {%- endif -%}
+
+                    {%- if block.settings.show_add_to_cart or current_variant.available == false -%}
+                      <button type="{% if current_variant.available %}submit{% else %}button{% endif %}" name="add" id="cart-btn-{{ section_id }}" class="cart-btn alt-font{% unless current_variant.available %} notify-me{% endunless %}">
+                        <i class="feather-shopping-bag" aria-hidden="true"></i>
+                        {%- if current_variant.available -%}
+                          {%- if current_variant.incoming and current_variant.inventory_quantity < 1 -%}
+                            <span>{{ 'general.product_information.pre_order' | t }}</span>
                           {%- else -%}
-                            <span class="notify-text-btn" data-notify-text="Notify me when back in stock">Notify me when back in stock</span>
+                            <span>{{ 'products.product.add_to_cart' | t }}</span>
                           {%- endif -%}
+                        {%- else -%}
+                          <span class="notify-text-btn" data-notify-text="Notify me when back in stock">Notify me when back in stock</span>
+                        {%- endif -%}
                       </button>
                     {%- endif -%}
+
                     {%- if block.settings.show_dynamic_checkout and product_group == blank -%}
                       <div class="product-buy-now-inline">{{ form | payment_button }}</div>
                     {%- elsif block.settings.show_dynamic_checkout -%}
@@ -437,758 +437,236 @@
                         <custom-btn type="button" class="custom-payment-btn shopify-payment-button__button shopify-payment-button__button--unbranded" data-testid="Checkout-button">{{ 'general.product_information.by_it_now' | t }}</custom-btn>
                       </div>
                     {%- endif -%}
+
                     {%- if block.settings.show_wishlist -%}
                       {%- render 'button-wishlist', product: product, tooltip_position: 'top' -%}
                     {%- endif -%}
                   </div>
                 </div>
               {%- endform -%}
+
               {%- render 'product-performance-proof', product: product -%}
               {%- render 'product-faq-block' -%}
             {%- else -%}
-                {%- if block.settings.show_wishlist -%}
-                    {%- render 'button-wishlist', product: product, tooltip_position: 'top' -%}
-                  {%- endif -%}
-            {%- endunless -%}
-          </product-form>                  
-        {%- endif -%}               
-        {%- assign pick_up_availabilities = product.selected_or_first_available_variant.store_availabilities | where: 'pick_up_enabled', true -%}
-          <pickup-availability class="product__pickup-availabilities no-js-hidden"{% if product.selected_or_first_available_variant.available and pick_up_availabilities.size > 0 %} available {% endif %} data-base-url="{{ shop.url }}{{ routes.root_url }}" data-variant-id="{{ product.selected_or_first_available_variant.id }}" data-has-only-default-variant="{{ product.has_only_default_variant }}"
-          >
-          <template>
-            <pickup-availability-preview class="pickup-availability-preview">            
-              <div class="pickup-availability-info">
-                <div class="caption-large"><i class="feather-slash"></i> {{ 'products.product.pickup_availability.unavailable' | t }}</div>
-                <button class="pickup-availability-button link link--text underlined-link">{{ 'products.product.pickup_availability.refresh' | t }}</button>
-              </div>
-            </pickup-availability-preview>
-          </template>
-          </pickup-availability>                
-        <script src="{{ 'pickup-availability.js' | asset_url }}" defer="defer"></script>
-        <div id="pre-order-{{ section_id }}">
-          {%- capture pre-orde -%}
-            {%- if current_variant.available == true and current_variant.incoming and current_variant.inventory_quantity < 1 -%}
-              <div class="pre-order-box">
-                <div class="off-text"><i class="bi bi-patch-check"></i> {{ 'general.product_information.offer_text' | t }} <span>{{ 'general.product_information.discount_text' | t }}</span></div>
-                <div class="delivery-date"><i class="bi bi-box2"></i> {{ 'general.product_information.delivery_text' | t }} <span>{{ current_variant.next_incoming_date | date: "%d/%m/%Y" }}</span></div>
-              </div>  
-            {%- endif -%}
-          {%- endcapture -%}
-          {{ pre-orde }}
-        </div>
-        {%- render 'back-in-stock-block', block_settings: block.settings -%}
-             {%- form 'contact', id: 'ContactForm-Outofstock' -%}
-              {%- if form.posted_successfully? -%}
-              <div class="form-status-message" tabindex="-1" autofocus><i class="feather-check-circle"></i> {{ 'templates.contact.form.post_success' | t }}</div>
+              {%- if block.settings.show_wishlist -%}
+                {%- render 'button-wishlist', product: product, tooltip_position: 'top' -%}
               {%- endif -%}
-            {% endform %}
+            {%- endunless -%}
+
+            {%- assign pick_up_availabilities = current_variant.store_availabilities | where: 'pick_up_enabled', true -%}
+            <pickup-availability class="product__pickup-availabilities no-js-hidden"{% if current_variant.available and pick_up_availabilities.size > 0 %} available{% endif %} data-base-url="{{ shop.url }}{{ routes.root_url }}" data-variant-id="{{ current_variant.id }}" data-has-only-default-variant="{{ product.has_only_default_variant }}">
+              <template>
+                <pickup-availability-preview class="pickup-availability-preview">
+                  <div class="pickup-availability-info">
+                    <div class="caption-large"><i class="feather-slash"></i>{{ 'products.product.pickup_availability.unavailable' | t }}</div>
+                    <button class="pickup-availability-button link link--text underlined-link" type="button">{{ 'products.product.pickup_availability.refresh' | t }}</button>
+                  </div>
+                </pickup-availability-preview>
+              </template>
+            </pickup-availability>
+
+            <script src="{{ 'pickup-availability.js' | asset_url }}" defer></script>
+
+            <div id="pre-order-{{ section_id }}">
+              {%- if current_variant.available and current_variant.incoming and current_variant.inventory_quantity < 1 -%}
+                <div class="pre-order-box">
+                  <div class="off-text"><i class="bi bi-patch-check"></i>{{ 'general.product_information.offer_text' | t }} <span>{{ 'general.product_information.discount_text' | t }}</span></div>
+                  <div class="delivery-date"><i class="bi bi-box2"></i>{{ 'general.product_information.delivery_text' | t }} <span>{{ current_variant.next_incoming_date | date: '%d/%m/%Y' }}</span></div>
+                </div>
+              {%- endif -%}
+            </div>
+
+            {%- render 'back-in-stock-block', block_settings: block.settings -%}
+
+            {%- form 'contact', id: 'ContactForm-Outofstock' -%}
+              {%- if form.posted_successfully? -%}
+                <div class="form-status-message" tabindex="-1" autofocus><i class="feather-check-circle"></i>{{ 'templates.contact.form.post_success' | t }}</div>
+              {%- endif -%}
+            {%- endform -%}
+          </product-form>
+        {%- endif -%}
+
       {%- when 'stock-left' -%}
         <div class="stock-left-wrap">
           {%- liquid
             if block.settings.countdown_number == 'inventory-quantity'
               assign total = current_variant.inventory_quantity
             else
-              assign from = block.settings.from_number
-              assign to = block.settings.to_number
-              assign diff = to | minus: from
-              assign total = "now" | date: "%N" | modulo: diff | plus: from
+              assign from_number = block.settings.from_number
+              assign to_number = block.settings.to_number
+              assign diff = to_number | minus: from_number
+              if diff > 0
+                assign total = 'now' | date: '%N' | modulo: diff | plus: from_number
+              else
+                assign total = from_number
+              endif
             endif
           -%}
-          <div class="stock-left-message" id="stock-{{ section_id }}"> {{ 'general.product_information.hurry_only_text' | t }}<span> {{ total }} {{ 'general.product_information.item_text' | t }}</span> {{ 'general.product_information.stock_left_text' | t }}</div>
-          <div class="stock-progress-bar">
-            <span style="width: 20%;"></span>
+          <div class="stock-left-message" id="stock-{{ section_id }}">
+            {{ 'general.product_information.hurry_only_text' | t }} <span>{{ total }} {{ 'general.product_information.item_text' | t }}</span> {{ 'general.product_information.stock_left_text' | t }}
           </div>
-        </div> 
+          <div class="stock-progress-bar"><span style="width:20%;"></span></div>
+        </div>
+
       {%- when 'sold-product' -%}
         {%- liquid
           assign from_number = block.settings.from_sold_number
           assign to_number = block.settings.to_sold_number
           assign number_diff = to_number | minus: from_number
-          assign total_number = "now" | date: "%N" | modulo: number_diff | plus: from_number
+          if number_diff > 0
+            assign total_number = 'now' | date: '%N' | modulo: number_diff | plus: from_number
+          else
+            assign total_number = from_number
+          endif
           assign from_time = block.settings.from_sold_time
           assign to_time = block.settings.to_sold_time
           assign time_diff = to_time | minus: from_time
-          assign total_time = "now" | date: "%N" | modulo: time_diff | plus: from_time
+          if time_diff > 0
+            assign total_time = 'now' | date: '%N' | modulo: time_diff | plus: from_time
+          else
+            assign total_time = from_time
+          endif
         -%}
         <div class="sold-product-count">
-          <i class="bi bi-fire"></i> 
+          <i class="bi bi-fire" aria-hidden="true"></i>
           <div class="text-wrapper"><span>{{ total_number }} {{ 'general.product_information.products_sold' | t }}</span> {{ 'general.product_information.in_last' | t }} {{ total_time }} {{ 'general.product_information.hours' | t }}</div>
         </div>
+
       {%- when 'live-visitors' -%}
-        <div
-          class="live-visitors product-live-viewers"
-          data-live-viewers
-          data-max="{{ block.settings.visitors | default: 50 }}"
-          data-interval="{{ block.settings.visitors_time | times: 1000 }}"
-          aria-label="Live product interest"
-        >
+        <div class="live-visitors product-live-viewers" data-live-viewers data-max="{{ block.settings.visitors | default: 50 }}" data-interval="{{ block.settings.visitors_time | times: 1000 }}" aria-label="Live product interest">
           <i class="feather-eye" aria-hidden="true"></i>
           <div class="text-wrapper">
             <span class="live-visitors-count" aria-live="polite"></span>
             <span class="live-visitors-copy">viewing now</span>
           </div>
         </div>
+
       {%- when 'trust-badge' -%}
-        {%- render 'trust-badge-block', block_settings: block.settings -%}
+        <div class="tvastra-pdp-info__trust">
+          {%- render 'trust-badge-block', block_settings: block.settings -%}
+        </div>
+
       {%- when 'product-usp' -%}
-        {%- render 'product-usp-block', block_settings: block.settings -%}
-     {%- when 'addon-buttons' -%}
-  <div id="smart-share-block">
-    <div class="addon-buttons d-sm-flex">
-      {%- if block.settings.show_compare -%}
-        <a href="#" rel="nofollow noopener" data-compare="add" data-handle="{{ product.id }}" aria-label="compare"><i class="bi bi-layers"></i>{{ 'general.product_information.compare' | t }}</a>
-      {%- endif -%}
-      {%- if block.settings.show_question -%}
-        <a class="modal-popup" href="#question-popup" aria-label="text"><i class="bi bi-envelope"></i>{{ 'general.product_information.question_popup_text' | t }}</a>
-        <div id="question-popup" class="modal-popup-main mfp-hide size-guide-popup">
-          <div class="question-title alt-font d-flex"><i class="bi bi-envelope"></i><span>{{ 'general.product_information.question_popup_title' | t }}<span>{{ product.title }}</span></span></div>
-          {%- form 'contact', id: 'ContactForm-AskQuestion' -%}
-            {%- if form.errors -%}
-              <div id="ContactForm-AskQuestion-Message" class="addon-buttons form-status-message" tabindex="-1" autofocus><i class="feather-alert-circle"></i>{{ 'general.product_information.ask_question_message' | t }}</div>
+        <div class="tvastra-pdp-info__usp">
+          {%- render 'product-usp-block', block_settings: block.settings -%}
+        </div>
+
+      {%- when 'addon-buttons' -%}
+        <div id="smart-share-block" class="tvastra-pdp-info__addons">
+          <div class="addon-buttons d-sm-flex">
+            {%- if block.settings.show_compare -%}
+              <a href="#" rel="nofollow noopener" data-compare="add" data-handle="{{ product.id }}" aria-label="compare"><i class="bi bi-layers"></i>{{ 'general.product_information.compare' | t }}</a>
             {%- endif -%}
-              <input type="hidden" name="contact[product]" value="{{ product.title }}" />                    
-              <input autocomplete="name" type="text" id="ContactForm-name" name="contact[{{ 'templates.contact.form.name' | t }}]" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}" placeholder="{{ 'general.ask_a_question_popup.placeholder_name' | t }}" required>
-              <input autocomplete="email" type="email" id="ContactForm-email" class="{% if form.errors -%}error{% endif %}" name="contact[email]" spellcheck="false" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" aria-required="true" placeholder="{{ 'general.ask_a_question_popup.placeholder_email' | t }}" required>                
-            <input type="tel" id="ContactForm-phone" autocomplete="tel" name="contact[{{ 'templates.contact.form.phone' | t }}]" value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}" placeholder="{{ 'general.ask_a_question_popup.placeholder_number' | t }}">
-            <textarea rows="4" id="ContactForm-body" name="contact[{{ 'templates.contact.form.comment' | t }}]" placeholder="{{ 'general.ask_a_question_popup.placeholder_message' | t }}" required>{{- form.body -}}</textarea>
-            <button type="submit" class="btn btn-black btn-medium w-100">{{ 'general.product_information.submit_now_label' | t }}</button>
-          {%- endform -%}
-        </div>
-      {%- endif -%}
-      {%- if block.settings.show_social_share -%}
-        <div class="tvastra-gallery-share" data-tvastra-gallery-share>
-          <a class="modal-popup tvastra-gallery-share__trigger" href="#social-sharing" aria-label="Share this product" title="Share">
-            <i class="bi bi-share" aria-hidden="true"></i>
-            <span class="visually-hidden">{{ 'general.product_information.share_label' | t }}</span>
-          </a>
-        </div>
-        <div
-          id="social-sharing"
-          class="social-sharing modal-popup-main mfp-hide tvastra-product-share"
-          data-tvastra-product-share
-          data-share-title="{{ product.title | escape }}"
-          data-share-image="{% if product.featured_image != blank %}https:{{ product.featured_image | image_url: width: 1200 }}{% endif %}"
-        >
-          <div class="tvastra-product-share__header">
-            <span class="tvastra-product-share__eyebrow">Share this product</span>
-            <h3 class="tvastra-product-share__title alt-font">{{ product.title | escape }}</h3>
-          </div>
 
-          <div class="tvastra-product-share__actions" aria-label="Share options">
-            <a class="tvastra-product-share__action tvastra-product-share__action--whatsapp" data-tvastra-share-channel="whatsapp" href="#" target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp">
-              <i class="bi bi-whatsapp" aria-hidden="true"></i><span>WhatsApp</span>
-            </a>
-            <a class="tvastra-product-share__action" data-tvastra-share-channel="facebook" href="#" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook">
-              <i class="bi bi-facebook" aria-hidden="true"></i><span>Facebook</span>
-            </a>
-            <a class="tvastra-product-share__action" data-tvastra-share-channel="x" href="#" target="_blank" rel="noopener noreferrer" aria-label="Share on X">
-              <i class="bi bi-twitter-x" aria-hidden="true"></i><span>X</span>
-            </a>
-            <a class="tvastra-product-share__action" data-tvastra-share-channel="pinterest" href="#" target="_blank" rel="noopener noreferrer" aria-label="Share on Pinterest">
-              <i class="bi bi-pinterest" aria-hidden="true"></i><span>Pinterest</span>
-            </a>
-            <a class="tvastra-product-share__action" data-tvastra-share-channel="telegram" href="#" target="_blank" rel="noopener noreferrer" aria-label="Share on Telegram">
-              <i class="bi bi-telegram" aria-hidden="true"></i><span>Telegram</span>
-            </a>
-            <a class="tvastra-product-share__action" data-tvastra-share-channel="email" href="#" aria-label="Share by email">
-              <i class="bi bi-envelope" aria-hidden="true"></i><span>Email</span>
-            </a>
-            <button class="tvastra-product-share__action" type="button" data-tvastra-native-share hidden aria-label="Share using another app">
-              <i class="bi bi-share" aria-hidden="true"></i><span>More apps</span>
-            </button>
-          </div>
+            {%- if block.settings.show_question -%}
+              <a class="modal-popup" href="#question-popup" aria-label="text"><i class="bi bi-envelope"></i>{{ 'general.product_information.question_popup_text' | t }}</a>
+              <div id="question-popup" class="modal-popup-main mfp-hide size-guide-popup">
+                <div class="question-title alt-font d-flex"><i class="bi bi-envelope"></i><span>{{ 'general.product_information.question_popup_title' | t }}<span>{{ product.title }}</span></span></div>
+                {%- form 'contact', id: 'ContactForm-AskQuestion' -%}
+                  {%- if form.errors -%}
+                    <div id="ContactForm-AskQuestion-Message" class="form-status-message" tabindex="-1" autofocus><i class="feather-alert-circle"></i>{{ 'general.product_information.ask_question_message' | t }}</div>
+                  {%- endif -%}
+                  <input type="hidden" name="contact[product]" value="{{ product.title | escape }}">
+                  <input autocomplete="name" type="text" id="ContactForm-name" name="contact[{{ 'templates.contact.form.name' | t }}]" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}" placeholder="{{ 'general.ask_a_question_popup.placeholder_name' | t }}" required>
+                  <input autocomplete="email" type="email" id="ContactForm-email" name="contact[email]" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.ask_a_question_popup.placeholder_email' | t }}" required>
+                  <input type="tel" id="ContactForm-phone" autocomplete="tel" name="contact[{{ 'templates.contact.form.phone' | t }}]" value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}" placeholder="{{ 'general.ask_a_question_popup.placeholder_number' | t }}">
+                  <textarea rows="4" id="ContactForm-body" name="contact[{{ 'templates.contact.form.comment' | t }}]" placeholder="{{ 'general.ask_a_question_popup.placeholder_message' | t }}" required>{{- form.body -}}</textarea>
+                  <button type="submit" class="btn btn-black btn-medium w-100">{{ 'general.product_information.submit_now_label' | t }}</button>
+                {%- endform -%}
+              </div>
+            {%- endif -%}
 
-          <div class="tvastra-product-share__copy">
-            <label class="tvastra-product-share__copy-label" for="tvastra-share-url-{{ section_id }}">Product link</label>
-            <div class="tvastra-product-share__copy-row">
-              <input id="tvastra-share-url-{{ section_id }}" class="tvastra-product-share__url" type="text" value="{{ canonical_url }}" readonly data-tvastra-share-url aria-label="Current product link">
-              <button class="tvastra-product-share__copy-button" type="button" data-tvastra-copy-share>
-                <i class="bi bi-copy" aria-hidden="true"></i><span>Copy</span>
-              </button>
-            </div>
-            <span class="tvastra-product-share__status" data-tvastra-share-status role="status" aria-live="polite"></span>
+            {%- if block.settings.show_social_share -%}
+              <div class="tvastra-gallery-share" data-tvastra-gallery-share>
+                <a class="modal-popup tvastra-gallery-share__trigger" href="#social-sharing" aria-label="Share this product" title="Share">
+                  <i class="bi bi-share" aria-hidden="true"></i>
+                  <span class="visually-hidden">{{ 'general.product_information.share_label' | t }}</span>
+                </a>
+              </div>
+
+              <div id="social-sharing" class="social-sharing modal-popup-main mfp-hide tvastra-product-share" data-tvastra-product-share data-share-title="{{ product.title | escape }}" data-share-image="{% if product.featured_image != blank %}https:{{ product.featured_image | image_url: width: 1200 }}{% endif %}">
+                <div class="tvastra-product-share__header">
+                  <span class="tvastra-product-share__eyebrow">Share this product</span>
+                  <h3 class="tvastra-product-share__title alt-font">{{ product.title | escape }}</h3>
+                </div>
+                <div class="tvastra-product-share__actions" aria-label="Share options">
+                  <a class="tvastra-product-share__action" data-tvastra-share-channel="whatsapp" href="#" target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp"><i class="bi bi-whatsapp"></i><span>WhatsApp</span></a>
+                  <a class="tvastra-product-share__action" data-tvastra-share-channel="facebook" href="#" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook"><i class="bi bi-facebook"></i><span>Facebook</span></a>
+                  <a class="tvastra-product-share__action" data-tvastra-share-channel="x" href="#" target="_blank" rel="noopener noreferrer" aria-label="Share on X"><i class="bi bi-twitter-x"></i><span>X</span></a>
+                  <a class="tvastra-product-share__action" data-tvastra-share-channel="pinterest" href="#" target="_blank" rel="noopener noreferrer" aria-label="Share on Pinterest"><i class="bi bi-pinterest"></i><span>Pinterest</span></a>
+                  <a class="tvastra-product-share__action" data-tvastra-share-channel="telegram" href="#" target="_blank" rel="noopener noreferrer" aria-label="Share on Telegram"><i class="bi bi-telegram"></i><span>Telegram</span></a>
+                  <a class="tvastra-product-share__action" data-tvastra-share-channel="email" href="#" aria-label="Share by email"><i class="bi bi-envelope"></i><span>Email</span></a>
+                  <button class="tvastra-product-share__action" type="button" data-tvastra-native-share hidden aria-label="Share using another app"><i class="bi bi-share"></i><span>More apps</span></button>
+                </div>
+                <div class="tvastra-product-share__copy">
+                  <label class="tvastra-product-share__copy-label" for="tvastra-share-url-{{ section_id }}">Product link</label>
+                  <div class="tvastra-product-share__copy-row">
+                    <input id="tvastra-share-url-{{ section_id }}" class="tvastra-product-share__url" type="text" value="{{ canonical_url }}" readonly data-tvastra-share-url aria-label="Current product link">
+                    <button class="tvastra-product-share__copy-button" type="button" data-tvastra-copy-share"><i class="bi bi-copy"></i><span>Copy</span></button>
+                  </div>
+                  <span class="tvastra-product-share__status" data-tvastra-share-status role="status" aria-live="polite"></span>
+                </div>
+              </div>
+            {%- endif -%}
           </div>
         </div>
-      {%- endif -%}
-    </div>
-  </div>
 
-  <script>
-    function placeTvastraGalleryShare() {
-      var shareControl = document.querySelector('[data-tvastra-gallery-share]');
-      var galleryTarget = document.querySelector('.main-product-page .product-main-slider')
-        || document.querySelector('.main-product-page .product-media-grid-wrapper')
-        || document.querySelector('.main-product-page .product-gallery');
+        <script>
+          (function () {
+            function placeTvastraGalleryShare() {
+              var shareControl = document.querySelector('[data-tvastra-gallery-share]');
+              var galleryTarget = document.querySelector('.main-product-page .product-main-slider') || document.querySelector('.main-product-page .product-media-grid-wrapper') || document.querySelector('.main-product-page .product-gallery');
+              if (shareControl && galleryTarget && shareControl.parentNode !== galleryTarget) galleryTarget.appendChild(shareControl);
+            }
+            if (document.readyState === 'loading') {
+              document.addEventListener('DOMContentLoaded', placeTvastraGalleryShare);
+            } else {
+              placeTvastraGalleryShare();
+            }
+            document.addEventListener('shopify:section:load', placeTvastraGalleryShare);
+          })();
+        </script>
 
-      if (shareControl && galleryTarget && shareControl.parentNode !== galleryTarget) {
-        galleryTarget.appendChild(shareControl);
-      }
-    }
-
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", placeTvastraGalleryShare);
-    } else {
-      placeTvastraGalleryShare();
-    }
-    document.addEventListener('shopify:section:load', placeTvastraGalleryShare);
-  </script>
       {%- when 'shipping' -%}
         <ul class="shipping-info">
           {%- if block.settings.show_delivery_times -%}
             <li>
-              <i class="bi bi-truck"></i>
+              <i class="bi bi-truck" aria-hidden="true"></i>
               {%- liquid
                 assign range = 1 | times: 24 | times: 60 | times: 60
-                assign deliver_in =  block.settings.deliver_days | times: 24 | times: 60 | times: 60
-                assign now = 'now' | date: "%s"
-                assign from = now | plus: deliver_in | minus: range | date: "%b %d"
-                assign to = now | plus: deliver_in | plus: range | date: "%b %d"
+                assign deliver_in = block.settings.deliver_days | times: 24 | times: 60 | times: 60
+                assign now_ts = 'now' | date: '%s'
+                assign from_date = now_ts | plus: deliver_in | minus: range | date: '%b %d'
+                assign to_date = now_ts | plus: deliver_in | plus: range | date: '%b %d'
               -%}
               <div class="deliver-text">
-                <p><strong>{{ block.settings.deliver_text | strip_html }}</strong><span> {% for startDate in from limit:1 %}{{ startDate }}{% endfor %} - {% for endDate in to limit:1 %}{{ endDate }}{% endfor %}</span></p>
+                <p><strong>{{ block.settings.deliver_text | strip_html }}</strong><span>{{ from_date }} - {{ to_date }}</span></p>
               </div>
             </li>
           {%- endif -%}
+
           {%- if block.settings.show_shipping_text and block.settings.shipping_text != blank -%}
             <li>
-              <i class="bi bi-box2"></i>
-              <div class="shipping-text">
-                {{ block.settings.shipping_text }}
-              </div>
+              <i class="bi bi-box2" aria-hidden="true"></i>
+              <div class="shipping-text">{{ block.settings.shipping_text }}</div>
             </li>
           {%- endif -%}
         </ul>
+
       {%- when 'separator' -%}
-        <div class="block-separator w-100" style="height: {{ block.settings.separator_height }}px;background-color: {{ block.settings.separator_color }};">
-        </div>     
+        <div class="block-separator w-100" style="height: {{ block.settings.separator_height }}px; background-color: {{ block.settings.separator_color }};"></div>
+
       {%- when 'collapsible' -%}
         {%- render 'collapsible-block', block_settings: block.settings, forloop_index: forloop.index, section_id: section_id -%}
-      {%- when 'reviews_collapsible' -%}  
+
+      {%- when 'reviews_collapsible' -%}
         {%- render 'reviews-collapsible-block', block_settings: block.settings, forloop_index: forloop.index, section_id: section_id, product_id: product.id -%}
+
       {%- when 'custom-html' -%}
         {%- if block.settings.custom_html != blank -%}
           <div class="product-custom-html">{{ block.settings.custom_html }}</div>
         {%- endif -%}
-    {%- endcase -%}              
+
+    {%- endcase -%}
   {%- endfor -%}
 </div>
-
-<style>
-/* ======================================================================
-   TVASTRA PDP · PRODUCT INFO REDESIGN · STEP 1
-   Product identity + pricing + selection hierarchy
-   Scoped to the product information panel so gallery/theme styles remain safe.
-   ====================================================================== */
-.main-product-page .product-summary .product-info {
-  --pdp-ink: #132e31;
-  --pdp-muted: #697674;
-  --pdp-soft: #f7f9f8;
-  --pdp-line: #e5e9e7;
-  --pdp-accent: #b88b28;
-  --pdp-accent-soft: rgba(184,139,40,.10);
-  width: 100%;
-  max-width: 520px !important;
-  margin: 0 !important;
-  color: var(--pdp-ink);
-}
-
-/* Vendor = restrained brand signature */
-.main-product-page .product-summary .product-info > .block-name.vendor {
-  display: flex !important;
-  align-items: center;
-  gap: 8px;
-  margin: 0 0 8px !important;
-  color: var(--pdp-muted) !important;
-  font-size: 10px !important;
-  font-weight: 700 !important;
-  letter-spacing: .16em !important;
-  line-height: 1 !important;
-  text-transform: uppercase !important;
-}
-
-.main-product-page .product-summary .product-info > .block-name.vendor::after {
-  content: "";
-  width: 28px;
-  height: 1px;
-  background: var(--pdp-line);
-}
-
-.main-product-page .product-summary .product-info > .block-name.vendor a {
-  color: inherit !important;
-  text-decoration: none !important;
-}
-
-/* Main title = strongest visual anchor */
-.main-product-page .product-summary .product-info .product-title,
-.main-product-page .product-summary .product-info .product-title-share-row > .product-title {
-  display: block !important;
-  width: 100% !important;
-  max-width: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  color: var(--pdp-ink) !important;
-  font-size: clamp(26px, 2.2vw, 34px) !important;
-  font-weight: 650 !important;
-  line-height: 1.08 !important;
-  letter-spacing: -.018em !important;
-  text-wrap: balance;
-}
-
-/* Metadata row sits quietly below the title */
-.main-product-page .product-summary .product-info .rating-sku-wrap {
-  display: flex !important;
-  align-items: center !important;
-  flex-wrap: wrap !important;
-  gap: 8px 14px !important;
-  margin: 9px 0 0 !important;
-  min-height: 18px;
-  color: var(--pdp-muted) !important;
-  font-size: 10.5px !important;
-  line-height: 1.2 !important;
-}
-
-.main-product-page .product-summary .product-info .product-rating {
-  display: inline-flex !important;
-  align-items: center !important;
-  min-height: 18px;
-}
-
-.main-product-page .product-summary .product-info .spr-starrating,
-.main-product-page .product-summary .product-info .spr-badge-starrating {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 1px !important;
-  white-space: nowrap !important;
-}
-
-.main-product-page .product-summary .product-info .spr-icon {
-  font-size: 11px !important;
-  line-height: 1 !important;
-}
-
-.main-product-page .product-summary .product-info .product-sku {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 4px !important;
-  color: var(--pdp-muted) !important;
-  font-size: 9.5px !important;
-  letter-spacing: .02em !important;
-}
-
-.main-product-page .product-summary .product-info .product-sku .sku {
-  color: #8b9693 !important;
-  font-weight: 600 !important;
-  text-transform: uppercase !important;
-  letter-spacing: .08em !important;
-}
-
-/* Price becomes a clear conversion moment without a heavy card */
-.main-product-page .product-summary .product-info [id^="price-"] {
-  display: flex !important;
-  align-items: baseline !important;
-  flex-wrap: wrap !important;
-  gap: 7px 10px !important;
-  margin: 14px 0 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
-}
-
-.main-product-page .product-summary .product-info [id^="price-"] .price {
-  display: inline-flex !important;
-  align-items: baseline !important;
-  gap: 8px !important;
-  margin: 0 !important;
-  color: var(--pdp-ink) !important;
-  font-size: 29px !important;
-  font-weight: 700 !important;
-  line-height: 1 !important;
-  letter-spacing: -.025em !important;
-}
-
-.main-product-page .product-summary .product-info [id^="price-"] .price-item--sale,
-.main-product-page .product-summary .product-info [id^="price-"] .price__sale {
-  color: var(--pdp-ink) !important;
-}
-
-.main-product-page .product-summary .product-info [id^="price-"] .price-item--regular {
-  color: #8b9492 !important;
-  font-size: 14px !important;
-  font-weight: 500 !important;
-  line-height: 1 !important;
-  text-decoration-thickness: 1px !important;
-}
-
-/* Tax/shipping note reads like reassurance, not secondary heading */
-.main-product-page .product-summary .product-info .product-purchase-note {
-  display: flex !important;
-  align-items: center !important;
-  flex-wrap: wrap !important;
-  gap: 4px 11px !important;
-  margin: 7px 0 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
-  color: #7a8582 !important;
-  font-size: 10px !important;
-  line-height: 1.25 !important;
-}
-
-.main-product-page .product-summary .product-info .product-purchase-note span {
-  display: inline-flex !important;
-  align-items: center !important;
-}
-
-.main-product-page .product-summary .product-info .product-purchase-note span:not(:last-child)::after {
-  content: "";
-  width: 3px !important;
-  height: 3px !important;
-  margin-left: 11px !important;
-  border-radius: 50% !important;
-  background: var(--pdp-accent) !important;
-}
-
-/* Offers = a polished utility row */
-.main-product-page .product-summary .product-info .tvastra-product-offers {
-  margin: 12px 0 0 !important;
-  border: 1px solid #e4e8e6 !important;
-  border-radius: 10px !important;
-  background: #fff !important;
-  box-shadow: 0 6px 20px rgba(19,46,49,.045) !important;
-}
-
-.main-product-page .product-summary .product-info .tvastra-product-offers__summary {
-  min-height: 44px !important;
-  padding: 0 13px !important;
-  background: linear-gradient(180deg,#fff 0%,#fafcfb 100%) !important;
-}
-
-.main-product-page .product-summary .product-info .tvastra-product-offers__title {
-  color: var(--pdp-ink) !important;
-  font-size: 12px !important;
-  font-weight: 700 !important;
-  letter-spacing: .01em !important;
-}
-
-.main-product-page .product-summary .product-info .tvastra-product-offers__highlight {
-  margin-left: auto !important;
-  padding: 5px 8px !important;
-  border: 1px solid rgba(184,139,40,.22) !important;
-  border-radius: 999px !important;
-  background: var(--pdp-accent-soft) !important;
-  color: #70541b !important;
-  font-size: 9.5px !important;
-  font-weight: 700 !important;
-  line-height: 1 !important;
-}
-
-.main-product-page .product-summary .product-info .tvastra-product-offers__body {
-  padding: 0 13px 10px !important;
-  border-top: 1px solid #eef1f0 !important;
-}
-
-.main-product-page .product-summary .product-info .tvastra-product-offer {
-  gap: 9px !important;
-  padding: 10px 0 !important;
-  border-bottom: 1px solid #eef1f0 !important;
-}
-
-.main-product-page .product-summary .product-info .tvastra-product-offer:last-child {
-  border-bottom: 0 !important;
-}
-
-.main-product-page .product-summary .product-info .tvastra-product-offer__icon {
-  width: 22px !important;
-  height: 22px !important;
-  border: 1px solid #e4e9e6 !important;
-  border-radius: 50% !important;
-  background: #f8faf9 !important;
-  color: var(--pdp-accent) !important;
-  font-size: 11px !important;
-}
-
-.main-product-page .product-summary .product-info .tvastra-product-offer__copy strong {
-  color: var(--pdp-ink) !important;
-  font-size: 11.5px !important;
-  font-weight: 700 !important;
-  line-height: 1.25 !important;
-}
-
-.main-product-page .product-summary .product-info .tvastra-product-offer__copy span {
-  margin-top: 2px !important;
-  color: #6f7b78 !important;
-  font-size: 10px !important;
-  line-height: 1.3 !important;
-}
-
-.main-product-page .product-summary .product-info .tvastra-product-offer__code {
-  min-width: 60px !important;
-  height: 25px !important;
-  padding: 0 10px !important;
-  border: 1px solid var(--pdp-ink) !important;
-  border-radius: 999px !important;
-  background: var(--pdp-ink) !important;
-  color: #fff !important;
-  font-size: 9px !important;
-  font-weight: 700 !important;
-  letter-spacing: .04em !important;
-}
-
-.main-product-page .product-summary .product-info .tvastra-product-offers__note {
-  margin: 8px 0 0 !important;
-  color: #7b8582 !important;
-  font-size: 9px !important;
-  line-height: 1.25 !important;
-}
-
-/* Colour family: move from loose swatches to a deliberate selector */
-.main-product-page .product-summary .product-info .product-colour-family {
-  margin: 15px 0 0 !important;
-  padding: 12px 0 0 !important;
-  border-top: 1px solid var(--pdp-line) !important;
-  border-bottom: 0 !important;
-  background: transparent !important;
-}
-
-.main-product-page .product-summary .product-info .product-colour-family__label {
-  margin: 0 0 9px !important;
-  color: var(--pdp-ink) !important;
-  font-size: 11px !important;
-  font-weight: 750 !important;
-  line-height: 1.2 !important;
-  letter-spacing: .02em !important;
-}
-
-.main-product-page .product-summary .product-info .product-colour-family__label span {
-  color: #5e6b68 !important;
-  font-weight: 500 !important;
-}
-
-.main-product-page .product-summary .product-info .product-colour-family__options {
-  display: flex !important;
-  align-items: flex-start !important;
-  flex-wrap: wrap !important;
-  gap: 9px !important;
-}
-
-.main-product-page .product-summary .product-info .product-colour-family__options > div,
-.main-product-page .product-summary .product-info .product-colour-family__options > a {
-  min-width: 50px !important;
-  gap: 5px !important;
-}
-
-.main-product-page .product-summary .product-info .product-colour-family__options > div > div,
-.main-product-page .product-summary .product-info .product-colour-family__options > a > div {
-  width: 38px !important;
-  height: 38px !important;
-  padding: 3px !important;
-  border: 1px solid transparent !important;
-  border-radius: 50% !important;
-  background: #fff !important;
-  box-shadow: 0 2px 10px rgba(19,46,49,.07) !important;
-}
-
-.main-product-page .product-summary .product-info .product-colour-family__options > div:first-child > div,
-.main-product-page .product-summary .product-info .product-colour-family__options > a:hover > div,
-.main-product-page .product-summary .product-info .product-colour-family__options > a:focus-visible > div {
-  border-color: var(--pdp-accent) !important;
-  transform: translateY(-1px);
-}
-
-.main-product-page .product-summary .product-info .product-colour-family__options > div > div > span,
-.main-product-page .product-summary .product-info .product-colour-family__options > a > div > span {
-  width: 30px !important;
-  height: 30px !important;
-  border-radius: 50% !important;
-}
-
-.main-product-page .product-summary .product-info .product-colour-family__options > div > span,
-.main-product-page .product-summary .product-info .product-colour-family__options > a > span {
-  max-width: 72px !important;
-  color: #55625f !important;
-  font-size: 9px !important;
-  font-weight: 600 !important;
-  line-height: 1.2 !important;
-}
-
-.main-product-page .product-summary .product-info .product-colour-family__options > div:first-child > span {
-  color: var(--pdp-ink) !important;
-  font-weight: 750 !important;
-}
-
-/* Selection block: a clean divider between colour and sizing */
-.main-product-page .product-summary .product-info .product-variants {
-  margin: 0 !important;
-  padding: 7px 0 0 !important;
-}
-
-.main-product-page .product-summary .product-info .product-variants fieldset.product-filter {
-  margin: 0 !important;
-  padding: 9px 0 10px !important;
-  border: 0 !important;
-  border-bottom: 1px solid var(--pdp-line) !important;
-}
-
-.main-product-page .product-summary .product-info .product-variants fieldset.product-filter:last-child {
-  border-bottom: 0 !important;
-}
-
-.main-product-page .product-summary .product-info .product-variants .form-label {
-  margin: 0 0 8px !important;
-  color: var(--pdp-ink) !important;
-  font-size: 11px !important;
-  font-weight: 750 !important;
-  line-height: 1.2 !important;
-}
-
-.main-product-page .product-summary .product-info .product-variants .form-label span {
-  color: #6a7673 !important;
-  font-weight: 500 !important;
-}
-
-.main-product-page .product-summary .product-info .product-variants .variant-option {
-  margin: 0 6px 5px 0 !important;
-}
-
-.main-product-page .product-summary .product-info .product-variants .variant-option label {
-  min-width: 40px !important;
-  min-height: 34px !important;
-  padding: 8px 12px !important;
-  border: 1px solid #d6ddda !important;
-  border-radius: 7px !important;
-  background: #fff !important;
-  color: var(--pdp-ink) !important;
-  font-size: 11px !important;
-  font-weight: 650 !important;
-  line-height: 1 !important;
-  box-shadow: 0 2px 8px rgba(19,46,49,.035) !important;
-  transition: border-color .18s ease, background-color .18s ease, color .18s ease, transform .18s ease !important;
-}
-
-.main-product-page .product-summary .product-info .product-variants .variant-option label:hover {
-  border-color: #aebcb8 !important;
-  transform: translateY(-1px);
-}
-
-.main-product-page .product-summary .product-info .product-variants .variant-option input:checked + label {
-  border-color: var(--pdp-ink) !important;
-  background: var(--pdp-ink) !important;
-  color: #fff !important;
-  box-shadow: 0 5px 12px rgba(19,46,49,.14) !important;
-}
-
-.main-product-page .product-summary .product-info .product-variants fieldset.size-filter .modal-popup {
-  top: 9px !important;
-  right: 0 !important;
-  color: var(--pdp-ink) !important;
-  font-size: 10px !important;
-  font-weight: 700 !important;
-  text-decoration: underline !important;
-  text-underline-offset: 3px !important;
-}
-
-@media (max-width: 991px) {
-  .main-product-page .product-summary .product-info {
-    max-width: none !important;
-  }
-
-  .main-product-page .product-summary .product-info > .block-name.vendor {
-    margin-bottom: 6px !important;
-  }
-
-  .main-product-page .product-summary .product-info .product-title,
-  .main-product-page .product-summary .product-info .product-title-share-row > .product-title {
-    font-size: clamp(24px, 6.4vw, 30px) !important;
-    line-height: 1.08 !important;
-  }
-
-  .main-product-page .product-summary .product-info [id^="price-"] {
-    margin-top: 11px !important;
-  }
-
-  .main-product-page .product-summary .product-info [id^="price-"] .price {
-    font-size: 25px !important;
-  }
-}
-
-@media (max-width: 767px) {
-  .main-product-page .product-summary .product-info > .block-name.vendor {
-    font-size: 9px !important;
-    letter-spacing: .14em !important;
-  }
-
-  .main-product-page .product-summary .product-info .rating-sku-wrap {
-    margin-top: 7px !important;
-    gap: 6px 11px !important;
-  }
-
-  .main-product-page .product-summary .product-info [id^="price-"] {
-    margin-top: 10px !important;
-  }
-
-  .main-product-page .product-summary .product-info [id^="price-"] .price {
-    font-size: 24px !important;
-  }
-
-  .main-product-page .product-summary .product-info .tvastra-product-offers {
-    margin-top: 10px !important;
-  }
-
-  .main-product-page .product-summary .product-info .tvastra-product-offers__summary {
-    min-height: 42px !important;
-    padding-inline: 11px !important;
-  }
-
-  .main-product-page .product-summary .product-info .product-colour-family {
-    margin-top: 12px !important;
-    padding-top: 10px !important;
-  }
-
-  .main-product-page .product-summary .product-info .product-colour-family__options {
-    gap: 8px !important;
-  }
-
-  .main-product-page .product-summary .product-info .product-colour-family__options > div > div,
-  .main-product-page .product-summary .product-info .product-colour-family__options > a > div {
-    width: 36px !important;
-    height: 36px !important;
-  }
-
-  .main-product-page .product-summary .product-info .product-colour-family__options > div > div > span,
-  .main-product-page .product-summary .product-info .product-colour-family__options > a > div > span {
-    width: 28px !important;
-    height: 28px !important;
-  }
-
-  .main-product-page .product-summary .product-info .product-variants fieldset.product-filter {
-    padding-block: 8px !important;
-  }
-
-  .main-product-page .product-summary .product-info .product-variants .variant-option label {
-    min-width: 38px !important;
-    min-height: 34px !important;
-    padding-inline: 11px !important;
-  }
-}
-
-@media (max-width: 420px) {
-  .main-product-page .product-summary .product-info .product-title,
-  .main-product-page .product-summary .product-info .product-title-share-row > .product-title {
-    font-size: 23px !important;
-  }
-
-  .main-product-page .product-summary .product-info [id^="price-"] .price {
-    font-size: 23px !important;
-  }
-
-  .main-product-page .product-summary .product-info .product-colour-family__options > div > div,
-  .main-product-page .product-summary .product-info .product-colour-family__options > a > div {
-    width: 34px !important;
-    height: 34px !important;
-  }
-
-  .main-product-page .product-summary .product-info .product-colour-family__options > div > div > span,
-  .main-product-page .product-summary .product-info .product-colour-family__options > a > div > span {
-    width: 26px !important;
-    height: 26px !important;
-  }
-}
-</style>
