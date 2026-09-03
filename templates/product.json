@@ -34,6 +34,10 @@
             "open_default": false
           }
         },
+        "2c4c2e34-acdb-4c1f-a4a8-3391aa6523ed": {
+          "type": "vendor",
+          "settings": {}
+        },
         "title": {
           "type": "title",
           "settings": {
@@ -54,6 +58,35 @@
             "offer_3_title": "Bank, card and UPI offers",
             "offer_3_text": "Eligible Razorpay offers appear at payment.",
             "offers_footer": "Verified checkout with Razorpay"
+          }
+        },
+        "a71eef00-2cd2-4cfe-bff5-8e81cd4bf70c": {
+          "type": "short_description",
+          "settings": {
+            "liquid_code": "{{product.metafields.custom.short_description}}"
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "show_size_guide": true,
+            "size_guide_option_label": "Size",
+            "size_guide_button_text": "Size guide",
+            "size_guide_content": "<img src=\"https://cdn.shopify.com/s/files/1/0641/9395/3905/files/women_104.png?v=1773072145\">"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_qty": true,
+            "show_add_to_cart": true,
+            "show_wishlist": true,
+            "show_dynamic_checkout": true,
+            "collect_back_in_stock": true,
+            "back-in-stock-title": "Notify me when this is in stock",
+            "back-in-stock-subheading": "We will send you a notification as soon as this product is available again.",
+            "back_in_icon_name": "bi bi-patch-check-fill",
+            "back-in-stock-text": "It will be in stock after"
           }
         },
         "judge_me_reviews_preview_badge_4iDGUN": {
