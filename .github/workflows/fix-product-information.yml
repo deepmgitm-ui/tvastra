@@ -1,0 +1,81 @@
+name: One-time Product Information editor fix
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Restore Product information section in Theme Editor
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path("sections/main-product.liquid")
+          text = path.read_text(encoding="utf-8")
+
+          marker = "{% schema %}"
+          end_marker = "{% endschema %}"
+          start = text.rfind(marker)
+          end = text.rfind(end_marker)
+          if start == -1 or end == -1 or end <= start:
+              raise SystemExit("Could not locate schema block")
+
+          schema = text[start + len(marker):end].rstrip()
+          original_schema = schema
+
+          # Make the section title independent of locale resolution in the editor.
+          schema = schema.replace(
+              '"name": "t:sections.main-product.name"',
+              '"name": "Product information"',
+              1,
+          )
+
+          # Explicitly register the section with the Theme Editor.
+          if '"presets"' not in schema:
+              last_close = schema.rfind("}")
+              if last_close == -1:
+                  raise SystemExit("Could not locate schema root close")
+              schema = (
+                  schema[:last_close].rstrip()
+                  + ',\n  "presets": [\n'
+                  + '    {\n      "name": "Product information"\n    }\n'
+                  + '  ]\n'
+                  + schema[last_close:]
+              )
+
+          if schema == original_schema:
+              print("No change needed")
+          else:
+              new_text = text[:start + len(marker)] + "\n" + schema + "\n" + text[end:]
+              path.write_text(new_text, encoding="utf-8")
+              print("Updated sections/main-product.liquid")
+          PY
+
+      - name: Commit and remove one-time workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add sections/main-product.liquid
+          git rm .github/workflows/fix-product-information.yml
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "fix: restore Product information section in theme editor"
+          git push
