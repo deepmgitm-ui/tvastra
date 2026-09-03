@@ -3,6 +3,19 @@
 
   var root = document.documentElement;
   var delay = 220;
+  var safetyTimer = null;
+
+  function clearLeavingState() {
+    root.classList.remove('tvastra-page-leaving');
+    if (safetyTimer) {
+      window.clearTimeout(safetyTimer);
+      safetyTimer = null;
+    }
+  }
+
+  function isProductPage() {
+    return !!document.querySelector('.main-product-page');
+  }
 
   function isAccountLink(link) {
     if (!link) return false;
@@ -42,25 +55,43 @@
     return true;
   }
 
-  document.addEventListener('click', function (event) {
-    if (event.defaultPrevented ||
-        event.button !== 0 ||
-        event.metaKey ||
-        event.ctrlKey ||
-        event.shiftKey ||
-        event.altKey) return;
+  function init() {
+    clearLeavingState();
 
-    if (event.target.closest('.parent')) return;
+    // Never put a full-page transition over the PDP. This prevents a stale
+    // transition class from making the product page appear blank after navigation.
+    if (isProductPage()) return;
 
-    var link = event.target.closest('a[href]');
-    if (!isInternalPageLink(link) ||
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.addEventListener('click', function (event) {
+      if (event.defaultPrevented ||
+          event.button !== 0 ||
+          event.metaKey ||
+          event.ctrlKey ||
+          event.shiftKey ||
+          event.altKey) return;
 
-    event.preventDefault();
-    root.classList.add('tvastra-page-leaving');
+      if (event.target.closest('.parent')) return;
 
-    window.setTimeout(function () {
-      window.location.assign(link.href);
-    }, delay);
-  }, true);
-}());
+      var link = event.target.closest('a[href]');
+      if (!isInternalPageLink(link) ||
+          window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      event.preventDefault();
+      clearLeavingState();
+      root.classList.add('tvastra-page-leaving');
+
+      safetyTimer = window.setTimeout(clearLeavingState, 1200);
+      window.setTimeout(function () {
+        window.location.assign(link.href);
+      }, delay);
+    }, true);
+  }
+
+  window.addEventListener('pageshow', clearLeavingState);
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true });
+  } else {
+    init();
+  }
+})();
