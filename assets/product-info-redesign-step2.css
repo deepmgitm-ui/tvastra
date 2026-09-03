@@ -231,6 +231,76 @@
   border: 1px solid var(--pdp-accent) !important;
 }
 
+/* ------------------------------------------------------------------
+   PDP visibility safety net.
+   The product section is server-rendered by main-product.liquid. Keep
+   the section, gallery, summary and buyer-info wrappers visible even
+   when an older/global theme rule tries to collapse or fade them.
+   Legacy/custom HTML swatch wrappers are deliberately not targeted.
+   ------------------------------------------------------------------ */
+.main-product-page,
+.main-product-page > div,
+.main-product-page > div > .product.row,
+.main-product-page > div > .product.row > .product-gallery,
+.main-product-page > div > .product.row > .product-summary,
+.main-product-page > div > .product.row > .product-summary > .position-sticky,
+.main-product-page .product-summary .product-info {
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: auto !important;
+  max-height: none !important;
+}
+
+.main-product-page {
+  display: block !important;
+  overflow: visible !important;
+}
+
+.main-product-page > div > .product.row {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: flex-start !important;
+}
+
+.main-product-page > div > .product.row > .product-gallery,
+.main-product-page > div > .product.row > .product-summary,
+.main-product-page > div > .product.row > .product-summary > .position-sticky,
+.main-product-page .product-summary .product-info {
+  display: block !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+}
+
+.main-product-page .product-gallery,
+.main-product-page .product-gallery .product-media-grid-wrapper,
+.main-product-page .product-gallery .product-main-slider,
+.main-product-page .product-gallery .product-image-main,
+.main-product-page .product-gallery .product-image-main .swiper-wrapper,
+.main-product-page .product-gallery .product-image-main .swiper-slide,
+.main-product-page .product-gallery .product-thumb-wrap,
+.main-product-page .product-gallery .product-image-thumb {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.main-product-page .product-gallery .product-main-slider,
+.main-product-page .product-gallery .product-image-main {
+  display: block !important;
+}
+
+.main-product-page .product-summary .product-info .product-title,
+.main-product-page .product-summary .product-info [id^="price-"],
+.main-product-page .product-summary .product-info .product-purchase-note,
+.main-product-page .product-summary .product-info .tvastra-product-offers,
+.main-product-page .product-summary .product-info .product-colour-family,
+.main-product-page .product-summary .product-info .product-variants,
+.main-product-page .product-summary .product-info .product-form,
+.main-product-page .product-summary .product-info .product-form-buttons {
+  visibility: visible !important;
+  opacity: 1 !important;
+  max-height: none !important;
+}
+
 @media (max-width: 767px) {
   .main-product-page .product-summary .product-info .product-title {
     font-size: 23px !important;
