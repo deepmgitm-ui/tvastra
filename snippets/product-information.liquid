@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="{{ 'tvastra-product-info-reset.css' | asset_url | split: '?' | first }}?v=reset-1">
+<link rel="stylesheet" href="{{ 'tvastra-product-info-reset.css' | asset_url | split: '?' | first }}?v=reset-2">
 
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
@@ -24,7 +24,6 @@
   endif
 
   assign product_form_id = 'product-form-' | append: section_id
-
   assign swatch_hex = product.metafields.custom.swatch_color.value
   assign swatch_name = product.metafields.custom.swatch_name.value
   assign sibling_products = product.metafields.custom.sibling_products.value
@@ -169,17 +168,12 @@
 
           {%- if has_colour_family -%}
             <div class="product-colour-family">
-              <div class="product-colour-family__label">
-                Colour: <span>{{ swatch_name | default: 'Select' }}</span>
-              </div>
+              <div class="product-colour-family__label">Colour: <span>{{ swatch_name | default: 'Select' }}</span></div>
               <div class="product-colour-family__options">
                 <div title="{{ swatch_name | default: product.title | escape }}" aria-current="true">
-                  <div>
-                    <span style="background-color: {{ swatch_hex | default: '#cccccc' }};"></span>
-                  </div>
+                  <div><span style="background-color: {{ swatch_hex | default: '#cccccc' }};"></span></div>
                   <span>{{ swatch_name | default: 'Current' }}</span>
                 </div>
-
                 {%- for sibling in sibling_products -%}
                   {%- unless sibling.handle == product.handle -%}
                     {%- liquid
@@ -212,11 +206,9 @@
           {%- assign size_guide_content = block.settings.size_guide_content -%}
           {%- assign size_guide_image = block.settings.size_guide_image -%}
           {%- assign size_guide_metafield = product.metafields.custom.size_cart.value -%}
-
           {%- if size_guide_image == blank and size_guide_metafield != blank -%}
             {%- assign size_guide_image = size_guide_metafield -%}
           {%- endif -%}
-
           {%- assign size_guide_image_url = '' -%}
           {%- if size_guide_image != blank -%}
             {%- if size_guide_image.width != blank -%}
@@ -243,7 +235,6 @@
                 assign option_type_array = option_type_array | split: ','
                 assign option_display_type_default = settings.variant_option_type_default
               -%}
-
               <variant-radios class="no-js-hidden" data-section="{{ section_id }}" data-url="{{ product.url }}" data-product-id="{{ product.id }}">
                 {%- for option in product.options_with_values -%}
                   {%- liquid
@@ -253,35 +244,28 @@
                     assign option_name_lower = option.name | downcase
                     assign iscolor = false
                     assign isSize = false
-
                     if option_handle == 'size'
                       assign can_show_tooltip = false
                     endif
-
                     if option_name_lower contains 'color' or option_name_lower contains 'colour' or option_name_lower contains 'rang'
                       assign iscolor = true
                     endif
-
                     if option_name_lower contains 'size'
                       assign isSize = true
                     endif
-
                     for option_item in option_type_array
                       assign option_array = option_item | split: '='
                       if option_array != blank and option_array.first == option_handle
                         assign option_display_type = option_array.last
                       endif
                     endfor
-
                     if option_display_type == ''
                       assign option_display_type = option_display_type_default
                     endif
                   -%}
 
                   <fieldset class="js product-form__input product-filter{% if iscolor %} color-filter{% elsif isSize %} size-filter{% else %} {{ option_handle }}-filter{% endif %}{% if option_display_type != blank %} {{ option_display_type }}{% endif %}{% if iscolor and has_colour_family %} tvastra-option-hidden{% endif %}">
-                    <label class="form-label w-100">
-                      {{ option.name }}: <span>{{ option.selected_value }}</span>
-                    </label>
+                    <label class="form-label w-100">{{ option.name }}: <span>{{ option.selected_value }}</span></label>
 
                     {%- if option_display_type == 'dropdown' -%}
                       <div class="variant-option select">
@@ -293,11 +277,10 @@
                       </div>
                     {%- else -%}
                       {%- if isSize -%}<div class="tvastra-size-options">{%- endif -%}
-
                       {%- for value in option.values -%}
                         {%- assign normalized_value = value | remove: ' ' | downcase -%}
                         <div class="variant-option swatches-hover" data-option-type="{{ option_display_type }}" data-option-name="{{ value | escape }}"{% if can_show_tooltip %} data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="{{ value | escape }}" data-bs-trigger="hover"{% endif %}>
-                          <input type="radio" id="{{ section_id }}-{{ option.name | handleize }}-{{ forloop.index0 }}" data-single-option data-option-position="{{ option.position }}" data-value="{{ value | escape }}" name="{{ option.name }}" value="{{ value | escape }}" class="visually-hidden" form="product-form-{{ section_id }}"{% if option.selected_value == value %} checked{% endif %} autocomplete="off" aria-label="{{ value | escape }}">
+                          <input type="radio" id="{{ section_id }}-{{ option.name | handleize }}-{{ forloop.index0 }}" data-single-option data-option-position="{{ option.position }}" data-value="{{ value | escape }}" name="{{ option.name }}" value="{{ value | escape }}" class="visually-hidden" form="{{ product_form_id }}"{% if option.selected_value == value %} checked{% endif %} autocomplete="off" aria-label="{{ value | escape }}">
                           <label for="{{ section_id }}-{{ option.name | handleize }}-{{ forloop.index0 }}" class="{{ option_handle }}-filter">
                             {%- if option_display_type == 'image' -%}
                               {%- assign swatch_image = blank -%}
@@ -315,7 +298,6 @@
                                   {%- if swatch_image != blank -%}{%- break -%}{%- endif -%}
                                 {%- endfor -%}
                               {%- endif -%}
-
                               {%- if swatch_image != blank -%}
                                 <img src="{{ swatch_image | image_url: width: 80, height: 80 }}" alt="{{ value | escape }}" width="80" height="80" loading="lazy">
                               {%- else -%}
@@ -344,7 +326,6 @@
                           </label>
                         </div>
                       {%- endfor -%}
-
                       {%- if isSize -%}</div>{%- endif -%}
                     {%- endif -%}
 
@@ -362,7 +343,6 @@
                     {%- endif -%}
                   </fieldset>
                 {%- endfor -%}
-
                 <script type="application/json">{{ product.variants | json }}</script>
               </variant-radios>
             {%- endunless -%}
@@ -388,48 +368,34 @@
                 {%- else -%}
                   <input type="hidden" name="id" value="{{ current_variant.id }}">
                 {%- endif -%}
-
                 <p class="product-form__error-message-wrapper d-none" role="alert">
                   <span class="product-form__error-message text-danger"></span>
                 </p>
-
                 {%- if current_variant.available and current_variant.incoming and current_variant.inventory_quantity < 1 -%}
                   <input type="hidden" name="properties[_isPreorder]" value="Yes" autocomplete="off" readonly>
                 {%- endif -%}
-
                 <div class="product-form-buttons product-cta-smart{% unless current_variant.available %} is-notify-only{% endunless %}">
                   <div class="action-btn{% if block.settings.show_add_to_cart %} has-cart{% endif %}{% if block.settings.show_wishlist %} has-wishlist{% endif %}{% if block.settings.show_dynamic_checkout %} has-buy-now{% endif %}">
                     {%- unless product_group != blank -%}
                       {%- if block.settings.show_qty -%}
                         <div class="quantity-btn">
                           <quantity-input class="quantity">
-                            <button class="quantity-button quantity-minus" name="minus" type="button" aria-label="Decrease quantity">
-                              <span class="tvastra-quantity-symbol" aria-hidden="true">−</span>
-                            </button>
+                            <button class="quantity-button quantity-minus" name="minus" type="button" aria-label="Decrease quantity"><span class="tvastra-quantity-symbol" aria-hidden="true">−</span></button>
                             <input id="Quantity-{{ section_id }}" class="quantity-input" type="number" name="quantity" min="0" value="1" form="{{ product_form_id }}" aria-label="Quantity">
-                            <button class="quantity-button quantity-plus" name="plus" type="button" aria-label="Increase quantity">
-                              <span class="tvastra-quantity-symbol" aria-hidden="true">+</span>
-                            </button>
+                            <button class="quantity-button quantity-plus" name="plus" type="button" aria-label="Increase quantity"><span class="tvastra-quantity-symbol" aria-hidden="true">+</span></button>
                           </quantity-input>
                         </div>
                       {%- endif -%}
                     {%- endunless -%}
-
                     {%- if block.settings.show_add_to_cart or current_variant.available == false -%}
                       <button type="{% if current_variant.available %}submit{% else %}button{% endif %}" name="add" id="cart-btn-{{ section_id }}" class="cart-btn alt-font{% unless current_variant.available %} notify-me{% endunless %}">
                         <i class="feather-shopping-bag" aria-hidden="true"></i>
                         {%- if current_variant.available -%}
-                          {%- if current_variant.incoming and current_variant.inventory_quantity < 1 -%}
-                            <span>{{ 'general.product_information.pre_order' | t }}</span>
-                          {%- else -%}
-                            <span>{{ 'products.product.add_to_cart' | t }}</span>
-                          {%- endif -%}
-                        {%- else -%}
-                          <span class="notify-text-btn" data-notify-text="Notify me when back in stock">Notify me when back in stock</span>
-                        {%- endif -%}
+                          {%- if current_variant.incoming and current_variant.inventory_quantity < 1 -%}<span>{{ 'general.product_information.pre_order' | t }}</span>
+                          {%- else -%}<span>{{ 'products.product.add_to_cart' | t }}</span>{%- endif -%}
+                        {%- else -%}<span class="notify-text-btn" data-notify-text="Notify me when back in stock">Notify me when back in stock</span>{%- endif -%}
                       </button>
                     {%- endif -%}
-
                     {%- if block.settings.show_dynamic_checkout and product_group == blank -%}
                       <div class="product-buy-now-inline">{{ form | payment_button }}</div>
                     {%- elsif block.settings.show_dynamic_checkout -%}
@@ -437,20 +403,14 @@
                         <custom-btn type="button" class="custom-payment-btn shopify-payment-button__button shopify-payment-button__button--unbranded" data-testid="Checkout-button">{{ 'general.product_information.by_it_now' | t }}</custom-btn>
                       </div>
                     {%- endif -%}
-
-                    {%- if block.settings.show_wishlist -%}
-                      {%- render 'button-wishlist', product: product, tooltip_position: 'top' -%}
-                    {%- endif -%}
+                    {%- if block.settings.show_wishlist -%}{%- render 'button-wishlist', product: product, tooltip_position: 'top' -%}{%- endif -%}
                   </div>
                 </div>
               {%- endform -%}
-
               {%- render 'product-performance-proof', product: product -%}
               {%- render 'product-faq-block' -%}
             {%- else -%}
-              {%- if block.settings.show_wishlist -%}
-                {%- render 'button-wishlist', product: product, tooltip_position: 'top' -%}
-              {%- endif -%}
+              {%- if block.settings.show_wishlist -%}{%- render 'button-wishlist', product: product, tooltip_position: 'top' -%}{%- endif -%}
             {%- endunless -%}
 
             {%- assign pick_up_availabilities = current_variant.store_availabilities | where: 'pick_up_enabled', true -%}
@@ -464,7 +424,6 @@
                 </pickup-availability-preview>
               </template>
             </pickup-availability>
-
             <script src="{{ 'pickup-availability.js' | asset_url }}" defer></script>
 
             <div id="pre-order-{{ section_id }}">
@@ -475,13 +434,9 @@
                 </div>
               {%- endif -%}
             </div>
-
             {%- render 'back-in-stock-block', block_settings: block.settings -%}
-
             {%- form 'contact', id: 'ContactForm-Outofstock' -%}
-              {%- if form.posted_successfully? -%}
-                <div class="form-status-message" tabindex="-1" autofocus><i class="feather-check-circle"></i>{{ 'templates.contact.form.post_success' | t }}</div>
-              {%- endif -%}
+              {%- if form.posted_successfully? -%}<div class="form-status-message" tabindex="-1" autofocus><i class="feather-check-circle"></i>{{ 'templates.contact.form.post_success' | t }}</div>{%- endif -%}
             {%- endform -%}
           </product-form>
         {%- endif -%}
@@ -502,9 +457,7 @@
               endif
             endif
           -%}
-          <div class="stock-left-message" id="stock-{{ section_id }}">
-            {{ 'general.product_information.hurry_only_text' | t }} <span>{{ total }} {{ 'general.product_information.item_text' | t }}</span> {{ 'general.product_information.stock_left_text' | t }}
-          </div>
+          <div class="stock-left-message" id="stock-{{ section_id }}">{{ 'general.product_information.hurry_only_text' | t }} <span>{{ total }} {{ 'general.product_information.item_text' | t }}</span> {{ 'general.product_information.stock_left_text' | t }}</div>
           <div class="stock-progress-bar"><span style="width:20%;"></span></div>
         </div>
 
@@ -527,29 +480,18 @@
             assign total_time = from_time
           endif
         -%}
-        <div class="sold-product-count">
-          <i class="bi bi-fire" aria-hidden="true"></i>
-          <div class="text-wrapper"><span>{{ total_number }} {{ 'general.product_information.products_sold' | t }}</span> {{ 'general.product_information.in_last' | t }} {{ total_time }} {{ 'general.product_information.hours' | t }}</div>
-        </div>
+        <div class="sold-product-count"><i class="bi bi-fire" aria-hidden="true"></i><div class="text-wrapper"><span>{{ total_number }} {{ 'general.product_information.products_sold' | t }}</span> {{ 'general.product_information.in_last' | t }} {{ total_time }} {{ 'general.product_information.hours' | t }}</div></div>
 
       {%- when 'live-visitors' -%}
         <div class="live-visitors product-live-viewers" data-live-viewers data-max="{{ block.settings.visitors | default: 50 }}" data-interval="{{ block.settings.visitors_time | times: 1000 }}" aria-label="Live product interest">
-          <i class="feather-eye" aria-hidden="true"></i>
-          <div class="text-wrapper">
-            <span class="live-visitors-count" aria-live="polite"></span>
-            <span class="live-visitors-copy">viewing now</span>
-          </div>
+          <i class="feather-eye" aria-hidden="true"></i><div class="text-wrapper"><span class="live-visitors-count" aria-live="polite"></span><span class="live-visitors-copy">viewing now</span></div>
         </div>
 
       {%- when 'trust-badge' -%}
-        <div class="tvastra-pdp-info__trust">
-          {%- render 'trust-badge-block', block_settings: block.settings -%}
-        </div>
+        <div class="tvastra-pdp-info__trust">{%- render 'trust-badge-block', block_settings: block.settings -%}</div>
 
       {%- when 'product-usp' -%}
-        <div class="tvastra-pdp-info__usp">
-          {%- render 'product-usp-block', block_settings: block.settings -%}
-        </div>
+        <div class="tvastra-pdp-info__usp">{%- render 'product-usp-block', block_settings: block.settings -%}</div>
 
       {%- when 'addon-buttons' -%}
         <div id="smart-share-block" class="tvastra-pdp-info__addons">
@@ -557,15 +499,12 @@
             {%- if block.settings.show_compare -%}
               <a href="#" rel="nofollow noopener" data-compare="add" data-handle="{{ product.id }}" aria-label="compare"><i class="bi bi-layers"></i>{{ 'general.product_information.compare' | t }}</a>
             {%- endif -%}
-
             {%- if block.settings.show_question -%}
               <a class="modal-popup" href="#question-popup" aria-label="text"><i class="bi bi-envelope"></i>{{ 'general.product_information.question_popup_text' | t }}</a>
               <div id="question-popup" class="modal-popup-main mfp-hide size-guide-popup">
                 <div class="question-title alt-font d-flex"><i class="bi bi-envelope"></i><span>{{ 'general.product_information.question_popup_title' | t }}<span>{{ product.title }}</span></span></div>
                 {%- form 'contact', id: 'ContactForm-AskQuestion' -%}
-                  {%- if form.errors -%}
-                    <div id="ContactForm-AskQuestion-Message" class="form-status-message" tabindex="-1" autofocus><i class="feather-alert-circle"></i>{{ 'general.product_information.ask_question_message' | t }}</div>
-                  {%- endif -%}
+                  {%- if form.errors -%}<div id="ContactForm-AskQuestion-Message" class="form-status-message" tabindex="-1" autofocus><i class="feather-alert-circle"></i>{{ 'general.product_information.ask_question_message' | t }}</div>{%- endif -%}
                   <input type="hidden" name="contact[product]" value="{{ product.title | escape }}">
                   <input autocomplete="name" type="text" id="ContactForm-name" name="contact[{{ 'templates.contact.form.name' | t }}]" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}" placeholder="{{ 'general.ask_a_question_popup.placeholder_name' | t }}" required>
                   <input autocomplete="email" type="email" id="ContactForm-email" name="contact[email]" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.ask_a_question_popup.placeholder_email' | t }}" required>
@@ -575,20 +514,10 @@
                 {%- endform -%}
               </div>
             {%- endif -%}
-
             {%- if block.settings.show_social_share -%}
-              <div class="tvastra-gallery-share" data-tvastra-gallery-share>
-                <a class="modal-popup tvastra-gallery-share__trigger" href="#social-sharing" aria-label="Share this product" title="Share">
-                  <i class="bi bi-share" aria-hidden="true"></i>
-                  <span class="visually-hidden">{{ 'general.product_information.share_label' | t }}</span>
-                </a>
-              </div>
-
+              <div class="tvastra-gallery-share" data-tvastra-gallery-share><a class="modal-popup tvastra-gallery-share__trigger" href="#social-sharing" aria-label="Share this product" title="Share"><i class="bi bi-share" aria-hidden="true"></i><span class="visually-hidden">{{ 'general.product_information.share_label' | t }}</span></a></div>
               <div id="social-sharing" class="social-sharing modal-popup-main mfp-hide tvastra-product-share" data-tvastra-product-share data-share-title="{{ product.title | escape }}" data-share-image="{% if product.featured_image != blank %}https:{{ product.featured_image | image_url: width: 1200 }}{% endif %}">
-                <div class="tvastra-product-share__header">
-                  <span class="tvastra-product-share__eyebrow">Share this product</span>
-                  <h3 class="tvastra-product-share__title alt-font">{{ product.title | escape }}</h3>
-                </div>
+                <div class="tvastra-product-share__header"><span class="tvastra-product-share__eyebrow">Share this product</span><h3 class="tvastra-product-share__title alt-font">{{ product.title | escape }}</h3></div>
                 <div class="tvastra-product-share__actions" aria-label="Share options">
                   <a class="tvastra-product-share__action" data-tvastra-share-channel="whatsapp" href="#" target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp"><i class="bi bi-whatsapp"></i><span>WhatsApp</span></a>
                   <a class="tvastra-product-share__action" data-tvastra-share-channel="facebook" href="#" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook"><i class="bi bi-facebook"></i><span>Facebook</span></a>
@@ -602,7 +531,7 @@
                   <label class="tvastra-product-share__copy-label" for="tvastra-share-url-{{ section_id }}">Product link</label>
                   <div class="tvastra-product-share__copy-row">
                     <input id="tvastra-share-url-{{ section_id }}" class="tvastra-product-share__url" type="text" value="{{ canonical_url }}" readonly data-tvastra-share-url aria-label="Current product link">
-                    <button class="tvastra-product-share__copy-button" type="button" data-tvastra-copy-share"><i class="bi bi-copy"></i><span>Copy</span></button>
+                    <button class="tvastra-product-share__copy-button" type="button" data-tvastra-copy-share><i class="bi bi-copy"></i><span>Copy</span></button>
                   </div>
                   <span class="tvastra-product-share__status" data-tvastra-share-status role="status" aria-live="polite"></span>
                 </div>
@@ -610,7 +539,6 @@
             {%- endif -%}
           </div>
         </div>
-
         <script>
           (function () {
             function placeTvastraGalleryShare() {
@@ -618,11 +546,7 @@
               var galleryTarget = document.querySelector('.main-product-page .product-main-slider') || document.querySelector('.main-product-page .product-media-grid-wrapper') || document.querySelector('.main-product-page .product-gallery');
               if (shareControl && galleryTarget && shareControl.parentNode !== galleryTarget) galleryTarget.appendChild(shareControl);
             }
-            if (document.readyState === 'loading') {
-              document.addEventListener('DOMContentLoaded', placeTvastraGalleryShare);
-            } else {
-              placeTvastraGalleryShare();
-            }
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', placeTvastraGalleryShare); else placeTvastraGalleryShare();
             document.addEventListener('shopify:section:load', placeTvastraGalleryShare);
           })();
         </script>
@@ -639,17 +563,11 @@
                 assign from_date = now_ts | plus: deliver_in | minus: range | date: '%b %d'
                 assign to_date = now_ts | plus: deliver_in | plus: range | date: '%b %d'
               -%}
-              <div class="deliver-text">
-                <p><strong>{{ block.settings.deliver_text | strip_html }}</strong><span>{{ from_date }} - {{ to_date }}</span></p>
-              </div>
+              <div class="deliver-text"><p><strong>{{ block.settings.deliver_text | strip_html }}</strong><span>{{ from_date }} - {{ to_date }}</span></p></div>
             </li>
           {%- endif -%}
-
           {%- if block.settings.show_shipping_text and block.settings.shipping_text != blank -%}
-            <li>
-              <i class="bi bi-box2" aria-hidden="true"></i>
-              <div class="shipping-text">{{ block.settings.shipping_text }}</div>
-            </li>
+            <li><i class="bi bi-box2" aria-hidden="true"></i><div class="shipping-text">{{ block.settings.shipping_text }}</div></li>
           {%- endif -%}
         </ul>
 
@@ -663,9 +581,7 @@
         {%- render 'reviews-collapsible-block', block_settings: block.settings, forloop_index: forloop.index, section_id: section_id, product_id: product.id -%}
 
       {%- when 'custom-html' -%}
-        {%- if block.settings.custom_html != blank -%}
-          <div class="product-custom-html">{{ block.settings.custom_html }}</div>
-        {%- endif -%}
+        {%- if block.settings.custom_html != blank -%}<div class="product-custom-html">{{ block.settings.custom_html }}</div>{%- endif -%}
 
     {%- endcase -%}
   {%- endfor -%}
