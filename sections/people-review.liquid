@@ -1,0 +1,531 @@
+{%- capture sliderOptions -%}
+  "spaceBetween": 30,
+  "loop": {{ section.settings.loop }},
+  {%- if section.settings.autoplay == true -%}
+  "autoplay": {
+    "delay": {{ section.settings.auto_speed_delay }},
+    "disableOnInteraction": false
+  }, 
+  {%- endif -%}
+  "keyboard":{
+    "enabled":true,
+    "onlyInViewport":true
+  },
+  "centeredSlides": true,
+  {%- if section.settings.touch_move == false -%}
+  "allowTouchMove": false,
+  {%- endif -%}
+  "navigation": {
+    "nextEl": ".review-nav-next",
+    "prevEl": ".review-nav-prev"
+  },
+  "speed": {%- if section.settings.transition_speed != blank -%}{{ section.settings.transition_speed }}{%- else -%}500{%- endif -%},
+  "breakpoints": { 
+    "480": { "slidesPerView": {{ section.settings.products_limit_mobile }} },
+    "768": { "slidesPerView": {{ section.settings.products_limit_tablet }} },
+    "992": { "slidesPerView": {{ section.settings.products_limit_mini_desktop }} },
+    "1200": { "slidesPerView": {{ section.settings.products_limit_desktop }} } 
+  }
+{%- endcapture -%}
+<section
+  id="{{ section.settings.section_id }}"
+  class="section-{{ section.id }} people-review position-relative overflow-hidden {% if section.settings.section_show == false %}d-none{% endif %} {{ section.settings.section_class_name }} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }} d-md-block"
+  style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}"
+>
+  <div class="{{ section.settings.container_type }}">
+    {%- if section.settings.sub_heading != blank
+      or section.settings.heading != blank
+      or section.settings.description != blank
+    -%}
+      <div class="row heading-wrapper title-{{ section.settings.title_style }} align-items-{% if section.settings.description != blank %}start{% else %}center{% endif %} text-center text-lg-start">
+        {%- render 'section-title-style', heading_alignment: section.settings.heading_alignment -%}
+        {%- if section.settings.title_style != 'style-1' and section.settings.show_navigation == true -%}
+          <div class="col-lg-auto title-style-btn position-relative">
+            <div class="swiper-button-prev review-nav-prev"><i class="bi bi-arrow-left"></i></div>
+            <div class="swiper-button-next review-nav-next"><i class="bi bi-arrow-right"></i></div>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+    <div class="swiper mask-shadow {% if section.settings.show_magic_cursor == true %}magic-cursor magic-cursor-{{ section.settings.magic_cursor_color_scheme }}{% endif %}" data-slider-options='{ {{ sliderOptions }} }'>
+      <div class="swiper-wrapper">
+        {%- for block in section.blocks -%}
+          <div class="swiper-slide review-item">
+            <div class="box-content">
+              {%- if block.settings.review_title != blank -%}
+                <span class="title alt-font">{{ block.settings.review_title }}</span>
+              {%- endif -%}
+              {%- if block.settings.review_descripition != blank -%}
+                <p>{{ block.settings.review_descripition }}</p>
+              {%- endif -%}
+            </div>
+            <div class="bottom-content d-flex align-items-center">
+              {%- if block.settings.author_image != blank -%}
+                <img src="{{ block.settings.author_image | image_url }}" width="auto" height="auto" />
+              {%- endif -%}
+              {%- if block.settings.author_name != blank -%}
+                <span class="author-name alt-font">{{ block.settings.author_name }}</span>
+              {%- endif -%}
+              {%- if block.settings.rating != blank -%}
+              {%- assign rating_vaule = block.settings.rating -%}
+              {%- assign rating_number = rating_vaule | times: 20 -%}
+              {%- if rating_vaule != blank -%}
+                <div class="rating alt-font d-flex ms-auto flex-shrink-0">
+                  {%- assign rating_value_string = rating_vaule | append: '' -%}
+                  <span class="total-rating d-flex align-items-center">
+                    <span class="simple-rating position-relative d-flex">
+                      <i class="bi bi-star-fill"></i>
+                    </span>
+                    {{ rating_vaule }}{%- unless rating_value_string contains '.' -%}.0{%- endunless -%}
+                  </span> 
+                   {%- if section.settings.rating_text != blank -%}
+                    {{ section.settings.rating_text }}
+                    {%- endif -%}
+                </div> 
+              {%- endif -%}
+              {%- endif -%}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  {%- unless section.settings.use_default_section_typography == true -%}
+    .section-{{ section.id }} .section-heading {
+      font-size: {{ section.settings.section_heading_size }}px;
+      line-height: {{ section.settings.heading_line_height }}px;
+    }
+    .section-{{ section.id }} .section-sub-heading {
+      font-size: {{ section.settings.sub_heading_size }}px;
+      letter-spacing: {{ section.settings.subheading_letter_spacing }}px;
+      line-height: {{ section.settings.sub_heading_line_height }}px;
+    }
+  {%- endunless -%}
+  {%- if section.settings.section_heading_color != blank -%}
+    .section-{{ section.id }} .section-heading {
+      color: {{ section.settings.section_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_sub_heading_color != blank -%}
+    .section-{{ section.id }} .section-sub-heading {
+      color: {{ section.settings.section_sub_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_description_color != blank -%}
+    .section-{{ section.id }} .section-description {
+      color: {{ section.settings.section_description_color }};
+    }
+  {%- endif -%}
+</style>
+{% schema %}
+	{
+  "name": "People reviews",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Wrap word in square bracket for stylish word. e.g. [Hello] World",
+      "default": "Book reader reviews"
+    },
+    {
+      "type": "textarea",
+      "id": "sub_heading",
+      "label": "Sub heading",
+      "default": "PEOPLE TRUSTING HONGO"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "title_style",
+      "label": "Title style",
+      "default": "style-1",
+      "options": [
+        {
+          "value": "style-1",
+          "label": "Style-1"
+        },
+        {
+          "value": "style-2",
+          "label": "Style-2"
+        },
+        {
+          "value": "style-3",
+          "label": "Style-3"
+        }
+      ]
+    },    
+    {
+      "type": "header",
+      "content": "Slider Configuration"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_magic_cursor",
+      "label": "Show custom cursor",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "magic_cursor_color_scheme",
+      "label": "Custom cursor color scheme",
+      "default": "dark",
+      "options": [
+        {
+          "value": "base",
+          "label": "Base color"
+        },
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "transition_speed",
+      "label": "Transition speed",
+      "default": "500",
+      "info": "Enter slide speed time like 500, where 1000 = 1 second"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "auto_speed_delay",
+      "label": "Autoplay speed delay",
+      "default": "2500",
+      "info": "Enter delay time (before switching to other slide) like 500, where 1000 = 1 second"
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "touch_move",
+      "label": "Touch move",
+      "info": "It will enable slide change by touch in touch devices.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show navigation",
+      "default": false,
+      "info": "Not applicable in title style 1"
+    },
+    {
+      "type": "range",
+      "id": "products_limit_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 0.1,
+      "default": 2.4,
+      "label": "Desktop"
+    },
+    {
+      "type": "range",
+      "id": "products_limit_mini_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 0.1,
+      "default": 2,
+      "label": "Mini desktop"
+    },
+    {
+      "type": "range",
+      "id": "products_limit_tablet",
+      "label": "Tablet",
+      "min": 1,
+      "max": 6,
+      "step": 0.1,
+      "default": 1.5
+    },
+    {
+      "type": "range",
+      "id": "products_limit_mobile",
+      "label": "Mobile",
+      "min": 1,
+      "max": 6,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_default_section_typography",
+      "label": "Use section typography from theme settings",
+      "info": "By default section typography values will be used from theme settings. Uncheck this checkbox to use below values.",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "section_heading_size",
+      "min": 20,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 45
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "label": "Heading line height",
+      "unit": "px",
+      "min": 26,
+      "max": 120,
+      "step": 1,
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_size",
+      "min": 12,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Sub heading size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_line_height",
+      "label": "Sub heading line height",
+      "unit": "px",
+      "min": 24,
+      "max": 60,
+      "step": 1,
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "subheading_letter_spacing",
+      "min": 0,
+      "max": 10,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Sub heading letter spacing",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": "small-section-top",
+      "options": [
+        {
+          "value": "large-section-top",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-top",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-top",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-top",
+          "label": "Very small section"
+        },
+        {
+          "value": "pt-0",
+          "label": "No padding top"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": "small-section-bottom",
+      "options": [
+        {
+          "value": "large-section-bottom",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-bottom",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-bottom",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-bottom",
+          "label": "Very small section"
+        },
+        {
+          "value": "pb-0",
+          "label": "No padding button"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment ",
+      "default": "center",
+      "info": "Not applicable in title style-2",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "section_show",
+      "label": "Show section in mobile",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color"
+    },
+    {
+      "type": "color",
+      "id": "section_heading_color",
+      "label": "Section heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_sub_heading_color",
+      "label": "Section sub heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_description_color",
+      "label": "Section description color"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "section_class_name",
+      "label": "Section class name"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review-item",
+      "name": "Review item",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "min": 1,
+          "max": 5,
+          "step": 0.5,
+          "default": 5
+        },
+        {
+        	"type": "text",
+        	"id": "review_title",
+        	"label": "Review title",
+        	"default": "Great book for self confidence"
+        },
+        {
+          "type": "textarea",
+          "id": "review_descripition",
+          "label": "review content",
+          "default": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+        },
+        {
+        	"type": "image_picker",
+        	"id": "author_image",
+        	"label": "Author image"
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author name",
+          "default": "Author same"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "People reviews",
+      "blocks": [
+        {
+          "type": "review-item"
+        },
+        {
+          "type": "review-item"
+        },
+        {
+          "type": "review-item"
+        },
+        {
+          "type": "review-item"
+        },
+        {
+          "type": "review-item"
+        },
+        {
+          "type": "review-item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

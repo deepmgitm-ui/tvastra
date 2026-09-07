@@ -1,0 +1,103 @@
+{%- comment -%}theme-check-disable UndefinedObject{%- endcomment -%}
+{%- assign pick_up_availabilities = product_variant.store_availabilities | where: 'pick_up_enabled', true -%}
+{%- if pick_up_availabilities.size > 0 -%}
+  <pickup-availability-preview class="pickup-availability-preview">
+    {%- assign closest_location = pick_up_availabilities.first %}
+    <div class="pickup-availability-info">
+      {%- if closest_location.available -%}
+        <i class="bi bi-check-circle-fill pickup-check"></i>
+        <div class="caption-large">
+          {{
+            'products.product.pickup_availability.pick_up_available_at_html'
+            | t: location_name: closest_location.location.name
+          }}
+        </div>
+        <div class="caption">{{ closest_location.pick_up_time }}</div>
+        <button id="ShowPickupAvailabilityDrawer" class="btn-view-store" aria-haspopup="dialog">
+          {%- if pick_up_availabilities.size == 1 -%}
+            {{ 'products.product.pickup_availability.view_store_info' | t }}
+          {%- else -%}
+            {{ 'products.product.pickup_availability.check_other_stores' | t }}
+          {%- endif -%}
+        </button>
+      {%- else -%}
+        <div class="caption-large">
+          <i class="bi bi-check-circle-fill pickup-check"></i>
+          {{
+            'products.product.pickup_availability.pick_up_unavailable_at_html'
+            | t: location_name: closest_location.location.name
+          }}
+        </div>
+        {%- if pick_up_availabilities.size > 1 -%}
+          <button id="ShowPickupAvailabilityDrawer" class="btn-view-store" aria-haspopup="dialog">
+            {{ 'products.product.pickup_availability.check_other_stores' | t }}
+          </button>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </pickup-availability-preview>
+  <pickup-availability-drawer tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="PickupAvailabilityHeading">
+    <button class="close-icon" type="button" aria-label="{{ 'accessibility.close' | t }}">
+      <i class="feather-x"></i>
+    </button>
+    <div class="pickup-availability-header d-flex align-items-center">
+      {%- if product_variant.featured_media.preview_image.src != blank -%}
+        <img src="{{ product_variant.featured_media.preview_image.src | image_url: width: 100 }}" alt="" width="auto" height="auto" loading="lazy">
+      {%- endif -%}
+      <div class="pickup-availability-info">
+        <h6 class="pickup-availability-drawer-title" id="PickupAvailabilityHeading">
+          {{ product_variant.product.title | escape }}
+        </h6>
+        {%- unless product_variant.product.has_only_default_variant -%}
+          <div class="pickup-availability-variant d-flex flex-wrap">
+            {%- for product_option in product_variant.product.options_with_values -%}
+              <div class="variant-item">
+                <label>{{ product_option.name | escape }}:&nbsp;</label>
+                {%- for value in product_option.values -%}
+                  {%- if product_option.selected_value == value -%}
+                    <span>{{ value | escape }}</span>
+                  {%- endif -%}
+                {%- endfor -%}
+                {%- unless forloop.last -%},&nbsp;{%- endunless -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endunless -%}
+      </div>
+    </div>
+    <ul class="list-unstyled store-list-wrap" role="list" data-store-availability-drawer-content>
+      {%- for availability in pick_up_availabilities -%}
+        <li>
+          <div class="store-name">{{ availability.location.name | escape }}</div>
+          {%- assign address = availability.location.address -%}
+          <address class="pickup-availability-address">
+            {{ address | format_address }}
+            {%- if address.phone.size > 0 -%}
+              <p>{{ address.phone }}</p>
+            {%- endif -%}
+          </address>
+          {%- assign map_address = address.address1
+            | append: ' '
+            | append: address.address2
+            | append: ' '
+            | append: address.city
+            | append: ' '
+            | append: address.zip
+            | append: ' '
+            | append: address.country
+            | url_encode
+          -%}
+          <a class="address-map" target="_blank" href="https://maps.google.com?daddr={{ map_address }}" aria-label="address-map">
+            <i class="bi bi-geo-alt"></i><span>{{ 'products.product.pickup_availability.show_on_google_map' | t }}</span>
+          </a>
+            {%- if availability.available -%}
+              <div class="pickup-availability-preview caption-large">
+                  {{ 'products.product.pickup_availability.pick_up_available' | t }},
+                  {{ availability.pick_up_time | downcase }}.
+              </div>
+            {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  </pickup-availability-drawer>
+{%- endif -%}

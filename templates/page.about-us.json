@@ -1,0 +1,101 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "about-us-modern",
+      "blocks": {
+        "comfort": {
+          "type": "value",
+          "settings": {
+            "icon": "bi bi-wind",
+            "title": "Comfort first",
+            "text": "Breathable materials and stretch that keep movement feeling natural."
+          }
+        },
+        "fit": {
+          "type": "value",
+          "settings": {
+            "icon": "bi bi-arrows-move",
+            "title": "Purposeful fit",
+            "text": "Support where it matters, freedom everywhere else."
+          }
+        },
+        "design": {
+          "type": "value",
+          "settings": {
+            "icon": "bi bi-gem",
+            "title": "Clean design",
+            "text": "Modern, versatile silhouettes made to outlive a single workout."
+          }
+        },
+        "india": {
+          "type": "value",
+          "settings": {
+            "icon": "bi bi-geo-alt",
+            "title": "Made in India",
+            "text": "Proudly made in India for the way India moves."
+          }
+        }
+      },
+      "block_order": [
+        "comfort",
+        "fit",
+        "design",
+        "india"
+      ],
+      "settings": {
+        "hero_image": "shopify://shop_images/bb.jpg",
+        "hero_image_position": "center center",
+        "hero_eyebrow": "Activewear for real life",
+        "hero_heading": "Tvastra Fit",
+        "hero_statement": "Made for the decision to move.",
+        "hero_text": "<p>Activewear designed in India for training, everyday movement, and everything in between.</p>",
+        "hero_btn_text": "Explore the collection",
+        "hero_btn_link": "shopify://collections/all",
+        "intro_eyebrow": "Our point of view",
+        "intro_heading": "Movement does not need a stage.",
+        "intro_text": "<p>It can be a morning training session, an evening game, a walk that clears your head, or a stretch between long hours.</p><p>Tvastra is built for those everyday decisions to move - with pieces that feel capable, considered, and easy to live in.</p>",
+        "story_image": "shopify://shop_images/ai8.jpg",
+        "story_eyebrow": "Why we exist",
+        "story_heading": "The hardest part is often starting.",
+        "story_text": "<p>We started with a simple belief: what you wear should help you move into the day, not hold you back from it.</p><p>That means breathable comfort when the pace rises, stretch that follows your body, and clean silhouettes that work long after the session ends. No costume. No compromise between function and style.</p>",
+        "story_quote": "The space between intention and action is where Tvastra begins.",
+        "values_eyebrow": "What goes into every piece",
+        "values_heading": "Designed around how real life moves.",
+        "lifestyle_image": "shopify://shop_images/coofee.jpg",
+        "lifestyle_eyebrow": "Beyond the workout",
+        "lifestyle_heading": "From training to everything after.",
+        "lifestyle_text": "<p>Performance matters. So does feeling like yourself.</p><p>Our approach brings technical comfort into a modern wardrobe, so the same piece can move from the gym to the commute, the court to coffee, and a focused hour to the rest of your day.</p>",
+        "mission_label": "Our mission",
+        "mission_text": "<p>To make comfortable, performance-led activewear that gives people the confidence to move every day.</p>",
+        "vision_label": "Our vision",
+        "vision_text": "<p>To build an Indian movement brand where real function, modern design, and everyday life belong together.</p>",
+        "show_gallery": true,
+        "gallery_eyebrow": "On the move",
+        "gallery_heading": "Designed to be lived in.",
+        "gallery_image_1": "shopify://shop_images/Artboard_1_2_346ee979-0d8d-4806-8d39-95c167881ad8.jpg",
+        "gallery_image_2": "shopify://shop_images/Artboard_2_2_54191880-935b-4735-b246-cc27f41ab0af.jpg",
+        "gallery_image_3": "shopify://shop_images/Slevless_17.png",
+        "cta_image": "shopify://shop_images/ABOUT_US_1.png",
+        "cta_eyebrow": "Your move",
+        "cta_heading": "Ready when you are.",
+        "cta_text": "<p>However you move, Tvastra is made to meet you there.</p>",
+        "cta_women_text": "Shop women",
+        "cta_women_link": "shopify://collections/women",
+        "cta_men_text": "Shop men",
+        "cta_men_link": "shopify://collections/men"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

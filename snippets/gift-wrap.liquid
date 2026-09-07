@@ -1,0 +1,38 @@
+{%- liquid
+  assign giftwrap_product = all_products[settings.giftwrap_product]
+  assign giftwrap_product_price = giftwrap_product.price | money
+  assign giftwrap_product_id = giftwrap_product.selected_or_first_available_variant.id
+-%}
+{%- if giftwrap_product.title != blank -%}
+  {%- liquid
+    assign giftwraps_in_cart = 0
+    for item in cart.items
+      if item.id == giftwrap_product_id
+        assign giftwraps_in_cart = item.quantity
+        assign giftwrap_product_id = item.key
+      endif
+    endfor
+  -%}
+  {%- assign giftwrap_qty = 1 -%}
+  <div id="giftwrap" class="giftwrap">
+    <div class="giftwrap-checkbox d-flex">
+      <input type="hidden" name="attributes[gift-wrapping]" value="">
+      <input
+        id="gift-wrapping"
+        type="checkbox"
+        name="attributes[gift-wrapping]"
+        value="yes"
+        {% if cart.attributes['gift-wrapping'] and giftwraps_in_cart > 0 %}
+          checked="checked"
+        {% endif %}
+        autocomplete="off"
+        data-gift-id="{{ giftwrap_product_id }}"
+        data-gift-qty="{{ giftwrap_qty }}"
+      >
+      {%- assign giftwrap_checkbox_label = settings.giftwrap_checkbox_label
+        | replace: '{price}', giftwrap_product_price
+      -%}
+      <label for="gift-wrapping" class="alt-font">{{ giftwrap_checkbox_label }}</label>
+    </div>
+  </div>
+{%- endif -%}

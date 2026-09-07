@@ -1,0 +1,21 @@
+<div class="search d-none d-xl-inline-block {{ settings.menu_text_case }}" data-minisearch-trigger>
+  <i class="feather-search"></i>{%- if settings.show_icon == false -%}<span class="{% if settings.header_style == "center-navigation" %}d-none d-xxl-inline-block{% else %}d-none d-xl-inline-block{% endif %}">{{ 'sections.header.search' | t }}</span>{%- endif -%}
+</div>  
+<div id="minisearch-popup" class="minisearch-popup search-canvas-popup d-block">
+  <div class="search-popup-wrap d-flex flex-column align-items-center">
+    <div class="search-popup-inner">
+        <h4 class="text-center search-label alt-font w-100">{{ 'sections.search_input_placeholder.search_popup_heading' | t }}</h4>
+      <div class="search-form-wrapper w-100">
+        <form action="{{ routes.search_url }}" method="get" class="form minisearch" role="search" id="form-minisearch">
+          <input type="hidden" name="type" value="product">
+          <input type="hidden" name="options[prefix]" value="last">
+          <input type="text" name="q" autocomplete="off" placeholder="{{ 'sections.search_input_placeholder.placeholder_text' | t }}" {%- if settings.enable_search_suggestions == true -%}data-search-input required {% endif %} autofocus data-no-result-text="{{ 'sections.search_input_placeholder.not_found_text' | t }}" />
+          <button type="submit" class=""><i class="feather-search"></i></button>
+        </form>
+      </div>
+    </div>
+    {%- render 'search-results-wrapper' -%}
+    <span class="search-close"><i class="feather-x"></i></span>
+  </div>
+</div>
+<div class="search-overlay"></div>

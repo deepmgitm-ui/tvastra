@@ -1,0 +1,163 @@
+{%- comment -%}
+  About – Image with Text
+  A self-contained, fully editable image + text block.
+  Everything (image, heading, sub-heading, paragraph, layout, spacing,
+  colours and button) is editable from the Theme Editor. Styles are
+  scoped to this section id so this file never affects core theme CSS.
+{%- endcomment -%}
+
+{%- assign s = section.settings -%}
+{%- assign uid = 'about-iwt-' | append: section.id -%}
+
+<style>
+  #{{ uid }} {
+    padding-top: {{ s.padding_top }}px;
+    padding-bottom: {{ s.padding_bottom }}px;
+    background-color: {{ s.section_bg_color }};
+  }
+  #{{ uid }} .about-iwt__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: {{ s.column_gap }}px;
+  }
+  {%- if s.image_position == 'right' -%}
+  #{{ uid }} .about-iwt__inner { flex-direction: row-reverse; }
+  {%- endif -%}
+  #{{ uid }} .about-iwt__media,
+  #{{ uid }} .about-iwt__content {
+    flex: 1 1 340px;
+    min-width: 0;
+  }
+  #{{ uid }} .about-iwt__media img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: {{ s.image_radius }}px;
+  }
+  #{{ uid }} .about-iwt__sub-heading {
+    display: block;
+    font-size: {{ s.sub_heading_size }}px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    color: {{ s.sub_heading_color }};
+  }
+  #{{ uid }} .about-iwt__heading {
+    font-size: {{ s.heading_size }}px;
+    line-height: 1.15;
+    margin: 0 0 18px;
+    color: {{ s.heading_color }};
+  }
+  #{{ uid }} .about-iwt__text {
+    font-size: {{ s.text_size }}px;
+    line-height: 1.7;
+    color: {{ s.text_color }};
+  }
+  #{{ uid }} .about-iwt__text > p:last-child { margin-bottom: 0; }
+  #{{ uid }} .about-iwt__btn { margin-top: 22px; }
+
+  @media (max-width: 767px) {
+    #{{ uid }} .about-iwt__inner { flex-direction: column; gap: 24px; }
+    #{{ uid }} .about-iwt__heading { font-size: {{ s.heading_size | times: 0.7 | round }}px; }
+  }
+</style>
+
+<section id="{{ uid }}" class="about-image-with-text {{ s.custom_class }}">
+  <div class="{% if s.full_width %}container-fluid{% else %}container{% endif %}">
+    <div class="about-iwt__inner">
+
+      <div class="about-iwt__media">
+        {%- if s.image != blank -%}
+          {{ s.image | image_url: width: 1200 | image_tag:
+              loading: 'lazy',
+              widths: '400, 600, 800, 1000, 1200',
+              sizes: '(max-width: 767px) 100vw, 50vw',
+              alt: s.image.alt | default: s.heading | escape }}
+        {%- else -%}
+          {{ 'image' | placeholder_svg_tag: 'about-iwt__placeholder' }}
+        {%- endif -%}
+      </div>
+
+      <div class="about-iwt__content">
+        {%- if s.sub_heading != blank -%}
+          <span class="about-iwt__sub-heading">{{ s.sub_heading }}</span>
+        {%- endif -%}
+        {%- if s.heading != blank -%}
+          <h2 class="about-iwt__heading">{{ s.heading }}</h2>
+        {%- endif -%}
+        {%- if s.text != blank -%}
+          <div class="about-iwt__text rte">{{ s.text }}</div>
+        {%- endif -%}
+        {%- if s.button_label != blank -%}
+          <div class="about-iwt__btn">
+            <a href="{{ s.button_link | default: '#' }}" class="btn btn-black">{{ s.button_label }}</a>
+          </div>
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About – Image with text",
+  "tag": "section",
+  "class": "shopify-section-about-iwt",
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Image left" },
+        { "value": "right", "label": "Image right" }
+      ]
+    },
+    { "type": "checkbox", "id": "full_width", "label": "Full width", "default": false },
+    { "type": "range", "id": "column_gap", "label": "Space between image and text", "min": 20, "max": 100, "step": 5, "unit": "px", "default": 50 },
+
+    { "type": "header", "content": "Image" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "range", "id": "image_radius", "label": "Image corner radius", "min": 0, "max": 40, "step": 1, "unit": "px", "default": 0 },
+
+    { "type": "header", "content": "Text" },
+    { "type": "text", "id": "sub_heading", "label": "Sub heading", "default": "About us" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The Hardest Part Is Often Starting." },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Paragraph",
+      "default": "<p>Not the workout. Not the match. Just the decision to move. We built this brand around that moment, the in-between.</p>"
+    },
+
+    { "type": "header", "content": "Button (optional)" },
+    { "type": "text", "id": "button_label", "label": "Button label" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+
+    { "type": "header", "content": "Typography" },
+    { "type": "range", "id": "sub_heading_size", "label": "Sub heading size", "min": 10, "max": 24, "step": 1, "unit": "px", "default": 14 },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 20, "max": 64, "step": 1, "unit": "px", "default": 42 },
+    { "type": "range", "id": "text_size", "label": "Paragraph size", "min": 12, "max": 24, "step": 1, "unit": "px", "default": 16 },
+
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "section_bg_color", "label": "Section background", "default": "#ffffff" },
+    { "type": "color", "id": "sub_heading_color", "label": "Sub heading", "default": "#d1ab13" },
+    { "type": "color", "id": "heading_color", "label": "Heading", "default": "#1a1a1a" },
+    { "type": "color", "id": "text_color", "label": "Paragraph", "default": "#4a4a4a" },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 150, "step": 5, "unit": "px", "default": 50 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 150, "step": 5, "unit": "px", "default": 50 },
+
+    { "type": "header", "content": "Advanced" },
+    { "type": "text", "id": "custom_class", "label": "Custom CSS class" }
+  ],
+  "presets": [
+    { "name": "About – Image with text" }
+  ]
+}
+{% endschema %}

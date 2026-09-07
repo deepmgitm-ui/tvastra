@@ -1,0 +1,84 @@
+<section class="{% if section.settings.show_mobile == false %}d-none{% endif %} {% if section.settings.border_top %}border-tp {% else section.settings.border_bottom %}border-bt {% endif %}d-md-block breadcrumb-alt">
+  <div class="{{ section.settings.container_type }}">
+    <div class="row justify-content-{{ section.settings.content_alignment }}">
+      <div class="col-12 d-flex flex-column text-{{ section.settings.content_alignment }} align-items-{{ section.settings.content_alignment }} page-title">
+        {%- if section.settings.show_pagetitle == true -%}
+          <span>{{ template }}</span>
+          <h5 class="mb-0">{{ page_title }}</h5>
+        {%- endif -%}
+        {%- render 'breadcrumb' -%}
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Breadcrumb",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mobile",
+      "label": "Show section in mobile",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagetitle",
+      "label": "Show page title",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "border_top",
+      "label": "Show border top",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "border_bottom",
+      "label": "Show border bottom",
+      "default": false
+    }
+  ]
+}
+{% endschema %}

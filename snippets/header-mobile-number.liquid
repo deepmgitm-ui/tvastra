@@ -1,0 +1,17 @@
+{%- if settings.mobile_number_text != blank or settings.mobile_number_number != blank -%}
+	<div class="contact-number d-none d-xxl-flex align-items-center">
+		<a href="tel:{{ settings.mobile_number_number }}" class="icon-image">
+			<i class="{{ settings.mobile_number_icon_name }}"></i>
+		</a>
+		{%- if settings.show_icon == false -%}
+			<div class="number-text alt-font">
+				{%- if settings.mobile_number_text != blank -%}
+					<span class="addon-title d-block">{{ settings.mobile_number_text }}</span>
+				{%- endif -%}
+				{%- if settings.mobile_number_number != blank -%}
+					<a href="tel:{{ settings.mobile_number_number }}">{{ settings.mobile_number_number }}</a>
+				{%- endif -%}
+			</div>
+		{%- endif -%}
+	</div> 
+{%- endif -%}

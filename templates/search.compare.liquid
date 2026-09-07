@@ -1,0 +1,118 @@
+{{ 'compare.min.css' | asset_url | stylesheet_tag }}
+{%- layout none -%}
+{%- if search.performed and search.results.size > 0 -%}
+  {%- liquid
+    assign all_options = ''
+    for product in search.results
+      unless product.has_only_default_variant
+        for option in product.options
+          assign all_options_array = all_options | split: ','
+          unless all_options_array contains option
+            assign all_options = all_options | append: option | append: ','
+          endunless
+        endfor
+      endunless
+    endfor
+  -%}
+  {%- assign all_options = all_options | strip | split: ',' -%}
+  <h4 class="table-title alt-font">{{ 'templates.search_compare.product_compare' | t }}</h4>
+  <div class="compare-table-wrapper row g-0">
+    <div class="compare-table-left col-4 col-md-3 col-lg-2">
+      <table class="table compare-table text-center">
+        <tbody>
+          <tr><td class="image"></td></tr>
+          <tr><td class="price"><label>{{ 'templates.search_compare.price' | t }}</label></td></tr>
+          <tr><td class="rating"><label>{{ 'templates.search_compare.rating' | t }}</label></td></tr>
+          <tr><td class="brand"><label>{{ 'templates.search_compare.brand' | t }}</label></td></tr>
+          <tr><td class="availability"><label>{{ 'templates.search_compare.availability' | t }}</label></td></tr>
+          <tr><td class="type"><label>{{ 'templates.search_compare.type' | t }}</label></td></tr>
+          {%- if all_options.size > 0 -%}
+            {%- for option in all_options -%}
+              <tr><td class="{{ option | handleize }}"><label>{{ option }}</label></td></tr>
+            {%- endfor -%}
+          {%- endif -%}
+          <tr><td class="addtocart_btn"><label></label></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="compare-table-right col-8 col-md-9 col-lg-10">
+      <table class="table compare-table text-center">
+        <tbody>
+          <tr>
+            {%- for product in search.results -%}
+              <td class="image" data-product="{{ product.id }}">
+                <div class="product-image d-inline-block position-relative">
+                  <img src="{{ product.featured_image | image_url: width: 175 }}" loading="lazy" alt="{{ product.title }}" width="auto" height="auto" /><a href="{{ product.url }}" class="product-title alt-font d-block" target="_blank">{{ product.title }}</a><a href="#" rel="nofollow noopener" class="remove-icon" data-compare="remove" data-reload="true" data-handle="{{ product.id }}"><i class="bi bi-x"></i></a>
+                </div>
+              </td>
+            {%- endfor -%}
+          </tr>
+          <tr>
+            {%- for product in search.results -%}
+              <td class="price" data-product="{{ product.id }}">
+                {%- render 'main-price', product: product, use_variant: true, price_class: 'price--large' -%}
+              </td>
+            {%- endfor -%}
+          </tr>
+          <tr>
+            {%- for product in search.results -%}
+              <td class="rating" data-product="{{ product.id }}">
+                <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"><span class="spr-starrating spr-badge-starrating"><i style="color: #343534;" aria-hidden="true" class="spr-icon spr-icon-star-empty"></i><i style="color: #343534;" aria-hidden="true" class="spr-icon spr-icon-star-empty"></i><i style="color: #343534;" aria-hidden="true" class="spr-icon spr-icon-star-empty"></i><i style="color: #343534;" aria-hidden="true" class="spr-icon spr-icon-star-empty"></i><i class="spr-icon spr-icon-star-empty" style="color: #343534;" aria-hidden="true"></i></span></span>
+              </td>
+            {%- endfor -%}
+          </tr>
+          <tr>
+            {%- for product in search.results -%}
+              <td class="vendor" data-product="{{ product.id }}">{{ product.vendor | default: '<i class="bi bi-dash-lg"></i>' }}</td>
+            {%- endfor -%}
+          </tr>
+          <tr>
+            {%- for product in search.results -%}
+              <td class="availability" data-product="{{ product.id }}">
+                {%- if product.available -%}
+                  <span class="in-stock">{{ 'templates.search_compare.in_stock' | t }}</span>
+                {%- else -%}
+                  <span class="unavailable">{{ 'templates.search_compare.unavailable' | t }}</span>
+                {%- endif -%}
+              </td>
+            {%- endfor -%}
+          </tr>
+          <tr>
+            {%- for product in search.results -%}
+              <td class="type" data-product="{{ product.id }}">{{ product.type | default: '<i class="bi bi-dash-lg"></i>' }}</td>
+            {%- endfor -%}
+          </tr>
+          {%- if all_options.size > 0 -%}
+            {%- for option in all_options -%}
+              <tr>
+                {%- for product in search.results -%}
+                  <td class="{{ option | handleize }}" data-product="{{ product.id }}">{{ product.options_by_name[option].values | join: ', ' | default: '<i class="bi bi-dash-lg"></i>' }}</td>
+                {%- endfor -%}
+              </tr>
+            {%- endfor -%}
+          {%- endif -%}
+          <tr>
+            {%- for product in search.results -%}
+              {%- assign selected_variant = product.selected_or_first_available_variant -%}
+              <td class="addtocart_btn" data-product="{{ product.id }}">
+                {%- if product.has_only_default_variant -%}
+                  {%- if product.available == true -%}
+                    <a href="/cart/add?id={{ selected_variant.id }}" class="btn btn-black btn-small" data-trigger="addtocart" data-variant="{{ selected_variant.id }}">{{ 'templates.search_compare.add_to_cart' | t }}</a>
+                  {%- else -%}
+                    <a href="{{ product.url | default: '#' | within: collection }}" class="btn btn-black btn-small">{{ 'templates.search_compare.view_product' | t }}</a>
+                  {%- endif -%}
+                {%- else -%}
+                  {%- if selected_variant.available -%}
+                    <a href="{{ product.url | default: '#' | within: collection }}" class="btn btn-black btn-small">{{ 'templates.search_compare.select_options' | t }}</a>
+                  {%- else -%}
+                    <a href="{{ product.url | default: '#' | within: collection }}" class="btn btn-black btn-small">{{ 'templates.search_compare.view_product' | t }}</a>
+                  {%- endif -%}
+                {%- endif -%}
+              </td>
+            {%- endfor -%}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+{%- endif -%}

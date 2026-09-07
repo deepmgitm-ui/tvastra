@@ -1,0 +1,450 @@
+<section
+  id="{{ section.settings.section_id }}"
+  class="image-with-text-4 section-{{ section.id }} {% if section.settings.section_show == false %}d-none{% endif %}{{ section.settings.section_class_name }} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }} d-md-block"
+  style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}"
+>
+  <div class="{{ section.settings.container_type }}">
+    <div class="row align-items-center">
+      <div class="col-lg-6 left-img left-{{ section.id }} text-center">
+        {%- render 'responsive-image', image: section.settings.block_img, placeholder_type: 'simple-image' -%}
+      </div>
+      <div class="col-lg-5 offset-lg-1 content-wrap text-{{ section.id }}">
+        {%- if section.settings.sub_title_text != blank -%}
+          <span class="section-sub-heading d-block">{{ section.settings.sub_title_text }}</span>
+        {%- endif -%}
+        {%- if section.settings.title_text != blank -%}
+          <h3 class="section-heading">{{ section.settings.title_text }}</h3>
+        {%- endif -%}
+        {%- if section.settings.description_text != blank -%}
+          <div class="section-description">{{ section.settings.description_text }}</div>
+        {%- endif -%}
+        {%- for block in section.blocks -%}
+          <div class="d-flex align-items-start text-block {{ section.settings.icon_option }}">
+            {%- liquid
+              assign show_icon = false
+              if section.settings.show_icon == true and section.settings.icon_option == 'image'
+                assign show_icon = true
+              endif
+              if section.settings.show_icon == true and section.settings.icon_option == 'icon' and block.settings.icon_class != ''
+                assign show_icon = true
+              endif
+            -%}
+            {%- if show_icon -%}
+              <div class="feature-box">
+                {%- if section.settings.icon_option == 'image' and block.settings.icone_img != blank -%}
+                  <img src="{{ block.settings.icone_img | image_url }}" alt="" width="auto" height="auto" loading="lazy">
+                {%- elsif section.settings.icon_option == 'image' and block.settings.icone_img == blank -%}
+                  {{ 'image' | placeholder_svg_tag: 'svg-placeholder position-static' }}
+                {%- elsif section.settings.icon_option == 'icon' and block.settings.icon_class != '' -%}
+                  <i class="{{ block.settings.icon_class }} align-self-start" aria-hidden="true"></i>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+            <div class="feature-text">
+              {%- if block.settings.heading_title != blank -%}
+                <div class="block-title">{{ block.settings.heading_title }}</div>
+              {%- endif -%}
+              {%- if block.settings.sub_heading -%}
+                <p>{{ block.settings.sub_heading }}</p>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  {%- unless section.settings.use_default_section_typography == true -%}
+    .section-{{ section.id }} .section-heading {
+      font-size: {{ section.settings.section_heading_size }}px;
+      line-height: {{ section.settings.heading_line_height }}px;
+    }
+    .section-{{ section.id }} .section-sub-heading {
+      font-size: {{ section.settings.sub_heading_size }}px;
+      letter-spacing: {{ section.settings.subheading_letter_spacing }}px;
+      line-height: {{ section.settings.sub_heading_line_height }}px;
+    }
+  {%- endunless -%}
+  {%- if section.settings.section_heading_color != blank -%}
+    .section-{{ section.id }} .section-heading {
+      color: {{ section.settings.section_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_sub_heading_color != blank -%}
+    .section-{{ section.id }} .section-sub-heading {
+      color: {{ section.settings.section_sub_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_description_color != blank -%}
+    .section-{{ section.id }} .section-description {
+      color: {{ section.settings.section_description_color }};
+    }
+  {%- endif -%}
+  .section-{{ section.id }}.image-with-text-4 .content-wrap .feature-text .block-title {
+    font-size: {{ section.settings.title_font_size }}px;
+    line-height: {{ section.settings.title_line_height }}px;
+    margin-bottom: {{ section.settings.title_gap }}px;
+    {%- if section.settings.heading_text_color != blank -%}color: {{ section.settings.heading_text_color }};{%- endif -%}
+  }
+  {%- if section.settings.image_size != blank -%}
+  .section-{{ section.id }}.image-with-text-4 .text-block .feature-box img {
+    max-width: {{ section.settings.image_size }}px;
+  }
+  {%- endif -%}
+  .section-{{ section.id }}.image-with-text-4 .text-block .feature-box i {
+    font-size: {{ section.settings.icon_font_size }}px;
+    {%- if section.settings.icon_color != blank -%}color: {{ section.settings.icon_color }};{%- endif -%}
+  }
+  {%- if section.settings.sub_heading_text_color != blank -%}
+  .section-{{ section.id }}.image-with-text-4 .content-wrap .feature-text p {
+    color: {{ section.settings.sub_heading_text_color }};
+  }
+  {%- endif -%}
+</style>
+{% schema %}
+{
+  "name": "Image with text 4",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Image block"
+    },
+    {
+      "type": "image_picker",
+      "id": "block_img",
+      "label": "Image",
+      "info": "Recommended size 550x590"
+    },
+    {
+      "type": "header",
+      "content": "Content block"
+    },
+    {
+      "type": "text",
+      "id": "title_text",
+      "label": "Heading",
+      "default": "Lorem Ipsum"
+    },
+    {
+      "type": "text",
+      "id": "sub_title_text",
+      "label": "Sub heading"
+    },
+    {
+      "type": "richtext",
+      "id": "description_text",
+      "label": "Description"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "min": 10,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Box title font size",
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "title_line_height",
+      "min": 10,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Box title line height",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "title_gap",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Box title bottom gap",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon",
+      "label": "Show icon/image",
+      "default": true
+    },
+    {
+      "type": "radio",
+      "id": "icon_option",
+      "label": "Icon type",
+      "options": [
+        {
+          "value": "icon",
+          "label": "Icon"
+        },
+        {
+          "value": "image",
+          "label": "Image"
+        }
+      ],
+      "default": "icon"
+    },
+    {
+      "type": "range",
+      "id": "image_size",
+      "min": 10,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Icon image maximum width",
+      "default": 46
+    },
+    {
+      "type": "range",
+      "id": "icon_font_size",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Icon size",
+      "default": 42
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon color"
+    },
+    {
+      "type": "color",
+      "id": "heading_text_color",
+      "label": "Heading text color"
+    },
+    {
+      "type": "color",
+      "id": "sub_heading_text_color",
+      "label": "Sub heading text color"
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_default_section_typography",
+      "label": "Use section typography from theme settings",
+      "info": "By default section typography values will be used from theme settings. Uncheck this checkbox to use below values.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "section_heading_size",
+      "label": "Heading size",
+      "unit": "px",
+      "min": 10,
+      "max": 60,
+      "step": 1,
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "label": "Heading line height",
+      "unit": "px",
+      "min": 35,
+      "max": 95,
+      "step": 1,
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_size",
+      "label": "Sub heading size",
+      "unit": "px",
+      "min": 10,
+      "max": 70,
+      "step": 1,
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_line_height",
+      "label": "Sub heading line height",
+      "unit": "px",
+      "min": 24,
+      "max": 60,
+      "step": 1,
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "subheading_letter_spacing",
+      "min": 0,
+      "max": 10,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Sub heading letter spacing",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": "small-section-top",
+      "options": [
+        {
+          "value": "large-section-top",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-top",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-top",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-top",
+          "label": "Very small section"
+        },
+        {
+          "value": "pt-0",
+          "label": "No padding top"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": "small-section-bottom",
+      "options": [
+        {
+          "value": "large-section-bottom",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-bottom",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-bottom",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-bottom",
+          "label": "Very small section"
+        },
+        {
+          "value": "pb-0",
+          "label": "No padding button"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "section_show",
+      "label": "Show section in mobile",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color"
+    },
+    {
+      "type": "color",
+      "id": "section_heading_color",
+      "label": "Section heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_sub_heading_color",
+      "label": "Section sub heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_description_color",
+      "label": "Section description color"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "section_class_name",
+      "label": "Section class name"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Block item",
+      "type": "slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icone_img",
+          "label": "Image icon",
+          "info": "Recommended size 50x50"
+        },
+        {
+          "type": "text",
+          "id": "icon_class",
+          "label": "Enter icon class",
+          "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)",
+          "default": "feather-award"
+        },
+        {
+          "type": "text",
+          "id": "heading_title",
+          "label": "Heading",
+          "default": "Lorem ipsum"
+        },
+        {
+          "type": "textarea",
+          "id": "sub_heading",
+          "label": "Sub heading",
+          "default": "Lorem ipsum is simply dummy text printing typesetting industry."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with text 4",
+      "blocks": [
+        {
+          "type": "slide"
+        },
+        {
+          "type": "slide"
+        },
+        {
+          "type": "slide"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,49 @@
+<div class="estimate-shipping checkout-sidebar">
+  <div class="shipping-rates-title alt-font d-flex popup-icon" data-trigger><i class="d-flex feather-truck"></i>{{ 'sections.cart.shipping_estimate_heading' | t }}</div>
+  <div id="shipping-calculator" class="shipping-calculator" data-target>
+    <div class="field">
+      <label class="alt-font" for="address_country">{{ 'customer.addresses.country' | t }}</label>
+      <div class="control">
+        <select
+          id="address_country"
+          name="address[country]"
+          data-default="{% if shop.customer_accounts_enabled and customer %}{{ customer.default_address.country }}{% else %}{{ shop.address.country.name }}{% endif %}"
+        >
+          {{ country_option_tags }}
+        </select>
+      </div>
+    </div>
+    <div class="field" id="address_province_container">
+      <label class="alt-font" for="address_province" id="address_province_label">
+        {{- 'customer.addresses.province' | t -}}
+      </label>
+      <div class="control">
+        <select
+          id="address_province"
+          name="address[province]"
+          data-default="{% if shop.customer_accounts_enabled and customer and customer.default_address.province != '' %}{{ customer.default_address.province }}{% endif %}"
+        ></select>
+      </div>
+    </div>
+    <div class="field">
+      <label class="alt-font" for="address_zip">{{ 'customer.addresses.zip' | t }}</label>
+      <div class="control">
+        <input
+          type="text"
+          id="address_zip"
+          name="address[zip]"
+          {% if shop.customer_accounts_enabled and customer %}
+            value="{{ customer.default_address.zip }}"
+          {% endif %}
+        >
+      </div>
+    </div>
+    <div class="field text-center">
+      <div class="addon-action d-flex flex-column justify-content-center align-items-center">
+	      <a href="#" class="btn btn-black btn-small btn-save w-100" data-action="shipping">Calculate shipping</a>
+	      <a href="#" class="btn-cancel" data-cancel="shipping">Cancel</a>
+	    </div>
+    </div>
+    <div class="wrapper-response"></div>
+  </div>
+</div>

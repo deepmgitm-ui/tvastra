@@ -1,0 +1,18 @@
+{%- if page.content != blank -%}
+  <div class="main-page-conent small-section-bottom">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          {{ page.content }}
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+{% schema %}
+{
+  "name": "t:sections.main-page.name",
+  "tag": "section",
+  "class": "spaced-section"
+}
+{% endschema %}

@@ -1,0 +1,21 @@
+{%- if block_settings.tab_heading != blank or block_settings.tab_content != blank -%}
+  <div class="panel-group accordion-event" data-active-icon="feather-minus" data-inactive-icon="feather-plus">
+    <div class="panel">
+      <div class="panel-heading{% if block_settings.open_default == true %} active-accordion {% endif %}">
+        <a class="accordion-toggle" data-bs-toggle="collapse" data-bs-parent="#accordion-{{ section_id }}" href="#accordion-style-{{ section_id }}-{{ forloop_index }}" aria-label="accordion">
+          <div class="panel-title">
+            <span class="d-inline-block">{{ block_settings.tab_heading }}</span>
+            <i class="{% if block_settings.open_default == false %} feather-plus{% else %} feather-minus {% endif %}"></i>
+          </div>
+        </a>
+      </div>
+      <div id="accordion-style-{{ section_id }}-{{ forloop_index }}" class="panel-collapse collapse {% if block_settings.open_default == true %}show{% endif %}" data-bs-parent="#accordion-{{ section_id }}">
+        <div class="panel-body">
+            {%- if block_settings.tab_content != blank -%}
+            {{ block_settings.tab_content }}
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}

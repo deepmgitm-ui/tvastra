@@ -1,0 +1,899 @@
+{% doc %}
+  @prompt
+    make a creative slide section for collection sliders and make it like the title of the collections can be removed 
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-collection-slider-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    padding: {{ block.settings.section_padding }}px 0;
+    background-color: {{ block.settings.background_color }};
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ai-collection-slider-container-{{ ai_gen_id }} {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-collection-slider-header-{{ ai_gen_id }} {
+    text-align: {{ block.settings.text_alignment }};
+    margin-bottom: {{ block.settings.header_spacing }}px;
+  }
+
+  .ai-collection-slider-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    color: {{ block.settings.title_color }};
+    margin: 0 0 10px 0;
+    font-weight: 600;
+  }
+
+  .ai-collection-slider-subtitle-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subtitle_size }}px;
+    color: {{ block.settings.subtitle_color }};
+    margin: 0;
+  }
+
+  .ai-collection-slider-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ai-collection-slider-track-{{ ai_gen_id }} {
+    display: flex;
+    gap: {{ block.settings.slide_gap }}px;
+    transition: transform 0.5s ease;
+  }
+
+  .ai-collection-slide-{{ ai_gen_id }} {
+    flex: 0 0 calc((100% - ({{ block.settings.slides_desktop | minus: 1 }} * {{ block.settings.slide_gap }}px)) / {{ block.settings.slides_desktop }});
+    position: relative;
+    border-radius: {{ block.settings.card_border_radius }}px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .ai-collection-slide-image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    padding-bottom: {{ block.settings.image_aspect_ratio }}%;
+    overflow: hidden;
+    background-color: #f4f4f4;
+  }
+
+  .ai-collection-slide-image-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .ai-collection-slide-{{ ai_gen_id }}:hover .ai-collection-slide-image-{{ ai_gen_id }} {
+    transform: scale({{ block.settings.hover_zoom }});
+  }
+
+  .ai-collection-slide-overlay-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,{{ block.settings.overlay_opacity }}) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 20px;
+    transition: opacity 0.3s ease;
+  }
+
+  .ai-collection-slide-content-{{ ai_gen_id }} {
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+  }
+
+  .ai-collection-slide-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.collection_title_size }}px;
+    color: {{ block.settings.collection_title_color }};
+    margin: 0 0 8px 0;
+    font-weight: 600;
+    {% if block.settings.show_collection_titles %}
+      opacity: 1;
+    {% else %}
+      opacity: 0;
+    {% endif %}
+    transition: opacity 0.3s ease;
+  }
+
+  .ai-collection-slide-count-{{ ai_gen_id }} {
+    font-size: {{ block.settings.product_count_size }}px;
+    color: {{ block.settings.product_count_color }};
+    margin: 0;
+  }
+
+  .ai-collection-slide-button-{{ ai_gen_id }} {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 10px 20px;
+    background-color: {{ block.settings.button_bg_color }};
+    color: {{ block.settings.button_text_color }};
+    border-radius: {{ block.settings.button_border_radius }}px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+  }
+
+  .ai-collection-slide-{{ ai_gen_id }}:hover .ai-collection-slide-button-{{ ai_gen_id }} {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .ai-collection-slide-button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_bg_color }};
+    color: {{ block.settings.button_hover_text_color }};
+  }
+
+  .ai-collection-slider-nav-{{ ai_gen_id }} {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background-color: {{ block.settings.nav_bg_color }};
+    color: {{ block.settings.nav_icon_color }};
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.3s ease;
+    opacity: 0.8;
+  }
+
+  .ai-collection-slider-nav-{{ ai_gen_id }}:hover {
+    opacity: 1;
+    background-color: {{ block.settings.nav_hover_bg_color }};
+    color: {{ block.settings.nav_hover_icon_color }};
+  }
+
+  .ai-collection-slider-nav-prev-{{ ai_gen_id }} {
+    left: 10px;
+  }
+
+  .ai-collection-slider-nav-next-{{ ai_gen_id }} {
+    right: 10px;
+  }
+
+  .ai-collection-slider-nav-{{ ai_gen_id }} svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .ai-collection-slider-dots-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 30px;
+  }
+
+  .ai-collection-slider-dot-{{ ai_gen_id }} {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: {{ block.settings.dot_color }};
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+  }
+
+  .ai-collection-slider-dot-{{ ai_gen_id }}.active {
+    background-color: {{ block.settings.dot_active_color }};
+    width: 30px;
+    border-radius: 5px;
+  }
+
+  .ai-collection-placeholder-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-collection-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-collection-empty-state-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    pointer-events: none;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 4px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-collection-slide-{{ ai_gen_id }} {
+      flex: 0 0 calc((100% - ({{ block.settings.slides_mobile | minus: 1 }} * {{ block.settings.slide_gap }}px)) / {{ block.settings.slides_mobile }});
+    }
+
+    .ai-collection-slider-title-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.title_size }}px * 0.7);
+    }
+
+    .ai-collection-slider-subtitle-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.subtitle_size }}px * 0.8);
+    }
+
+    .ai-collection-slide-title-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.collection_title_size }}px * 0.8);
+    }
+  }
+{% endstyle %}
+
+<collection-slider-{{ ai_gen_id }} class="ai-collection-slider-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-collection-slider-container-{{ ai_gen_id }}">
+    {% if block.settings.section_title != blank or block.settings.section_subtitle != blank %}
+      <div class="ai-collection-slider-header-{{ ai_gen_id }}">
+        {% if block.settings.section_title != blank %}
+          <h2 class="ai-collection-slider-title-{{ ai_gen_id }}">{{ block.settings.section_title }}</h2>
+        {% endif %}
+        {% if block.settings.section_subtitle != blank %}
+          <p class="ai-collection-slider-subtitle-{{ ai_gen_id }}">{{ block.settings.section_subtitle }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="ai-collection-slider-wrapper-{{ ai_gen_id }}">
+      {% if block.settings.show_navigation %}
+        <button class="ai-collection-slider-nav-{{ ai_gen_id }} ai-collection-slider-nav-prev-{{ ai_gen_id }}" aria-label="Previous slide">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <button class="ai-collection-slider-nav-{{ ai_gen_id }} ai-collection-slider-nav-next-{{ ai_gen_id }}" aria-label="Next slide">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      {% endif %}
+
+      <div class="ai-collection-slider-track-{{ ai_gen_id }}">
+        {% for i in (1..6) %}
+          {% liquid
+            assign collection_key = 'collection_' | append: i
+            assign collection = block.settings[collection_key]
+          %}
+
+          {% if collection != blank %}
+            <div class="ai-collection-slide-{{ ai_gen_id }}" data-slide-index="{{ forloop.index0 }}">
+              <a href="{{ collection.url }}" class="ai-collection-slide-link-{{ ai_gen_id }}">
+                <div class="ai-collection-slide-image-wrapper-{{ ai_gen_id }}">
+                  {% if collection.image %}
+                    <img
+                      src="{{ collection.image | image_url: width: 800 }}"
+                      alt="{{ collection.title | escape }}"
+                      class="ai-collection-slide-image-{{ ai_gen_id }}"
+                      loading="lazy"
+                      width="800"
+                      height="{{ 800 | times: block.settings.image_aspect_ratio | divided_by: 100 }}"
+                    >
+                  {% else %}
+                    <div class="ai-collection-placeholder-{{ ai_gen_id }}">
+                      {{ 'collection-1' | placeholder_svg_tag }}
+                    </div>
+                  {% endif %}
+                  <div class="ai-collection-slide-overlay-{{ ai_gen_id }}">
+                    <div class="ai-collection-slide-content-{{ ai_gen_id }}">
+                      <h3 class="ai-collection-slide-title-{{ ai_gen_id }}">{{ collection.title }}</h3>
+                      {% if block.settings.show_product_count %}
+                        <p class="ai-collection-slide-count-{{ ai_gen_id }}">{{ collection.products_count }} {% if collection.products_count == 1 %}product{% else %}products{% endif %}</p>
+                      {% endif %}
+                      {% if block.settings.show_button %}
+                        <span class="ai-collection-slide-button-{{ ai_gen_id }}">{{ block.settings.button_text }}</span>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          {% else %}
+            <div class="ai-collection-slide-{{ ai_gen_id }}" data-slide-index="{{ forloop.index0 }}">
+              <div class="ai-collection-slide-image-wrapper-{{ ai_gen_id }}">
+                <div class="ai-collection-placeholder-{{ ai_gen_id }}">
+                  {{ 'collection-1' | placeholder_svg_tag }}
+                  <div class="ai-collection-empty-state-{{ ai_gen_id }}">
+                    Select collection {{ i }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    {% if block.settings.show_dots %}
+      <div class="ai-collection-slider-dots-{{ ai_gen_id }}"></div>
+    {% endif %}
+  </div>
+</collection-slider-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class CollectionSlider{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.currentIndex = 0;
+        this.autoplayInterval = null;
+      }
+
+      connectedCallback() {
+        this.track = this.querySelector('.ai-collection-slider-track-{{ ai_gen_id }}');
+        this.slides = this.querySelectorAll('.ai-collection-slide-{{ ai_gen_id }}');
+        this.prevBtn = this.querySelector('.ai-collection-slider-nav-prev-{{ ai_gen_id }}');
+        this.nextBtn = this.querySelector('.ai-collection-slider-nav-next-{{ ai_gen_id }}');
+        this.dotsContainer = this.querySelector('.ai-collection-slider-dots-{{ ai_gen_id }}');
+
+        this.slidesDesktop = {{ block.settings.slides_desktop }};
+        this.slidesMobile = {{ block.settings.slides_mobile }};
+        this.autoplay = {{ block.settings.autoplay }};
+        this.autoplaySpeed = {{ block.settings.autoplay_speed }};
+
+        this.init();
+      }
+
+      init() {
+        if (this.slides.length === 0) return;
+
+        this.createDots();
+        this.setupEventListeners();
+        this.updateSlider();
+
+        if (this.autoplay) {
+          this.startAutoplay();
+        }
+      }
+
+      createDots() {
+        if (!this.dotsContainer) return;
+
+        const slidesToShow = window.innerWidth <= 768 ? this.slidesMobile : this.slidesDesktop;
+        const totalDots = Math.max(0, this.slides.length - slidesToShow + 1);
+
+        this.dotsContainer.innerHTML = '';
+
+        for (let i = 0; i < totalDots; i++) {
+          const dot = document.createElement('button');
+          dot.classList.add('ai-collection-slider-dot-{{ ai_gen_id }}');
+          if (i === 0) dot.classList.add('active');
+          dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+          dot.addEventListener('click', () => this.goToSlide(i));
+          this.dotsContainer.appendChild(dot);
+        }
+      }
+
+      setupEventListeners() {
+        if (this.prevBtn) {
+          this.prevBtn.addEventListener('click', () => this.prevSlide());
+        }
+
+        if (this.nextBtn) {
+          this.nextBtn.addEventListener('click', () => this.nextSlide());
+        }
+
+        window.addEventListener('resize', () => {
+          this.createDots();
+          this.updateSlider();
+        });
+
+        this.addEventListener('mouseenter', () => this.stopAutoplay());
+        this.addEventListener('mouseleave', () => {
+          if (this.autoplay) this.startAutoplay();
+        });
+      }
+
+      updateSlider() {
+        const slidesToShow = window.innerWidth <= 768 ? this.slidesMobile : this.slidesDesktop;
+        const maxIndex = Math.max(0, this.slides.length - slidesToShow);
+
+        if (this.currentIndex > maxIndex) {
+          this.currentIndex = maxIndex;
+        }
+
+        const slideWidth = this.slides[0].offsetWidth;
+        const gap = {{ block.settings.slide_gap }};
+        const offset = -(this.currentIndex * (slideWidth + gap));
+
+        this.track.style.transform = `translateX(${offset}px)`;
+
+        this.updateDots();
+      }
+
+      updateDots() {
+        if (!this.dotsContainer) return;
+
+        const dots = this.dotsContainer.querySelectorAll('.ai-collection-slider-dot-{{ ai_gen_id }}');
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('active', index === this.currentIndex);
+        });
+      }
+
+      nextSlide() {
+        const slidesToShow = window.innerWidth <= 768 ? this.slidesMobile : this.slidesDesktop;
+        const maxIndex = Math.max(0, this.slides.length - slidesToShow);
+
+        if (this.currentIndex < maxIndex) {
+          this.currentIndex++;
+        } else {
+          this.currentIndex = 0;
+        }
+
+        this.updateSlider();
+      }
+
+      prevSlide() {
+        const slidesToShow = window.innerWidth <= 768 ? this.slidesMobile : this.slidesDesktop;
+        const maxIndex = Math.max(0, this.slides.length - slidesToShow);
+
+        if (this.currentIndex > 0) {
+          this.currentIndex--;
+        } else {
+          this.currentIndex = maxIndex;
+        }
+
+        this.updateSlider();
+      }
+
+      goToSlide(index) {
+        this.currentIndex = index;
+        this.updateSlider();
+      }
+
+      startAutoplay() {
+        this.stopAutoplay();
+        this.autoplayInterval = setInterval(() => {
+          this.nextSlide();
+        }, this.autoplaySpeed);
+      }
+
+      stopAutoplay() {
+        if (this.autoplayInterval) {
+          clearInterval(this.autoplayInterval);
+          this.autoplayInterval = null;
+        }
+      }
+
+      disconnectedCallback() {
+        this.stopAutoplay();
+      }
+    }
+
+    customElements.define('collection-slider-{{ ai_gen_id }}', CollectionSlider{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Collection slider",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Title",
+      "default": "Shop by collection"
+    },
+    {
+      "type": "text",
+      "id": "section_subtitle",
+      "label": "Subtitle",
+      "default": "Discover our curated collections"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "header_spacing",
+      "label": "Header spacing",
+      "min": 10,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Collections"
+    },
+    {
+      "type": "collection",
+      "id": "collection_1",
+      "label": "Collection 1"
+    },
+    {
+      "type": "collection",
+      "id": "collection_2",
+      "label": "Collection 2"
+    },
+    {
+      "type": "collection",
+      "id": "collection_3",
+      "label": "Collection 3"
+    },
+    {
+      "type": "collection",
+      "id": "collection_4",
+      "label": "Collection 4"
+    },
+    {
+      "type": "collection",
+      "id": "collection_5",
+      "label": "Collection 5"
+    },
+    {
+      "type": "collection",
+      "id": "collection_6",
+      "label": "Collection 6"
+    },
+    {
+      "type": "header",
+      "content": "Slider settings"
+    },
+    {
+      "type": "range",
+      "id": "slides_desktop",
+      "label": "Slides per view (desktop)",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "slides_mobile",
+      "label": "Slides per view (mobile)",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "range",
+      "id": "slide_gap",
+      "label": "Gap between slides",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay speed",
+      "min": 2000,
+      "max": 8000,
+      "step": 500,
+      "unit": "ms",
+      "default": 4000
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show navigation arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show dots",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Collection card"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_titles",
+      "label": "Show collection titles",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_count",
+      "label": "Show product count",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "label": "Show button on hover",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Shop now"
+    },
+    {
+      "type": "range",
+      "id": "image_aspect_ratio",
+      "label": "Image aspect ratio",
+      "min": 50,
+      "max": 150,
+      "step": 5,
+      "unit": "%",
+      "default": 125
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "label": "Card border radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "hover_zoom",
+      "label": "Hover zoom",
+      "min": 1,
+      "max": 1.5,
+      "step": 0.1,
+      "default": 1.1
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.5
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title",
+      "default": "#262626"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle",
+      "default": "#808080"
+    },
+    {
+      "type": "color",
+      "id": "collection_title_color",
+      "label": "Collection title",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "product_count_color",
+      "label": "Product count",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#262626"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg_color",
+      "label": "Button hover background",
+      "default": "#262626"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Button hover text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "color",
+      "id": "nav_bg_color",
+      "label": "Navigation background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "nav_icon_color",
+      "label": "Navigation icon",
+      "default": "#262626"
+    },
+    {
+      "type": "color",
+      "id": "nav_hover_bg_color",
+      "label": "Navigation hover background",
+      "default": "#262626"
+    },
+    {
+      "type": "color",
+      "id": "nav_hover_icon_color",
+      "label": "Navigation hover icon",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "dot_color",
+      "label": "Dot",
+      "default": "#cccccc"
+    },
+    {
+      "type": "color",
+      "id": "dot_active_color",
+      "label": "Dot active",
+      "default": "#262626"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle size",
+      "min": 12,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "collection_title_size",
+      "label": "Collection title size",
+      "min": 14,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "product_count_size",
+      "label": "Product count size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Button border radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection slider"
+    }
+  ]
+}
+{% endschema %}

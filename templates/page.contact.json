@@ -1,0 +1,90 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "contact-us-modern",
+      "blocks": {
+        "order": {
+          "type": "help",
+          "settings": {
+            "icon": "bi bi-box-seam",
+            "title": "Order and delivery",
+            "text": "Share your order number and the email or phone number used at checkout.",
+            "link_label": "Contact support",
+            "link": "#contact-form"
+          }
+        },
+        "returns": {
+          "type": "help",
+          "settings": {
+            "icon": "bi bi-arrow-repeat",
+            "title": "Return or exchange",
+            "text": "Keep your order number ready and start your request through our returns portal.",
+            "link_label": "Start a return",
+            "link": "/apps/return_prime"
+          }
+        },
+        "fit": {
+          "type": "help",
+          "settings": {
+            "icon": "bi bi-rulers",
+            "title": "Product and sizing",
+            "text": "Tell us the product name and the fit you prefer for more useful guidance.",
+            "link_label": "Browse activewear",
+            "link": "shopify://collections/all"
+          }
+        },
+        "collaboration": {
+          "type": "help",
+          "settings": {
+            "icon": "bi bi-people",
+            "title": "Collaborations",
+            "text": "Introduce yourself, share your profile and tell us what you would like to create together.",
+            "link_label": "Message on Instagram",
+            "link": "https://instagram.com/tvastra.fit"
+          }
+        }
+      },
+      "block_order": [
+        "order",
+        "returns",
+        "fit",
+        "collaboration"
+      ],
+      "settings": {
+        "hero_image": "shopify://shop_images/Untitled_design_-_2026-03-05T163147.802.png",
+        "hero_image_position": "center 42%",
+        "hero_eyebrow": "Tvastra customer care",
+        "hero_heading": "Contact Tvastra",
+        "hero_text": "<p>Questions about an order, fit, delivery or returns? Tell us what is going on and we will help you move forward.</p>",
+        "intro_eyebrow": "We are here to help",
+        "intro_heading": "Support that keeps pace.",
+        "intro_text": "<p>From choosing the right fit to tracking an order, our team is ready to make things clear and simple.</p>",
+        "email": "hello@tvastrafit.com",
+        "whatsapp_url": "https://wa.me/918799729008?text=Hi%20Tvastra%2C%20I%20need%20help.",
+        "whatsapp_label": "+91 87997 29008",
+        "instagram_url": "https://instagram.com/tvastra.fit",
+        "instagram_label": "@tvastra.fit",
+        "support_note": "For order-related queries, include your order number so we can help you faster.",
+        "form_eyebrow": "Send a message",
+        "form_heading": "How can we help?",
+        "form_text": "<p>Share a few details below and our customer care team will take it from here.</p>",
+        "button_label": "Send message",
+        "help_eyebrow": "Find the right route",
+        "help_heading": "Get to the answer faster.",
+        "help_text": "<p>Choose the topic closest to your question and include the details listed. It helps our team resolve things with fewer back-and-forth messages.</p>"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

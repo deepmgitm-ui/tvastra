@@ -1,0 +1,144 @@
+{%- liquid
+  assign show_variant_option = settings.show_variant_option
+  assign product_card_variant_option_name = settings.product_card_variant_option_name
+  assign product_card_variant_option_type = settings.product_card_variant_option_type
+-%}
+{%- if show_variant_option == true -%}
+  {%- assign variant_option_item_limit = settings.variant_option_item_limit -%}
+  <div class="product-variants" data-handle="{{ product.handle }}">
+    {%- assign variant_colors = settings.product_colors | strip_newlines | downcase | split: ',' -%}
+    <div class="no-js-hidden" data-section="{{ section.id }}" data-url="{{ product.url }}">
+      {%- for option in product.options_with_values -%}
+        {%- if option.name == product_card_variant_option_name -%}
+          {%- liquid
+            assign option_display_type = product_card_variant_option_type
+            assign handleizeOptionName = option.name | handleize
+            assign handleizeOptionName = option.name | handleize
+            assign can_show_tooltip = true
+            if handleizeOptionName == 'size'
+              assign can_show_tooltip = false
+            endif
+          -%}
+          {%- liquid
+            assign iscolor = false
+            assign isSize = false
+            assign colorOptions = settings.colorOpt | downcase | replace:", ","," | replace:" , ","," | replace:" ,","," | split: ","
+            assign sizeOptions =  settings.sizeOpt | downcase | replace:", ","," | replace:" , ","," | replace:" ,","," | split: ","
+            assign fname = handleizeOptionName | downcase
+            if colorOptions contains fname
+            assign iscolor = true
+            endif
+            if sizeOptions contains fname
+            assign isSize = true
+            endif
+          -%}
+          <fieldset class="js product-form__input product-filter{% if iscolor == true  %} color-filter {% elsif isSize == true %} size-filter {% else %} {{ handleizeOptionName }}-filter {% endif %}{{ option_display_type }}">
+            {%- comment -%} When option display type is either IMAGE or SWATCH {%- endcomment -%}
+            {%- liquid
+              assign rest_values = 0
+              if variant_option_item_limit == 0
+                assign variant_option_item_limit = 100
+              elsif option.values.size > variant_option_item_limit
+                assign rest_values = option.values.size | minus: variant_option_item_limit
+              endif
+            -%}
+            {%- for value in option.values -%}
+              {%- assign currentcolor = value | remove: ' ' | escape | downcase -%}
+              {%- if forloop.index0 < variant_option_item_limit -%}
+                <div
+                  class="variant-option swatches-hover {% if forloop.index0 == 0 %}selected{% endif %}"
+                  data-option-type="{{ option_display_type }}"
+                  data-option-name="{{ value }}"
+                  {% if can_show_tooltip -%}
+                    data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="{{ value }}"
+                    data-bs-trigger="hover"
+                  {% endif -%}
+                >
+                  <label                    
+                    class="{{ handleizeOptionName }}-filter"
+                  >
+                    {%- if option_display_type == 'image' -%}
+                      {%- comment -%} When option display type is IMAGE {%- endcomment -%}
+                      {%- assign swatch_image = '' -%}
+                      {%- if iscolor == true -%}
+                        {%- comment -%} Use variant product image {%- endcomment -%}
+                        {%- liquid
+                          for variant in product.variants
+                            if swatch_image != ''
+                              break
+                            endif
+                            for variant_option in variant.options
+                              if swatch_image != ''
+                                break
+                              endif
+                              assign option_title = variant_option | escape | downcase
+                              if currentcolor == option_title
+                                assign swatch_image = variant.featured_media.preview_image
+                              endif
+                            endfor
+                          endfor
+                        -%}
+                      {%- else -%}
+                        {%- comment -%} Use image from uploded images of option settings {%- endcomment -%}
+                      {%- endif -%}
+                      {%- if swatch_image != blank and swatch_image != null -%}
+                        <img src="{{ swatch_image | image_url: width: 35, height: 35 }}" alt="{{ value | upcase }}" width="35" height="35" loading="lazy">
+                      {%- else -%}
+                        <span class="text-swatch">{{ value | upcase }}</span>
+                      {%- endif -%}
+                    {%- else -%}
+                      {%- comment -%} When option display type is not IMAGE {%- endcomment -%}
+                      {%- if iscolor == true -%}
+                        {%- liquid
+                          assign bg_color = ''
+                          for color in variant_colors
+                            assign current_color_code = color | split: ':'
+                            assign color_name = current_color_code.first | remove: ' ' | escape | downcase
+                            if color_name == currentcolor
+                              assign bg_color = current_color_code.last
+                            endif
+                          endfor
+                          assign is_white = false
+                          assign bg_color_lower = bg_color | downcase | strip
+                          if bg_color_lower == '#fff' or bg_color_lower == '#ffffff'
+                            assign is_white = true
+                          endif
+                        -%}
+                        <span
+                          class="{% if bg_color != '' %}color{% else %}null{% endif %}-bg{% if is_white == true %} color-white{% endif %}"
+                          style="{% if bg_color != '' %}background-color: {{- bg_color -}};{% endif %}display: block;"
+                        ></span>
+                      {%- else -%}
+                        <span class="text-swatch">{{ value | upcase }}</span>
+                      {%- endif -%}
+                    {%- endif -%}
+                  </label>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if rest_values > 0 -%}
+              {%- liquid
+                if rest_values > 1
+                  assign tooltip_text = 'See ' | append: rest_values | append: ' more options'
+                else
+                  assign tooltip_text = 'See ' | append: rest_values | append: ' more option'
+                endif
+              -%}
+              <div
+                class="show-more-options"
+                data-trigger="quickview"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                data-bs-original-title="{{ tooltip_text }}"
+                data-bs-trigger="hover"
+                data-handle="{{ product.handle }}"
+              >
+                <span class="text">+{{ rest_values }}</span>
+              </div>
+            {%- endif -%}
+          </fieldset>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}

@@ -1,0 +1,7 @@
+{%- if block_settings.banner_image != blank -%}
+  <div class="banner-image">
+    <a href="{{ block_settings.btn_link | default: '#' }}" aria-label="link">
+      <img src="{{ block_settings.banner_image.src | image_url }}" alt="" width="auto" height="auto" loading="lazy">
+    </a>
+  </div>
+{%- endif -%}

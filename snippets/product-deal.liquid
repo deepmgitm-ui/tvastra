@@ -1,0 +1,21 @@
+{%- assign deal_start_date_iso = product.metafields.custom.deal_start_time -%}
+{%- if deal_start_date_iso != '' -%}
+  {%- assign today_date = 'now' | date: '%s' -%}
+  {%- capture deal_start_date_locale -%}<script>document.write(new Date('{{ deal_start_date_iso }}'));</script>{%- endcapture -%}
+  {%- assign deal_start_date = deal_start_date_locale | date: '%s' -%}
+  {%- if product.compare_at_price > product.price
+    and product.metafields.custom.deal_end_time != blank
+    and deal_start_date < today_date
+  -%}
+    <div class="product-deal counter-container">
+      <div
+        data-enddate="{{ product.metafields.custom.deal_end_time }}"
+        data-days="{{ 'general.product_information.days' | t }}"
+        data-minute-label="{{ 'general.product_information.mins' | t }}"
+        data-hours-label="{{ 'general.product_information.hrs' | t }}"
+        data-second-label="{{ 'general.product_information.secs' | t }}"
+        class="countdown"
+      ></div>
+    </div>
+  {%- endif -%}
+{%- endif -%}

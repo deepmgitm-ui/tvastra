@@ -1,0 +1,998 @@
+{%- liquid
+  assign s = section.settings
+  assign uid = section.id
+  assign form_id = 'ContactForm-' | append: uid
+  assign hero_alt = s.hero_image.alt | default: s.hero_heading
+-%}
+
+<section id="contact-tvastra-{{ uid }}" class="contact-modern contact-modern-{{ uid }}">
+  <header class="cm-hero">
+    {%- if s.hero_image != blank -%}
+      {{
+        s.hero_image
+        | image_url: width: 2400
+        | image_tag:
+          class: 'cm-hero__image',
+          widths: '750, 1100, 1500, 2000, 2400',
+          sizes: '100vw',
+          loading: 'eager',
+          fetchpriority: 'high',
+          alt: hero_alt
+      }}
+    {%- endif -%}
+    <div class="cm-hero__overlay"></div>
+    <div class="container cm-hero__content">
+      {%- if s.hero_eyebrow != blank -%}<p class="cm-kicker cm-kicker--light">{{ s.hero_eyebrow }}</p>{%- endif -%}
+      <h1 class="cm-hero__title alt-font">{{ s.hero_heading | default: page.title }}</h1>
+      {%- if s.hero_text != blank -%}<div class="cm-hero__text">{{ s.hero_text }}</div>{%- endif -%}
+    </div>
+  </header>
+
+  <div class="cm-band cm-contact">
+    <div class="container cm-contact__grid">
+      <aside class="cm-details">
+        {%- if s.intro_eyebrow != blank -%}<p class="cm-kicker">{{ s.intro_eyebrow }}</p>{%- endif -%}
+        <h2 class="cm-heading alt-font">{{ s.intro_heading }}</h2>
+        {%- if s.intro_text != blank -%}<div class="cm-copy">{{ s.intro_text }}</div>{%- endif -%}
+
+        <div class="cm-channels" aria-label="Contact options">
+          {%- if s.email != blank -%}
+            <a class="cm-channel" href="mailto:{{ s.email | escape }}">
+              <span class="cm-channel__icon" aria-hidden="true"><i class="bi bi-envelope"></i></span>
+              <span class="cm-channel__content">
+                <span class="cm-channel__label">Email</span>
+                <span class="cm-channel__value">{{ s.email }}</span>
+              </span>
+              <i class="bi bi-arrow-up-right cm-channel__arrow" aria-hidden="true"></i>
+            </a>
+          {%- endif -%}
+          {%- if s.whatsapp_url != blank -%}
+            <a class="cm-channel" href="{{ s.whatsapp_url }}" target="_blank" rel="noopener">
+              <span class="cm-channel__icon" aria-hidden="true"><i class="bi bi-whatsapp"></i></span>
+              <span class="cm-channel__content">
+                <span class="cm-channel__label">WhatsApp</span>
+                <span class="cm-channel__value">{{ s.whatsapp_label }}</span>
+              </span>
+              <i class="bi bi-arrow-up-right cm-channel__arrow" aria-hidden="true"></i>
+            </a>
+          {%- endif -%}
+          {%- if s.instagram_url != blank -%}
+            <a class="cm-channel" href="{{ s.instagram_url }}" target="_blank" rel="noopener">
+              <span class="cm-channel__icon" aria-hidden="true"><i class="bi bi-instagram"></i></span>
+              <span class="cm-channel__content">
+                <span class="cm-channel__label">Instagram</span>
+                <span class="cm-channel__value">{{ s.instagram_label }}</span>
+              </span>
+              <i class="bi bi-arrow-up-right cm-channel__arrow" aria-hidden="true"></i>
+            </a>
+          {%- endif -%}
+        </div>
+
+        {%- if s.support_note != blank -%}
+          <div class="cm-note">
+            <i class="bi bi-info-circle" aria-hidden="true"></i>
+            <p>{{ s.support_note }}</p>
+          </div>
+        {%- endif -%}
+      </aside>
+
+      <div id="contact-form" class="cm-form-panel">
+        <div class="cm-form-panel__head">
+          <p class="cm-kicker">{{ s.form_eyebrow }}</p>
+          <h2 class="cm-form-title alt-font">{{ s.form_heading }}</h2>
+          {%- if s.form_text != blank -%}<div class="cm-form-intro">{{ s.form_text }}</div>{%- endif -%}
+        </div>
+
+        {%- form 'contact', id: form_id, class: 'cm-form' -%}
+          {%- if form.posted_successfully? -%}
+            <div class="cm-status cm-status--success" tabindex="-1" autofocus>
+              <i class="bi bi-check-circle" aria-hidden="true"></i>
+              <div>
+                <strong>Message received.</strong>
+                <p>Thank you for reaching out. Our team will get back to you as soon as possible.</p>
+              </div>
+            </div>
+          {%- endif -%}
+          {%- if form.errors -%}
+            <div class="cm-status cm-status--error" role="alert" tabindex="-1" autofocus>
+              <i class="bi bi-exclamation-circle" aria-hidden="true"></i>
+              <div>
+                <strong>Please check the highlighted details.</strong>
+                {{ form.errors | default_errors }}
+              </div>
+            </div>
+          {%- endif -%}
+
+          <div class="cm-form__grid">
+            <div class="cm-field">
+              <label for="{{ form_id }}-name">Name <span aria-hidden="true">*</span></label>
+              <input id="{{ form_id }}-name" type="text" name="contact[Name]" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}" autocomplete="name" placeholder="Your full name" required>
+            </div>
+            <div class="cm-field">
+              <label for="{{ form_id }}-email">Email <span aria-hidden="true">*</span></label>
+              <input id="{{ form_id }}-email" type="email" name="contact[email]" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="you@example.com" aria-required="true" required {% if form.errors contains 'email' %}aria-invalid="true" aria-describedby="{{ form_id }}-email-error"{% endif %}>
+              {%- if form.errors contains 'email' -%}<small id="{{ form_id }}-email-error" class="cm-field__error">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</small>{%- endif -%}
+            </div>
+            <div class="cm-field">
+              <label for="{{ form_id }}-phone">Phone <span class="cm-optional">(optional)</span></label>
+              <input id="{{ form_id }}-phone" type="tel" name="contact[Phone]" value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}" autocomplete="tel" inputmode="tel" placeholder="+91">
+            </div>
+            <div class="cm-field">
+              <label for="{{ form_id }}-order">Order number <span class="cm-optional">(optional)</span></label>
+              <input id="{{ form_id }}-order" type="text" name="contact[Order number]" placeholder="Example: #1234" autocapitalize="characters">
+            </div>
+            <div class="cm-field cm-field--wide">
+              <label for="{{ form_id }}-reason">How can we help? <span aria-hidden="true">*</span></label>
+              <div class="cm-select-wrap">
+                <select id="{{ form_id }}-reason" name="contact[Support topic]" required>
+                  <option value="" selected disabled>Select a support topic</option>
+                  <option value="Order and delivery">Order and delivery</option>
+                  <option value="Return or exchange">Return or exchange</option>
+                  <option value="Product or size guidance">Product or size guidance</option>
+                  <option value="Payment support">Payment support</option>
+                  <option value="Collaboration or partnership">Collaboration or partnership</option>
+                  <option value="Feedback or something else">Feedback or something else</option>
+                </select>
+                <i class="bi bi-chevron-down" aria-hidden="true"></i>
+              </div>
+            </div>
+            <div class="cm-field cm-field--wide">
+              <label for="{{ form_id }}-message">Message <span aria-hidden="true">*</span></label>
+              <textarea id="{{ form_id }}-message" name="contact[body]" rows="6" placeholder="Tell us what happened and how we can help." required>{{ form.body }}</textarea>
+            </div>
+          </div>
+
+          {%- if settings.show_terms_contact == true -%}
+            <div class="cm-agreement">
+              <input type="checkbox" id="{{ form_id }}-terms" name="terms_agreement" value="yes" form="{{ form_id }}" required autocomplete="off" data-terms-trigger="{{ form_id }}">
+              <label for="{{ form_id }}-terms">{{ settings.terms_conditions_label | default: 'I agree with the Terms & Conditions' }}</label>
+            </div>
+          {%- endif -%}
+
+          <button type="submit" class="cm-submit" {% if settings.show_terms_contact == true %}disabled="disabled" data-terms-action="{{ form_id }}"{% endif %}>
+            <span>{{ s.button_label }}</span>
+            <i class="bi bi-arrow-right" aria-hidden="true"></i>
+          </button>
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+
+  {%- if section.blocks.size > 0 -%}
+    <div class="cm-band cm-help">
+      <div class="container">
+        <div class="cm-section-head">
+          <div>
+            {%- if s.help_eyebrow != blank -%}<p class="cm-kicker">{{ s.help_eyebrow }}</p>{%- endif -%}
+            <h2 class="cm-heading alt-font">{{ s.help_heading }}</h2>
+          </div>
+          {%- if s.help_text != blank -%}<div class="cm-section-head__text">{{ s.help_text }}</div>{%- endif -%}
+        </div>
+        <div class="cm-help__grid">
+          {%- for block in section.blocks -%}
+            <article class="cm-help__item" {{ block.shopify_attributes }}>
+              <div class="cm-help__top">
+                {%- if block.settings.icon != blank -%}<i class="{{ block.settings.icon }}" aria-hidden="true"></i>{%- endif -%}
+                <span>0{{ forloop.index }}</span>
+              </div>
+              <h3 class="alt-font">{{ block.settings.title }}</h3>
+              <p>{{ block.settings.text }}</p>
+              {%- if block.settings.link_label != blank and block.settings.link != blank -%}
+                <a href="{{ block.settings.link }}">{{ block.settings.link_label }} <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+              {%- endif -%}
+            </article>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="cm-trust">
+    <div class="container cm-trust__grid">
+      <div class="cm-trust__item"><i class="bi bi-truck" aria-hidden="true"></i><div><strong>Free shipping</strong><span>Across India</span></div></div>
+      <div class="cm-trust__item"><i class="bi bi-arrow-repeat" aria-hidden="true"></i><div><strong>7-day returns</strong><span>Easy returns and exchanges</span></div></div>
+      <div class="cm-trust__item"><i class="bi bi-shield-check" aria-hidden="true"></i><div><strong>Secure payments</strong><span>Protected checkout</span></div></div>
+      <div class="cm-trust__item"><i class="bi bi-geo-alt" aria-hidden="true"></i><div><strong>Made in India</strong><span>Designed for real movement</span></div></div>
+    </div>
+  </div>
+</section>
+
+{%- style -%}
+  .contact-modern-{{ uid }} {
+    --cm-ink: #121515;
+    --cm-paper: #ffffff;
+    --cm-soft: #eef1ed;
+    --cm-forest: #173a35;
+    --cm-gold: #d0af29;
+    --cm-muted: #646a68;
+    --cm-line: #d9ddda;
+    background: var(--cm-paper);
+    color: var(--cm-ink);
+    overflow: hidden;
+  }
+
+  .contact-modern-{{ uid }} *,
+  .contact-modern-{{ uid }} *::before,
+  .contact-modern-{{ uid }} *::after {
+    box-sizing: border-box;
+    letter-spacing: 0;
+  }
+
+  .contact-modern-{{ uid }} .cm-hero {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    min-height: 430px;
+    height: 54vh;
+    max-height: 560px;
+    overflow: hidden;
+    background: var(--cm-forest);
+  }
+
+  .contact-modern-{{ uid }} .cm-hero__image {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: {{ s.hero_image_position }};
+  }
+
+  .contact-modern-{{ uid }} .cm-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(8, 18, 17, 0.54);
+  }
+
+  .contact-modern-{{ uid }} .cm-hero__content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding-top: 72px;
+    padding-bottom: 64px;
+    color: #ffffff;
+  }
+
+  .contact-modern-{{ uid }} .cm-kicker {
+    margin: 0 0 14px;
+    color: var(--cm-forest);
+    font-size: 12px;
+    line-height: 1.4;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .contact-modern-{{ uid }} .cm-kicker--light { color: #ffffff; }
+
+  .contact-modern-{{ uid }} .cm-hero__title {
+    max-width: 720px;
+    margin: 0;
+    color: #ffffff;
+    font-size: 58px;
+    line-height: 1.04;
+    font-weight: 500;
+  }
+
+  .contact-modern-{{ uid }} .cm-hero__text {
+    max-width: 610px;
+    margin-top: 18px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 18px;
+    line-height: 1.7;
+  }
+
+  .contact-modern-{{ uid }} .cm-hero__text p { margin: 0; }
+  .contact-modern-{{ uid }} .cm-band { padding: 92px 0; }
+
+  .contact-modern-{{ uid }} .cm-contact__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+    align-items: start;
+    gap: 76px;
+  }
+
+  .contact-modern-{{ uid }} .cm-details {
+    position: sticky;
+    top: 88px;
+  }
+
+  .contact-modern-{{ uid }} .cm-heading {
+    max-width: 650px;
+    margin: 0;
+    color: var(--cm-ink);
+    font-size: 46px;
+    line-height: 1.08;
+    font-weight: 500;
+  }
+
+  .contact-modern-{{ uid }} .cm-copy {
+    max-width: 540px;
+    margin-top: 22px;
+    color: var(--cm-muted);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .contact-modern-{{ uid }} .cm-copy p { margin: 0 0 16px; }
+  .contact-modern-{{ uid }} .cm-copy p:last-child { margin-bottom: 0; }
+
+  .contact-modern-{{ uid }} .cm-channels {
+    margin-top: 38px;
+    border-top: 1px solid var(--cm-line);
+  }
+
+  .contact-modern-{{ uid }} .cm-channel {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr) 20px;
+    align-items: center;
+    gap: 14px;
+    min-height: 80px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--cm-line);
+    color: var(--cm-ink);
+    text-decoration: none;
+  }
+
+  .contact-modern-{{ uid }} .cm-channel__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    background: var(--cm-soft);
+    color: var(--cm-forest);
+    border-radius: 4px;
+    font-size: 18px;
+  }
+
+  .contact-modern-{{ uid }} .cm-channel__content {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .contact-modern-{{ uid }} .cm-channel__label {
+    margin-bottom: 2px;
+    color: var(--cm-muted);
+    font-size: 12px;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .contact-modern-{{ uid }} .cm-channel__value {
+    overflow-wrap: anywhere;
+    color: var(--cm-ink);
+    font-size: 15px;
+    line-height: 1.45;
+    font-weight: 600;
+  }
+
+  .contact-modern-{{ uid }} .cm-channel__arrow {
+    color: var(--cm-muted);
+    font-size: 16px;
+    transition: transform 180ms ease, color 180ms ease;
+  }
+
+  .contact-modern-{{ uid }} .cm-channel:hover .cm-channel__arrow {
+    color: var(--cm-forest);
+    transform: translate(2px, -2px);
+  }
+
+  .contact-modern-{{ uid }} .cm-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-top: 28px;
+    padding: 18px;
+    background: var(--cm-soft);
+    border-left: 3px solid var(--cm-gold);
+  }
+
+  .contact-modern-{{ uid }} .cm-note i {
+    margin-top: 2px;
+    color: var(--cm-forest);
+    font-size: 17px;
+  }
+
+  .contact-modern-{{ uid }} .cm-note p {
+    margin: 0;
+    color: #4f5553;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .contact-modern-{{ uid }} .cm-form-panel {
+    scroll-margin-top: 80px;
+    padding: 44px;
+    background: var(--cm-paper);
+    border: 1px solid var(--cm-line);
+    border-radius: 4px;
+    box-shadow: 0 18px 50px rgba(18, 21, 21, 0.08);
+  }
+
+  .contact-modern-{{ uid }} .cm-form-panel__head {
+    margin-bottom: 34px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--cm-line);
+  }
+
+  .contact-modern-{{ uid }} .cm-form-title {
+    margin: 0;
+    color: var(--cm-ink);
+    font-size: 34px;
+    line-height: 1.15;
+    font-weight: 500;
+  }
+
+  .contact-modern-{{ uid }} .cm-form-intro {
+    max-width: 600px;
+    margin-top: 12px;
+    color: var(--cm-muted);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .contact-modern-{{ uid }} .cm-form-intro p { margin: 0; }
+
+  .contact-modern-{{ uid }} .cm-status {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    margin-bottom: 24px;
+    padding: 17px 18px;
+    border: 1px solid;
+    border-radius: 4px;
+  }
+
+  .contact-modern-{{ uid }} .cm-status i {
+    margin-top: 2px;
+    font-size: 19px;
+  }
+
+  .contact-modern-{{ uid }} .cm-status strong {
+    display: block;
+    margin-bottom: 3px;
+    color: inherit;
+    font-size: 14px;
+  }
+
+  .contact-modern-{{ uid }} .cm-status p,
+  .contact-modern-{{ uid }} .cm-status ul {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .contact-modern-{{ uid }} .cm-status--success {
+    color: #145c43;
+    background: #eef8f3;
+    border-color: #b8dfce;
+  }
+
+  .contact-modern-{{ uid }} .cm-status--error {
+    color: #8a3129;
+    background: #fff3f1;
+    border-color: #e7b8b3;
+  }
+
+  .contact-modern-{{ uid }} .cm-form__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 20px;
+  }
+
+  .contact-modern-{{ uid }} .cm-field { min-width: 0; }
+  .contact-modern-{{ uid }} .cm-field--wide { grid-column: 1 / -1; }
+
+  .contact-modern-{{ uid }} .cm-field label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--cm-ink);
+    font-size: 13px;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+
+  .contact-modern-{{ uid }} .cm-field label > span:not(.cm-optional) { color: #a33f35; }
+  .contact-modern-{{ uid }} .cm-optional { color: #8a908e; font-weight: 400; }
+
+  .contact-modern-{{ uid }} .cm-field input,
+  .contact-modern-{{ uid }} .cm-field select,
+  .contact-modern-{{ uid }} .cm-field textarea {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 13px 15px;
+    background: #ffffff;
+    border: 1px solid #cbd1ce;
+    border-radius: 3px;
+    color: var(--cm-ink);
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.45;
+    box-shadow: none;
+    outline: none;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+  }
+
+  .contact-modern-{{ uid }} .cm-field input,
+  .contact-modern-{{ uid }} .cm-field select {
+    min-height: 52px;
+  }
+
+  .contact-modern-{{ uid }} .cm-field textarea {
+    min-height: 150px;
+    resize: vertical;
+  }
+
+  .contact-modern-{{ uid }} .cm-field input::placeholder,
+  .contact-modern-{{ uid }} .cm-field textarea::placeholder {
+    color: #989e9b;
+    opacity: 1;
+  }
+
+  .contact-modern-{{ uid }} .cm-field input:focus,
+  .contact-modern-{{ uid }} .cm-field select:focus,
+  .contact-modern-{{ uid }} .cm-field textarea:focus {
+    border-color: var(--cm-forest);
+    box-shadow: 0 0 0 3px rgba(23, 58, 53, 0.11);
+  }
+
+  .contact-modern-{{ uid }} .cm-select-wrap { position: relative; }
+
+  .contact-modern-{{ uid }} .cm-select-wrap select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 44px;
+    cursor: pointer;
+  }
+
+  .contact-modern-{{ uid }} .cm-select-wrap > i {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    color: var(--cm-muted);
+    font-size: 14px;
+    pointer-events: none;
+    transform: translateY(-50%);
+  }
+
+  .contact-modern-{{ uid }} .cm-field__error {
+    display: block;
+    margin-top: 6px;
+    color: #9b372e;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .contact-modern-{{ uid }} .cm-agreement {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 22px;
+  }
+
+  .contact-modern-{{ uid }} .cm-agreement input {
+    flex: 0 0 auto;
+    width: 17px;
+    height: 17px;
+    margin: 2px 0 0;
+    accent-color: var(--cm-forest);
+  }
+
+  .contact-modern-{{ uid }} .cm-agreement label {
+    color: var(--cm-muted);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .contact-modern-{{ uid }} .cm-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    min-width: 210px;
+    min-height: 52px;
+    margin-top: 26px;
+    padding: 13px 22px;
+    background: var(--cm-ink);
+    border: 1px solid var(--cm-ink);
+    border-radius: 3px;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.2;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 180ms ease, border-color 180ms ease;
+  }
+
+  .contact-modern-{{ uid }} .cm-submit:hover {
+    background: var(--cm-forest);
+    border-color: var(--cm-forest);
+  }
+
+  .contact-modern-{{ uid }} .cm-submit:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .contact-modern-{{ uid }} .cm-help { background: var(--cm-soft); }
+
+  .contact-modern-{{ uid }} .cm-section-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 460px);
+    align-items: end;
+    gap: 50px;
+    margin-bottom: 52px;
+  }
+
+  .contact-modern-{{ uid }} .cm-section-head__text {
+    color: var(--cm-muted);
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  .contact-modern-{{ uid }} .cm-section-head__text p { margin: 0; }
+
+  .contact-modern-{{ uid }} .cm-help__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 28px;
+  }
+
+  .contact-modern-{{ uid }} .cm-help__item {
+    min-width: 0;
+    padding-top: 22px;
+    border-top: 2px solid var(--cm-ink);
+  }
+
+  .contact-modern-{{ uid }} .cm-help__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+
+  .contact-modern-{{ uid }} .cm-help__top i {
+    color: var(--cm-forest);
+    font-size: 25px;
+  }
+
+  .contact-modern-{{ uid }} .cm-help__top span {
+    color: #8a908e;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .contact-modern-{{ uid }} .cm-help__item h3 {
+    margin: 0 0 12px;
+    color: var(--cm-ink);
+    font-size: 21px;
+    line-height: 1.25;
+    font-weight: 500;
+  }
+
+  .contact-modern-{{ uid }} .cm-help__item p {
+    min-height: 74px;
+    margin: 0;
+    color: var(--cm-muted);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .contact-modern-{{ uid }} .cm-help__item a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid currentColor;
+    color: var(--cm-ink);
+    font-size: 13px;
+    line-height: 1.4;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .contact-modern-{{ uid }} .cm-trust {
+    padding: 38px 0;
+    background: #111817;
+    color: #ffffff;
+  }
+
+  .contact-modern-{{ uid }} .cm-trust__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .contact-modern-{{ uid }} .cm-trust__item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 0;
+    padding: 4px 26px;
+    border-left: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .contact-modern-{{ uid }} .cm-trust__item:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .contact-modern-{{ uid }} .cm-trust__item i {
+    flex: 0 0 auto;
+    color: var(--cm-gold);
+    font-size: 23px;
+  }
+
+  .contact-modern-{{ uid }} .cm-trust__item div {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .contact-modern-{{ uid }} .cm-trust__item strong {
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 1.4;
+    font-weight: 700;
+  }
+
+  .contact-modern-{{ uid }} .cm-trust__item span {
+    margin-top: 2px;
+    color: rgba(255, 255, 255, 0.67);
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  @media (max-width: 1199px) {
+    .contact-modern-{{ uid }} .cm-contact__grid { gap: 48px; }
+    .contact-modern-{{ uid }} .cm-form-panel { padding: 36px; }
+    .contact-modern-{{ uid }} .cm-help__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 42px 28px; }
+    .contact-modern-{{ uid }} .cm-help__item p { min-height: 0; }
+    .contact-modern-{{ uid }} .cm-trust__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px 0; }
+    .contact-modern-{{ uid }} .cm-trust__item:nth-child(3) { padding-left: 0; border-left: 0; }
+  }
+
+  @media (max-width: 991px) {
+    .contact-modern-{{ uid }} .cm-hero { min-height: 390px; height: 48vh; }
+    .contact-modern-{{ uid }} .cm-hero__title { font-size: 48px; }
+    .contact-modern-{{ uid }} .cm-band { padding: 72px 0; }
+    .contact-modern-{{ uid }} .cm-contact__grid { grid-template-columns: 1fr; gap: 48px; }
+    .contact-modern-{{ uid }} .cm-details { position: static; }
+    .contact-modern-{{ uid }} .cm-section-head { grid-template-columns: 1fr; gap: 20px; }
+  }
+
+  @media (max-width: 767px) {
+    .contact-modern-{{ uid }} .cm-hero { min-height: 350px; height: 44vh; max-height: 410px; }
+    .contact-modern-{{ uid }} .cm-hero__content { padding-top: 48px; padding-bottom: 42px; }
+    .contact-modern-{{ uid }} .cm-hero__title { max-width: 330px; font-size: 38px; line-height: 1.08; }
+    .contact-modern-{{ uid }} .cm-hero__text { max-width: 330px; margin-top: 14px; font-size: 15px; line-height: 1.6; }
+    .contact-modern-{{ uid }} .cm-band { padding: 56px 0; }
+    .contact-modern-{{ uid }} .cm-heading { font-size: 34px; line-height: 1.12; }
+    .contact-modern-{{ uid }} .cm-copy { margin-top: 18px; font-size: 15px; }
+    .contact-modern-{{ uid }} .cm-contact__grid { gap: 40px; }
+    .contact-modern-{{ uid }} .cm-channels { margin-top: 30px; }
+    .contact-modern-{{ uid }} .cm-form-panel { padding: 26px 20px; }
+    .contact-modern-{{ uid }} .cm-form-panel__head { margin-bottom: 26px; padding-bottom: 22px; }
+    .contact-modern-{{ uid }} .cm-form-title { font-size: 28px; }
+    .contact-modern-{{ uid }} .cm-form__grid { grid-template-columns: 1fr; gap: 18px; }
+    .contact-modern-{{ uid }} .cm-field--wide { grid-column: auto; }
+    .contact-modern-{{ uid }} .cm-submit { width: 100%; min-width: 0; }
+    .contact-modern-{{ uid }} .cm-help__grid { grid-template-columns: 1fr; gap: 36px; }
+    .contact-modern-{{ uid }} .cm-help__top { margin-bottom: 20px; }
+    .contact-modern-{{ uid }} .cm-trust { padding: 32px 0; }
+    .contact-modern-{{ uid }} .cm-trust__grid { grid-template-columns: 1fr; gap: 0; }
+    .contact-modern-{{ uid }} .cm-trust__item,
+    .contact-modern-{{ uid }} .cm-trust__item:first-child,
+    .contact-modern-{{ uid }} .cm-trust__item:nth-child(3) {
+      padding: 18px 0;
+      border-left: 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .contact-modern-{{ uid }} .cm-trust__item:first-child { border-top: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .contact-modern-{{ uid }} .cm-channel__arrow,
+    .contact-modern-{{ uid }} .cm-submit { transition: none; }
+  }
+{%- endstyle -%}
+{% schema %}
+{
+  "name": "Modern contact",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image"
+    },
+    {
+      "type": "select",
+      "id": "hero_image_position",
+      "label": "Hero image position",
+      "default": "center 42%",
+      "options": [
+        { "value": "center 32%", "label": "Upper" },
+        { "value": "center 42%", "label": "Center" },
+        { "value": "center 58%", "label": "Lower" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "hero_eyebrow",
+      "label": "Hero eyebrow",
+      "default": "Tvastra customer care"
+    },
+    {
+      "type": "text",
+      "id": "hero_heading",
+      "label": "Hero heading",
+      "default": "Contact Tvastra"
+    },
+    {
+      "type": "richtext",
+      "id": "hero_text",
+      "label": "Hero text",
+      "default": "<p>Questions about an order, fit, delivery or returns? Tell us what is going on and we will help you move forward.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Contact details"
+    },
+    {
+      "type": "text",
+      "id": "intro_eyebrow",
+      "label": "Intro eyebrow",
+      "default": "We are here to help"
+    },
+    {
+      "type": "text",
+      "id": "intro_heading",
+      "label": "Intro heading",
+      "default": "Support that keeps pace."
+    },
+    {
+      "type": "richtext",
+      "id": "intro_text",
+      "label": "Intro text",
+      "default": "<p>From choosing the right fit to tracking an order, our team is ready to make things clear and simple.</p>"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email",
+      "default": "hello@tvastrafit.com"
+    },
+    {
+      "type": "url",
+      "id": "whatsapp_url",
+      "label": "WhatsApp link"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_label",
+      "label": "WhatsApp label",
+      "default": "+91 87997 29008"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram link"
+    },
+    {
+      "type": "text",
+      "id": "instagram_label",
+      "label": "Instagram label",
+      "default": "@tvastra.fit"
+    },
+    {
+      "type": "textarea",
+      "id": "support_note",
+      "label": "Support note",
+      "default": "For order-related queries, include your order number so we can help you faster."
+    },
+    {
+      "type": "header",
+      "content": "Form"
+    },
+    {
+      "type": "text",
+      "id": "form_eyebrow",
+      "label": "Form eyebrow",
+      "default": "Send a message"
+    },
+    {
+      "type": "text",
+      "id": "form_heading",
+      "label": "Form heading",
+      "default": "How can we help?"
+    },
+    {
+      "type": "richtext",
+      "id": "form_text",
+      "label": "Form text",
+      "default": "<p>Share a few details below and our customer care team will take it from here.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Send message"
+    },
+    {
+      "type": "header",
+      "content": "Help routes"
+    },
+    {
+      "type": "text",
+      "id": "help_eyebrow",
+      "label": "Help eyebrow",
+      "default": "Find the right route"
+    },
+    {
+      "type": "text",
+      "id": "help_heading",
+      "label": "Help heading",
+      "default": "Get to the answer faster."
+    },
+    {
+      "type": "richtext",
+      "id": "help_text",
+      "label": "Help text",
+      "default": "<p>Choose the topic closest to your question and include the details listed. It helps our team resolve things with fewer back-and-forth messages.</p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "help",
+      "name": "Help route",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon class",
+          "default": "bi bi-box-seam"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Order and delivery"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Share your order number and the email or phone number used at checkout."
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link label"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Modern contact",
+      "blocks": [
+        { "type": "help" },
+        { "type": "help" },
+        { "type": "help" },
+        { "type": "help" }
+      ]
+    }
+  ]
+}
+{% endschema %}

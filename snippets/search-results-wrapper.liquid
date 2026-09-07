@@ -1,0 +1,80 @@
+{%- if settings.enable_search_suggestions == true -%}
+  <div class="search-results-wrapper">
+    <div class="search-results-inner">
+      <div class="container"> 
+        <div class="predictive-wrapper">
+          <div class="row">
+            {% assign quick_search = settings.quick_search %}
+            {%- if quick_search != blank -%}
+              {%- capture link_quick_search -%}
+                  {{ routes.search_url }}?type=product&options%5Bfields%5D=title,vendor,product_type,variants.title,variants.sku&options%5Bunavailable_products%5D=last&options%5Bprefix%5D=last&q=
+              {%- endcapture -%}
+              <div class="quick-search d-flex align-items-center justify-content-center">
+                  <span class="quick-search-title">Quick Search:</span>
+                  <ul class="quick-search-list list-unstyled d-flex flex-wrap">
+                      {%- assign quick_search = quick_search | split: ',' -%}
+                      {%- for qr in quick_search -%}
+                          {%- assign quick_text = qr | strip -%}
+                          {%- if quick_text -%}
+                          <li>
+                              <a class="quick-url" href="{{ link_quick_search }}{{ quick_text }}">
+                                  {{ quick_text }}{%- unless forloop.last == true  -%},{%- endunless -%}
+                              </a>
+                          </li>
+                          {%- endif -%}
+                      {%- endfor -%}
+                  </ul>
+              </div>
+            {%- endif -%}
+          </div>
+          {%- if settings.search_suggest -%}
+              {%- assign collection = collections[settings.search_suggest] -%}
+              {%- if collection.products.size > 0 -%}
+                <div class="row"> 
+                    <div class="predictive-search">
+                      <h6>Popular product</h6>
+                      <div class="row row-cols-2 row-cols-md-3 row-cols-xl-6 row-cols-lg-4">
+                        {%- for product in collection.products limit: 6 -%}
+                            <div class="col">
+                              <a href="{{ product.url }}">
+                                <span class="img">
+                                  <img src="{{ product.featured_image | image_url: width: 165  }}" width="{{ product.featured_image.width }}" height="{{ product.featured_image.height }}" />
+                                </span>
+                                <span class="details">{{ product.title }}
+                                  <span class="price d-block">{{ product.price | money }}</span>
+                                </span>
+                              </a>
+                            </div>
+                        {%- endfor -%}
+                      </div>
+                    </div>
+                </div>
+              {%- else -%}
+                <div class="row"> 
+                    <div class="predictive-search">
+                      <h6>Popular product</h6>
+                      <div class="row row-cols-2 row-cols-md-3 row-cols-xl-6 row-cols-lg-4">
+                        {%- for i in (1..6) -%}
+                            <div class="col">
+                            {%- render 'responsive-image', type: 'product', placeholder_type: 'product-image' -%}
+                            <div class="product-footer text-center placeholder-product">
+                              <span class="product-title alt-font">{{ 'onboarding.product_title' | t }}</span>
+                              <div class="price">{{ 5000 | money }}</div>
+                            </div>
+                          </div>
+                        {%- endfor -%}  
+                      </div>
+                    </div>
+                </div>
+              {%- endif -%}
+          {%- endif -%}
+        </div>
+        <div class="search-result-wrapper">
+          <div class="search-result row row-cols-2 row-cols-md-3 row-cols-xl-6 row-cols-lg-4">
+        </div>
+      </div>
+    </div>
+    <div class="more-action text-center" style="display:none;"><button type="submit" class="btn btn-black btn-small" form="form-minisearch">{{ "sections.search_input_placeholder.view_all_btn" | t }}</button></div>
+    </div>
+  </div>
+{%- endif -%}

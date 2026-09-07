@@ -1,0 +1,37 @@
+{%- comment -%}
+  Shopify Wishlist
+  Usage:
+    - Create a new page in the Shopify admin
+      - Admin > Online store > Pages > Add page
+    - Set the new page's template to: 'page.wishlist' (this template)
+    - Do NOT remove the `grid-wishlist` attribute
+  Notes:
+  - The grid will be populated with product cards using Javascript
+  - Any content inside of the `[grid-wishlist]` element will be completely replaced by the product cards
+  Tip:
+  - Place a loading element inside the `[grid-wishlist]` element and it will automatically be removed once the product cards have loaded
+  - Add any liquid code before/after the grid element
+{%- endcomment -%}
+<section class="collection-wrap wishlist small-section-bottom " id="wishlist">
+  <div class="container">
+    <div
+      class="row {{ settings.product_card_style }}  products product-grid row-cols-2 row-cols-md-3 row-cols-lg-4"
+      grid-wishlist
+    >
+      <div class="col m-auto text-center">
+        <div class="loading-overlay__spinner">
+          <svg
+            aria-hidden="true"
+            focusable="false"
+            role="presentation"
+            class="spinner"
+            viewBox="0 0 66 66"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,124 @@
+{{ 'instagram.min.css' | asset_url | stylesheet_tag }}
+{%- for block in section.blocks -%}
+  {%- capture block-title -%}{{ block.settings.title }}{%- endcapture -%}
+  {%- case block.type -%}
+    {%- when 'categories' -%}
+      {%- if block.settings.category_menu != blank -%}
+        <div class="blog-sidebar-item blog-categories">
+          {%- if block-title != blank and block.settings.category_menu != blank -%}
+            <div class="sidebar-block-title alt-font">{{ block-title }}</div>
+          {%- endif -%}
+          <ul>
+            {%- for link in linklists[block.settings.category_menu].links -%}
+              <li>
+                <a href="{{ link.url | default: '#' }}" aria-label="link">{{ link.title | escape }}</a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+    {%- when 'recent-post' -%}
+      {%- if block.settings.recent_post != blank -%}
+        <div class="blog-sidebar-item blog-recent-post">
+          {%- if block-title != blank and block.settings.recent_post != blank -%}
+            <div class="sidebar-block-title alt-font">{{ block-title }}</div>
+          {%- endif -%}
+          {%- assign blogs = block.settings.recent_post -%}
+          <ul>
+            {%- for article in blogs.articles limit: block.settings.post_limit -%}
+              <li>
+                <div class="recent-blog-image">
+                  <a href="{{ article.url }}" aria-label="article">
+                    {%- render 'responsive-image', image: article.image, placeholder_type: 'simple-image' -%}
+                  </a>
+                </div>
+                <div class="recent-blog-content d-flex flex-column align-self-center">
+                  {%- if block.settings.blog_show_tags -%}
+                    <div class="tag-cloud">
+                      {%- if article.tags.size > 0 and block.settings.blog_show_tags -%}
+                        {%- for tag in article.tags -%}
+                          <a class="tag" href="{{ blog.url }}/tagged/{{ tag | handle }}" aria-label="blog">{{ tag }}</a>
+                          {%- unless forloop.last -%},{%- endunless -%}
+                        {%- endfor -%}
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+                  <a class="title alt-font" href="{{ article.url }}" aria-label="article">{{ article.title }}</a>
+                  {%- if block.settings.truncate_excerpt and block.settings.truncate_word != blank -%}
+                    {%- assign truncatewords = block.settings.truncate_word -%}
+                  {%- else -%}
+                    {%- assign truncatewords = 8 -%}
+                  {%- endif -%}
+                  {%- if block.settings.blog_show_excerpt -%}
+                    <p>{{ article.excerpt | strip_html | truncatewords: truncatewords }}</p>
+                  {%- endif -%}
+                  {%- if block.settings.blog_show_author or block.settings.blog_show_date -%}
+                    <div class="d-flex align-items-center author-wrap">
+                      {%- if block.settings.blog_show_author -%}
+                        <div class="article-author">{{ article.author }}</div>
+                      {%- endif -%}
+                      {%- if block.settings.blog_show_date -%}
+                        <span class="published-date">{{ article.published_at | date: '%d %B %Y' }}</span>
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+                </div>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+    {%- when 'tags' -%}
+      {%- if blog.all_tags.size > 0 -%}
+        <div class="blog-sidebar-item tag-cloud">
+          {%- if block-title != blank and blog.all_tags.size > 0 -%}
+            <div class="sidebar-block-title alt-font">{{ block-title }}</div>
+          {%- endif -%}
+          {%- for tag in blog.all_tags -%}
+            <a href="{{ blog.url }}/tagged/{{ tag | handle }}" aria-label="blog">{{ tag }}</a>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    {%- when 'instagram' -%}
+      <div class="blog-sidebar-item instagram">
+        {%- if settings.access_token != blank -%}
+          <instagram-feed>
+            {%- if block-title != blank and block.settings.category_menu != blank -%}
+              <div class="sidebar-block-title alt-font">{{ block-title }}</div>
+            {%- endif -%}
+            <div
+              class="row row-cols-3"
+              id="instagram-feed-{{ section.id }}"
+              data-section-id="{{ section.id }}"
+              data-count="{{ block.settings.count | default: 6 }}"
+              data-instagram-feed
+              data-element-remove=".blog-sidebar-item.instagram"
+            ></div>
+            <script id="instagram-token-{{ section.id }}" type="application/json">
+              {{ settings.access_token | json }}
+            </script>
+          </instagram-feed>
+        {%- else -%}
+          <div class="row row-cols-3">
+            {%- for i in (1..block.settings.count) -%}
+              <div class="col insta-items">
+                <div class="position-relative">
+                  {{ 'image' | placeholder_svg_tag: 'svg-placeholder position-static' }}
+                  <span class="insta-hover"><i class="bi bi-instagram"></i></span>
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>      
+    {%- when 'banner' -%}
+      <div class="blog-sidebar-item banner">
+        {%- if block-title != blank -%}
+          <div class="sidebar-block-title alt-font">{{ block-title }}</div>
+        {%- endif -%}
+        <a href="{{ block.settings.banner_url | default: '#' }}" aria-label="link">
+          {%- render 'responsive-image', image: block.settings.banenr_image, placeholder_type: 'simple-image' -%}
+        </a>
+      </div>
+  {%- endcase -%}
+{%- endfor -%}

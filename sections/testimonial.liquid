@@ -1,0 +1,424 @@
+<section id="{{ section.settings.section_id }}" class="section-{{ section.id }} {% if section.settings.section_show == false %}d-none{% endif %}{{ section.settings.section_class_name }} d-md-block" style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}">
+  <div class="{{ section.settings.container_type }}">
+    <div class="section-radius overflow-visible {% if section.settings.section_bg_image != blank %}{{ section.settings.background_position }}{% endif %} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }}" style="{% if section.settings.section_bg_image != blank %}background-image: url({{ section.settings.section_bg_image | image_url }});{% endif %}">
+      {%- liquid
+        assign wrapper_class = ''
+        if section.settings.container_type == 'w-100 overflow-hidden'
+          if section.settings.show_content_container == true
+            assign wrapper_class = 'container'
+          else
+            assign wrapper_class = 'container-fluid' 
+          endif
+        elsif section.settings.container_type == 'container-fluid' and section.settings.show_content_container == true
+          assign wrapper_class = 'container'
+        endif
+      -%}
+      {%- if wrapper_class != '' -%}
+        <div class="testimonial-custom {{ wrapper_class }}">
+      {%- endif -%}
+        <div class="row testimonial-title align-items-center">
+            {%- if section.settings.heading_title != blank -%}
+              <div class="col-md-7 col-lg-6 title text-center text-md-start">
+                  <h3 class="section-heading alt-font mb-0">{{ section.settings.heading_title }}</h3>
+              </div> 
+            {%- endif -%}
+          <div class="col-md-5 col-lg-6 image text-center text-md-end"> 
+            {%- if section.settings.app_logo != blank -%}
+              <img src="{{ section.settings.app_logo | image_url }}" alt="" width="auto" height="auto" loading="lazy">
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'svg-placeholder position-static' }}
+            {%- endif -%}
+          </div>
+        </div>
+        <div class="row row-cols-{{ section.settings.box_limit_mobile }} row-cols-md-{{ section.settings.box_limit_tablet }} row-cols-lg-{{ section.settings.box_limit_mini_desktop }} row-cols-xl-{{ section.settings.box_limit_desktop }} justify-content-center">
+          {%- for block in section.blocks -%}
+            <div class="col testimonial-style-01">
+              <div class="box-inner">
+                {%- if block.settings.title != blank -%}
+                  <span class="title alt-font">{{ block.settings.title }}</span>
+                {%- endif -%}
+                {%- if block.settings.descripition != blank -%}
+                  <p>{{ block.settings.descripition }}</p>
+                {%- endif -%}
+                <div class="author d-flex align-items-center">
+                  {%- if block.settings.author_img != blank -%}
+                    <img src="{{ block.settings.author_img | image_url: width: 90 }}" alt="" width="auto" height="auto" loading="lazy">
+                  {%- else -%}
+                    {{ 'image' | placeholder_svg_tag: 'svg-placeholder position-static rounded-circle' }}
+                  {%- endif -%}
+                  <div class="author-content">
+                    {%- if block.settings.author_name != blank -%}
+                      <span class="author-name alt-font">{{ block.settings.author_name }}</span>
+                    {%- endif -%}
+                    <div class="custom-content">
+                      {%- if section.settings.content_option == 'rating' -%}
+                        {%- assign rating_vaule = block.settings.rating -%} 
+                        <div class="rating">
+                            {%- for i in (1..rating_vaule) -%}
+                              <i class="bi bi-star-fill" style="color: #fd961e;margin-right: 7px;" aria-hidden="true"></i>
+                            {%- endfor -%}
+                        </div>
+                      {%- else -%}
+                        {%- if block.settings.designation != blank -%}
+                          <div class="designation">{{ block.settings.designation }}</div>
+                        {%- endif -%}
+                      {%- endif -%}                    
+                    </div> 
+                  </div>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+        {%- if section.settings.footer_text != blank -%}
+          <div class="row testimonial-trust-content justify-content-center text-{{ section.settings.footer_alignment }} ">
+            <div class="col-12">{{ section.settings.footer_text }}</div>
+          </div>
+        {%- endif -%}
+      {%- if wrapper_class != '' -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>  
+</section>
+<style> 
+{% if section.settings.title_fontsize %}
+.section-{{ section.id }} .testimonial-title h3{
+  font-size: {{ section.settings.title_fontsize }}px;
+  line-height: {{ section.settings.title_lineheight }}px;
+}
+{% endif %}
+@media (min-width: 1200px) {
+  .testimonial-style-01:nth-child(n+{{ section.settings.box_limit_desktop | plus: 1 }}) {
+    margin-top: 30px;
+  } 
+}
+@media (max-width: 1199px) {
+  .testimonial-style-01:nth-child(n+{{ section.settings.box_limit_mini_desktop | plus: 1 }}) {
+    margin-top: 30px;
+  }
+}
+@media (max-width: 991px) {
+  .testimonial-style-01:nth-child(n+{{ section.settings.box_limit_tablet | plus: 1 }}) {
+    margin-top: 30px;
+  }
+}
+@media (max-width: 767px) {
+  .testimonial-style-01:nth-child(n+{{ section.settings.box_limit_mobile | plus: 1 }}) {
+    margin-top: 30px;
+  }
+}
+</style>
+{% schema %}
+{
+  "name": "Testimonial",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "w-100 overflow-hidden",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_content_container",
+      "label": "Show content in container",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "heading_title",
+      "label": "Testimonial heading",
+      "default": "What our valuable customer are saying"
+    },
+    {
+      "type": "image_picker",
+      "id": "app_logo",
+      "label": "Image",
+      "info": "Recommended size 270x60"
+    },
+    {
+      "type": "text",
+      "id": "footer_text",
+      "label": "Footer text",
+      "default" : "More than the 30000+ people trusting hongo store."
+    },
+    {
+      "type": "select",
+      "id": "footer_alignment",
+      "label": "Text alignment ",
+      "default": "center",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Testimonial box settings"
+    },
+    {
+      "type": "select",
+      "id": "content_option",
+      "label": "Display rating/designation",
+      "default": "rating",
+      "options": [
+        {
+          "value": "rating",
+          "label": "Rating"
+        },
+        {
+          "value": "designation",
+          "label": "Designation"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "box_limit_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3,
+      "label": "Desktop"
+    },
+    {
+      "type": "range",
+      "id": "box_limit_mini_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3,
+      "label": "Mini desktop"
+    },
+    {
+      "type": "range",
+      "id": "box_limit_tablet",
+      "label": "Tablet",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "box_limit_mobile",
+      "label": "Mobile",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "range",
+      "id": "title_fontsize",
+      "label": "Heading size",
+      "unit": "px",
+      "min": 25,
+      "max": 80,
+      "step": 1,
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "title_lineheight",
+      "label": "Heading line height",
+      "unit": "px",
+      "min": 35,
+      "max": 95,
+      "step": 1,
+      "default": 50
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": "small-section-top",
+      "options": [
+        {
+          "value": "large-section-top",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-top",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-top",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-top",
+          "label": "Very small section"
+        },
+        {
+          "value": "pt-0",
+          "label": "No padding top"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": "small-section-bottom",
+      "options": [
+        {
+          "value": "large-section-bottom",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-bottom",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-bottom",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-bottom",
+          "label": "Very small section"
+        },
+        {
+          "value": "pb-0",
+          "label": "No padding button"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "section_show",
+      "label": "Show section in mobile",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "section_bg_image",
+      "label": "Section background image",
+      "info": "Recommended size 1920x800"
+    },
+    {
+      "type": "select",
+      "id": "background_position",
+      "label": "Background position",
+      "options": [
+        {
+          "value": "cover-background",
+          "label": "Cover"
+        },
+        {
+          "value": "fixed-background",
+          "label": "Fixed"
+        }
+      ],
+      "default": "cover-background"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "section_class_name",
+      "label": "Section class name"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial-item",
+      "name": "Testimonial item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Testimonial title",
+          "default": "Great delivery services"
+        },
+        {
+          "type": "textarea",
+          "id": "descripition",
+          "label": "Description",
+          "default": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit consequuntur"
+        },
+        {
+          "type": "image_picker",
+          "id": "author_img",
+          "label": "Author image",
+          "info": "Recommended size 75x75"
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author name",
+          "default": "Author same"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "designation",
+          "label": "Designation",
+          "default": "Lorem Ipsum"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonial",
+      "blocks": [
+        {
+          "type": "testimonial-item"
+        },
+        {
+          "type": "testimonial-item"
+        },
+        {
+          "type": "testimonial-item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

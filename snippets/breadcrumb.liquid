@@ -1,0 +1,58 @@
+<ul class="breadcrumb alt-font">
+  <li>
+    <a href="{{ routes.root_url }}" aria-label="link">{{ 'general.breadcrumb.home' | t }}</a>
+  </li>
+  {%- if template contains 'collection' and collection.handle -%}
+    <li>
+      {%- liquid
+        assign collection_title = collection.title
+        if collection.handle == 'all'
+          assign collection_title = 'sections.all_products.title' | t
+        endif
+      -%}
+      {%- if current_tags -%}
+        {%- capture collection_url -%}/collections/{{ collection.handle }}{%- endcapture -%}
+        <a href="{{ collection_url }}" title="{{ collection_title }}" aria-label="collection">{{ collection_title }}</a>
+      {%- else -%}
+        <span>{{ collection_title }}</span>
+      {%- endif -%}
+    </li>
+  {%- elsif template contains 'product' -%}
+    {%- liquid
+      assign current_collection = null
+      if collection
+        assign current_collection = collection
+      elsif product and product.collections.size > 0
+        assign current_collection = product.collections.first
+      endif
+    -%}
+    {%- if current_collection and current_collection.handle -%}
+      {%- capture collection_url -%}/collections/{{ current_collection.handle }}{%- endcapture -%}
+      <li>
+        <a href="{{ collection_url }}" title="{{ current_collection.title }}" aria-label="collection">{{ current_collection.title }}</a>
+      </li>
+    {%- endif -%}
+    <li>
+      <span>{{ product.title }}</span>
+    </li>
+  {%- elsif template contains 'page' -%}
+    <li>
+      <span>{{ page.title }}</span>
+    </li>
+  {%- elsif template == 'customers/addresses' -%}
+    <li>
+      <a href="{{ routes.account_url }}" aria-label="link">{{ 'general.breadcrumb.account' | t }}</a>
+    </li>
+    <li>
+      <span>{{ page_title | downcase }}</span>
+    </li>
+  {%- elsif template == 'cart' -%}
+    <li>
+      <span>{{ 'sections.cart.title' | t }}</span>
+    </li>
+  {%- else -%}
+    <li>
+      <span>{{ page_title }}</span>
+    </li>
+  {%- endif -%}
+</ul>

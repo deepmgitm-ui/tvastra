@@ -1,0 +1,643 @@
+<section id="{{ section.settings.section_id }}" class="countdown-{{ section.settings.deal_of_the_day_style }} section-{{ section.id }} {% if section.settings.section_show == false %}d-none{% endif %}{{ section.settings.section_class_name }} d-md-block" style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}">
+	<div class="{{ section.settings.container_type }}">
+    <div class="section-radius bg-img overflow-visible {{ section.settings.padding_top }} {{ section.settings.padding_bottom }}{% if section.settings.section_bg_image != blank %} {{ section.settings.background_position }}{% endif%}" style="{% if section.settings.section_bg_image != blank %}background-image: url({{ section.settings.section_bg_image | image_url }});{% endif %}">
+      {%- liquid
+        assign wrapper_class = ''
+        if section.settings.container_type == 'w-100 overflow-hidden'
+          if section.settings.show_content_container == true
+            assign wrapper_class = 'container'
+          else
+            assign wrapper_class = 'container-fluid'
+          endif
+        elsif section.settings.container_type == 'container-fluid' and section.settings.show_content_container == true
+          assign wrapper_class = 'container'
+        endif
+      -%}
+      {%- if wrapper_class != '' -%}
+        <div class="{{ wrapper_class }}">
+      {%- endif -%}
+    		<div class="row{% if section.settings.deal_of_the_day_style == 'style-2' %} justify-content-center align-items-center{% endif %}">
+          {%- if section.settings.deal_of_the_day_style == 'style-1' -%}
+      			<div class="col-12 text-{{ section.settings.content_alignment }}">
+              {%- if section.settings.countdown_sub_heading != blank -%}<div class="countdown-sub-heading section-sub-heading alt-font">{{ section.settings.countdown_sub_heading }}</div>{%- endif -%}
+              {%- if section.settings.countdown_heading != blank -%}<div class="h-1 countdown-heading section-heading alt-font">{{ section.settings.countdown_heading }}</div>{%- endif -%}
+              {%- if section.settings.countdown_description != blank -%}<div class="countdown-descroption section-description {% if section.settings.content_alignment == 'center' %}ms-auto me-auto{% elsif section.settings.content_alignment == 'end' %}ms-auto{% endif %}">{{ section.settings.countdown_description }}</div>{%- endif -%}
+              {%- if section.settings.show_countdown -%}
+                <div class="deal-timer alt-font">
+                  <div class="counter-container">
+                    {% if section.settings.timer_date != blank %}
+                      <div data-enddate="{{ section.settings.timer_date }} {{ section.settings.timer_time }}" class="countdown" data-days="{{ 'sections.deal_of_the_day.days' | t }}" data-minute-label="{{ 'sections.deal_of_the_day.minutes' | t }}" data-hours-label="{{ 'sections.deal_of_the_day.hours' | t }}" data-second-label="{{ 'sections.deal_of_the_day.seconds' | t }}"></div>
+                    {%- else -%}
+                      <div class="countdown">
+                            <div class="counter-container">
+                                <div class="counter-box first" data-number="212">
+                                    <div class="number">00</div>
+                                    <span>Days</span>
+                                </div>
+                                <div class="counter-box">
+                                    <div class="number">00</div>
+                                    <span>Hours</span>
+                                </div><div class="counter-box">
+                                    <div class="number">00</div>
+                                    <span>Minutes</span>
+                                </div>
+                                <div class="counter-box last">
+                                    <div class="number">00</div>
+                                    <span>Seconds</span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                  </div> 
+                </div>
+              {%- endif -%}
+              {%- render 'button-settings',
+                btn_style: section.settings.button_style,
+                btn_size: section.settings.button_size,
+                btn_text: section.settings.btn_text,
+                btn_link: section.settings.btn_link,
+                btn_radius: section.settings.btn_radius,
+                btn_border_width: section.settings.btn_border_width,
+                btn_icon_class: section.settings.btn_icon_class,
+                icon_position: section.settings.icon_position
+              -%}
+      			</div>
+          {%- endif -%}
+          {%- if section.settings.deal_of_the_day_style == 'style-2' -%}
+            {%- if section.settings.countdown_sub_heading != blank or section.settings.countdown_heading != blank or section.settings.countdown_description != blank -%}
+              <div class="col-lg-4 countdown-text text-center text-lg-{{ section.settings.content_alignment }}">
+                {%- if section.settings.countdown_heading != blank -%}<div class="h-1 countdown-heading section-heading alt-font">{{ section.settings.countdown_heading }}</div>{%- endif -%}
+                {%- if section.settings.countdown_sub_heading != blank -%}<div class="countdown-sub-heading section-sub-heading alt-font">{{ section.settings.countdown_sub_heading }}</div>{%- endif -%}
+                {%- if section.settings.countdown_description != blank -%}{{ section.settings.countdown_description }}{%- endif -%}
+              </div>
+            {%- endif -%}
+            <div class="col-lg-3 text-center text-lg-start">
+              <div class="image-wrapper">
+                {%- if section.settings.image != blank -%}
+                  <img src="{{ section.settings.image | image_url }}" alt="" width="auto" height="auto" loading="lazy" />
+                {%- else -%}
+                 {{ 'image' | placeholder_svg_tag: 'svg-placeholder' }}
+               {%- endif -%}
+              </div>
+            </div>
+            <div class="col-lg-4 text-center text-lg-start">
+              {%- if section.settings.show_countdown -%}
+                <div class="deal-timer alt-font">
+                  <div class="counter-container">
+                    {% if section.settings.timer_date != blank %}
+                      <div data-enddate="{{ section.settings.timer_date }} {{ section.settings.timer_time }}" class="countdown" data-days="{{ 'sections.deal_of_the_day.days' | t }}" data-minute-label="{{ 'sections.deal_of_the_day.minutes' | t }}" data-hours-label="{{ 'sections.deal_of_the_day.hours' | t }}" data-second-label="{{ 'sections.deal_of_the_day.seconds' | t }}"></div>
+                    {%- else -%}
+                      <div  class="countdown">
+                            <div class="counter-container">
+                                <div class="counter-box first" data-number="212">
+                                    <div class="number">00</div>
+                                    <span>Days</span>
+                                </div>
+                                <div class="counter-box">
+                                    <div class="number">00</div>
+                                    <span>Hours</span>
+                                </div><div class="counter-box">
+                                    <div class="number">00</div>
+                                    <span>Minutes</span>
+                                </div>
+                                <div class="counter-box last">
+                                    <div class="number">00</div>
+                                    <span>Seconds</span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                  </div> 
+                </div>
+              {%- endif -%}
+            </div>
+            <div class="shop-btn-wrapper">
+              <div class="inner">
+                {%- render 'button-settings',
+                  btn_style: section.settings.button_style,
+                  btn_size: section.settings.button_size,
+                  btn_text: section.settings.btn_text,
+                  btn_link: section.settings.btn_link,
+                  btn_radius: section.settings.btn_radius,
+                  btn_border_width: section.settings.btn_border_width,
+                  btn_icon_class: section.settings.btn_icon_class,
+                  icon_position: section.settings.icon_position
+                -%}
+              </div>
+            </div>
+          {%- endif -%}
+    		</div>        
+      {%- if wrapper_class != '' -%}
+        </div>
+      {%- endif -%}
+    </div>
+	</div>
+</section>
+<style>
+  {%- unless section.settings.use_default_section_typography == true -%}
+    .section-{{ section.id }} .section-heading {
+      font-size: {{ section.settings.section_heading_size }}px;
+      line-height: {{ section.settings.heading_line_height }}px;
+    }
+    .section-{{ section.id }} .section-sub-heading {
+      font-size: {{ section.settings.sub_heading_size }}px;
+      letter-spacing: {{ section.settings.subheading_letter_spacing }}px;
+      line-height: {{ section.settings.sub_heading_line_height }}px;
+    }
+  {%- endunless -%}
+  {%- if section.settings.section_heading_color != blank -%}
+    .section-{{ section.id }} .section-heading {
+      color: {{ section.settings.section_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_sub_heading_color != blank -%}
+    .section-{{ section.id }} .section-sub-heading {
+      color: {{ section.settings.section_sub_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_description_color != blank -%}
+    .section-{{ section.id }} .section-description {
+      color: {{ section.settings.section_description_color }};
+    }
+  {%- endif -%} 
+  {%- if section.settings.timer_color != blank -%}
+    .section-{{ section.id }} .deal-timer .counter-box .number {
+      color: {{ section.settings.timer_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.timer_separator_color != blank -%}
+    .section-{{ section.id }} .deal-timer .counter-box .number:before {
+      color: {{ section.settings.timer_separator_color }}; 
+    }
+  {%- endif -%}
+  {%- if section.settings.timer_label_color != blank -%}
+    .section-{{ section.id }} .deal-timer .counter-box span {
+      color: {{ section.settings.timer_label_color }};
+    }
+  {%- endif -%}
+  @media (max-width: 1199px) {
+    .section-{{ section.id }} .section-heading {
+      font-size: 60px;
+    }
+  }
+  @media (max-width: 767px) {
+    .section-{{ section.id }} .section-heading {
+      font-size: 40px;
+    }
+  }
+</style>
+{% schema %}
+{
+  "name": "Deal of the day",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_content_container",
+      "label": "Show content in container",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "deal_of_the_day_style",
+      "label": "Deal of the day style",
+      "options": [
+        {
+          "value": "style-1",
+          "label": "Style-1"
+        },
+        {
+          "value": "style-2",
+          "label": "Style-2"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "countdown_heading",
+      "label": "Heading",
+      "default": "Deal of the day!"
+    },
+    {
+      "type": "textarea",
+      "id": "countdown_sub_heading",
+      "label": "Sub heading",
+      "default": "GET 30% OFF ON YOUR ORDER"
+    },
+    {
+      "type": "richtext",
+      "id": "countdown_description",
+      "label": "Description"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Recommended size 295x345 Only applicable in style 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_countdown",
+      "label": "Show countdown timer",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "timer_date",
+      "label": "Countdown date",
+      "info": "Date format should be YYYY/MM/DD.",
+      "default": "2023/12/15"
+    },
+    {
+      "type": "text",
+      "id": "timer_time",
+      "label": "Countdown time",
+      "info": "Time format should be HH:MM:SS.",
+      "default": "12:00:00"
+    },
+    {
+      "type": "color",
+      "id": "timer_color",
+      "label": "Timer digit color"
+    },
+    {
+      "type": "color",
+      "id": "timer_label_color",
+      "label": "Timer label color"
+    },
+    {
+      "type": "color",
+      "id": "timer_separator_color",
+      "label": "Timer separator color"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment ",
+      "default": "center",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "default": "btn-white",
+      "options": [
+        {
+          "value": "btn-black",
+          "label": "Solid button black"
+        },
+        {
+          "value": "btn-white",
+          "label": "Solid button white"
+        },
+        {
+          "value": "btn-base-color",
+          "label": "Solid button base"
+        },
+        {
+          "value": "btn-black-border",
+          "label": "Border button black"
+        },
+        {
+          "value": "btn-white-border",
+          "label": "Border button white"
+        },
+        {
+          "value": "btn-base-color-border",
+          "label": "Border button base"
+        },
+        {
+          "value": "btn-white-border border-opacity",
+          "label": "Border opacity button white"
+        },
+        {
+          "value": "btn-black-border border-opacity",
+          "label": "Border opacity button black"
+        },
+        {
+          "value": "btn-link btn-link-black",
+          "label": "Underlined button black"
+        },
+        {
+          "value": "btn-link btn-link-white",
+          "label": "Underlined button white"
+        },
+        {
+          "value": "btn-link btn-link-base-color",
+          "label": "Underlined button base"
+        },
+        {
+          "value": "btn-custom",
+          "label": "Custom button"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Button size",
+      "default": "btn-large",
+      "options": [
+        {
+          "value": "btn-extra-large",
+          "label": "Extra Large"
+        },
+        {
+          "value": "btn-large",
+          "label": "Large"
+        },
+        {
+          "value": "btn-medium",
+          "label": "Medium"
+        },
+        {
+          "value": "btn-small",
+          "label": "Small"
+        },
+        {
+          "value": "btn-very-small",
+          "label": "Very Small"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "btn_radius",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Button radius",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "btn_border_width",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Button border width",
+      "default": 2
+    },
+    {
+      "type": "text",
+      "id": "btn_icon_class",
+      "label": "Enter icon class",
+      "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+    },
+    {
+      "type": "select",
+      "id": "icon_position",
+      "label": "Icon position",
+      "default": "right-icon",
+      "options": [
+        {
+          "value": "left-icon",
+          "label": "Left"
+        },
+        {
+          "value": "right-icon",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button text",
+      "default": "Shop collection"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_default_section_typography",
+      "label": "Use section typography from theme settings",
+      "info": "By default section typography values will be used from theme settings. Uncheck this checkbox to use below values.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "section_heading_size",
+      "min": 20,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 65
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "label": "Heading line height",
+      "unit": "px",
+      "min": 26,
+      "max": 120,
+      "step": 1,
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_size",
+      "min": 12,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Sub heading size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_line_height",
+      "label": "Sub heading line height",
+      "unit": "px",
+      "min": 24,
+      "max": 60,
+      "step": 1,
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "subheading_letter_spacing",
+      "min": 0,
+      "max": 10,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Sub heading letter spacing",
+      "default": 2
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": "small-section-top",
+      "info": "Not applicable in deal of the day style 2",
+      "options": [
+        {
+          "value": "large-section-top",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-top",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-top",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-top",
+          "label": "Very small section"
+        },
+        {
+          "value": "pt-0",
+          "label": "No padding top"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": "small-section-bottom",
+      "info": "Not applicable in deal of the day style 2",
+      "options": [
+        {
+          "value": "large-section-bottom",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-bottom",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-bottom",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-bottom",
+          "label": "Very small section"
+        },
+        {
+          "value": "pb-0",
+          "label": "No padding bottom"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "section_show",
+      "label": "Show section in mobile",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "section_bg_image",
+      "label": "Section background image",
+      "info": "Recommended size 1920x800"
+    },
+    {
+      "type": "select",
+      "id": "background_position",
+      "label": "Background position",
+      "options": [
+        {
+          "value": "cover-background",
+          "label": "Cover"
+        },
+        {
+          "value": "fixed-background",
+          "label": "Fixed"
+        }
+      ],
+      "default": "cover-background"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color",
+      "default": "#595757"
+    },
+    {
+      "type": "color",
+      "id": "section_heading_color",
+      "label": "Section heading color",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "section_sub_heading_color",
+      "label": "Section sub heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_description_color",
+      "label": "Section description color"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "section_class_name",
+      "label": "Section class name"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Deal of the day",
+      "category": "Countdown",
+      "blocks": [
+
+      ]
+    }
+  ]
+}
+{% endschema %}

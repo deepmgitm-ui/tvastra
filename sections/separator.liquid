@@ -1,0 +1,88 @@
+<section
+  class="section-{{ section.id }} separator"
+  style="background-color: {{ section.settings.section_bg_color }};padding-top: {{ section.settings.border_pt }}px;padding-bottom: {{ section.settings.border_pb }}px;"
+>
+  <div class="{{ section.settings.container_type }}">
+    <div class="row {% if section.settings.fullwidth %}g-0{% endif %}">
+      <div class="col-12">
+        <div
+          class="w-100"
+          style="{% if section.settings.border_bg_color != blank %}background-color: {{section.settings.border_bg_color}};{% endif %}{% if section.settings.border_height != blank %}height: {{ section.settings.border_height }}px;{% endif %}"
+        ></div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Separator",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "border_height",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Border height",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "border_pt",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "border_pb",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 10
+    },
+    {
+      "type": "color",
+      "id": "border_bg_color",
+      "label": "Border background color",
+      "default": "#e4e4e4"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Separator"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,54 @@
+{%- if settings.show_cart_note == true or settings.show_shipping_calculater == true or settings.enable_giftwrap == true -%}
+	<div class="cart-notification-addons">
+		<div class="addon-icon d-flex">
+			{%- if settings.show_cart_note == true -%}
+		  	<a href="#" class="addon-btn d-flex flex-column align-items-center justify-content-center position-relative" data-action="note"><i class="d-flex feather-edit"></i><span>Note</span></a>
+		  {%- endif -%}
+		  {%- if settings.show_shipping_calculater == true -%}
+		  	<a href="#" class="addon-btn d-flex flex-column align-items-center justify-content-center position-relative" data-action="shipping"><i class="d-flex feather-truck"></i><span>Shipping</span></a>
+		  {%- endif -%}
+		  {%- if settings.enable_giftwrap == true -%} 
+		  	<a href="#" class="addon-btn d-flex flex-column align-items-center justify-content-center position-relative" data-action="gift"><i class="d-flex feather-gift"></i><span>Gift</span></a>
+		  {%- endif -%}
+		</div>
+		{%- if settings.show_cart_note == true -%}
+		  <div class="addon-content note-conent" data-content="note">
+		  	<cart-note class="field">
+		      <div for="Cart-note" class="alt-font d-flex popup-icon"><i class="d-flex feather-edit"></i>{{ 'sections.cart.note' | t }}</div>
+		      <textarea
+		        class="text-area text-area--resize-vertical field__input"
+		        name="note"
+		        id="Cart-note"
+		        placeholder="{{ 'sections.cart.note' | t }}"
+		        rows="4"
+		      >{{ cart.note }}</textarea>
+	      </cart-note>
+	    	<div class="addon-action d-flex flex-column justify-content-center align-items-center">
+		      <a href="#" class="btn btn-black btn-small btn-save w-100" data-action="note">Save</a>
+		      <a href="#" class="btn-cancel" data-cancel="note">Cancel</a>
+		    </div>
+		  </div>
+	  {%- endif -%}
+		{%- if settings.show_shipping_calculater == true -%}
+		  <div class="addon-content shipping-content" data-content="shipping">
+		  	{%- render 'cart-notification-shipping' -%} 
+		  </div> 
+	  {%- endif -%}
+	  {%- if settings.enable_giftwrap == true -%}
+		  <div class="addon-content gift-content" data-content="gift">
+       	{%- liquid
+				  assign giftwrap_product = all_products[settings.giftwrap_product]
+				  assign giftwrap_product_price = giftwrap_product.price | money
+				  assign giftwrap_product_id = giftwrap_product.selected_or_first_available_variant.id
+				-%}
+		    <div class="coupon-wrapper text-center">
+				<div class="alt-font popup-icon"><i class="feather-gift d-block"></i>Do you want a gift wrap? Only {{ giftwrap_product_price }}</div>
+	      </div>
+	       <div class="addon-action d-flex flex-column justify-content-center align-items-center">
+		      <a href="#" class="btn btn-black btn-small btn-save w-100" data-action="gift" data-gift-id="{{ giftwrap_product_id }}" data-gift-qty="1">Add a gift wrap</a>
+		      <a href="#" class="btn-cancel" data-cancel="gift">Cancel</a>
+		    </div>
+		  </div>
+	  {%- endif -%}
+	</div>
+{%- endif -%}

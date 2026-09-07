@@ -1,0 +1,365 @@
+<section
+  id="{{ section.settings.section_id }}"
+  class="conect-with-us section-{{ section.id }} {% if section.settings.section_show == false %}d-none{% endif %}{{ section.settings.section_class_name }} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }} d-md-block"
+  style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}"
+>
+  <div class="{{ section.settings.container_type }}">
+    {%- if section.settings.heading != blank
+      or section.settings.sub_heading != blank
+      or section.settings.description != blank
+    -%}
+      <div class="row heading-wrapper title-{{ section.settings.title_style }} align-items-{% if section.settings.description != blank %}start{% else %}center{% endif %} text-center text-lg-start">
+        {%- render 'section-title-style', heading_alignment: section.settings.heading_alignment -%}
+      </div>
+    {%- endif -%}
+    <div class="row align-items-center justify-content-center">
+      {%- if section.settings.social_title != blank -%}
+        <div class="col-12 col-md-auto text-center text-md-end">
+          <h6 class="title custom-social-title">{{ section.settings.social_title }}</h6>
+        </div>
+      {%- endif -%}
+      {%- if section.settings.show_line != blank -%}
+        <div class="col-lg-2 d-none d-lg-block">
+          <span class="separator"></span>
+        </div>
+      {%- endif -%}
+      {%- if section.settings.show_social_media != blank -%}
+        <div class="col-12 col-md-auto social-media text-center text-md-start">
+          {%- render 'social-follow',
+            style_class: section.settings.social_type,
+            icon_size: 'icon-medium',
+            social_mode: section.settings.social_style
+          -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* --- CUSTOM FONT LOADING --- */
+  {%- if section.settings.heading_custom_font != blank -%}
+    {{ section.settings.heading_custom_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- if section.settings.subheading_custom_font != blank -%}
+    {{ section.settings.subheading_custom_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- if section.settings.description_custom_font != blank -%}
+    {{ section.settings.description_custom_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- if section.settings.social_title_font != blank -%}
+    {{ section.settings.social_title_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+
+  /* --- APPLY FONTS TO ELEMENTS --- */
+  .section-{{ section.id }} .section-heading {
+    {%- if section.settings.heading_custom_font != blank -%}
+      font-family: {{ section.settings.heading_custom_font.family }}, {{ section.settings.heading_custom_font.fallback_families }} !important;
+      font-weight: {{ section.settings.heading_custom_font.weight }} !important;
+      font-style: {{ section.settings.heading_custom_font.style }} !important;
+    {%- endif -%}
+    font-size: {{ section.settings.section_heading_size }}px !important;
+    line-height: {{ section.settings.heading_line_height }}px !important;
+    {%- if section.settings.section_heading_color != blank -%}
+      color: {{ section.settings.section_heading_color }} !important;
+    {%- endif -%}
+  }
+
+  .section-{{ section.id }} .section-sub-heading,
+  .section-{{ section.id }} .sub-heading {
+    {%- if section.settings.subheading_custom_font != blank -%}
+      font-family: {{ section.settings.subheading_custom_font.family }}, {{ section.settings.subheading_custom_font.fallback_families }} !important;
+      font-weight: {{ section.settings.subheading_custom_font.weight }} !important;
+      font-style: {{ section.settings.subheading_custom_font.style }} !important;
+    {%- endif -%}
+    font-size: {{ section.settings.sub_heading_size }}px !important;
+    letter-spacing: {{ section.settings.subheading_letter_spacing }}px !important;
+    line-height: {{ section.settings.sub_heading_line_height }}px !important;
+    {%- if section.settings.section_sub_heading_color != blank -%}
+      color: {{ section.settings.section_sub_heading_color }} !important;
+    {%- endif -%}
+  }
+
+  .section-{{ section.id }} .section-description, 
+  .section-{{ section.id }} .section-description * {
+    {%- if section.settings.description_custom_font != blank -%}
+      font-family: {{ section.settings.description_custom_font.family }}, {{ section.settings.description_custom_font.fallback_families }} !important;
+      font-weight: {{ section.settings.description_custom_font.weight }} !important;
+      font-style: {{ section.settings.description_custom_font.style }} !important;
+    {%- endif -%}
+    {%- if section.settings.section_description_color != blank -%}
+      color: {{ section.settings.section_description_color }} !important;
+    {%- endif -%}
+  }
+
+  /* --- INSTAGRAM / SOCIAL TITLE MASTER CONTROL --- */
+  .section-{{ section.id }} .custom-social-title {
+    {%- if section.settings.social_title_font != blank -%}
+      font-family: {{ section.settings.social_title_font.family }}, {{ section.settings.social_title_font.fallback_families }} !important;
+      font-weight: {{ section.settings.social_title_font.weight }} !important;
+      font-style: {{ section.settings.social_title_font.style }} !important;
+    {%- endif -%}
+    font-size: {{ section.settings.social_title_size }}px !important;
+    {%- if section.settings.social_title_color != blank -%}
+      color: {{ section.settings.social_title_color }} !important;
+    {%- endif -%}
+  }
+
+  @media screen and (max-width: 768px) {
+    .section-{{ section.id }} .custom-social-title {
+      font-size: calc({{ section.settings.social_title_size }}px * 0.8) !important; 
+    }
+  }
+
+</style>
+
+{% schema %}
+{
+  "name": "Connect with us",
+  "settings": [
+    {
+      "type": "header",
+      "content": "✨ Master Typography (Fonts)"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_custom_font",
+      "label": "Heading Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "font_picker",
+      "id": "subheading_custom_font",
+      "label": "Sub-heading Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "font_picker",
+      "id": "description_custom_font",
+      "label": "Description Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "header",
+      "content": "✨ Social Text (Instagram) Styling"
+    },
+    {
+      "type": "font_picker",
+      "id": "social_title_font",
+      "label": "Social Title Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "range",
+      "id": "social_title_size",
+      "min": 10, "max": 50, "step": 1, "unit": "px",
+      "label": "Social Title Size", "default": 26
+    },
+    {
+      "type": "color",
+      "id": "social_title_color",
+      "label": "Social Title Color"
+    },
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        { "value": "container-fluid", "label": "Container fluid" },
+        { "value": "w-100 overflow-hidden", "label": "Full width" },
+        { "value": "container", "label": "Container" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Wrap word in square bracket for stylish word. e.g. [Hello] World"
+    },
+    {
+      "type": "textarea",
+      "id": "sub_heading",
+      "label": "Sub heading"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "title_style",
+      "label": "Title style",
+      "default": "style-1",
+      "options": [
+        { "value": "style-1", "label": "Style-1" },
+        { "value": "style-2", "label": "Style-2" },
+        { "value": "style-3", "label": "Style-3" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "social_title",
+      "label": "Social title",
+      "default": "Connect with social media"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_line",
+      "label": "Show line",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_media",
+      "label": "Show social media",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "social_type",
+      "label": "Social media type",
+      "default": "social-icon-only",
+      "options": [
+        { "label": "Social icon with text", "value": "social-icon-with-text" },
+        { "label": "Social icon only", "value": "social-icon-only" },
+        { "label": "Social simple", "value": "social-simple" },
+        { "label": "Social short name", "value": "social-short-name" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "social_style",
+      "label": "Social style",
+      "default": "dark",
+      "options": [
+        { "label": "Dark", "value": "dark" },
+        { "label": "Light", "value": "light" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Section Typography Sizes"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_default_section_typography",
+      "label": "Use section typography from theme settings",
+      "info": "By default section typography values will be used from theme settings. Uncheck this checkbox to use below values.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "section_heading_size",
+      "min": 20, "max": 100, "step": 1, "unit": "px",
+      "label": "Heading size", "default": 45
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "label": "Heading line height", "unit": "px", "min": 26, "max": 120, "step": 1, "default": 55
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_size",
+      "min": 12, "max": 80, "step": 1, "unit": "px",
+      "label": "Sub heading size", "default": 32 
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_line_height",
+      "label": "Sub heading line height", "unit": "px", "min": 24, "max": 90, "step": 1, "default": 40
+    },
+    {
+      "type": "range",
+      "id": "subheading_letter_spacing",
+      "min": 0, "max": 10, "step": 0.5, "unit": "px",
+      "label": "Sub heading letter spacing", "default": 0
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": "small-section-top",
+      "options": [
+        { "value": "large-section-top", "label": "Large section" },
+        { "value": "medium-section-top", "label": "Medium section" },
+        { "value": "small-section-top", "label": "Small section" },
+        { "value": "very-small-section-top", "label": "Very small section" },
+        { "value": "pt-0", "label": "No padding top" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": "small-section-bottom",
+      "options": [
+        { "value": "large-section-bottom", "label": "Large section" },
+        { "value": "medium-section-bottom", "label": "Medium section" },
+        { "value": "small-section-bottom", "label": "Small section" },
+        { "value": "very-small-section-bottom", "label": "Very small section" },
+        { "value": "pb-0", "label": "No padding button" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment ",
+      "default": "center",
+      "info": "Not applicable in title style-2",
+      "options": [
+        { "value": "start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "end", "label": "Right" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "section_show",
+      "label": "Show section in mobile",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color"
+    },
+    {
+      "type": "color",
+      "id": "section_heading_color",
+      "label": "Section heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_sub_heading_color",
+      "label": "Section sub heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_description_color",
+      "label": "Section description color"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "section_class_name",
+      "label": "Section class name"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Connect with us"
+    }
+  ]
+}
+{% endschema %}

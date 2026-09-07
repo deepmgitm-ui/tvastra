@@ -1,0 +1,23 @@
+{%- if btn_text != blank -%}
+  <a
+    class="alt-font d-inline-flex justify-content-center align-items-center btn {{ btn_style }} {{ btn_size }}"
+    href="{{ btn_link | default: "#" }}"
+    target="_self"
+    style="border-radius: {{ btn_radius }}px; border-width: {{ btn_border_width }}px;"
+    aria-label="link"
+  >
+    <span
+      class="{% if icon_position == 'left-icon' %}order-2{% else %}order-1{% endif %}"
+      {% if load_more_btn == true %}
+        load-more-text
+      {% endif %}
+    >
+      {{- btn_text -}}
+    </span>
+    {%- if btn_icon_class != blank -%}
+      <i
+        class="{{ btn_icon_class }} {% if icon_position == 'left-icon' %}order-1 left-icon{% else %}order-2 right-icon{% endif %}"
+      ></i>
+    {%- endif -%}
+  </a>
+{%- endif -%}

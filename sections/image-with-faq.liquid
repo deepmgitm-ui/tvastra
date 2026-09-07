@@ -1,0 +1,585 @@
+<section id="{{ section.settings.section_id }}" class="image-with-faq-{{ section.settings.image_with_faq_style }} section-{{ section.id }} {% if section.settings.section_show == false %}d-none{% endif %} {{ section.settings.section_class_name }} d-md-block" style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}">
+<div class="{{ section.settings.container_type }}">
+<div class="section-radius {% if section.settings.section_bg_image != blank %}{{ section.settings.background_position }}{% endif %} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }}" style="{% if section.settings.section_bg_image != blank %}background-image: url({{ section.settings.section_bg_image | image_url }});{% endif %}">
+  {%- liquid
+  	assign wrapper_class = ''
+    if section.settings.container_type == 'w-100 overflow-hidden'
+      if section.settings.show_content_container == true
+        assign wrapper_class = 'container'
+      else
+        assign wrapper_class = 'container-fluid'
+      endif
+    elsif section.settings.container_type == 'container-fluid' and section.settings.show_content_container == true
+      assign wrapper_class = 'container'
+    endif
+  -%}
+  {%- if wrapper_class != '' -%}
+    <div class="{{ wrapper_class }}">
+  {%- endif -%}
+		  <div class="row {% if section.settings.image_with_faq_style == 'style-1' %}align-items-center{% endif %}">
+				{%- if section.settings.image_with_faq_style == 'style-1' -%}
+					<div class="col-lg-6 text-center text-lg-start image">
+            {%- render 'responsive-image', image: section.settings.faq_image, placeholder_type: 'simple-image' -%}
+					</div>
+					{%- if section.settings.sub_heading != blank  or section.settings.heading != blank or section.settings.description != blank -%}
+				<div class="col-lg-5 faq-content offset-lg-1">
+							{%- if section.settings.sub_heading != blank -%}<div class="section-sub-heading">{{ section.settings.sub_heading }}</div>{%- endif -%}
+		          {%- if section.settings.heading != blank -%}<h3 class="section-heading alt-font">{{ section.settings.heading }}</h3>{%- endif -%}
+		          {%- if section.settings.description != blank -%}<div class="section-description">{{ section.settings.description }}</div>{%- endif -%}
+					{%- endif -%}
+					<div class="panel-group accordion-event accordion-style-{{ section.id }}" id="accordion-{{ section.id }}" data-active-icon="{{ section.settings.active_icon }}" data-inactive-icon="{{ section.settings.inactive_icon }}">
+	          {%- for block in section.blocks -%}
+	            <div class="panel">
+	            	{%- if block.settings.accordion_title != blank -%}
+		              <div class="panel-heading {% if block.settings.open == true %}active-accordion {% endif %}">
+		                <a class="accordion-toggle" data-bs-toggle="collapse" data-bs-parent="#accordion-{{ section.id }}" href="#accordion-style-{{ section.id }}-{{ forloop.index }}" aria-label="accordion">
+		                  <div class="panel-title alt-font">
+		                    <span class="d-inline-block">{{ block.settings.accordion_title }}</span>
+		                    <i class="{% if block.settings.open == true %} {{ section.settings.active_icon }} {% else %} {{ section.settings.inactive_icon }} {% endif %}"></i>
+		                  </div>
+		                </a>
+		              </div>
+	              {%- endif -%}
+	              {%- if block.settings.accordion_content != blank -%}
+		              <div id="accordion-style-{{ section.id }}-{{ forloop.index }}" class="panel-collapse collapse {% if block.settings.open == true %}show{% endif %}" data-bs-parent="#accordion-{{ section.id }}">
+		                <div class="panel-body">{{ block.settings.accordion_content }}</div>
+		              </div>
+	              {%- endif -%} 
+	            </div>
+	          {%- endfor -%}
+            {%- render 'button-settings',
+              btn_style: section.settings.button_style,
+              btn_size: section.settings.button_size,
+              btn_text: section.settings.btn_text,
+              btn_link: section.settings.btn_link,
+              btn_radius: section.settings.btn_radius,
+              btn_border_width: section.settings.btn_border_width,
+              btn_icon_class: section.settings.btn_icon_class,
+              icon_position: section.settings.icon_position
+            -%}
+	        </div>
+				</div>
+				{%- endif -%}
+				{%- if section.settings.image_with_faq_style == 'style-2' -%}
+					{%- if section.settings.sub_heading != blank  or section.settings.heading != blank or section.settings.description != blank -%}
+						<div class="col-lg-4 faq-text text-center text-lg-start">
+							{%- if section.settings.sub_heading != blank -%}<div class="section-sub-heading">{{ section.settings.sub_heading }}</div>{%- endif -%}
+			          {%- if section.settings.heading != blank -%}<h3 class="section-heading alt-font">{{ section.settings.heading }}</h3>{%- endif -%}
+			          {%- if section.settings.description != blank -%}{{ section.settings.description }}{%- endif -%}
+								{%- if section.settings.faq_image != blank -%}
+								<div class="banner-left d-flex justify-content-center align-items-center cover">
+									<img src="{{ section.settings.faq_image | image_url: width: 480, height: 480 }}" alt="" width="auto" height="auto" loading="lazy" />
+								</div>
+							{%- endif -%}
+						</div>
+					{%- endif -%}
+					<div class="col-lg-8">
+						<div class="panel-group accordion-event accordion-style-{{ section.id }}" id="accordion-{{ section.id }}" data-active-icon="{{ section.settings.active_icon }}" data-inactive-icon="{{ section.settings.inactive_icon }}">
+		          {%- for block in section.blocks -%}
+		            <div class="panel">
+		              <div class="panel-heading {% if block.settings.open == true %}active-accordion {% endif %}">
+		                <a class="accordion-toggle" data-bs-toggle="collapse" data-bs-parent="#accordion-{{ section.id }}" href="#accordion-style-{{ section.id }}-{{ forloop.index }}" aria-label="accordion">
+		                  <div class="panel-title">
+		                    <span class="d-inline-block">{{ block.settings.accordion_title }}</span>
+		                    <i class="{% if block.settings.open == true %} {{ section.settings.active_icon }} {% else %} {{ section.settings.inactive_icon }} {% endif %}"></i>
+		                  </div>
+		                </a>
+		              </div>
+		              <div id="accordion-style-{{ section.id }}-{{ forloop.index }}" class="panel-collapse collapse {% if block.settings.open == true %}show{% endif %}" data-bs-parent="#accordion-{{ section.id }}">
+		                <div class="panel-body">{{ block.settings.accordion_content }}</div>
+		              </div>
+		            </div>
+		          {%- endfor -%}
+              {%- render 'button-settings',
+                btn_style: section.settings.button_style,
+                btn_size: section.settings.button_size,
+                btn_text: section.settings.btn_text,
+                btn_link: section.settings.btn_link,
+                btn_radius: section.settings.btn_radius,
+                btn_border_width: section.settings.btn_border_width,
+                btn_icon_class: section.settings.btn_icon_class,
+                icon_position: section.settings.icon_position
+              -%}
+		        </div>
+					</div>
+				{%- endif -%}
+			</div>
+		{%- if wrapper_class != '' -%}
+	    </div>
+	  {%- endif -%}
+	</div>
+</div>
+</section>
+<style>   
+	{%- unless section.settings.use_default_section_typography == true -%}
+    .section-{{ section.id }} .section-heading {
+      font-size: {{ section.settings.title_fontsize }}px;
+  		line-height: {{ section.settings.title_lineheight }}px;
+    }
+    .section-{{ section.id }} .section-sub-heading {
+      font-size: {{ section.settings.subtitle_fontsize }}px;
+  		line-height: {{ section.settings.subtitle_lineheight }}px;
+      letter-spacing: {{ section.settings.subheading_letter_spacing }}px;
+    }
+  {%- endunless -%}
+  {%- if section.settings.section_heading_color != blank -%}
+    .section-{{ section.id }} .section-heading {
+      color: {{ section.settings.section_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_sub_heading_color != blank -%}
+    .section-{{ section.id }} .section-sub-heading {
+      color: {{ section.settings.section_sub_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_description_color != blank -%}
+    .section-{{ section.id }} .section-description {
+      color: {{ section.settings.section_description_color }};
+    }
+  {%- endif -%}
+</style>
+{% schema %}
+{
+  "name": "Image with faq",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_content_container",
+      "label": "Show content in container",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "image_with_faq_style",
+      "label": "Image with faq style",
+      "default": "style-1",
+      "options": [
+        {
+          "value": "style-1",
+          "label": "Style-1"
+        },
+        {
+          "value": "style-2",
+          "label": "Style-2"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "About our vision, mission and values.",
+      "info": "Wrap word in square bracket for stylish word. e.g. [Hello] World"
+    },
+    {
+      "type": "textarea",
+      "id": "sub_heading",
+      "label": "Sub heading",
+      "default": "COMPANY OVERVIEW"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "image_picker",
+      "id": "faq_image",
+      "label": "Faq image",
+      "info": "Recommended size 580x540"
+    },
+    {
+      "type": "text",
+      "id": "active_icon",
+      "label": "Active icon class",
+      "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)",
+      "default": "feather-minus"
+    },
+    {
+      "type": "text",
+      "id": "inactive_icon",
+      "label": "Inactive icon class",
+      "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)",
+      "default": "feather-plus"
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "default": "btn-black",
+      "options": [
+        {
+          "value": "btn-black",
+          "label": "Solid button black"
+        },
+        {
+          "value": "btn-white",
+          "label": "Solid button white"
+        },
+        {
+          "value": "btn-base-color",
+          "label": "Solid button base"
+        },
+        {
+          "value": "btn-black-border",
+          "label": "Border button black"
+        },
+        {
+          "value": "btn-white-border",
+          "label": "Border button white"
+        },
+        {
+          "value": "btn-base-color-border",
+          "label": "Border button base"
+        },
+        {
+          "value": "btn-white-border border-opacity",
+          "label": "Border opacity button white"
+        },
+        {
+          "value": "btn-black-border border-opacity",
+          "label": "Border opacity button black"
+        },
+        {
+          "value": "btn-link btn-link-black",
+          "label": "Underlined button black"
+        },
+        {
+          "value": "btn-link btn-link-white",
+          "label": "Underlined button white"
+        },
+        {
+          "value": "btn-link btn-link-base-color",
+          "label": "Underlined button base"
+        },
+        {
+          "value": "btn-custom",
+          "label": "Custom button"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Button size",
+      "default": "btn-medium",
+      "options": [
+        {
+          "value": "btn-extra-large",
+          "label": "Extra Large"
+        },
+        {
+          "value": "btn-large",
+          "label": "Large"
+        },
+        {
+          "value": "btn-medium",
+          "label": "Medium"
+        },
+        {
+          "value": "btn-small",
+          "label": "Small"
+        },
+        {
+          "value": "btn-very-small",
+          "label": "Very Small"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "btn_radius",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Button radius",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "btn_border_width",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Button border width",
+      "default": 2
+    },
+    {
+      "type": "text",
+      "id": "btn_icon_class",
+      "label": "Enter icon class",
+      "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+    },
+    {
+      "type": "select",
+      "id": "icon_position",
+      "label": "Icon position",
+      "default": "right-icon",
+      "options": [
+        {
+          "value": "left-icon",
+          "label": "Left"
+        },
+        {
+          "value": "right-icon",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_default_section_typography",
+      "label": "Use section typography from theme settings",
+      "info": "By default section typography values will be used from theme settings. Uncheck this checkbox to use below values.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "title_fontsize",
+      "label": "Heading size",
+      "unit": "px",
+      "min": 25,
+      "max": 80,
+      "step": 1,
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "title_lineheight",
+      "label": "Heading line height",
+      "unit": "px",
+      "min": 35,
+      "max": 95,
+      "step": 1,
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "subtitle_fontsize",
+      "label": "Sub heading size",
+      "unit": "px",
+      "min": 14,
+      "max": 40,
+      "step": 1,
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "subtitle_lineheight",
+      "label": "Sub heading line height",
+      "unit": "px",
+      "min": 24,
+      "max": 60,
+      "step": 1,
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "subheading_letter_spacing",
+      "min": 0,
+      "max": 10,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Sub heading letter spacing",
+      "default": 1
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": "small-section-top",
+      "options": [
+        {
+          "value": "large-section-top",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-top",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-top",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-top",
+          "label": "Very small section"
+        },
+        {
+          "value": "pt-0",
+          "label": "No padding top"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": "small-section-bottom",
+      "options": [
+        {
+          "value": "large-section-bottom",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-bottom",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-bottom",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-bottom",
+          "label": "Very small section"
+        },
+        {
+          "value": "pb-0",
+          "label": "No padding bottom"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "section_show",
+      "label": "Show section in mobile",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "section_bg_image",
+      "label": "Section background image",
+      "info": "Recommended size 1920x800"
+
+    },
+    {
+      "type": "select",
+      "id": "background_position",
+      "label": "Background position",
+      "options": [
+        {
+          "value": "cover-background",
+          "label": "Cover"
+        },
+        {
+          "value": "fixed-background",
+          "label": "Fixed"
+        }
+      ],
+      "default": "cover-background"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color"
+    },
+    {
+      "type": "color",
+      "id": "section_heading_color",
+      "label": "Section heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_sub_heading_color",
+      "label": "Section sub heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_description_color",
+      "label": "Section description color"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "section_class_name",
+      "label": "Section class name"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq-text",
+      "name": "Accordion item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "accordion_title",
+          "label": "Accordion title",
+          "default": "Company vision"
+        },
+        {
+          "type": "textarea",
+          "id": "accordion_content",
+          "label": "Accordion content",
+          "default": "Lorem ipsum dolor amet consectetur adipiscing elit sed do eiusmod tempor incididun"
+        },
+        {
+          "type": "checkbox",
+          "id": "open",
+          "label": "Open tab by default",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with faq",
+      "blocks": [
+        {
+          "type": "faq-text"
+        },
+        {
+          "type": "faq-text"
+        },
+        {
+          "type": "faq-text"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,395 @@
+{{ 'blog-card.min.css' | asset_url | stylesheet_tag }}
+{%- if settings.article_card_style == 'modern' -%}
+  {{ 'blog-card-modern.min.css' | asset_url | stylesheet_tag }}
+{%- else -%}
+  {{ 'blog-card-classic.min.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+<section
+  class="section-{{ section.id }} {% if section.settings.section_show == false %}d-none{% endif %} {{ section.settings.section_class_name }} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }} d-md-block"
+  style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}"
+>
+  <div class="{{ section.settings.container_type }}">
+    <div class="row justify-content-center {% if section.settings.show_sidebar and section.settings.sidebar_placement == 'left-column' %}flex-row-reverse{% endif %}">
+      <div class="{% if section.settings.show_sidebar == false %} col-12 {% else %} col-lg-8 col-xl-9 blog-content-left {% endif %}">
+        {%- paginate blog.articles by section.settings.post_limit -%}
+          <div id="main-blog-grid" class="row row-cols-{{ section.settings.post_limit_mobile }} row-cols-md-{{ section.settings.post_limit_tablet }} row-cols-lg-{{ section.settings.post_limit_mini_desktop }} row-cols-xl-{{ section.settings.post_limit_desktop }} blog-{{ settings.article_card_style }}">
+            {%- for article in blog.articles limit: section.settings.post_limit -%}
+              {%- render 'article-card',
+                article: article,
+                style: settings.article_card_style,
+                schema_setting: settings
+              -%}
+            {%- endfor -%}
+          </div>
+          {%- if paginate.pages > 1 -%}
+            <div class="row">
+              <div class="col-12 blogs-pagination">
+                {%- render 'pagination', paginate: paginate -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endpaginate -%}
+      </div>
+      {%- if section.settings.show_sidebar -%}
+        <div class="col-lg-4 col-xl-3 blog-sidebar">
+          {%- render 'blog-sidebar' -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+<style>
+  @media (min-width: 992px) {
+    .section-{{ section.id }} .blog-item:nth-child(n+{{ section.settings.post_limit_desktop | plus: 1 }}) {
+      margin-top: 50px;
+    }
+  }
+  @media (max-width: 1199px) {
+    .section-{{ section.id }} .blog-item:nth-child(n+{{ section.settings.post_limit_mini_desktop | plus: 1 }}) {
+      margin-top: 40px;
+    }
+  }
+  @media (max-width: 991px) {
+    .section-{{ section.id }} .blog-item:nth-child(n+{{ section.settings.post_limit_tablet | plus: 1 }}) {
+      margin-top: 30px;
+    }
+  }
+  @media (max-width: 767px) {
+    .section-{{ section.id }} .blog-item:nth-child(n+{{ section.settings.post_limit_mobile | plus: 1 }}) {
+      margin-top: 30px;
+    }
+  }
+</style>
+{% schema %}
+{
+  "name": "t:sections.main-blog.name",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "pagination_style",
+      "label": "Pagination style",
+      "default": "paginate",
+      "options": [
+        {
+          "value": "load-more",
+          "label": "Load more"
+        },
+        {
+          "value": "infinite-scroll",
+          "label": "Infinite scroll"
+        },
+        {
+          "value": "paginate",
+          "label": "Numbers"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Sidebar settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sidebar",
+      "label": "Show sidebar",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "sidebar_placement",
+      "options": [
+        {
+          "value": "left-column",
+          "label": "Left column"
+        },
+        {
+          "value": "right-column",
+          "label": "Right column"
+        }
+      ],
+      "default": "left-column",
+      "label": "Position"
+    },
+    {
+      "type": "paragraph",
+      "content": "Posts per row"
+    },
+    {
+      "type": "range",
+      "id": "post_limit_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 2,
+      "label": "Desktop"
+    },
+    {
+      "type": "range",
+      "id": "post_limit_mini_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 2,
+      "label": "Mini desktop"
+    },
+    {
+      "type": "range",
+      "id": "post_limit_tablet",
+      "label": "Tablet",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "post_limit_mobile",
+      "label": "Mobile",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "post_limit",
+      "label": "Number of posts to show",
+      "min": 3,
+      "max": 20,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": "small-section-top",
+      "options": [
+        {
+          "value": "large-section-top",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-top",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-top",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-top",
+          "label": "Very small section"
+        },
+        {
+          "value": "pt-0",
+          "label": "No padding top"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": "small-section-bottom",
+      "options": [
+        {
+          "value": "large-section-bottom",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-bottom",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-bottom",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-bottom",
+          "label": "Very small section"
+        },
+        {
+          "value": "pb-0",
+          "label": "No padding bottom"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "section_show",
+      "label": "Show section in mobile",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color"
+    },
+    {
+      "type": "text",
+      "id": "element_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "section_class_name",
+      "label": "Section class name"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "categories",
+      "name": "Categories",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "link_list",
+          "id": "category_menu",
+          "label": "Select categories menu"
+        }
+      ]
+    },
+    {
+      "type": "recent-post",
+      "name": "Recent post",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "blog",
+          "id": "recent_post",
+          "label": "Select blog"
+        },
+        {
+          "type": "range",
+          "id": "post_limit",
+          "label": "Number of posts to show",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "default": 3
+        },
+        {
+          "type": "checkbox",
+          "id": "blog_show_date",
+          "label": "Show date",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "blog_show_author",
+          "label": "Show author",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "blog_show_excerpt",
+          "label": "Show excerpt",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "blog_show_tags",
+          "label": "Show tags",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "truncate_excerpt",
+          "label": "Truncate excerpt",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "truncate_word",
+          "label": "Show words",
+          "info": "Please enter integer number",
+          "default": "8"
+        }
+      ]
+    },
+    {
+      "type": "tags",
+      "name": "Tags",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        }
+      ]
+    },
+    {
+      "type": "instagram",
+      "name": "Instagram",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "number",
+          "id": "count",
+          "default": 6,
+          "label": "No. of images to show"
+        }
+      ]
+    },
+    {
+      "type": "banner",
+      "name": "Banner",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "image_picker",
+          "id": "banenr_image",
+          "label": "Banner image",
+          "info": "Recommended size 500x700"
+        },
+        {
+          "type": "url",
+          "id": "banner_url",
+          "label": "Banner URL"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

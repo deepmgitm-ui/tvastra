@@ -1,0 +1,32 @@
+{%- if settings.promotion_btn1_text != blank or settings.promotion_demo_html != blank -%}
+	<div class=theme-demos>
+		{%- if settings.promotion_btn1_text != blank -%}
+			<div class=all-demo>
+					<a href="#">
+						<i class="align-middle feather-x"></i>
+						<div class=theme-wrapper>
+							<div>
+								<i class="align-middle {{ settings.promotion_btn1_icone_class }}"></i>
+								{{ settings.promotion_btn1_text }}
+							</div>
+						</div>
+					</a>
+			</div>
+		{%- endif -%}
+		{%- if settings.promotion_btn2_text != blank -%}
+			<div class=buy-theme>
+				<a href="{{ settings.promotion_btn2_link | default: '#' }}" target=_blank>
+					<i class="align-middle feather-shopping-bag"></i>
+					<div class=theme-wrapper>
+						<div><i class="align-middle {{ settings.promotion_btn2_icone_class }}"></i>{{ settings.promotion_btn2_text }}</div>
+					</div>
+				</a>
+			</div>
+		{%- endif -%}
+		{%- if settings.promotion_demo_html != blank -%}
+			<div class=demos-wrapper>
+				{{ settings.promotion_demo_html }}
+			</div>
+		{%- endif -%}
+	</div>
+{%- endif -%}

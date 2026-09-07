@@ -1,0 +1,61 @@
+/* Megamenu layout fix — centers desktop megamenu as an overlay and prevents it being clipped or turned into a narrow drawer.
+   Loaded after custom.css so it overrides theme defaults.
+*/
+
+@media (min-width: 992px) {
+  /* start hidden, appear on hover / when .open is added */
+  .navbar .navbar-nav .nav-item .megamenu {
+    position: fixed !important;
+    top: var(--header-height, 72px) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: min(1100px, 92vw) !important;
+    max-height: calc(100vh - var(--header-height, 72px) - 24px) !important;
+    padding: 28px 32px !important;
+    overflow-y: auto !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.45) !important;
+    border: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transition: opacity .18s ease, visibility .18s ease, transform .18s ease;
+    z-index: 99999 !important;
+  }
+
+  .navbar .navbar-nav .nav-item:hover .megamenu,
+  .navbar .navbar-nav .nav-item .megamenu.open {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+
+  /* inner container shouldn't constrain columns */
+  .navbar .navbar-nav .nav-item .megamenu > .container,
+  .navbar .navbar-nav .nav-item .megamenu > .container-fluid {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* keep columns side-by-side but allow wrap if needed */
+  .navbar .megamenu ul.row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 24px !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+  }
+
+  .navbar .megamenu ul li.level1 {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    max-width: 280px !important;
+    padding: 0 18px !important;
+  }
+}
+
+/* Mobile/smaller widths: keep default behaviour in theme (drawer) */
+
+/* Optional: lock body scroll if you add/remove .mega-open on body via JS */
+body.mega-open { overflow: hidden !important; }

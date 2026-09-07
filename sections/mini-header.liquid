@@ -1,0 +1,492 @@
+{%- if section.settings.announcement != blank and section.settings.show_announcement != false -%}
+  <div class="announcement-bar position-relative">
+    <div class="{{ section.settings.container_type }}">
+      <div class="row align-items-center">
+        <div class="col-12 d-flex justify-content-center align-items-center announcement text-center">
+          <p class="m-0">{{ section.settings.announcement }}</p>
+          <span class="close-announcement-bar feather-x" style="cursor: pointer; z-index: 10;"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+{%- if section.settings.show_miniheader != false -%}
+  <div class="mini-header overflow-visible{% if section.settings.section_bg_image != blank %} {{ section.settings.background_position }}{% endif %}" {% if section.settings.section_bg_image != blank %}style="background-image: url({{ section.settings.section_bg_image | image_url }});"{% endif %}>
+    <div class="{{ section.settings.mh_container_type }}">
+      <div class="row align-items-center">
+        {%- for block in section.blocks -%}
+          {%- capture column-width -%}{{ block.settings.column_width }}{%- endcapture -%}
+          {%- case block.type -%}
+            {%- when 'language-currency' -%}
+              <div class="col-7 col-sm-6 col-lg-{{ column-width }} text-{{ block.settings.text_alignment }} alt-font">
+                {%- if block.settings.show_language != false and localization.available_languages.size > 1 -%}
+                  {%- form 'localization', id: 'language-switcher', class: 'language-form' -%}
+                    <div class="switcher-dropdown position-relative">
+                      <div class="label">
+                        {{ localization.language.endonym_name -}}
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>
+                      </div>
+                      <ul name="country_code" data-language>
+                        {%- for language in localization.available_languages -%}
+                          <li>
+                            <a
+                              class="language {%- if language.iso_code == localization.language.iso_code %} active{% endif %}"
+                              href="#"
+                              data-value="{{ language.iso_code }}"
+                              aria-label="language"
+                            >
+                              {{- language.endonym_name -}}
+                            </a>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                      <input
+                        type="hidden"
+                        name="locale_code"
+                        id="language_code"
+                        value="{{ localization.language.iso_code }}"
+                      >
+                    </div>
+                  {%- endform -%}
+                {%- endif -%}
+                {%- if block.settings.show_currency != false and localization.available_countries.size > 1 -%}
+                  {%- form 'localization', id: 'currency-switcher', class: 'currency-form' -%}
+                    <div class="switcher-dropdown position-relative">
+                      <div class="label">
+                        {{ localization.country.currency.iso_code -}}
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>
+                      </div>
+                      <ul name="country_code" data-currency>
+                        {%- for country in localization.available_countries -%}
+                          <li>
+                            <a
+                              class="currency {% if country.iso_code == localization.country.iso_code %}active{% endif %}"
+                              href="#"
+                              data-value="{{ country.iso_code }}"
+                              aria-label="country"
+                            >
+                              {{- country.currency.iso_code -}}
+                            </a>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                      <input
+                        type="hidden"
+                        name="country_code"
+                        id="country_code"
+                        value="{{ localization.country.iso_code }}"
+                      >
+                    </div>
+                  {%- endform -%}
+                {%- endif -%}
+              </div>
+            {%- when 'text-widget' -%}
+              {%- if block.settings['text-widget'] != blank -%}
+                <div class="col-5 col-sm-6 col-lg-{{ column-width }} d-none d-lg-block text-{{ block.settings.text_alignment }} alt-font text-widget">
+                  <p>{{ block.settings['text-widget'] }}</p>
+                </div>
+              {%- endif -%}
+            {%- when 'custom-html' -%}
+              <div class="col-5 col-sm-6 col-lg-{{ column-width }} text-{{ block.settings.text_alignment }} alt-font custom-html-widget">
+                {{ block.settings['widget-html'] }}
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+<style>
+  /* --- CUSTOM FONT LOADING --- */
+  {%- if section.settings.announcement_font != blank and section.settings.use_futura_announcement == false -%}
+    {{ section.settings.announcement_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- if section.settings.mh_font != blank and section.settings.use_futura_mh == false -%}
+    {{ section.settings.mh_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+
+  /* --- ANNOUNCEMENT BAR TYPOGRAPHY & SHAPE --- */
+  .announcement-bar {
+    border-radius: {{ section.settings.announcement_radius }}px !important;
+    {%- if section.settings.announcement_bg_color != blank -%}background-color: {{ section.settings.announcement_bg_color }} !important;{%- endif -%}
+    {%- if section.settings.announcement_text_color != blank -%}color: {{ section.settings.announcement_text_color }} !important;{%- endif -%}
+  }
+  
+  /* FIX: Added :not(.close-announcement-bar) so the X icon doesn't break */
+  .announcement-bar p, .announcement-bar a, .announcement-bar span:not(.close-announcement-bar) {
+    {%- if section.settings.use_futura_announcement -%}
+      font-family: 'FuturaCustom', sans-serif !important;
+    {%- else -%}
+      {%- if section.settings.announcement_font != blank -%}
+        font-family: {{ section.settings.announcement_font.family }}, {{ section.settings.announcement_font.fallback_families }} !important;
+        font-weight: {{ section.settings.announcement_font.weight }} !important;
+        font-style: {{ section.settings.announcement_font.style }} !important;
+      {%- endif -%}
+    {%- endif -%}
+    font-size: {{ section.settings.announcement_font_size }}px !important;
+  }
+
+  {%- if section.settings.announcement_link_color != blank -%}
+    .announcement-bar a { color: {{ section.settings.announcement_link_color }} !important; }
+  {%- endif -%}
+
+  /* --- MINI HEADER TYPOGRAPHY --- */
+  .mini-header, .mini-header p, .mini-header a, .switcher-dropdown .label, .switcher-dropdown ul li a, .text-widget, .text-widget p, .custom-html-widget {
+    {%- if section.settings.use_futura_mh -%}
+      font-family: 'FuturaCustom', sans-serif !important;
+    {%- else -%}
+      {%- if section.settings.mh_font != blank -%}
+        font-family: {{ section.settings.mh_font.family }}, {{ section.settings.mh_font.fallback_families }} !important;
+        font-weight: {{ section.settings.mh_font.weight }} !important;
+        font-style: {{ section.settings.mh_font.style }} !important;
+      {%- endif -%}
+    {%- endif -%}
+    font-size: {{ section.settings.mh_font_size }}px !important;
+  }
+
+  /* Mini Header Colors */
+  {%- if section.settings.mh_bg_color != blank -%}
+    .mini-header { background-color: {{ section.settings.mh_bg_color }} !important; }
+  {%- endif -%}
+  {%- if section.settings.mh_text_color != blank -%}
+    .mini-header p, .switcher-dropdown .label, .text-widget p, .custom-html-widget {
+      color: {{ section.settings.mh_text_color }} !important;
+    }
+  {%- endif -%}
+  {%- if section.settings.link_color != blank -%}
+    .text-widget a, .custom-html-widget ul li a { color: {{ section.settings.link_color }} !important; }
+  {%- endif -%}
+  {%- if section.settings.link_hover_color != blank -%}
+    .text-widget a:hover, .custom-html-widget ul li a:hover { color: {{ section.settings.link_hover_color }} !important; }
+  {%- endif -%}
+
+  /* Dropdown Colors */
+  {%- if section.settings.dropdown_bg_color != blank -%}
+    .switcher-dropdown ul { background-color: {{ section.settings.dropdown_bg_color }} !important; }
+  {%- endif -%}
+  {%- if section.settings.dropdown_text_color != blank -%}
+    .switcher-dropdown ul li a { color: {{ section.settings.dropdown_text_color }} !important; }
+  {%- endif -%}
+  {%- if section.settings.dropdown_text_hover_color != blank -%}
+    .switcher-dropdown ul li a:hover, .switcher-dropdown ul li a.active {
+      color: {{ section.settings.dropdown_text_hover_color }} !important;
+    }
+  {%- endif -%}
+</style>
+
+{% schema %}
+{
+  "name": "Mini header",
+  "settings": [
+    {
+      "type": "header",
+      "content": "✨ Master Typography (Fonts & Sizes)"
+    },
+    {
+      "type": "font_picker",
+      "id": "announcement_font",
+      "label": "Announcement Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_futura_announcement",
+      "label": "🔥 Use Custom Futura Font?",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "announcement_font_size",
+      "min": 10, "max": 30, "step": 1, "unit": "px",
+      "label": "Announcement Font Size", "default": 14
+    },
+    {
+      "type": "font_picker",
+      "id": "mh_font",
+      "label": "Mini Header Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_futura_mh",
+      "label": "🔥 Use Custom Futura Font?",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "mh_font_size",
+      "min": 10, "max": 30, "step": 1, "unit": "px",
+      "label": "Mini Header Font Size", "default": 13
+    },
+    {
+      "type": "header",
+      "content": "✨ Announcement Bar Shape"
+    },
+    {
+      "type": "range",
+      "id": "announcement_radius",
+      "min": 0, "max": 50, "step": 1, "unit": "px",
+      "label": "Announcement Box Shape (Radius)", "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Mini Header Settings"
+    },
+    {
+      "type": "select",
+      "id": "mh_container_type",
+      "label": "Container type",
+      "default": "container-fluid",
+      "options": [
+        { "value": "container-fluid", "label": "Container fluid" },
+        { "value": "w-100 overflow-hidden", "label": "Full width" },
+        { "value": "container", "label": "Container" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_miniheader",
+      "label": "Show mini header",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Show announcement",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "mh_bg_color",
+      "label": "Background color"
+    },
+    {
+      "type": "color",
+      "id": "mh_text_color",
+      "label": "Text color"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link color"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Link hover color"
+    },
+    {
+      "type": "color",
+      "id": "dropdown_bg_color",
+      "label": "Dropdown bg color"
+    },
+    {
+      "type": "color",
+      "id": "dropdown_text_color",
+      "label": "Dropdown text color"
+    },
+    {
+      "type": "color",
+      "id": "dropdown_text_hover_color",
+      "label": "Dropdown text hover color"
+    },
+    {
+      "type": "image_picker",
+      "id": "section_bg_image",
+      "label": "Section background image",
+      "info": "Recommended size 1920x46"
+    },
+    {
+      "type": "select",
+      "id": "background_position",
+      "label": "Background position",
+      "options": [
+        { "value": "cover-background", "label": "Cover" },
+        { "value": "fixed-background", "label": "Fixed" }
+      ],
+      "default": "cover-background"
+    },
+    {
+      "type": "header",
+      "content": "Announcement Bar"
+    },
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container-fluid",
+      "options": [
+        { "value": "container-fluid", "label": "Container fluid" },
+        { "value": "w-100 overflow-hidden", "label": "Full width" },
+        { "value": "container", "label": "Container" }
+      ]
+    },
+    {
+      "type": "html",
+      "id": "announcement",
+      "label": "Custom content and HTML",
+      "default": "Welcome to our store"
+    },
+    {
+      "type": "color",
+      "id": "announcement_bg_color",
+      "label": "Announcement bg color"
+    },
+    {
+      "type": "color",
+      "id": "announcement_text_color",
+      "label": "Announcement text color"
+    },
+    {
+      "type": "color",
+      "id": "announcement_link_color",
+      "label": "Announcement link color"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "language-currency",
+      "name": "Language & currency",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_language",
+          "label": "Show language",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_currency",
+          "label": "Show currency",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "column_width",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            { "value": "1", "label": "1 column - 1/12" },
+            { "value": "2", "label": "2 columns - 1/6" },
+            { "value": "3", "label": "3 columns - 1/4" },
+            { "value": "4", "label": "4 columns - 1/3" },
+            { "value": "5", "label": "5 columns - 5/12" },
+            { "value": "6", "label": "6 columns - 1/2" },
+            { "value": "7", "label": "7 columns - 7/12" },
+            { "value": "8", "label": "8 columns - 2/3" },
+            { "value": "9", "label": "9 columns - 3/4" },
+            { "value": "10", "label": "10 columns - 5/6" },
+            { "value": "11", "label": "11 columns - 11/12" },
+            { "value": "12", "label": "12 columns - 1/1" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text alignment",
+          "default": "start",
+          "options": [
+            { "value": "start", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "end", "label": "Right" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "text-widget",
+      "name": "Text widget",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "html",
+          "id": "text-widget",
+          "label": "Custom text and HTML"
+        },
+        {
+          "type": "select",
+          "id": "column_width",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            { "value": "1", "label": "1 column - 1/12" },
+            { "value": "2", "label": "2 columns - 1/6" },
+            { "value": "3", "label": "3 columns - 1/4" },
+            { "value": "4", "label": "4 columns - 1/3" },
+            { "value": "5", "label": "5 columns - 5/12" },
+            { "value": "6", "label": "6 columns - 1/2" },
+            { "value": "7", "label": "7 columns - 7/12" },
+            { "value": "8", "label": "8 columns - 2/3" },
+            { "value": "9", "label": "9 columns - 3/4" },
+            { "value": "10", "label": "10 columns - 5/6" },
+            { "value": "11", "label": "11 columns - 11/12" },
+            { "value": "12", "label": "12 columns - 1/1" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text alignment",
+          "default": "start",
+          "options": [
+            { "value": "start", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "end", "label": "Right" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "custom-html",
+      "name": "Custom HTML",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "html",
+          "id": "widget-html",
+          "label": "Custom HTML"
+        },
+        {
+          "type": "select",
+          "id": "column_width",
+          "label": "Column width",
+          "default": "3",
+          "info": "Total columns of whole block should not be more than 12 columns",
+          "options": [
+            { "value": "1", "label": "1 column - 1/12" },
+            { "value": "2", "label": "2 columns - 1/6" },
+            { "value": "3", "label": "3 columns - 1/4" },
+            { "value": "4", "label": "4 columns - 1/3" },
+            { "value": "5", "label": "5 columns - 5/12" },
+            { "value": "6", "label": "6 columns - 1/2" },
+            { "value": "7", "label": "7 columns - 7/12" },
+            { "value": "8", "label": "8 columns - 2/3" },
+            { "value": "9", "label": "9 columns - 3/4" },
+            { "value": "10", "label": "10 columns - 5/6" },
+            { "value": "11", "label": "11 columns - 11/12" },
+            { "value": "12", "label": "12 columns - 1/1" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text alignment",
+          "default": "start",
+          "options": [
+            { "value": "start", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "end", "label": "Right" }
+          ]
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": []
+  }
+}
+{% endschema %}

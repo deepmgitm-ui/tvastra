@@ -1,0 +1,29 @@
+{
+  "sections": {
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "settings": {
+        "container_type": "container",
+        "banner_title_size": "h-3",
+        "content_alignment": "center",
+        "show_pagetitle": true,
+        "title_uppercase": false,
+        "border_top": true,
+        "border_bottom": false,
+        "show_mobile": true
+      }
+    },
+    "cart-items": {
+      "type": "main-cart-items",
+      "settings": {
+        "show_cart_note": false,
+        "show_shipping_calculater": false,
+        "shipping_calculator_submit_button_label": "Calculate shipping"
+      }
+    }
+  },
+  "order": [
+    "breadcrumb",
+    "cart-items"
+  ]
+}

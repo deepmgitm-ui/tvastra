@@ -1,0 +1,452 @@
+<section
+  id="{{ section.settings.section_id }}"
+  class="section-{{ section.id }} {% if section.settings.section_bg_image != blank %}{{ section.settings.background_position }}{% endif %} {% if section.settings.section_show == false %} d-none{% endif %} {{ section.settings.section_class_name }} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }} d-md-block shop-banner-style-1"
+  style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}"
+>
+  <div class="{{ section.settings.container_type }}">
+    <div class="row align-items-center justify-content-center">
+      <div class="col-lg-7">
+        <div class="position-relative shop-baner-image d-lg-flex align-items-center">
+          {%- render 'responsive-image', image: section.settings.banner_image, placeholder_type: 'simple-image' -%}
+          {%- if section.settings.rotation_image != blank -%}
+            <div class="rotation-image rotate-animation" style="top: -{{ section.settings.rotation_image.height | divided_by: 2 }}px;left: -{{ section.settings.rotation_image.width | divided_by: 2 }}px;">
+            <img src="{{ section.settings.rotation_image | image_url }}" alt="" width="{{ section.settings.rotation_image.width }}" height="{{ section.settings.rotation_image.height }}" loading="lazy">
+            </div>
+          {%- endif -%}
+          {%- if section.settings.rotate_text != blank -%}
+            <div class="rotate-text alt-font section-sub-heading medium">{{ section.settings.rotate_text }}</div>
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="banner-right">
+          {%- if section.settings.title != blank -%}
+            <h2 class="alt-font section-heading">{{ section.settings.title }}</h2>
+          {%- endif -%}
+          {%- if section.settings.content != blank -%}
+            <p class="section-description">{{ section.settings.content }}</p>
+          {%- endif -%}
+          {%- render 'button-settings',
+            btn_style: section.settings.button_style,
+            btn_size: section.settings.button_size,
+            btn_text: section.settings.btn_text,
+            btn_link: section.settings.btn_link,
+            btn_radius: section.settings.btn_radius,
+            btn_border_width: section.settings.btn_border_width,
+            btn_icon_class: section.settings.btn_icon_class,
+            icon_position: section.settings.icon_position
+          -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  {%- unless section.settings.use_default_section_typography == true -%}
+    .section-{{ section.id }} .section-heading {
+      font-size: {{ section.settings.section_heading_size }}px;
+      line-height: {{ section.settings.heading_line_height }}px;
+    }
+    .section-{{ section.id }} .section-sub-heading {
+      font-size: {{ section.settings.sub_heading_size }}px;
+      letter-spacing: {{ section.settings.subheading_letter_spacing }}px;
+      line-height: {{ section.settings.sub_heading_line_height }}px;
+    }
+  {%- endunless -%}
+  {%- if section.settings.section_heading_color != blank -%}
+    .section-{{ section.id }} .section-heading {
+      color: {{ section.settings.section_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_sub_heading_color != blank -%}
+    .section-{{ section.id }} .section-sub-heading {
+      color: {{ section.settings.section_sub_heading_color }};
+    }
+  {%- endif -%}
+  {%- if section.settings.section_description_color != blank -%}
+    .section-{{ section.id }} .section-description {
+      color: {{ section.settings.section_description_color }};
+    }
+  {%- endif -%}
+  @media (max-width: 1199px) {
+    .section-{{ section.id }} .section-heading {
+      font-size: var(--font_size_plus32);
+      line-height: var(--font_size_plus32);
+    }
+  }
+  @media (max-width: 991px) {
+    .section-{{ section.id }} .section-heading {
+      font-size: var(--font_size_plus27);
+      line-height: var(--font_size_plus27);
+    }
+  }
+  @media (max-width: 767px) {
+    .section-{{ section.id }} .section-heading {
+      font-size: var(--font_size_plus17);
+      line-height: var(--font_size_plus17);
+    }
+  }
+</style>
+{% schema %}
+{
+  "name": "Shop banner",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Banner Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Image",
+      "info": "Recommended size 600x465"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "New arrival <br> winter collection"
+    },
+    {
+      "type": "text",
+      "id": "rotate_text",
+      "label": "Sub heading",
+      "default": "DESIGNER WINTER COLLECTION"
+    },
+    {
+      "type": "textarea",
+      "id": "content",
+      "label": "Description",
+      "default": "Lorem ipsum is simply dummy text of the printing typesetting industry. Lorem ipsum has been standard dummy text. Lorem ipsum has been standard."
+    },
+    {
+      "type": "image_picker",
+      "id": "rotation_image",
+      "label": "Rotating image",
+      "info": "Recommended size 170x170"
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "default": "btn-black",
+      "options": [
+        {
+          "value": "btn-black",
+          "label": "Solid button black"
+        },
+        {
+          "value": "btn-white",
+          "label": "Solid button white"
+        },
+        {
+          "value": "btn-base-color",
+          "label": "Solid button base"
+        },
+        {
+          "value": "btn-black-border",
+          "label": "Border button black"
+        },
+        {
+          "value": "btn-white-border",
+          "label": "Border button white"
+        },
+        {
+          "value": "btn-base-color-border",
+          "label": "Border button base"
+        },
+        {
+          "value": "btn-white-border border-opacity",
+          "label": "Border opacity button white"
+        },
+        {
+          "value": "btn-black-border border-opacity",
+          "label": "Border opacity button black"
+        },
+        {
+          "value": "btn-link btn-link-black",
+          "label": "Underlined button black"
+        },
+        {
+          "value": "btn-link btn-link-white",
+          "label": "Underlined button white"
+        },
+        {
+          "value": "btn-link btn-link-base-color",
+          "label": "Underlined button base"
+        },
+        {
+          "value": "btn-custom",
+          "label": "Custom button"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Button size",
+      "default": "btn-medium",
+      "options": [
+        {
+          "value": "btn-extra-large",
+          "label": "Extra Large"
+        },
+        {
+          "value": "btn-large",
+          "label": "Large"
+        },
+        {
+          "value": "btn-medium",
+          "label": "Medium"
+        },
+        {
+          "value": "btn-small",
+          "label": "Small"
+        },
+        {
+          "value": "btn-very-small",
+          "label": "Very Small"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "btn_radius",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Button radius",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "btn_border_width",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Button border width",
+      "default": 2
+    },
+    {
+      "type": "text",
+      "id": "btn_icon_class",
+      "label": "Enter icon class",
+      "info": "[Find feather icon](https://dropways.github.io/feathericons/) | [Find bootstrap icon](https://icons.getbootstrap.com/) | [Find fontawesome icon](https://fontawesome.com/icons)"
+    },
+    {
+      "type": "select",
+      "id": "icon_position",
+      "label": "Icon position",
+      "default": "right-icon",
+      "options": [
+        {
+          "value": "left-icon",
+          "label": "Left"
+        },
+        {
+          "value": "right-icon",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button text",
+      "default": "Shop the collection"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_default_section_typography",
+      "label": "Use section typography from theme settings",
+      "info": "By default section typography values will be used from theme settings. Uncheck this checkbox to use below values.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "section_heading_size",
+      "label": "Heading size",
+      "unit": "px",
+      "min": 10,
+      "max": 60,
+      "step": 1,
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "label": "Heading line height",
+      "unit": "px",
+      "min": 35,
+      "max": 95,
+      "step": 1,
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_size",
+      "label": "Sub heading size",
+      "unit": "px",
+      "min": 10,
+      "max": 70,
+      "step": 1,
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_line_height",
+      "label": "Sub heading line height",
+      "unit": "px",
+      "min": 24,
+      "max": 60,
+      "step": 1,
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "subheading_letter_spacing",
+      "min": 0,
+      "max": 10,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Sub heading letter spacing",
+      "default": 1
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": "small-section-top",
+      "options": [
+        {
+          "value": "large-section-top",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-top",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-top",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-top",
+          "label": "Very small section"
+        },
+        {
+          "value": "pt-0",
+          "label": "No padding top"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": "small-section-bottom",
+      "options": [
+        {
+          "value": "large-section-bottom",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-bottom",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-bottom",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-bottom",
+          "label": "Very small section"
+        },
+        {
+          "value": "pb-0",
+          "label": "No padding bottom"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "section_show",
+      "label": "Show section in mobile",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color"
+    },
+    {
+      "type": "color",
+      "id": "section_heading_color",
+      "label": "Section heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_sub_heading_color",
+      "label": "Section sub heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_description_color",
+      "label": "Section description color"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "section_class_name",
+      "label": "Section class name"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop banner",
+      "blocks": [
+
+      ]
+    }
+  ]
+}
+{% endschema %}

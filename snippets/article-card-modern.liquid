@@ -1,0 +1,51 @@
+<div class="col blog-item">
+  <div class="blog-post position-relative">
+    <div class="blog-image overflow-hidden">
+      <a class="w-100" href="{{ article.url }}" aria-label="link">
+        {%- render 'responsive-image', image: article.image, placeholder_type: 'simple-image' -%}
+      </a>
+    </div>
+    <div class="blog-content text-center">
+      <div class="blog-wrap">
+        {%- if blog.title != blank -%}
+          <div class="blog-post-category">
+            {%- if settings.show_tags_category != '' -%}
+              {%- if settings.show_tags_category == 'category' -%}
+                <a href="{{ blog.url }}" class="blog-post-meta alt-font" aria-label="blog">{{ blog.title }}</a>
+              {%- else -%}
+                {%- for tag in article.tags -%}
+                  <a href="{{ blog.url }}/tagged/{{ tag | handle }}" aria-label="blog">{{ tag }}</a>
+                  {%- unless forloop.last %},{% endunless %}
+                {%- endfor -%}
+              {%- endif -%}
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+        <a class="blog-post-title alt-font" href="{{ article.url }}" aria-label="article">{{ article.title }}</a>
+        {%- if settings.truncate_excerpt and settings.truncate_word != blank -%}
+          {%- assign truncatewords = settings.truncate_word -%}
+        {%- else -%}
+          {%- assign truncatewords = 9 -%}
+        {%- endif -%}
+        {%- if settings.blog_show_excerpt == true and article.excerpt != blank -%}
+          <p class="mb-0">{{ article.excerpt | strip_html | truncatewords: truncatewords }}</p>
+        {%- endif -%}
+      </div>
+      {%- if settings.blog_show_date == true or settings.blog_show_author == true -%}
+        <div class="blog-meta-wrap">
+          {%- if settings.blog_show_date -%}
+            {%- assign date-format = settings.date_format -%}
+            <span>{{ article.published_at | date: date-format }}</span>
+          {%- endif -%}
+          {%- if settings.blog_show_author -%}
+            {%- if settings.blog_show_author == true and settings.blog_show_date == true -%}
+              <span class="blog-separator">|</span>
+            {%- endif -%}
+            {{ 'general.article_card_modern.by' | t }}
+            {{ article.author }}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>

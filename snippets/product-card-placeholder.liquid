@@ -1,0 +1,12 @@
+{%- comment -%}
+  Renders a product card placeholder
+  Usage:
+  {% render 'product-card-placeholder' %}
+{%- endcomment -%}
+<div class="product-image position-relative" style="border: 1px solid #e2e2e2;">
+  {{ 'product-1' | placeholder_svg_tag: 'w-100' }}
+</div>
+<div class="product-footer text-center placeholder-product">
+  <span class="product-title alt-font">{{ 'onboarding.product_title' | t }}</span>
+  <div class="price">{{ 5000 | money }}</div>
+</div>

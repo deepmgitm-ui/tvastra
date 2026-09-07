@@ -1,0 +1,59 @@
+<div class="back-in-stock-popup mfp-hide">
+  <div id="stock-notify" class="modal-popup-main stock-notify-popup d-md-flex">
+    <div class="notify-product-detail">
+      <div class="product-image d-flex justify-content-center align-items-center position-relative">
+        <img class="product-img-item" src="{{ product.featured_image | image_url }}" alt="" width="auto" height="auto" loading="lazy" />
+        <span class="badge sold-out" aria-hidden="true">{{ 'sections.back_in_stock.out_of_stock' | t }}</span>
+      </div>
+      <div class="product-detail d-flex align-items-start">
+        <div class="product-title d-flex flex-column">
+          <div class="alt-font">{{ product.title }}</div>
+            <span class="variant-title alt-font">{{ product.vendor }}</span>
+        </div>
+        <span class="variant-price price ms-auto alt-font">{{ product.price | money_without_currency }}</span>
+      </div>
+    </div>
+    <div class="notify-product-form">
+        <div class="notify-product-title alt-font text-large d-flex"><i class="bi bi-envelope"></i><span>{{ block_settings.back-in-stock-title }}</span></div>
+      {%- if block_settings.back-in-stock-subheading != blank -%}
+        <p>{{ block_settings.back-in-stock-subheading }}</p>
+      {%- endif -%}
+      {%- form 'contact', id: 'ContactForm-Outofstock' -%}
+          <input type="hidden" name="contact[product]" value="{{ product.title }}" />                     
+          <input type="hidden" name="contact[variant]" value="" />                     
+          <input autocomplete="name" type="text" id="ContactForm-name" name="contact[{{ 'templates.contact.form.name' | t }}]" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}" placeholder="{{ 'sections.back_in_stock_notification_popup.placeholder_name' | t }}" required>
+          <input
+            autocomplete="email"
+            type="email"
+            id="ContactForm-email"
+            class="{% if form.errors -%}error{% endif %}"
+            name="contact[email]"
+            spellcheck="false"
+            autocapitalize="off"
+            value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+            aria-required="true"
+            {%- if form.errors contains 'email' %}
+              aria-invalid="true"
+              aria-describedby="ContactForm-email-error"
+            {%- endif %}
+            placeholder="{{ 'sections.back_in_stock_notification_popup.placeholder_email' | t }}"
+            required
+          >                
+        <input type="tel" id="ContactForm-phone" autocomplete="tel" name="contact[{{ 'templates.contact.form.phone' | t }}]" pattern="[0-9\-]*" value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}" placeholder="{{ 'sections.back_in_stock_notification_popup.placeholder_number' | t }}">
+        <textarea
+          rows="5"
+          id="ContactForm-body"
+          name="contact[{{ 'templates.contact.form.comment' | t }}]"
+          placeholder="{{ 'sections.back_in_stock_notification_popup.placeholder_message' | t }}"
+          required
+        >
+          {{- form.body -}}
+        </textarea>
+        <button type="submit" class="btn btn-black btn-medium w-100">{{ 'sections.back_in_stock.submit_now' | t }}</button>
+      {%- endform -%}
+  {%- if product.metafields.custom.expected_back_in_stock_date_ != blank -%}
+      <div class="stock-notify-date alt-font"><i class="{{ block_settings.back_in_icon_name }}"></i>{{ block_settings.back-in-stock-text }} <span>{{ product.metafields.custom.expected_back_in_stock_date_ | date: "%d  %B %y" }}</span></div>
+   {%- endif -%}
+   </div>
+  </div>
+</div>

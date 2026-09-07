@@ -1,0 +1,58 @@
+/* Compact horizontal recommendations inside the add-to-cart drawer only. */
+#cart-notification .tvastra-cart-recommendations {
+  overflow: hidden;
+  padding: 11px 12px 9px !important;
+}
+
+#cart-notification .tvastra-cart-recommendations__heading {
+  margin-bottom: 8px;
+}
+
+#cart-notification .tvastra-cart-recommendations__track {
+  display: flex !important;
+  width: 100%;
+  min-width: 0;
+  gap: 8px;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  padding: 0 0 4px !important;
+  scroll-behavior: smooth;
+  scroll-padding-inline: 0;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-inline: contain;
+  touch-action: pan-x pan-y;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+#cart-notification .tvastra-cart-recommendations__track::-webkit-scrollbar {
+  display: none;
+}
+
+#cart-notification .tvastra-cart-rec-card {
+  box-sizing: border-box !important;
+  flex: 0 0 clamp(248px, 78vw, 286px) !important;
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 74px;
+  margin: 0 !important;
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+}
+
+#cart-notification .tvastra-cart-rec-card:focus-visible {
+  outline: 2px solid #1f2927;
+  outline-offset: 2px;
+}
+
+@media (max-width: 359px) {
+  #cart-notification .tvastra-cart-rec-card {
+    flex-basis: calc(100vw - 58px) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #cart-notification .tvastra-cart-recommendations__track {
+    scroll-behavior: auto;
+  }
+}

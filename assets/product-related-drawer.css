@@ -1,0 +1,358 @@
+.tvastra-related-drawer {
+  display: block;
+}
+
+.tvastra-related-drawer__trigger {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 7;
+  display: inline-flex;
+  box-sizing: border-box;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 0 9px;
+  border: 1px solid rgba(19, 46, 49, .12);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .94);
+  color: #132e31;
+  box-shadow: 0 5px 14px rgba(19, 46, 49, .1);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  touch-action: manipulation;
+  overflow: hidden;
+  transition: width .24s cubic-bezier(.22, .8, .25, 1), gap .2s ease, transform .18s ease, box-shadow .18s ease;
+}
+
+.tvastra-related-drawer__trigger[hidden] {
+  display: none !important;
+}
+
+.tvastra-related-drawer__trigger.has-share-control {
+  left: 56px;
+}
+
+.tvastra-related-drawer__trigger:hover,
+.tvastra-related-drawer__trigger:focus-visible {
+  width: 125px;
+  gap: 6px;
+  border-color: rgba(19, 46, 49, .25);
+  background: #fff;
+  color: #132e31;
+  transform: translateY(-1px);
+  box-shadow: 0 7px 18px rgba(19, 46, 49, .14);
+}
+
+.tvastra-related-drawer__trigger:focus-visible,
+.tvastra-related-drawer__close:focus-visible,
+.tvastra-related-card__link:focus-visible {
+  outline: 2px solid #173f45;
+  outline-offset: 2px;
+}
+
+.tvastra-related-drawer__trigger-icon {
+  display: grid;
+  width: 15px;
+  height: 15px;
+  flex: 0 0 15px;
+  place-items: center;
+  color: #173f45;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.tvastra-related-drawer__trigger-label {
+  max-width: 0;
+  overflow: hidden;
+  color: #17363a;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0;
+  opacity: 0;
+  white-space: nowrap;
+  transform: translateX(-4px);
+  transition: max-width .24s cubic-bezier(.22, .8, .25, 1), opacity .16s ease, transform .2s ease;
+}
+
+.tvastra-related-drawer__trigger:hover .tvastra-related-drawer__trigger-label,
+.tvastra-related-drawer__trigger:focus-visible .tvastra-related-drawer__trigger-label {
+  max-width: 90px;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.tvastra-related-drawer__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 298;
+  background: rgba(7, 18, 20, .54);
+  opacity: 0;
+  transition: opacity .24s ease;
+}
+
+.tvastra-related-drawer__panel {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 299;
+  box-sizing: border-box;
+  width: 100%;
+  max-height: min(74dvh, 610px);
+  padding: 10px 0 calc(18px + env(safe-area-inset-bottom));
+  overflow: hidden;
+  border-radius: 18px 18px 0 0;
+  background: #fff;
+  color: #17363a;
+  box-shadow: 0 -20px 55px rgba(7, 28, 32, .2);
+  visibility: hidden;
+  transform: translateY(102%);
+  transition: transform .28s cubic-bezier(.22, .8, .25, 1), visibility .28s;
+}
+
+.tvastra-related-drawer.is-open .tvastra-related-drawer__backdrop {
+  opacity: 1;
+}
+
+.tvastra-related-drawer.is-open .tvastra-related-drawer__panel {
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.tvastra-related-drawer__handle {
+  width: 36px;
+  height: 4px;
+  margin: 0 auto 9px;
+  border-radius: 2px;
+  background: #d6ddda;
+}
+
+.tvastra-related-drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 7px 16px 13px;
+  border-bottom: 1px solid #e8ecea;
+}
+
+.tvastra-related-drawer__eyebrow {
+  display: block;
+  margin-bottom: 2px;
+  color: #75817e;
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.tvastra-related-drawer__title {
+  margin: 0;
+  color: #162f33;
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.tvastra-related-drawer__close {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  place-items: center;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #dfe5e2;
+  border-radius: 50%;
+  background: #fff;
+  color: #17363a;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.tvastra-related-drawer__track {
+  display: flex;
+  gap: 10px;
+  padding: 14px 16px 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: #bec9c5 transparent;
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tvastra-related-drawer__track::after {
+  content: "";
+  flex: 0 0 6px;
+}
+
+.tvastra-related-card {
+  flex: 0 0 min(44vw, 190px);
+  min-width: 0;
+  scroll-snap-align: start;
+  border: 1px solid #e0e6e3;
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.tvastra-related-card__link {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  color: inherit;
+  text-decoration: none;
+}
+
+.tvastra-related-card__media {
+  position: relative;
+  display: grid;
+  aspect-ratio: 4 / 5;
+  place-items: center;
+  overflow: hidden;
+  background: #f3f5f4;
+}
+
+.tvastra-related-card__media img,
+.tvastra-related-card__placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.tvastra-related-card.is-out-of-stock .tvastra-related-card__media img {
+  filter: grayscale(.62) saturate(.58);
+  opacity: .72;
+}
+
+.tvastra-related-card.is-out-of-stock .tvastra-related-card__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(48, 57, 55, .06);
+  pointer-events: none;
+}
+
+.tvastra-related-card__status {
+  position: absolute;
+  right: 7px;
+  bottom: 7px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  z-index: 1;
+  background: rgba(30, 40, 41, .9);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.tvastra-related-card__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.tvastra-related-card__title {
+  margin: 0 0 7px;
+  color: #172e32;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0;
+  overflow-wrap: break-word;
+}
+
+.tvastra-related-card__price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 6px;
+  color: #172e32;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.tvastra-related-card__price s {
+  color: #8a9491;
+  font-size: 9px;
+  font-weight: 400;
+}
+
+.tvastra-related-card__price em {
+  color: #9a6816;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.tvastra-related-card__cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 10px;
+  color: #173f45;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+body.tvastra-related-drawer-open {
+  overflow: hidden !important;
+}
+
+[data-related-products-close][hidden] {
+  display: none !important;
+}
+
+@media (min-width: 768px) {
+  .tvastra-related-drawer__panel {
+    right: 24px;
+    bottom: 24px;
+    left: 24px;
+    width: min(calc(100% - 48px), 1120px);
+    margin: 0 auto;
+    padding-bottom: 18px;
+    border: 1px solid #dfe5e2;
+    border-radius: 10px;
+    transform: translateY(calc(100% + 30px));
+  }
+
+  .tvastra-related-drawer__handle {
+    display: none;
+  }
+
+  .tvastra-related-drawer__header {
+    padding: 18px 22px 14px;
+  }
+
+  .tvastra-related-drawer__track {
+    gap: 14px;
+    padding: 18px 22px 10px;
+  }
+
+  .tvastra-related-card {
+    flex-basis: 210px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tvastra-related-drawer__trigger,
+  .tvastra-related-drawer__backdrop,
+  .tvastra-related-drawer__panel {
+    transition: none;
+  }
+}

@@ -1,0 +1,58 @@
+{%- layout none -%}
+{%- capture image -%}
+<div class="product-image d-inline-block position-relative">
+  <img src="{{ product.featured_image | image_url: width: 175 }}" loading="lazy" alt="{{ product.title }}" width="auto" height="auto" /><a href="{{ product.url }}" class="product-title alt-font d-block" target="_blank">{{ product.title }}</a><a href="#" rel="nofollow noopener" class="remove-icon" data-compare="remove" data-reload="true" data-handle="{{ product.id }}"><i class="bi bi-x"></i></a>
+</div>
+{%- endcapture -%}
+{%- capture name -%}
+<a href="{{ product.url }}" class="product-title alt-font" target="_blank">{{ product.title }}</a>
+{%- endcapture -%}
+{% capture price_html %}
+{%- render 'main-price', product: product, use_variant: true, price_class: 'price--large' -%}
+{% endcapture %}
+{%- capture availability -%}
+  {%- if product.available -%} 
+    <span class="in-stock">{{ 'templates.product_compare.in_stock' | t }}</span>
+  {%- else -%}
+    <span class="unavailable">{{ 'templates.product_compare.unavailable' | t }}</span>
+  {%- endif -%}
+{%- endcapture -%}
+{%- capture addtocart_btn -%}
+  {%- if product.has_only_default_variant -%}
+    {%- if product.available == true -%}
+      <a href="/cart/add?id={{ selected_variant.id }}" class="btn btn-black btn-small" data-trigger="addtocart" data-variant="{{ selected_variant.id }}">Add to cart</a>
+    {%- else -%}
+      <a href="{{ product.url | default: '#' | within: collection }}" class="btn btn-black btn-small">{{ 'templates.product_compare.view_product' | t }}</a>
+    {%- endif -%}
+  {%- else -%}
+    {%- assign selected_variant = product.selected_or_first_available_variant -%}
+    {%- if selected_variant.available -%}
+      <a href="{{ product.url | default: '#' | within: collection }}" class="btn btn-black btn-small">{{ 'templates.product_compare.select_option' | t }}</a>
+    {%- else -%}
+      <a href="{{ product.url | default: '#' | within: collection }}" class="btn btn-black btn-small">{{ 'templates.product_compare.view_product' | t }}</a>
+    {%- endif -%}
+  {%- endif -%}
+{%- endcapture -%}
+{%- capture product_options -%}
+{%- unless product.has_only_default_variant -%}
+{%- for option in product.options_with_values -%}
+{{ option.name | json }}: {{ option.values | join: ", " | json }}{%- unless forloop.last -%},{%- endunless -%}
+{%- endfor -%}
+{%- endunless -%}
+{%- endcapture -%}
+{%- capture compare_json -%}
+{
+  "id": {{ product.id | json }},
+  "handle": {{ product.handle | json }},
+  "image": {{- image | strip | json -}},
+  "name": {{ name | json }},
+  "price": {{- price_html | strip | json -}},
+  "availability": {{- availability | strip | json -}},
+  "vendor": {{ product.vendor | json }},
+  "type": {{ product.type | default: '<i class="bi bi-dash-lg"></i>' | json }},
+  "addtocart_btn": {{- addtocart_btn | strip | json -}},
+  "is_variant" : {{ product.has_only_default_variant }},
+  "product_options": { {{ product_options }} }
+}
+{%- endcapture -%}
+{{- compare_json | strip -}}

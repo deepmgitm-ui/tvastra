@@ -1,0 +1,89 @@
+<div
+  class="promotion-model  promotion-{{ settings.promotion_banner_style }}"
+  data-promotion_model
+  data-delay="{{ settings.popup_promotion_delay | times: 1000 }}"
+  data-expire="{{ settings.popup_promotion_expire }}"
+  style="z-index: {{ settings.popup_promotion_delay | times: 1000 }}"
+>
+  <div class="model-inner">
+    <div class="model-box">
+      {%- if settings.promotion_banner_style == 'style-1' -%}
+        <div class="row g-0 flex-column flex-sm-row">
+          {%- if settings.promotion_img != blank -%}
+            <div
+              class="col promo-banner cover-background"
+              style="{% if settings.promotion_img != blank %}background-image: url({{ settings.promotion_img | image_url }});{% endif %}"
+            ></div>
+          {%- endif -%}
+          <div class="col">
+            <span class="promotion-close" data-model-close><i class="feather-x"></i></span>
+            <div class="content text-center">
+              {%- if settings.promotion_sub_heading != blank -%}
+                <span class="sub-heading">{{ settings.promotion_sub_heading }}</span>
+              {%- endif -%}
+              {%- if settings.promotion_heading != blank -%}
+                <h3 class="{{ settings.promotion_heading_size }} heading alt-font">{{ settings.promotion_heading }}</h3>
+              {%- endif -%}
+              {%- if settings.promotion_description != blank -%}
+                <p class="description">{{ settings.promotion_description }}</p>
+              {%- endif -%}
+              {%- if settings.promotion_btn_text != blank -%}
+                {%- render 'button-settings',
+                  btn_style: settings.promotion_button_style,
+                  btn_size: settings.promotion_button_size,
+                  btn_text: settings.promotion_btn_text,
+                  btn_link: settings.promotion_btn_link,
+                  btn_radius: settings.promotion_btn_radius,
+                  btn_border_width: settings.promotion_btn_border_width,
+                  btn_icon_class: settings.promotion_btn_icon_class,
+                  icon_position: settings.promotion_icon_position
+                -%}
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      {%- else -%}
+        <span class="promotion-close" data-model-close><i class="feather-x"></i></span>
+        <div class="content text-center">
+          {%- if settings.promotion_sub_heading != blank -%}
+            <span>{{ settings.promotion_sub_heading }}</span>
+          {%- endif -%}
+          {%- if settings.promotion_heading != blank -%}
+            <h5 class="{{ settings.promotion_heading_size }} heading alt-font">{{ settings.promotion_heading }}</h5>
+          {%- endif -%}
+          {%- if settings.promotion_description != blank -%}
+            <p class="description">{{ settings.promotion_description }}</p>
+          {%- endif -%}
+        </div>
+        <div class="product promotion-slider">
+          <div class="row slider-inner {{ settings.product_card_style }}">
+            {%- assign products = settings.promotion_products -%}
+            {%- for product in products -%}
+              {%- if product != blank -%}
+                <div class="col product-box" data-number="{{ forloop.length }}">
+                  {%- render 'product-simple-card', product_card_product: product -%}
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          <div class="row">
+            <div class="col text-center btn-wrapper">
+              {%- if settings.promotion_btn_text != blank -%}
+                {%- render 'button-settings',
+                  btn_style: settings.promotion_button_style,
+                  btn_size: settings.promotion_button_size,
+                  btn_text: settings.promotion_btn_text,
+                  btn_link: settings.promotion_btn_link,
+                  btn_radius: settings.promotion_btn_radius,
+                  btn_border_width: settings.promotion_btn_border_width,
+                  btn_icon_class: settings.promotion_btn_icon_class,
+                  icon_position: settings.promotion_icon_position
+                -%}
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>

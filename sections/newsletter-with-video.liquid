@@ -1,0 +1,372 @@
+<section
+  id="{{ section.settings.section_id }}"
+  class="newsletter-with-video section-{{ section.id }} {% if section.settings.section_show == false %}d-none{% endif %} {{ section.settings.section_class_name }} {{ section.settings.padding_top }} {{ section.settings.padding_bottom }} d-md-block"
+  style="{% if section.settings.section_bg_color != blank %}background-color: {{ section.settings.section_bg_color }};{% endif %}"
+>
+  <div class="{{ section.settings.container_type }}">
+    <div class="row justify-content-center g-0 rounded-3 overflow-hidden">
+      <div class="col-lg-6">
+        <div class="video-wrapper overflow-hidden d-flex flex-column justify-content-center align-items-center position-relative">
+          {%- render 'responsive-image', image: section.settings.video_image, placeholder_type: 'simple-image' -%}
+          {%- liquid
+            assign popup_class = ''
+            if section.settings.video_url contains 'youtube.com'
+              assign popup_class = ' mfp-popup-youtube'
+            elsif section.settings.video_url contains 'vimeo.com'
+              assign popup_class = ' mfp-popup-vimeo'
+            endif
+          -%}
+          {%- if section.settings.video_url != blank -%}
+            <div class="position-absolute top-50 start-0 translate-middle-y w-100 d-flex flex-column align-items-center justify-content-center">
+              {%- if section.settings.video_url != blank -%}
+                <a
+                  href="{{ section.settings.video_url }}"
+                  class="popup-video video-icon-box rounded-circle d-flex justify-content-center align-items-center{{ popup_class }}"
+                  aria-label="popup-video"
+                >
+                  <span>
+                    <span class="video-icon">
+                      <i class="bi bi-play-fill"></i>
+                      <span class="video-icon-sonar">
+                        <span class="video-icon-sonar-bfr"></span>
+                      </span>
+                    </span>
+                  </span>
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+      <div
+        class="col-lg-6 newsletter-wrap cover-background d-flex align-items-center text-{{ section.settings.text_align }}"
+        style="{% if section.settings.newsletter_image != blank %}background-image: url({{ section.settings.newsletter_image | image_url }});{% else %}background-color: {{ section.settings.content_block_background_color }}{% endif %}"
+      >
+        <div class="newsletter-inner">
+          {%- if section.settings.newsletter_subtitle != blank -%}
+            <div class="sub-title section-sub-heading">{{ section.settings.newsletter_subtitle }}</div>
+          {%- endif -%}
+          {%- if section.settings.newsletter_title != blank -%}
+            <h4 class="title section-heading alt-font">{{ section.settings.newsletter_title }}</h4>
+          {%- endif -%}
+          {%- assign formId = 'newsletter-form-' | append: section.id -%}
+          {%- form 'customer', class: 'newsletter-form', id: formId -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <div class="input-group d-inline-block position-relative">
+              <input
+                id="{{ formId }}-email"
+                type="email"
+                name="contact[email]"
+                class="mb-0 {% if form.errors %}error{% endif %}"
+                value=""
+                aria-required="true"
+                autocorrect="off"
+                autocapitalize="off"
+                autocomplete="email"
+                {% if form.errors %}
+                  autofocus
+                  aria-invalid="true"
+                  aria-describedby="newsletter-form-error-{{ section.id }}"
+                {% elsif form.posted_successfully? %}
+                  aria-describedby="{{ formId }}-success"
+                {% endif %}
+                placeholder="{{ section.settings.email_placeholder }}"
+                required
+              >
+              <button type="submit" class="btn" name="commit" aria-label="submit"><i class="bi bi-envelope"></i>{{ section.settings.btn_text }}</button>
+            </div>
+          {%- endform -%}
+          {%- if section.settings.newsletter_note != blank -%}<div class="description">{{ section.settings.newsletter_note }}</div>{%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  {%- unless section.settings.use_default_section_typography == true -%}
+     .section-{{ section.id }} .section-heading {
+       font-size: {{ section.settings.section_heading_size }}px;
+       line-height: {{ section.settings.heading_line_height }}px;
+     }
+     .section-{{ section.id }} .section-sub-heading {
+       font-size: {{ section.settings.sub_heading_size }}px;
+       letter-spacing: {{ section.settings.subheading_letter_spacing }}px;
+       line-height: {{ section.settings.sub_heading_line_height }}px;
+     }
+   {%- endunless -%}
+   {%- if section.settings.section_heading_color != blank -%}
+     .section-{{ section.id }} .section-heading {
+       color: {{ section.settings.section_heading_color }};
+     }
+   {%- endif -%}
+   {%- if section.settings.section_sub_heading_color != blank -%}
+     .section-{{ section.id }} .section-sub-heading {
+       color: {{ section.settings.section_sub_heading_color }};
+     }
+   {%- endif -%}
+   {%- if section.settings.section_description_color != blank -%}
+     .section-{{ section.id }} .description {
+       color: {{ section.settings.section_description_color }};
+     }
+   {%- endif -%}
+</style>
+{% schema %}
+{
+  "name": "Newsletter with video",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Container fluid"
+        },
+        {
+          "value": "w-100 overflow-hidden",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Video Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_image",
+      "label": "Video poster image",
+      "info": "Recommended size 800x575"
+    },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "Youtube or Vimeo video URL",
+      "info": "Example: https://www.youtube.com/watch?v=xxxxxxx or https://vimeo.com/xxxxxxx"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "newsletter_image",
+      "label": "Newsletter background image",
+      "info": "Recommended size 500x500"
+    },
+    {
+      "type": "color",
+      "id": "content_block_background_color",
+      "label": "Content block background color"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_title",
+      "label": "Newsletter title",
+      "default": "Get a 20% discount on your first order!"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_subtitle",
+      "label": "Newsletter subtitle",
+      "default": "LATEST NEWSLETTER"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email placeholder",
+      "default": "Enter your email"
+    },
+    {
+      "type": "richtext",
+      "id": "newsletter_note",
+      "label": "Newsletter description",
+      "default": "<p>To see how we may use your information, take a look at our <a href=\"#\">privacy policy.</a></p>"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_default_section_typography",
+      "label": "Use section typography from theme settings",
+      "info": "By default section typography values will be used from theme settings. Uncheck this checkbox to use below values.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "section_heading_size",
+      "label": "Heading size",
+      "unit": "px",
+      "min": 10,
+      "max": 60,
+      "step": 1,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "label": "Heading line height",
+      "unit": "px",
+      "min": 35,
+      "max": 95,
+      "step": 1,
+      "default": 42
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_size",
+      "label": "Sub heading size",
+      "unit": "px",
+      "min": 10,
+      "max": 70,
+      "step": 1,
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "sub_heading_line_height",
+      "label": "Sub heading line height",
+      "unit": "px",
+      "min": 24,
+      "max": 60,
+      "step": 1,
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "subheading_letter_spacing",
+      "min": 0,
+      "max": 10,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Sub heading letter spacing",
+      "default": 1
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": "small-section-top",
+      "options": [
+        {
+          "value": "large-section-top",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-top",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-top",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-top",
+          "label": "Very small section"
+        },
+        {
+          "value": "pt-0",
+          "label": "No padding top"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": "small-section-bottom",
+      "options": [
+        {
+          "value": "large-section-bottom",
+          "label": "Large section"
+        },
+        {
+          "value": "medium-section-bottom",
+          "label": "Medium section"
+        },
+        {
+          "value": "small-section-bottom",
+          "label": "Small section"
+        },
+        {
+          "value": "very-small-section-bottom",
+          "label": "Very small section"
+        },
+        {
+          "value": "pb-0",
+          "label": "No padding bottom"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "section_show",
+      "label": "Show section in mobile",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color"
+    },
+    {
+      "type": "color",
+      "id": "section_heading_color",
+      "label": "Section heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_sub_heading_color",
+      "label": "Section sub heading color"
+    },
+    {
+      "type": "color",
+      "id": "section_description_color",
+      "label": "Section description color"
+    },
+    {
+      "type": "text",
+      "id": "element_id",
+      "label": "Section ID"
+    },
+    {
+      "type": "text",
+      "id": "extra_class_name",
+      "label": "Section class name"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter with video"
+    }
+  ]
+}
+{% endschema %}
