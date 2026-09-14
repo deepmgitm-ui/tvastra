@@ -9,7 +9,7 @@
 {%- if product.handle != blank -%}
   {%- if settings.enable_wishlist_hero_app_widget -%}
     {% if product_card_style %}
-      {% render 'wishlisthero-collection-product' with product: product %}
+      {% render 'wishlisthero-collection-product' with product, product: product %}
     {% else %}
       <div class="product-form__item" id="wishlist-hero-product-page-button"></div>
     {% endif %}
@@ -33,4 +33,14 @@
     <span><i class="feather-heart"></i></span>
     </button>
   {%- endif -%}
-{%- endif -%}
+{%- endif -%}{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'wishlisthero-collection-product' with product: product %}"
+  to: "{% render 'wishlisthero-collection-product' with product, product: product
+    %}"
+  position: 380..457
+{%- endcomment -%}

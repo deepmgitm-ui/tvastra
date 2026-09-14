@@ -276,7 +276,7 @@
             <div class="collection-banner{% unless forloop.index == 1 %} d-none {% else %} active{% endunless %}" id="shop-collection-{{ forloop.index }}">
                 {%- assign collection = block.settings['collection-item'] -%}
                 <a href="{{ collection.url }}">
-                  {%- render 'responsive-image', image: collection.image, placeholder_type: 'collection-image'- %}
+                  {%- render 'responsive-image', image: collection.image, placeholder_type: 'collection-image' %}
                 </a>
             </div>
           {%- endfor -%}
@@ -707,3 +707,15 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- render 'responsive-image', image: collection.image, placeholder_type:
+    'collection-image'- %}"
+  to: "{%- render 'responsive-image', image: collection.image, placeholder_type: 'collection-image'
+    %}"
+  position: 14989..15084
+{% endcomment %}
